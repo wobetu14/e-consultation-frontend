@@ -1,4 +1,4 @@
-import { Box, Grid, InputBase, Paper, TextField, Typography, useTheme } from "@mui/material";
+import { Box, Grid, InputBase, Pagination, Paper, TextField, Typography, useTheme } from "@mui/material";
 import RecentDocs from "../../partials/recents/RecentDocs";
 import StatBox from "../../partials/StatBox";
 import { useMode, tokens } from "../../theme";
@@ -19,17 +19,35 @@ const Home = () => {
   const {t}=useTranslation()
 
   // Retrieve document data
-  const [drafts, setDrafts]=useState('');
-  const [unfilteredDrafts, setUnfilteredDrafts]=useState('');
+  const [drafts, setDrafts]=useState(null);
+  const [unfilteredDrafts, setUnfilteredDrafts]=useState(null);
 
   // searchbox name
   const [search, setSearch]=useState('');
 
+  // Make pagination
+  // const pageSize=3;
+  const [pageCount, setPageCount]=useState(0);
+
+  const handlePageChange=async(e, page)=>{ 
+    return await  axios.get(`drafts?page=${page}`)
+      .then(res=>{
+        setDrafts(res.data.data.data)
+        // setUnfilteredDrafts(res.data.data.data)
+        // setPagination({...pagination, from:from, to:to})
+      }).catch(error=>{
+        console.log(error.message);
+      })
+  }
+
+  const [totalDrafts, setTotalDrafts]=useState(0);
+
   const fetchDrafts =async() =>{
-    return await  axios.get('drafts')
+    return await  axios.get(`drafts`)
       .then(res=>{
         setDrafts(res.data.data.data)
         setUnfilteredDrafts(res.data.data.data)
+        setTotalDrafts(res.data.data.total)
       }).catch(error=>{
         console.log(error.message);
       })
@@ -38,6 +56,10 @@ const Home = () => {
   useEffect(()=>{ 
     fetchDrafts()
   },[]);
+
+  useEffect(()=>{
+    setPageCount(Math.ceil(parseInt(totalDrafts) / 10))
+  }, [drafts])
 
 
   const searchDocs = async (e)=>{
@@ -100,8 +122,30 @@ const Home = () => {
       </Box>
       
        <Box sx={{ marginTop:"50px" }}>
-        <DocumentDisplay drafts={drafts} setDrafts={setDrafts} unfilteredDrafts={unfilteredDrafts} setUnfilteredDrafts={setUnfilteredDrafts} />
+        <DocumentDisplay 
+          drafts={drafts} 
+          setDrafts={setDrafts} 
+          unfilteredDrafts={unfilteredDrafts} 
+          setUnfilteredDrafts={setUnfilteredDrafts}
+          totalDrafts={totalDrafts}
+          setTotalDrafts={setTotalDrafts}
+          pageCount={setPageCount}
+          setPageCount={setPageCount}
+          />
        </Box>
+
+       <Box>
+            <Pagination count={pageCount} 
+            onChange={handlePageChange}
+            variant="outlined" shape="rounded" 
+            sx={{
+                    display:'flex',
+                    justifyContent: 'center',
+                    width: "100%",
+                    alignItems: 'center',
+                    padding:'0px',
+                }}/>
+        </Box>
 
         <Box>
             <Footer />

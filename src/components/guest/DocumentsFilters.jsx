@@ -4,7 +4,16 @@ import axios from '../../axios/AxiosGlobal'
 import React, { useEffect, useState } from 'react'
 import { tokens } from '../../theme';
 
-const DocumentsFilters = ({drafts, setDrafts, unfilteredDrafts, setUnfilteredDrafts}) => {
+const DocumentsFilters = (
+  {drafts, 
+    setDrafts, 
+    unfilteredDrafts, 
+    setUnfilteredDrafts,
+    totalDrafts,
+    setTotalDrafts,
+    pageCount,
+    setPageCount
+  }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
@@ -13,27 +22,32 @@ const DocumentsFilters = ({drafts, setDrafts, unfilteredDrafts, setUnfilteredDra
     const [institutionID, setInstitutionID]=useState(1);
     const [draftStatusID, setDraftStatusID]=useState(1);
 
-    const [filterValues, setFilterValues]=useState([]);
+    // useEffect to calculate dynamic page size for pagination
+    useEffect(()=>{
+      setPageCount(Math.ceil(parseInt(totalDrafts) / 10))
+    }, [drafts])
 
     const handleRegionChange = (event) => {
       event.preventDefault()
       setRegionID(event.target.value);
       
       const filteredDrafts=unfilteredDrafts.filter((draft)=>{
-        return draft.institution.region_id===regionID
+        return parseInt(draft.institution.region_id)===parseInt(regionID)
       });
       setDrafts(filteredDrafts)
+      setTotalDrafts(filteredDrafts.length);
       // setUnfilteredDrafts(filteredDrafts)
     };
 
     const handleInstitutionChange = (event) => {
       event.preventDefault();
       setInstitutionID(event.target.value);
-
+      setTotalDrafts(filteredDrafts.length);
       const filteredDrafts=unfilteredDrafts.filter((draft)=>{
-        return draft.institution_id===institutionID
+        return parseInt(draft.institution_id)===parseInt(institutionID)
       });
       setDrafts(filteredDrafts)
+      setTotalDrafts(filteredDrafts.length);
       // setUnfilteredDrafts(filteredDrafts)
     };
 
@@ -44,13 +58,11 @@ const DocumentsFilters = ({drafts, setDrafts, unfilteredDrafts, setUnfilteredDra
     const handleCategoryChange=(e)=>{
       e.preventDefault();
       setLawCategoryID(e.target.value);
-      console.log(lawCategoryID);
-      
       const filteredDrafts=unfilteredDrafts.filter((draft)=>{
         return parseInt(draft.law_category_id)===parseInt(lawCategoryID)
       });
-      console.log(filteredDrafts);
-      setDrafts(filteredDrafts)
+      setDrafts(filteredDrafts);
+      setTotalDrafts(filteredDrafts.length);
       // setUnfilteredDrafts(filteredDrafts)
     }
     
@@ -61,7 +73,8 @@ const DocumentsFilters = ({drafts, setDrafts, unfilteredDrafts, setUnfilteredDra
       const filteredDrafts=unfilteredDrafts.filter((draft)=>{
         return parseInt(draft.draft_status_id)!==parseInt(draftStatusID)
       });
-      setDrafts(filteredDrafts)
+      setDrafts(filteredDrafts);
+      setTotalDrafts(filteredDrafts.length);
       // setUnfilteredDrafts(filteredDrafts)
     }
 
@@ -161,13 +174,13 @@ const DocumentsFilters = ({drafts, setDrafts, unfilteredDrafts, setUnfilteredDra
                 </Typography>
 
                 <RadioGroup
-                    aria-labelledby="demo-controlled-radio-buttons-group"
+                    aria-labelledby="draft-status-id"
                     name="draftStatusID"
                     value={draftStatusID}
-                    onClick={handleDraftStatusChange}
+                    onChange={handleDraftStatusChange}
                   >
-                    <FormControlLabel value={1} control={<Radio />} label="Open"  />
-                    <FormControlLabel value={2} control={<Radio />} label="Closed"  />
+                    <FormControlLabel value='1' control={<Radio />} label="Open"  />
+                    <FormControlLabel value='2' control={<Radio />} label="Closed"  />
               </RadioGroup>            
             </Box>
 

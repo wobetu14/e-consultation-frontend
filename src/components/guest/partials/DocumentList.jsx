@@ -5,6 +5,7 @@ import { Button, Chip, List, ListItem, ListItemText, Paper, Skeleton, Stack, Typ
 import React from 'react'
 import { tokens } from '../../../theme';
 import './DocumentDisplay.css'
+import DraftPagination from './DraftPagination';
 
 const DocumentList = ({status, deadline, draft}) => {
     const theme = useTheme();
