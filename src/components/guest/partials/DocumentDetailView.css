@@ -1,0 +1,4 @@
+#article:target{
+    background-color: rgb(80, 80, 79);
+    -webkit-transition: all 1s linear;
+}

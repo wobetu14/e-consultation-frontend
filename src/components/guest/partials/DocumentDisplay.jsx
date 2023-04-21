@@ -2,6 +2,7 @@ import { useTheme } from '@emotion/react'
 import { Box, Pagination, Skeleton, Tab, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link } from 'react-router-dom'
 import Loading from '../../../Loading'
 import RegulationDocs from '../../../partials/document-list/Directives'
 import { tokens } from '../../../theme'
@@ -39,12 +40,15 @@ const DocumentDisplay = (
             {
               drafts ? 
               drafts.map((draft)=>(
-                <DocumentList  
-                deadline={"May 02, 2023"} 
-                draft={draft} setDrafts={setDrafts} 
-                unfilteredDrafts={unfilteredDrafts} 
-                setUnfilteredDrafts={setUnfilteredDrafts}
-                /> 
+                <Link to={`/draft/${draft.id}`} style={{ textDecoration:'none' }}>
+                  <DocumentList  
+                    deadline={"May 02, 2023"} 
+                    draft={draft} setDrafts={setDrafts} 
+                    unfilteredDrafts={unfilteredDrafts} 
+                    setUnfilteredDrafts={setUnfilteredDrafts}
+                />
+                </Link>
+                 
               )) : (
                 <>
                   <Loading />

@@ -3,6 +3,7 @@ import { useTheme } from '@emotion/react';
 import { PictureAsPdf } from '@mui/icons-material';
 import { Button, Chip, List, ListItem, ListItemText, Paper, Skeleton, Stack, Typography } from '@mui/material'
 import React from 'react'
+import { Link } from 'react-router-dom';
 import { tokens } from '../../../theme';
 import './DocumentDisplay.css'
 import DraftPagination from './DraftPagination';
@@ -104,12 +105,6 @@ const DocumentList = ({status, deadline, draft}) => {
 
                                     <label>
                                         <strong>Institution: </strong> FDRE Ministry of tourism &nbsp;
-                                    </label>
-
-                                    <label>
-                                        <Button variant="outlined" size="small" sx={{ marginLeft:"5px" }}>
-                                           <PictureAsPdf size="small" /> &nbsp; Download
-                                        </Button>
                                     </label>
                                 </div>
                             </Stack>

@@ -28,6 +28,8 @@ import CreateDraft from './components/admin/drafts/CreateDraft';
 import Institutions from './components/admin/institutions/Institutions';
 import CreateInstitution from './components/admin/institutions/CreateInstitution';
 import CreateUser from './components/admin/users/CreateUser';
+import DocumentLayout from './components/guest/DocumentLayout';
+import DocumentDetailView from './components/guest/DocumentDetailView';
 
 
 function App() {
@@ -54,6 +56,9 @@ function App() {
                         <Route path="create-account" element={<GuestSignup />} />
                         <Route path="*" element={<PageNotFound />} />
                       {/* </Route> */}
+                    </Route>
+                    <Route path='/draft' element={<DocumentLayout />}>
+                      <Route path=':id' element={<DocumentDetailView />} />
                     </Route>
                     <Route path='/admin' element={<AdminLayout />}>
                         <Route index element={<Dashboard />} />
