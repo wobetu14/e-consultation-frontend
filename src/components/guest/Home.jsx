@@ -1,4 +1,4 @@
-import { Box, Grid, InputBase, Pagination, Paper, TextField, Typography, useTheme } from "@mui/material";
+import { Box, Button, Grid, InputBase, Pagination, Paper, TextField, Typography, useTheme } from "@mui/material";
 import RecentDocs from "../../partials/recents/RecentDocs";
 import StatBox from "../../partials/StatBox";
 import { useMode, tokens } from "../../theme";
@@ -11,12 +11,15 @@ import {motion} from 'framer-motion'
 import Footer from "../../partials/Footer";
 import DocumentDisplay from "./partials/DocumentDisplay";
 import axios from '../../axios/AxiosGlobal'
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { UserContext } from "../../contexts/UserContext";
 
 const Home = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const {t}=useTranslation()
+
+  const {userRole, setUserRole}=useContext(UserContext);
 
   // Retrieve document data
   const [drafts, setDrafts]=useState(null);

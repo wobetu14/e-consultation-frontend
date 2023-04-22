@@ -14,6 +14,8 @@ import LanguageButton from "../LanguageButton";
 import { useTranslation } from 'react-i18next';
 import i18next from 'i18next';
 import cookies from 'js-cookie';
+import { UserContext } from "../../contexts/UserContext";
+import Logout from "../../Logout";
 
 const languages=[
   {
@@ -40,13 +42,13 @@ const languages=[
   },
 ]
 
-
-
-
 const Topbar = ({menuItems}) => {
   const currentLanguageCode=cookies.get('i18next') || 'en'
   const currentLanguage=languages.find(l=>l.code===currentLanguageCode)
   const { t } = useTranslation()
+
+  // User ContextData
+  const {userRole, setUserRole, userToken, setUserToken}=useContext(UserContext);
 
     const theme=useTheme()
     const colors=tokens(theme.palette.mode)
@@ -72,6 +74,13 @@ const Topbar = ({menuItems}) => {
   const openSignUpPage=()=>{
     navigate("/create-account")
     setTabValue(null)
+  }
+
+  const logout=()=>{
+    localStorage.clear();
+    setUserToken(null);
+    setUserRole(null);
+    navigate("/");
   }
 
   return (
@@ -143,8 +152,21 @@ const Topbar = ({menuItems}) => {
                   </Grid>
                   <Grid item xs={2}>
                         <Box display="flex">
-                            <Button elevation={0} onClick={openSignInPage} sx={{ marginLeft:"auto" }} variant="contained">{t('sign_in')}</Button>
-                            <Button elevation={20} onClick={openSignUpPage} sx={{ marginLeft:1, backgroundColor:colors.brandColor[200], color:"white" }} variant="contained">{t('sign_up')}</Button>
+                            {
+                              (userToken!==null && userToken!==undefined && userRole!=null && userRole!==undefined ) ?  (
+                                <>
+                                  <Typography variant="h5" fontWeight={800} sx={{ color:colors.successColor[100] }}>{`Welcome ${userRole}`}</Typography>
+                                  <Logout />
+                                </>
+                                 
+                                ):
+                                (
+                                  <>
+                                    <Button elevation={0} onClick={openSignInPage} sx={{ marginLeft:"auto" }} variant="contained">{t('sign_in')}</Button>
+                                    <Button elevation={20} onClick={openSignUpPage} sx={{ marginLeft:1, backgroundColor:colors.brandColor[200], color:"white" }} variant="contained">{t('sign_up')}</Button>
+                                  </>
+                                )
+                            }
                         </Box>
                   </Grid>
               </Grid>

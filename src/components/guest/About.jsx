@@ -13,15 +13,8 @@ const About = () => {
       >
         <Grid container sx={{ paddingTop:"20px", display:"flex", justifyContent:"space-between" }}>
         <Box>
-          <Typography variant="h2" sx={{ fontWeight:"600" }}>
-            Document section naviagation demo
-            </Typography>
-            <Typography variant="h4">
-              <a href='#course'><button>Section 1</button></a>
-              <a href='#article'><button>Section 2</button></a>
-            </Typography>
-            <WelcomePage />
-          </Box>
+          <Typography variant="h1">About FDRE Econsulation Portal</Typography>
+         </Box>
           </Grid>
       </motion.span>
   </Box>

@@ -12,7 +12,7 @@ const Contacts = () => {
 
 
   const fetchContacts =async() =>{
-  return await  axios.get('registries')
+  return await  axios.get('drafts')
     .then(res=>res.data)
   }
   
@@ -58,7 +58,10 @@ const Contacts = () => {
            <>
             <h1>{userInfo.message}</h1>
             <p>{userInfo.token}</p>
-            <p>Role: {userInfo.role}</p>
+            <h5>Roles: </h5>
+              {userInfo.roles.map((role)=>(
+                <p>{role}</p>
+              ))}
             <p>Login Status: {userInfo.status}</p>
            </>
          ) :"Context Data is not set"

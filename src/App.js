@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import i18next from 'i18next';
 import cookies from 'js-cookie';
@@ -11,7 +11,7 @@ import About from './components/guest/About';
 import Contacts from './components/guest/Contacts';
 import Login from './components/guest/auth/Login';
 import GuestSignup from './components/guest/auth/GuestSignup';
-import { UserProvider } from './contexts/UserContext';
+import { UserContext, UserProvider } from './contexts/UserContext';
 import RootLayout from './layouts/RootLayout';
 import AdminLayout from './layouts/AdminLayout';
 import Dashboard from './components/admin/Dashboard';

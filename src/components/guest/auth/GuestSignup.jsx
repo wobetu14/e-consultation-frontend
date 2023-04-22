@@ -34,7 +34,8 @@ const GuestSignup = () => {
         email:"",
         mobileNumber:"",
         password:"",
-        confirmPassword:""
+        confirmPassword:"",
+        roles:5
       },
 
       validationSchema:YUP.object({
@@ -55,7 +56,8 @@ const GuestSignup = () => {
           mobile_number:values.mobileNumber,
           email:values.email,
           password:values.password,
-          confirm_password:values.confirmPassword
+          confirm_password:values.confirmPassword,
+          roles:values.roles
         };
 
         registerUser(userData);
@@ -213,7 +215,7 @@ const GuestSignup = () => {
               helperText={formik.touched.confirmPassword && formik.errors.confirmPassword ? <span style={errorStyle}>{formik.errors.confirmPassword}</span>:null}
             />
 
-          <FormControlLabel
+          {/* <FormControlLabel
             control={
               <Checkbox
                 name="accept_terms"
@@ -222,7 +224,7 @@ const GuestSignup = () => {
             label='I accept the terms, conditions and privacy policy.'
           />
           <br/>
-          <a href="https://www.google.com" target={"blank"}>Terms, conditions and privacy policy</a>
+          <a href="https://www.google.com" target={"blank"}>Terms, conditions and privacy policy</a> */}
 
           <Box sx={{ textAlign:'right' }}>
             <Button type='submit' variant='outlined'

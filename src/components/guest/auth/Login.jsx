@@ -14,10 +14,10 @@ const Login = () => {
    const theme=useTheme();
    const colors=tokens(theme.palette.mode);
 
-const navigate=useNavigate()
-   const {userInfo, setUserInfo}=useContext(UserContext);
+   const navigate=useNavigate()
+   const {userInfo, setUserInfo, setUserRole, setUserToken}=useContext(UserContext);
 
-   const [loginInfo, setLoginInfo]=useState(null);
+   const [loggedIn, setLoggedIn]=useState(false);
    const [serverError, setServerError]=useState(null)
 
    const errorStyle={
@@ -49,20 +49,25 @@ const navigate=useNavigate()
    const userLogin = async (userData)=>{
       return await axios.post('login', userData)
                 .then(res=>{
-                  if(res.data.status!==200){
+                  if(res.status!==200){
                     setServerError(res.data.message)
-                    setLoginInfo(null)
-                    console.log(serverError);
                   }
                   else{
-                    if(res.data.status===200){
-                      setLoginInfo(res.data)
+                    if(res.status===200){
+                      
+                      setLoggedIn(true)
                       setServerError(null)
                       setUserInfo(res.data)
-                      console.log("Hello world.");
-                      localStorage.setItem('token', res.data.token)
-                      console.log(res.data);
-                      navigate('/contacts')
+                      localStorage.setItem('token', res.data.token);
+                      localStorage.setItem('userRole',res.data.user.roles[0].name);
+                      setUserRole(localStorage.getItem('userRole'));
+                      setUserToken(localStorage.getItem('token'));
+                      if(localStorage.getItem('userRole')==="Individual Commenters"){
+                        navigate('/')
+                      }
+                      else{
+                        navigate('/admin')
+                      }
                     }  
                   }
                 }).catch(errors=>{
@@ -107,19 +112,7 @@ const navigate=useNavigate()
             </p> 
 
             <p style={successStyle}>
-              {
-                loginInfo ? (
-                 <>
-                  <li>Message: {loginInfo.message}</li>
-                  <li>Role: {loginInfo.role}</li>
-                  <li>Status: {loginInfo.status}</li>
-                  <li>Token: {loginInfo.token}</li>
-                  <li>Username: {loginInfo.username}</li>
-                 </>
-                )
-                :
-                null
-              }
+              
             </p>
         </Grid>
 

@@ -33,7 +33,7 @@ export default function SectionNavigationMenu({section}) {
 
         
                 <List
-                sx={{ width: '90%', maxWidth: 360}}
+                sx={{ width: '90%', maxWidth: 360, height:"35px"}}
                 component="nav"   
                 >
                 <ListItemButton sx={{ height:"35px" }}>

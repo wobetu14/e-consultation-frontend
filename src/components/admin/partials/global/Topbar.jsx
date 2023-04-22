@@ -9,6 +9,7 @@ import  SettingsOutlinedIcon  from '@mui/icons-material/SettingsOutlined';
 import  PersonOutlinedIcon  from '@mui/icons-material/PersonOutlined';
 import  SearchIcon  from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
+import Logout from '../../../../Logout';
 
 
 const Topbar = () => {
@@ -31,6 +32,7 @@ const Topbar = () => {
 
         {/* Icons */}
         <Box display="flex">
+            <Logout />
             <IconButton onClick={colorMode.toggleColorMode}>
                 {theme.palette.mode==="dark" ? (
                     <DarkModeOutlinedIcon />
