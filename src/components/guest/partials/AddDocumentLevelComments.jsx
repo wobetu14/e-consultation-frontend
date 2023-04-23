@@ -17,7 +17,7 @@ import { useFormik } from 'formik';
 import * as YUP from 'yup';
 import axios from '../../../axios/AxiosGlobal'
 
-const SectionFeedbacks = ({section}) => {
+const AddDocumentLevelComments = ({documentID}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const {t}=useTranslation();
@@ -34,8 +34,8 @@ const SectionFeedbacks = ({section}) => {
   }
 
   const successStyle={
-   color:colors.primary[100],
-   backgroundColor:colors.successColor[400],
+    color:colors.primary[100],
+    backgroundColor:colors.successColor[400],
    fontWeight:'400',
    fontSize:'18px'
  }
@@ -49,28 +49,28 @@ const SectionFeedbacks = ({section}) => {
  
  const formik=useFormik({
     initialValues:{
-      sectionID:section.id,
-      sectionComment:"",
+      draftID:documentID,
+      generalComment:"",
       commentedBy:5,
       commentingTeam:1,
       createdBy:5,
     },
 
   onSubmit:(values)=>{
-    const sectionCommentData={
-      section_id:values.sectionID,
-      section_comment:values.sectionComment,
+    const documentCommentData={
+      draft_id:values.draftID,
+      general_comment:values.generalComment,
       commented_by:values.commentedBy,
       commenting_team:values.commentingTeam,
       created_by:values.createdBy
     };
 
-    addComment(sectionCommentData);
+    addComment(documentCommentData);
   }
 }); 
     
-const addComment=async (sectionCommentData) => {
-    return await axios.post('comments', sectionCommentData)
+const addComment=async (documentCommentData) => {
+    return await axios.post('general-comments', documentCommentData)
     .then(res => {
       console.log(res.data.message)
       setServerSuccessMsg(res.data.success);
@@ -100,8 +100,8 @@ const addComment=async (sectionCommentData) => {
                             multiline
                             color="info"
                             size="small"
-                            name='sectionComment'
-                            value={formik.values.sectionComment}
+                            name='generalComment'
+                            value={formik.values.generalComment}
                             onBlur={formik.handleBlur}
                             onChange={formik.handleChange}
                           />
@@ -117,7 +117,7 @@ const addComment=async (sectionCommentData) => {
                           color="info" 
                           size="large" 
                           elevation={0}
-                          disabled={formik.values.commentBody===""}
+                          disabled={formik.values.generalComment===""}
                           >
                             <SendIcon />
                           </Button>
@@ -147,4 +147,4 @@ const addComment=async (sectionCommentData) => {
   )
 }
 
-export default SectionFeedbacks
+export default AddDocumentLevelComments

@@ -156,53 +156,9 @@ const addComment=async (commentData) => {
                             }
                           />
                         </ListItem>
-                      // <Typography variant='body1' key={comment.id}>{comment.section_comment}</Typography>
                     ))
                   ) :( "No comments")
                 }
-            </List>
-            <List width="100%">
-                <ListItem>
-                  <ListItemAvatar>
-                      <Avatar alt="User" size="large" src="/static/images/avatar/1.jpg" />
-                    </ListItemAvatar>
-                    <ListItemText sx={{ width:"100%", marginRight:"0px" }}
-                      primary={
-                        <>
-                          <TextField 
-                            label="Write a comment..." 
-                            // variant='filled' 
-                            fullWidth
-                            multiline
-                            color="info"
-                            size="small"
-                            name='commentBody'
-                            value={formik.values.commentBody}
-                            onBlur={formik.handleBlur}
-                            onChange={formik.handleChange}
-                          />
-
-                          {/* <TextField disabled name="commentRequestID" value="commentRequestID" onChange={formik.handleChange} />
-                          <TextField disabled name="sectionID" value="commentRequestID" onChange={formik.handleChange} /> */}
-                        </>
-                      }
-                    />
-
-                    <ListItemText
-                      primary={
-                        <>
-                          <Button variant='text' 
-                          color="info" 
-                          size="large" 
-                          elevation={0}
-                          disabled={formik.values.commentBody===""}
-                          >
-                            <SendIcon />
-                          </Button>
-                        </>
-                      }
-                    />
-                </ListItem>
             </List>
           </motion.span>
         </Box>

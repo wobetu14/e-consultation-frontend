@@ -1,4 +1,4 @@
-import { Box, Collapse, Card, CardActions, CardContent, CircularProgress, Grid, Paper, Stack, Typography, useTheme, ListItemButton, ListItemText } from '@mui/material';
+import { Box, Collapse, Card, CardActions, CardContent, CircularProgress, Grid, Paper, Stack, Typography, useTheme, ListItemButton, ListItemText, Button, TextField, List, ListItem, ListItemAvatar, Avatar } from '@mui/material';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom'
@@ -9,9 +9,12 @@ import SectionFeedbacks from './partials/SectionFeedbacks';
 import AddSectionComment from './partials/AddSectionComment';
 import NestedList from './partials/SectionNavigationMenu';
 import SectionNavigationMenu from './partials/SectionNavigationMenu';
+import SendIcon from '@mui/icons-material/Send';
 
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import DocumentLevelComments from './partials/DocumentLevelComments';
+import AddDocumentLevelComments from './partials/AddDocumentLevelComments';
 
 const DocumentDetailView = () => {
   const params=useParams();
@@ -26,10 +29,17 @@ const DocumentDetailView = () => {
   const {t}=useTranslation();
 
   // Menu collapse functionality
-  const [open, setOpen] = React.useState(true);
+  const [articlesOpen, setArticlesOpen] = React.useState(true);
 
-  const handleClick = () => {
-    setOpen(!open);
+  // General comments collapse functionality
+  const [commentsOpen, setCommentsOpen] = React.useState(true);
+
+  const handleArticlesCollapse = () => {
+    setArticlesOpen(!articlesOpen);
+  };
+
+  const handleCommentsCollapse = () => {
+    setCommentsOpen(!commentsOpen);
   };
 
     useEffect(()=>{
@@ -76,7 +86,7 @@ const DocumentDetailView = () => {
           documentDetail ? (
         <Grid container spacing={10} >
           <Grid item xs={8}>
-            <Typography variant="h2" sx={{ paddingBottom:"20px", fontWeight:600, textAlign:"center", color:colors.primary[200] }}>{documentDetail.short_title}</Typography>
+            <Typography variant="h2" sx={{ paddingBottom:"20px", fontWeight:600, textAlign:"center", color:colors.primary[200] }}>{documentDetail.id} : {documentDetail.short_title}</Typography>
             <Typography variant='h5' sx={{ paddingBottom:"20px", textAlign:"justify" }}>
                 {documentDetail.summary}
             </Typography>
@@ -144,7 +154,7 @@ const DocumentDetailView = () => {
               <strong>Document Statistics</strong>
 
               <Stack spacing={1}> 
-                <Typography variant="body1">Total comments: 
+                <Typography variant="body1">Document level comments: 
                     <strong>{documentComments ? documentComments.length:"Not available"}</strong>
                 </Typography>
               </Stack>
@@ -180,13 +190,13 @@ const DocumentDetailView = () => {
             <Grid item xs={3}>
               {/* <Typography variant="h4">Articles</Typography> */}
 
-              <ListItemButton onClick={handleClick}>
+              <ListItemButton onClick={handleArticlesCollapse}>
                 <ListItemText primary={
-                  <Typography variant='h5' fontWeight="600">Navigate by article</Typography>
+                  <Typography variant='h5' fontWeight="600">Explore by article</Typography>
                 } />
-                {open ? <ExpandLess /> : <ExpandMore />}
+                {articlesOpen ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
-              <Collapse in={open} timeout="auto" unmountOnExit>
+              <Collapse in={articlesOpen} timeout="auto" unmountOnExit>
                 {documentSections ? (
                   documentSections.map((section)=>(
 
@@ -212,13 +222,35 @@ const DocumentDetailView = () => {
                         <CardActions>
                             <SectionFeedbacks comments={section.comments} />
                         </CardActions>
+                        <CardActions>
+                          <AddSectionComment section={section} />
+                        </CardActions>
                       </Card>
                   ))
                 ):(<Box>Content unavailable</Box>)
               }
             </Grid>
             <Grid item xs={3}>
-              <Typography variant="h4">Right pane (list of general comments and a place to add new comment)</Typography>
+
+            <ListItemButton onClick={handleCommentsCollapse}>
+                <ListItemText primary={
+                  <Typography variant='h5' fontWeight="600">General comments ({documentComments && (documentComments.length)})</Typography>
+                } />
+                {commentsOpen ? <ExpandLess /> : <ExpandMore />}
+            </ListItemButton>
+            <Collapse in={commentsOpen} timeout="auto" unmountOnExit>
+                <Paper elevation={1} sx={{borderRadius:"3px", borderLeftStyle:"solid", borderLeftWidth:"5px", borderLeftColor:colors.primary[400]}}>
+                  {documentComments ? (
+                    documentComments.map((comment)=>(
+                     
+                      <DocumentLevelComments comment={comment} />
+                    ))
+                  ):(<Box>No comments</Box>)}
+
+                      <AddDocumentLevelComments documentID={documentDetail ? documentDetail.id : params.id} />
+                 </Paper>
+              </Collapse>
+             
             </Grid>
           </Grid>
       </Box>

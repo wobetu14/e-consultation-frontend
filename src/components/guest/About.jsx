@@ -13,7 +13,7 @@ const About = () => {
       >
         <Grid container sx={{ paddingTop:"20px", display:"flex", justifyContent:"space-between" }}>
         <Box>
-          <Typography variant="h1">About FDRE Econsulation Portal</Typography>
+          <Typography variant="h3">About FDRE Econsulation Portal</Typography>
          </Box>
           </Grid>
       </motion.span>

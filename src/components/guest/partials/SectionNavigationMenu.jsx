@@ -8,8 +8,6 @@ import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import { Collapse, Typography, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
 import { useTranslation } from 'react-i18next';
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
 
 export default function SectionNavigationMenu({section}) {
   
