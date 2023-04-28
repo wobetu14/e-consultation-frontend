@@ -8,10 +8,14 @@ import StatBox from "../../components/admin/StatBox";
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import CommentIcon from '@mui/icons-material/Comment';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import { useContext } from "react";
+import { UserContext } from "../../contexts/UserContext";
+import Drafts from "./drafts/Drafts";
 
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
 
   return (
     <Box m="20px">
@@ -19,7 +23,7 @@ const Dashboard = () => {
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
 
-        <Box>
+        {/* <Box>
           <Button
             sx={{
               backgroundColor: colors.grey[200],
@@ -32,7 +36,7 @@ const Dashboard = () => {
             <DownloadOutlinedIcon sx={{ mr: "10px" }} />
             Download Reports
           </Button>
-        </Box>
+        </Box> */}
       </Box>
 
       {/* GRID & CHARTS */}
@@ -116,17 +120,9 @@ const Dashboard = () => {
           />
         </Box>
       </Box>
-
+      
       <Box sx={{ marginTop:"100px", marginBottom:"50px" }}>
-          <Typography variant="h4">
-            Institution info for this account is here
-          </Typography>
-      </Box>
-
-      <Box sx={{ marginTop:"100px", marginBottom:"50px" }}>
-          <Typography variant="h4">
-            Documents list Here
-          </Typography>
+          <Drafts />
       </Box>
     </Box>
   );

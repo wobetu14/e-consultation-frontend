@@ -1,8 +1,8 @@
-import { Typography, Button, FormControlLabel, Checkbox, TextField, Grid, Alert, Paper, Stack, FormControl, InputLabel, Select, useTheme } from '@mui/material';
+import { Typography, Button, FormControlLabel, Checkbox, TextField, Grid, Alert, Paper, Stack, FormControl, InputLabel, Select, useTheme, FormHelperText, MenuItem, RadioGroup, Radio } from '@mui/material';
 import { Box } from '@mui/system'
 import { useFormik } from 'formik';
 import * as YUP from 'yup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { tokens } from '../../../theme';
 import Header from '../AdminHeader';
 import axios from '../../../axios/AxiosGlobal'
@@ -11,6 +11,11 @@ import { motion } from 'framer-motion';
 const CreateDraft = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode); 
+
+    const [institutions, setInstitutions]=useState(null);
+    const [lawCategories, setLawCategories]=useState(null);
+    const [sectors, setSectors]=useState(null);
+    const [drafts, setDrafts]=useState(null);
 
   const [serverErrorMsg, setServerErrorMsg]=useState(null);
   const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
@@ -33,13 +38,70 @@ const CreateDraft = () => {
   fontSize:'15px'
  }
 
- 
+ useEffect(()=>{
+    fetchInstitutions();
+ }, [institutions])
+
+ useEffect(()=>{
+  fetchLawCategories();
+ }, [lawCategories])
+
+ useEffect(()=>{
+   fetchSectors();
+ }, [sectors])
+
+ useEffect(()=>{
+    fetchDrafts();
+ },[drafts])
+
+ const fetchInstitutions =async() =>{
+  return await  axios.get('institutions')
+    .then(res=>res.data.data)
+    .then(res=>{
+      setInstitutions(res.data)
+    }).catch(error=>{
+      console.log(error.response.message);
+    })
+  }
+
+  const fetchLawCategories = async()=>{
+    return await  axios.get('law-categories')
+    .then(res=>res.data.data)
+    .then(res=>{
+      setLawCategories(res.data)
+    }).catch(error=>{
+      console.log(error.response.message);
+    })
+  }
+
+  const fetchSectors = async() =>{
+    return await  axios.get('sectors')
+    .then(res=>res.data.data)
+    .then(res=>{
+      setSectors(res.data)
+    }).catch(error=>{
+      console.log(error.response.message);
+    })
+  }
+  
+
+  const fetchDrafts = async()=>{
+    return await  axios.get('drafts')
+    .then(res=>res.data.data)
+    .then(res=>{
+      setDrafts(res.data)
+    }).catch(error=>{
+      console.log(error.response.message);
+    })
+  }
+
+
  const formik=useFormik({
     initialValues:{
         institutionID:"",
         shortTitle:"",
         lawCategoryId:"",
-        draftStatusId:"",
+        draftStatusId:1,
         sectorId:"",
         openingDate:"",
         closingDate:"",
@@ -47,11 +109,11 @@ const CreateDraft = () => {
         effectiveDate:"",
         createdBy:1,
         file:null,
-        slug:"",
+        slug:"slug_here",
         active:"",
         parent_id:"",
         tags:"",
-        noteId:"",
+        noteId:"1",
         baseLegalReference:"",
         definition:"",
         scope:"",
@@ -59,9 +121,9 @@ const CreateDraft = () => {
         summary:"",
         startPage:"",
         endPage:"",
-        amendedLaws:1,
-        repealedLaws:1,
-        transitoryProvision:1,
+        amendedLaws:"",
+        repealedLaws:"",
+        transitoryProvision:"",
     },
 
 validationSchema:YUP.object({
@@ -76,7 +138,7 @@ validationSchema:YUP.object({
     effectiveDate:YUP.string().required("This field is required. Please provide effective date."),
     // createdBy:YUP.number().required("This field is required. Please provide the user uploading this document."),
     file:YUP.mixed().required("This field is required. Please choose file to upload."),
-    slug:YUP.string().required("This field is required. Please provide document slug."),
+    // slug:YUP.string().required("This field is required. Please provide document slug."),
     active:YUP.number().required("This field is required. Please provide the status of this document."),
     parentId:YUP.number().required("This field is required. Please provide parent reference of this document."),
     tags:YUP.string().required("This field is required. Please provide tag info for this document."),
@@ -87,9 +149,9 @@ validationSchema:YUP.object({
     summary:YUP.string().required("This field is required. Please provide summary."),
     startPage:YUP.number().required("This field is required. Please provide start page."),
     endPage:YUP.number().required("This field is required. Please provide end page."),
-   /*  amendedLaws:YUP.string().required("This field is required."),
+    amendedLaws:YUP.string().required("This field is required."),
     repealedLaws:YUP.string().required("This field is required."),
-    transitoryProvision:YUP.string().required("This field is required."), */
+    transitoryProvision:YUP.string().required("This field is required."), 
   }),
 
   onSubmit:(values)=>{
@@ -99,8 +161,8 @@ validationSchema:YUP.object({
       law_category_id:values.lawCategoryId,
       draft_status_id:values.draftStatusId,
       sector_id:values.sectorId,
-      opening_date:values.openingDate,
-      closing_date:values.closingDate,
+      comment_opening_date:values.openingDate,
+      comment_closing_date:values.closingDate,
       expected_date:values.expectedDate,
       effective_date:values.effectiveDate,
       created_by:values.createdBy,
@@ -119,7 +181,9 @@ validationSchema:YUP.object({
       end_page:values.endPage,
       amended_laws:values.amendedLaws,
       repealed_laws:values.repealedLaws,
-      transitory_provision:values.transitoryProvision
+      transitory_provision:values.transitoryProvision,
+      comment_request_description:values.summary,
+      comment_summary:values.summary,
     };
 
     createDraftDocument(draftsData);
@@ -130,6 +194,7 @@ const createDraftDocument=async (draftsData) => {
     //  console.log(companyData)
     return await axios.post('drafts', draftsData)
     .then(res => {
+      console.log(res.data)
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null)
     })
@@ -151,7 +216,29 @@ const createDraftDocument=async (draftsData) => {
         sx={{  width:"50%"  }}
       >
         <form onSubmit={formik.handleSubmit}>
-            <TextField 
+
+        <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Select Institution</Typography>
+          <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+            <InputLabel>Select Institution</InputLabel>
+            <Select
+              labelId="institution_id"
+              id="institution_id"  
+              color="info"          
+              name='institutionID'
+              value={formik.values.institutionID}
+              onChange={formik.handleChange}
+              helperText={formik.touched.institutionID && formik.errors.institutionID ? <span style={helperTextStyle}>{formik.errors.institutionID}</span>:null}
+            >
+                {
+                  institutions ? institutions.map((institution)=>(
+                    <MenuItem value={institution.id} key={institution.id}>{institution.name}</MenuItem>
+                  )): null
+                }
+            </Select>
+          <FormHelperText>{formik.touched.institutionID && formik.errors.institutionID ? <span style={helperTextStyle}>{formik.errors.institutionID}</span>:null}</FormHelperText>
+        </FormControl>
+
+            {/* <TextField 
               label="Institution ID" 
               variant='outlined' 
               fullWidth
@@ -162,7 +249,7 @@ const createDraftDocument=async (draftsData) => {
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               helperText={formik.touched.institutionID && formik.errors.institutionID ? <span style={helperTextStyle}>{formik.errors.institutionID}</span>:null}
-            />
+            /> */}
 
             <TextField 
               label="Short title" 
@@ -179,7 +266,30 @@ const createDraftDocument=async (draftsData) => {
               helperText={formik.touched.shortTitle && formik.errors.shortTitle ? <span style={helperTextStyle}>{formik.errors.shortTitle}</span>:null}
             />
 
-            <TextField 
+
+      <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Law Category</Typography>
+          <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+            <InputLabel>Select Law Category</InputLabel>
+            <Select
+              labelId="law_category_Id"
+              id="law_category_Id"  
+              placeholder='Select law category'
+              color="info"          
+              name='lawCategoryId'
+              value={formik.values.lawCategoryId}
+              onChange={formik.handleChange}
+              helperText={formik.touched.lawCategoryId && formik.errors.lawCategoryId ? <span style={helperTextStyle}>{formik.errors.lawCategoryId}</span>:null}
+            >
+                {
+                  lawCategories ? lawCategories.map((lawCategory)=>(
+                    <MenuItem value={lawCategory.id} key={lawCategory.id}>{lawCategory.name}</MenuItem>
+                  )): null
+                }
+            </Select>
+          <FormHelperText>{formik.touched.lawCategoryId && formik.errors.lawCategoryId ? <span style={helperTextStyle}>{formik.errors.lawCategoryId}</span>:null}</FormHelperText>
+        </FormControl>
+
+           {/*  <TextField 
               label="Law category ID" 
               variant='outlined' 
               fullWidth
@@ -191,9 +301,9 @@ const createDraftDocument=async (draftsData) => {
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               helperText={formik.touched.lawCategoryId && formik.errors.lawCategoryId ? <span style={helperTextStyle}>{formik.errors.lawCategoryId}</span>:null}
-            />
+            /> */}
 
-            <TextField 
+          {/*   <TextField 
               label="Draft Status ID" 
               variant='outlined' 
               fullWidth
@@ -204,8 +314,30 @@ const createDraftDocument=async (draftsData) => {
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               helperText={formik.touched.draftStatusId && formik.errors.draftStatusId ? <span style={helperTextStyle}>{formik.errors.draftStatusId}</span>:null}
-            />
+            /> */}
 
+  <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Economic Sector</Typography>
+          <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+            <InputLabel>Select Economic Sector</InputLabel>
+            <Select
+              labelId="law_category_Id"
+              id="law_category_Id"  
+              placeholder='Select law category'
+              color="info"          
+              name='sectorId'
+              value={formik.values.sectorId}
+              onChange={formik.handleChange}
+              helperText={formik.touched.sectorId && formik.errors.sectorId ? <span style={helperTextStyle}>{formik.errors.sectorId}</span>:null}
+            >
+                {
+                  sectors ? sectors.map((sector)=>(
+                    <MenuItem value={sector.id} key={sector.id}>{sector.name}</MenuItem>
+                  )): null
+                }
+            </Select>
+          <FormHelperText>{formik.touched.sectorId && formik.errors.sectorId ? <span style={helperTextStyle}>{formik.errors.sectorId}</span>:null}</FormHelperText>
+        </FormControl>
+{/* 
             <TextField 
               label="Sector ID" 
               variant='outlined' 
@@ -217,7 +349,7 @@ const createDraftDocument=async (draftsData) => {
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               helperText={formik.touched.sectorId && formik.errors.sectorId ? <span style={helperTextStyle}>{formik.errors.sectorId}</span>:null}
-            />
+            /> */}
 
       <Typography variant='body1' sx={{ paddingBottom:'10px' }}> 
         Opening Date
@@ -282,19 +414,7 @@ const createDraftDocument=async (draftsData) => {
               onChange={formik.handleChange}
               helperText={formik.touched.effectiveDate && formik.errors.effectiveDate ? <span style={helperTextStyle}>{formik.errors.effectiveDate}</span>:null}
             />
-
-          <TextField 
-            label="Created By"
-            variant='outlined' 
-            fullWidth
-            sx={{ paddingBottom:"30px" }}
-            color="info"
-            name='createdBy'
-            value={formik.values.createdBy}
-            onBlur={formik.handleBlur}
-            onChange={formik.handleChange}
-            helperText={formik.touched.createdBy && formik.errors.createdBy ? <span style={helperTextStyle}>{formik.errors.createdBy}</span>:null}
-          />
+{/* 
           <TextField 
             label="Note ID"
             variant='outlined' 
@@ -306,25 +426,9 @@ const createDraftDocument=async (draftsData) => {
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
             helperText={formik.touched.noteId && formik.errors.noteId ? <span style={helperTextStyle}>{formik.errors.noteId}</span>:null}
-          />
+          /> */}
 
-      <Typography variant='body1' sx={{ paddingBottom:'10px' }}> 
-      <strong>Attachement:</strong> 
-      Please attach the draft document file. (Only .doc or .docx files are allowed.)
-      </Typography>
-          <TextField 
-              variant='outlined' 
-              fullWidth 
-              sx={{ paddingBottom:'20px' }}
-              color="info"
-              type='file'
-              name='file'
-              onBlur={formik.handleBlur}
-              onChange={(e)=>{formik.setFieldValue("file",e.target.files[0])}}
-              helperText={formik.touched.file && formik.errors.file ? <span style={helperTextStyle}>{formik.errors.file}</span>:null}
-            />
-
-      <TextField 
+   {/*    <TextField 
             label="Slug" 
             variant='outlined' 
             fullWidth
@@ -335,9 +439,20 @@ const createDraftDocument=async (draftsData) => {
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
             helperText={formik.touched.slug && formik.errors.slug ? <span style={helperTextStyle}>{formik.errors.slug}</span>:null}
-          />
+          /> */}
 
-          <TextField 
+        <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Active status</Typography>
+             <RadioGroup
+                    aria-labelledby="demo-controlled-radio-buttons-group"
+                    name="active"
+                    value={formik.values.active}
+                    onChange={formik.handleChange}
+                  >
+                    <FormControlLabel value='1' control={<Radio />} label="Yes"  />
+                    <FormControlLabel value='2' control={<Radio />} label="No"  />
+              </RadioGroup>      
+
+          {/* <TextField 
             label="Active ?" 
             variant='outlined' 
             fullWidth
@@ -348,9 +463,30 @@ const createDraftDocument=async (draftsData) => {
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
             helperText={formik.touched.active && formik.errors.active ? <span style={helperTextStyle}>{formik.errors.active}</span>:null}
-          />
+          /> */}
 
-          <TextField 
+    <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Previous Version</Typography>
+          <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+            <InputLabel>Select Previous Version</InputLabel>
+            <Select
+              labelId="previous_verion"
+              id="previous_verion"  
+              color="info"          
+              name='parentId'
+              value={formik.values.parentId}
+              onChange={formik.handleChange}
+              helperText={formik.touched.parentId && formik.errors.parentId ? <span style={helperTextStyle}>{formik.errors.parentId}</span>:null}
+            >
+                {
+                  drafts ? drafts.map((draft)=>(
+                    <MenuItem value={draft.id} key={draft.id}>{draft.short_title}</MenuItem>
+                  )): null
+                }
+            </Select>
+          <FormHelperText>{formik.touched.parentId && formik.errors.parentId ? <span style={helperTextStyle}>{formik.errors.parentId}</span>:null}</FormHelperText>
+        </FormControl>
+
+          {/* <TextField 
             label="Parent ID" 
             variant='outlined' 
             fullWidth
@@ -361,10 +497,13 @@ const createDraftDocument=async (draftsData) => {
             onBlur={formik.handleBlur}
             onChange={formik.handleChange}
             helperText={formik.touched.parentId && formik.errors.parentId ? <span style={helperTextStyle}>{formik.errors.parentId}</span>:null}
-          />
+          /> */}
+
           <TextField 
             label="Tags" 
             variant='outlined' 
+            multiline
+            rows={4} 
             fullWidth
             sx={{ paddingBottom:"30px" }}
             color="info"
@@ -377,7 +516,9 @@ const createDraftDocument=async (draftsData) => {
 
           <TextField 
             label="Base Legal Reference" 
-            variant='outlined' 
+            variant='outlined'
+            multiline
+            rows={4} 
             fullWidth
             sx={{ paddingBottom:"30px" }}
             color="info"
@@ -391,6 +532,8 @@ const createDraftDocument=async (draftsData) => {
           <TextField 
             label="Definition" 
             variant='outlined' 
+            multiline
+            rows={4} 
             fullWidth
             sx={{ paddingBottom:"30px" }}
             color="info"
@@ -404,6 +547,8 @@ const createDraftDocument=async (draftsData) => {
           <TextField 
             label="Scope" 
             variant='outlined' 
+            multiline
+            rows={4} 
             fullWidth
             sx={{ paddingBottom:"30px" }}
             color="info"
@@ -416,6 +561,8 @@ const createDraftDocument=async (draftsData) => {
           <TextField 
             label="Main Provision" 
             variant='outlined' 
+            multiline
+            rows={4} 
             fullWidth
             sx={{ paddingBottom:"30px" }}
             color="info"
@@ -429,7 +576,7 @@ const createDraftDocument=async (draftsData) => {
             label="Summary" 
             variant='outlined' 
             multiline
-            rows={6}
+            rows={4}
             fullWidth
             sx={{ paddingBottom:"30px" }}
             color="info"
@@ -496,6 +643,37 @@ const createDraftDocument=async (draftsData) => {
             onChange={formik.handleChange}
             helperText={formik.touched.repealedLaws && formik.errors.repealedLaws ? <span style={helperTextStyle}>{formik.errors.repealedLaws}</span>:null}
           />
+
+          <TextField 
+            label="Transitory Provision"
+            variant='outlined' 
+            multiline
+            rows={4}
+            fullWidth
+            sx={{ paddingBottom:"30px" }}
+            color="info"
+            name='transitoryProvision'
+            value={formik.values.transitoryProvision}
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            helperText={formik.touched.transitoryProvision && formik.errors.transitoryProvision ? <span style={helperTextStyle}>{formik.errors.transitoryProvision}</span>:null}
+          />
+
+<Typography variant='body1' sx={{ paddingBottom:'10px' }}> 
+      <strong>Attachement:</strong> 
+      Please attach the draft document file. (Only .doc or .docx files are allowed.)
+      </Typography>
+          <TextField 
+              variant='outlined' 
+              fullWidth 
+              sx={{ paddingBottom:'20px' }}
+              color="info"
+              type='file'
+              name='file'
+              onBlur={formik.handleBlur}
+              onChange={(e)=>{formik.setFieldValue("file",e.target.files[0])}}
+              helperText={formik.touched.file && formik.errors.file ? <span style={helperTextStyle}>{formik.errors.file}</span>:null}
+            />
 
       <Grid align='center' sx={{ paddingBottom:"15px", paddingTop:'15px' }}>
         <motion.span

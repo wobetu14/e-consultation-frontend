@@ -93,9 +93,23 @@ const Topbar = ({menuItems}) => {
        zIndex:2 }}>
           <Grid container>
             <Grid item xs={10}>
-                <Typography variant="h6">
-                   &nbsp;
-                </Typography>
+            <Box display="flex">
+                            {
+                              (userToken!==null && userToken!==undefined && userRole!=null && userRole!==undefined ) ?  (
+                                <>
+                                  <Typography 
+                                  variant="h5" 
+                                  fontWeight={600} 
+                                  sx={{ color:"#fff", marginLeft:"30px", paddingTop:"10px" }}
+                                  >{`Welcome! You are logged in as ${userRole}`}</Typography>
+                                </>
+                                 
+                                ):
+                                (
+                                  null
+                                )
+                            }
+                        </Box>
             </Grid>
             <Grid item xs={2}>
               {/* Icons */}
@@ -155,7 +169,6 @@ const Topbar = ({menuItems}) => {
                             {
                               (userToken!==null && userToken!==undefined && userRole!=null && userRole!==undefined ) ?  (
                                 <>
-                                  <Typography variant="h5" fontWeight={800} sx={{ color:colors.successColor[100] }}>{`Welcome ${userRole}`}</Typography>
                                   <Logout />
                                 </>
                                  

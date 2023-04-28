@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -13,6 +13,8 @@ import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import Logout  from "../../../../Logout";
+import { UserContext } from "../../../../contexts/UserContext";
+import {Button} from '@mui/material'
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -37,6 +39,7 @@ const Sidebar = () => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+  const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
 
   return (
     <Box
@@ -93,7 +96,7 @@ const Sidebar = () => {
                   alt="profile-user"
                   width="100px"
                   height="100px"
-                  src={`../../assets/images/wobe.jpg`}
+                  src={`../../assets/images/img_avatar.png`}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
@@ -104,10 +107,13 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  WOBETU SHIFERAW
+                  {userInfo!==null && userInfo!==undefined ? userInfo.user.first_name+" "+userInfo.user.middle_name:null}
                 </Typography>
                 <Typography variant="h6">
-                  INSTITUTIONAL ADMIN
+                  {userRole}
+                </Typography>
+                <Typography variant="outlined">
+                  <Button href='user_profile' variant="outlined" size="small" sx={{ textTransform:"none", color:"#000" }}>Go to Profile</Button>
                 </Typography>
               </Box>
             </Box>

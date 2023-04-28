@@ -57,12 +57,18 @@ const Login = () => {
                       
                       setLoggedIn(true)
                       setServerError(null)
-                      setUserInfo(res.data)
+                      // setUserInfo(res.data)
                       localStorage.setItem('token', res.data.token);
                       localStorage.setItem('userRole',res.data.user.roles[0].name);
+                      localStorage.setItem('userInfo', JSON.stringify(res.data));
+
                       setUserRole(localStorage.getItem('userRole'));
                       setUserToken(localStorage.getItem('token'));
-                      if(localStorage.getItem('userRole')==="Individual Commenters"){
+                      setUserInfo(JSON.parse(localStorage.getItem('userInfo')));
+                      
+                      console.log(userInfo)
+
+                      if(localStorage.getItem('userRole')==="Commenters"){
                         navigate('/')
                       }
                       else{
@@ -82,16 +88,6 @@ const Login = () => {
         animate={{ opacity: 1}}
         transition={{ duration: 0.3 }}
       >
-       {
-         userInfo ? (
-           <>
-            <h1>{userInfo.message}</h1>
-            <p>{userInfo.token}</p>
-            <p>Role: {userInfo.role}</p>
-            <p>Login Status: {userInfo.status}</p>
-           </>
-         ) :null
-       }
      
       <Paper
         elevation={1} 

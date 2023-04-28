@@ -100,7 +100,7 @@ const DocumentList = ({status, deadline, draft}) => {
                                         } 
                                         
                                     <label>
-                                        <strong>Law category: </strong> Proclamation &nbsp;
+                                        <strong>Law category: </strong> {draft.law_category.name} &nbsp;
                                     </label>
 
                                     <label>

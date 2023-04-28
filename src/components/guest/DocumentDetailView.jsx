@@ -15,6 +15,8 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import DocumentLevelComments from './partials/DocumentLevelComments';
 import AddDocumentLevelComments from './partials/AddDocumentLevelComments';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import { FileDownload } from '@mui/icons-material';
 
 const DocumentDetailView = () => {
   const params=useParams();
@@ -141,7 +143,10 @@ const DocumentDetailView = () => {
               </Grid> 
               <Grid item xs={6} md={6}>
               {documentDetail.file ? (
-                <a href={documentDetail.file} target="_blank" rel='noreferrer'>{documentDetail.file}</a>
+                // <a href={documentDetail.file} target="_blank" rel='noreferrer' variant="button">
+                //   Download
+                // </a>
+                <Button href={documentDetail.file} variant="contained" color="secondary" target="_blank" sx={{ textTransform:"none", color:"#fff" }}><FileDownload /> Download</Button>
               ):
               (null)} 
               </Grid>
@@ -217,6 +222,51 @@ const DocumentDetailView = () => {
                         <CardContent>
                           <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center", marginBottom:"30px" }}>{section.section_title}</Typography>
                           <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px" }}>{section.section_body}</Typography>
+
+                           {
+                           section.children.length>0 ? section.children.map((sectionChild1)=>(
+                            <>
+                              <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center" }}>{sectionChild1.section_title}</Typography>
+                              <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1.section_body}</Typography>
+                              {
+                                sectionChild1.children.length>0 ? sectionChild1.children.map((sectionChild1Sub1)=>(
+                                  <>
+                                    <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center"}}>{sectionChild1Sub1.section_title}</Typography>
+                                    <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1Sub1.section_body}</Typography>
+
+                                    {
+                                      sectionChild1Sub1.children.length>0 ? sectionChild1Sub1.children.map((sectionChild1Sub1Sub1)=>(
+                                        <>
+                                          <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center" }}>{sectionChild1Sub1Sub1.section_title}</Typography>
+                                          <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1Sub1Sub1.section_body}</Typography>
+
+                                          {
+                                            sectionChild1Sub1Sub1.children.length>0 ? sectionChild1Sub1Sub1.children.map((sectionChild1Sub1Sub1Sub1)=>(
+                                              <>
+                                                <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center" }}>{sectionChild1Sub1Sub1Sub1.section_title}</Typography>
+                                                <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1Sub1Sub1Sub1.section_body}</Typography>
+
+                                                {
+                                                  sectionChild1Sub1Sub1Sub1.children.length>0 ? sectionChild1Sub1Sub1Sub1.children.map((sectionChild1Sub1Sub1Sub1Sub1)=>(
+                                                    <>
+                                                      <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center" }}>{sectionChild1Sub1Sub1Sub1.section_title}</Typography>
+                                                      <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1Sub1Sub1Sub1.section_body}</Typography>
+                                                    </>
+                                                  )):""
+                                                }
+                                              </>
+                                            )):""
+                                          }
+                                        </>
+                                      )):""
+                                    }
+                                  </>
+                                )):""
+                              }
+                            </>
+                            )
+                           ):""
+                          }
                         </CardContent>
 
                         <CardActions>

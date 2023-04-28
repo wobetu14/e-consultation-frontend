@@ -1,8 +1,8 @@
-import { Typography, Button, FormControlLabel, Checkbox, TextField, Grid, Alert, Paper, Stack, FormControl, InputLabel, Select, useTheme } from '@mui/material';
+import { Typography, Button, FormControlLabel, Checkbox, TextField, Grid, Alert, Stack, FormControl, InputLabel, Select, useTheme, FormHelperText, MenuItem } from '@mui/material';
 import { Box } from '@mui/system'
 import { useFormik } from 'formik';
 import * as YUP from 'yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { tokens } from '../../../theme';
 import Header from '../AdminHeader';
 import axios from '../../../axios/AxiosGlobal'
@@ -13,6 +13,9 @@ import { motion } from 'framer-motion';
 const CreateUser = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode); 
+
+    const [institutions, setInstitutions]=useState(null);
+    const [userRoles, setUserRoles]=useState(null);
 
   const [serverErrorMsg, setServerErrorMsg]=useState(null);
   const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
@@ -35,6 +38,36 @@ const CreateUser = () => {
   fontSize:'15px'
  }
 
+ useEffect(()=>{
+  fetchInstitutions();
+ },[institutions])
+
+ useEffect(()=>{
+  fetchUserRoles();
+ },[userRoles])
+
+ 
+ const fetchInstitutions =async() =>{
+  return await  axios.get('institutions')
+    .then(res=>res.data.data)
+    .then(res=>{
+      setInstitutions(res.data)
+    }).catch(error=>{
+      console.log(error.response.message);
+    })
+  }
+
+  const fetchUserRoles =async() =>{
+    return await  axios.get('roles')
+      .then(res=>res.data.data)
+      .then(res=>{
+        console.log(res);
+        setUserRoles(res)
+      }).catch(error=>{
+        console.log(error.response.message);
+      })
+    }
+
  
  const formik=useFormik({
     initialValues:{
@@ -45,6 +78,8 @@ const CreateUser = () => {
         email:"",
         password:"ABCD1234",
         confirmPassword:"ABCD1234",
+        roleID:"",
+        institutionID:"",
         createdBy:1,
         updatedBy:1
     },
@@ -54,7 +89,9 @@ validationSchema:YUP.object({
     middleName:YUP.string().required("This field is required. Please enter father name."),
     lastName:YUP.string().required("This field is required. Please enter grandfather name."),
     mobileNumber:YUP.string().required("This field is required. Please enter mobile number."),
-    email:YUP.string().required("This field is required. Please enter email address.")
+    email:YUP.string().required("This field is required. Please enter email address."),
+    roleID:YUP.string().required("This field is required. Please select user role."),
+    institutionID:YUP.string().required("This field is required. Please select Institution.")
   }),
 
   onSubmit:(values)=>{
@@ -63,11 +100,13 @@ validationSchema:YUP.object({
         middle_name:values.middleName,
         last_name:values.lastName,
         mobile_number:values.mobileNumber,
-        password:values.password,
-        confirm_password:values.confirmPassword,
+        password:(values.firstName+"."+values.lastName).toLocaleLowerCase(),
+        confirm_password:(values.firstName+"."+values.lastName).toLocaleLowerCase(),
         email:values.email,
+        roles:values.roleID,
         created_by:values.createdBy,
-        updated_by:values.updatedBy
+        updated_by:values.updatedBy, 
+        institution_id:values.institutionID
     };
 
     registerRegion(userData);
@@ -165,9 +204,51 @@ const registerRegion=async (userData) => {
               helperText={formik.touched.email && formik.errors.email ? <span style={helperTextStyle}>{formik.errors.email}</span>:null}
             />
 
+<Typography variant='body1' sx={{ paddingBottom:'10px' }}>User Role</Typography>
+          <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+            <InputLabel>Select User Role</InputLabel>
+            <Select
+              labelId="user_role"
+              id="user_role"  
+              color="info"          
+              name='roleID'
+              value={formik.values.roleID}
+              onChange={formik.handleChange}
+              helperText={formik.touched.roleID && formik.errors.roleID ? <span style={helperTextStyle}>{formik.errors.roleID}</span>:null}
+            >
+                {
+                  userRoles ? userRoles.map((userRole)=>(
+                    <MenuItem value={userRole.role.id} key={userRole.id}>{userRole.role.name}</MenuItem>
+                  )): null
+                }
+            </Select>
+          <FormHelperText>{formik.touched.roleID && formik.errors.roleID ? <span style={helperTextStyle}>{formik.errors.roleID}</span>:null}</FormHelperText>
+        </FormControl>
+
+  <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Select Institution</Typography>
+          <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+            <InputLabel>Select Institution</InputLabel>
+            <Select
+              labelId="institution_id"
+              id="institution_id"  
+              color="info"          
+              name='institutionID'
+              value={formik.values.institutionID}
+              onChange={formik.handleChange}
+              helperText={formik.touched.institutionID && formik.errors.institutionID ? <span style={helperTextStyle}>{formik.errors.institutionID}</span>:null}
+            >
+                {
+                  institutions ? institutions.map((institution)=>(
+                    <MenuItem value={institution.id} key={institution.id}>{institution.name}</MenuItem>
+                  )): null
+                }
+            </Select>
+          <FormHelperText>{formik.touched.institutionID && formik.errors.institutionID ? <span style={helperTextStyle}>{formik.errors.institutionID}</span>:null}</FormHelperText>
+        </FormControl>
+
             <Typography variant="body2">
                 NOTE: Password is set by default for the first time and user will be forced to change upon first time login. 
-                For the purpose of testing, default password for this moment is 'ABCD1234'
+                Default password for every user is the small later of <strong>firstname.middlename</strong> format
             </Typography>
 
       <Grid align='center' sx={{ paddingBottom:"15px", paddingTop:'15px' }}>

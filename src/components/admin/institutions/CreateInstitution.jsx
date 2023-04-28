@@ -1,8 +1,8 @@
-import { Typography, Button, FormControlLabel, Checkbox, TextField, Grid, Alert, Paper, Stack, FormControl, InputLabel, Select, useTheme } from '@mui/material';
+import { Typography, Button, FormControlLabel, Checkbox, TextField, Grid, Alert, Paper, Stack, FormControl, InputLabel, Select, useTheme, MenuItem, FormHelperText, RadioGroup, Radio } from '@mui/material';
 import { Box } from '@mui/system'
 import { useFormik } from 'formik';
 import * as YUP from 'yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { tokens } from '../../../theme';
 import Header from '../AdminHeader';
 import axios from '../../../axios/AxiosGlobal'
@@ -13,6 +13,9 @@ import { motion } from 'framer-motion';
 const CreateInstitution = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode); 
+    const [institutionsTypes, setInstitutionTypes]=useState(null);
+    const [regions, setRegions]=useState(null);
+    const [sectors, setSectors]=useState(null);
 
   const [serverErrorMsg, setServerErrorMsg]=useState(null);
   const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
@@ -35,6 +38,48 @@ const CreateInstitution = () => {
   fontSize:'15px'
  }
 
+ useEffect(()=>{
+  fetchInstitutionTypes();
+},[institutionsTypes]);
+
+useEffect(()=>{
+  fetchRegions();
+},[regions])
+
+useEffect(()=>{
+  fetchEconomicSectors();
+},[regions])
+
+const fetchInstitutionTypes =async() =>{
+return await  axios.get('instutition-types')
+  .then(res=>res.data.data)
+  .then(res=>{
+    setInstitutionTypes(res.data)
+  }).catch(error=>{
+    console.log(error.response.message);
+  })
+}
+
+const fetchRegions =async() =>{
+  return await  axios.get('regions')
+    .then(res=>res.data.data)
+    .then(res=>{
+      setRegions(res.data)
+    }).catch(error=>{
+      console.log(error.response.message);
+    })
+  }
+
+  const fetchEconomicSectors =async() =>{
+    return await  axios.get('sectors')
+      .then(res=>res.data.data)
+      .then(res=>{
+        setSectors(res.data)
+      }).catch(error=>{
+        console.log(error.response.message);
+      })
+    }
+
  
  const formik=useFormik({
     initialValues:{
@@ -45,7 +90,10 @@ const CreateInstitution = () => {
       email:"",
       telephone:"",
       location:"",
-      createdBy:1
+      sectorID:"",
+      canCreateDraft:"",
+      createdBy:1,
+      updatedBy:1
     },
 
 validationSchema:YUP.object({
@@ -56,6 +104,8 @@ validationSchema:YUP.object({
     email:YUP.string().required("This field is required. Please enter the email address of the institution."),
     telephone:YUP.number().required("This field is required. Please enter the telephone number of the institution."),
     location:YUP.string().required("This field is required. Please enter the location of the institution."),
+    sectorID:YUP.string().required("This field is required. Please select economic sector."),
+    canCreateDraft:YUP.number().required("This field is required. Please choose an option."),
   }),
 
   onSubmit:(values)=>{
@@ -67,7 +117,10 @@ validationSchema:YUP.object({
       email:values.email,
       telephone:values.telephone,
       location:values.location,
-      created_by:values.createdBy
+      sector_id:values.sectorID,
+      created_by:values.createdBy,
+      can_create_draft:values.canCreateDraft,
+      updated_by:values.updatedBy
     };
     createInstitution(institutionData);
   }
@@ -95,7 +148,7 @@ const createInstitution=async (institutionData) => {
         transition={{ duration: 0.3 }}
       >
       <Stack
-        sx={{ width:"60%" }}
+        sx={{ width:"50%" }}
       >
         <form onSubmit={formik.handleSubmit}>
             <TextField 
@@ -110,8 +163,31 @@ const createInstitution=async (institutionData) => {
               onChange={formik.handleChange}
               helperText={formik.touched.institutionName && formik.errors.institutionName ? <span style={helperTextStyle}>{formik.errors.institutionName}</span>:null}
             />
+
+      <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Institution Type</Typography>
+          <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+            <InputLabel>Select Institution Type</InputLabel>
+            <Select
+              labelId="institution_type_id"
+              id="institution_type_id"  
+              label="Select Institution Type"
+              placeholder='Select Institution Type'
+              color="info"          
+              name='institutionTypeId'
+              value={formik.values.institutionTypeId}
+              onChange={formik.handleChange}
+              helperText={formik.touched.institutionTypeId && formik.errors.institutionTypeId ? <span style={helperTextStyle}>{formik.errors.institutionTypeId}</span>:null}
+            >
+                {
+                  institutionsTypes ? institutionsTypes.map((institutionsType)=>(
+                    <MenuItem value={institutionsType.id} key={institutionsType.id}>{institutionsType.name}</MenuItem>
+                  )): null
+                }
+            </Select>
+          <FormHelperText>{formik.touched.institutionTypeId && formik.errors.institutionTypeId ? <span style={helperTextStyle}>{formik.errors.institutionTypeId}</span>:null}</FormHelperText>
+        </FormControl>
             
-            <Typography variant='body1' sx={{ paddingBottom:'10px' }}> 
+            {/* <Typography variant='body1' sx={{ paddingBottom:'10px' }}> 
                 Institution Type ID
             </Typography>
             <TextField 
@@ -125,8 +201,32 @@ const createInstitution=async (institutionData) => {
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               helperText={formik.touched.institutionTypeId && formik.errors.institutionTypeId ? <span style={helperTextStyle}>{formik.errors.institutionTypeId}</span>:null}
-            />
-            <Typography variant='body1' sx={{ paddingBottom:'10px' }}> 
+            /> */}
+
+<Typography variant='body1' sx={{ paddingBottom:'10px' }}>Region</Typography>
+          <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+            <InputLabel>Select Region</InputLabel>
+            <Select
+              labelId="region_id"
+              id="region_id"  
+              label="Select Region"
+              placeholder='Select Region'
+              color="info"          
+              name='regionId'
+              value={formik.values.regionId}
+              onChange={formik.handleChange}
+              helperText={formik.touched.regionId && formik.errors.regionId ? <span style={helperTextStyle}>{formik.errors.regionId}</span>:null}
+            >
+                {
+                  regions ? regions.map((regions)=>(
+                    <MenuItem value={regions.id} key={regions.id}>{regions.name}</MenuItem>
+                  )): null
+                }
+            </Select>
+          <FormHelperText>{formik.touched.regionId && formik.errors.regionId ? <span style={helperTextStyle}>{formik.errors.regionId}</span>:null}</FormHelperText>
+        </FormControl>
+
+           {/*  <Typography variant='body1' sx={{ paddingBottom:'10px' }}> 
                 Region ID
             </Typography>
             <TextField 
@@ -140,7 +240,31 @@ const createInstitution=async (institutionData) => {
               onBlur={formik.handleBlur}
               onChange={formik.handleChange}
               helperText={formik.touched.regionId && formik.errors.regionId ? <span style={helperTextStyle}>{formik.errors.regionId}</span>:null}
-            />
+            /> */}
+
+<Typography variant='body1' sx={{ paddingBottom:'10px' }}>Economic Sector</Typography>
+          <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+            <InputLabel>Select Economic Sector</InputLabel>
+            <Select
+              labelId="sector_id"
+              id="sector_id"  
+              label="Select Economic Sector"
+              placeholder='Select Economic Sector'
+              color="info"          
+              name='sectorID'
+              value={formik.values.sectorID}
+              onChange={formik.handleChange}
+              helperText={formik.touched.sectorID && formik.errors.sectorID ? <span style={helperTextStyle}>{formik.errors.sectorID}</span>:null}
+            >
+                {
+                  sectors ? sectors.map((sector)=>(
+                    <MenuItem value={sector.id} key={sector.id}>{sector.name}</MenuItem>
+                  )): null
+                }
+            </Select>
+          <FormHelperText>{formik.touched.sectorID && formik.errors.sectorID ? <span style={helperTextStyle}>{formik.errors.sectorID}</span>:null}</FormHelperText>
+        </FormControl>
+        
             <TextField 
               label="Authority" 
               variant='outlined' 
@@ -190,6 +314,17 @@ const createInstitution=async (institutionData) => {
               onChange={formik.handleChange}
               helperText={formik.touched.location && formik.errors.location ? <span style={helperTextStyle}>{formik.errors.location}</span>:null}
             />
+
+        <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Can this institution create draft document?</Typography>
+             <RadioGroup
+                    aria-labelledby="demo-controlled-radio-buttons-group"
+                    name="canCreateDraft"
+                    value={formik.values.canCreateDraft}
+                    onChange={formik.handleChange}
+                  >
+                    <FormControlLabel value='1' control={<Radio />} label="Yes"  />
+                    <FormControlLabel value='2' control={<Radio />} label="No"  />
+              </RadioGroup>
 
       <Grid align='center' sx={{ paddingBottom:"15px", paddingTop:'15px' }}>
         <motion.span

@@ -46,11 +46,11 @@ const Drafts = () => {
         },
         {
             Header: 'Opening Date',
-            accessor: 'opening_date',
+            accessor: 'comment_opening_date',
         },
         {
             Header: 'Closing Date',
-            accessor: 'closing_date',
+            accessor: 'comment_closing_date',
         },
         {
             Header: 'Expected Date',

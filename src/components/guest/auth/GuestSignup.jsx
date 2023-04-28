@@ -35,7 +35,8 @@ const GuestSignup = () => {
         mobileNumber:"",
         password:"",
         confirmPassword:"",
-        roles:5
+        roles:8,
+        institutionTypeID:1
       },
 
       validationSchema:YUP.object({
@@ -57,7 +58,8 @@ const GuestSignup = () => {
           email:values.email,
           password:values.password,
           confirm_password:values.confirmPassword,
-          roles:values.roles
+          roles:values.roles,
+          institution_id:values.institutionTypeID
         };
 
         registerUser(userData);

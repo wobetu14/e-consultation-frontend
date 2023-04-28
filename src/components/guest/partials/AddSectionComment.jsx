@@ -117,7 +117,7 @@ const addComment=async (sectionCommentData) => {
                           color="info" 
                           size="large" 
                           elevation={0}
-                          disabled={formik.values.commentBody===""}
+                          disabled={formik.values.sectionComment===""}
                           >
                             <SendIcon />
                           </Button>

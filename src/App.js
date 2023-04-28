@@ -57,9 +57,11 @@ function App() {
                         <Route path="*" element={<PageNotFound />} />
                       {/* </Route> */}
                     </Route>
+
                     <Route path='/draft' element={<DocumentLayout />}>
                       <Route path=':id' element={<DocumentDetailView />} />
                     </Route>
+                    
                     <Route path='/admin' element={<AdminLayout />}>
                         <Route index element={<Dashboard />} />
                         <Route path='users' element={<Users />} />
