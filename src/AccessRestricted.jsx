@@ -21,7 +21,7 @@ export const AccessRestricted = () => {
                     <Typography variant='h3'> Access Denied!</Typography>
                 </AlertTitle>
                     <Typography variant='h4'>Sorry, access to this page is restricted!</Typography>
-                    <Button href="/" variant="outlined" size="small" sx={{ marginTop:"20px", color:colors.grey[300], borderColor:colors.grey[300] }}>Go to home</Button>
+                    <Button href="/" variant="outlined" size="small" sx={{ marginTop:"20px", color:colors.primary[100], borderColor:colors.primary[100] }}>Go to home</Button>
             </Alert>
          </Box>
         </Grid>

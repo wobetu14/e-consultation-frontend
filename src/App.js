@@ -75,6 +75,24 @@ function App() {
     }
   }
 
+  const Uploaders=({children})=>{
+    if(userRole==="Uploaders"){
+      return (
+        <> 
+        {children}
+        </>
+      )
+    }
+
+    else {
+      return (
+        <>
+          <AccessRestricted />
+        </>
+      )
+    }
+  }
+
 
 
   return (
@@ -125,7 +143,11 @@ function App() {
                         <Route path="sectors" element={<Sectors />} />
                         <Route path="create_sector" element={<CreateSector />} />
                         <Route path="drafts" element={<Drafts />} />
-                        <Route path="create_draft" element={<CreateDraft />} />
+                        <Route path="create_draft" element={
+                          <Uploaders>
+                            <CreateDraft />
+                          </Uploaders>
+                        } />
                         <Route path="*" element={<PageNotFound />} />
                     </Route>
                   </Routes>
