@@ -162,6 +162,16 @@ const DocumentDetailView = () => {
                 <Typography variant="body1">Document level comments: 
                     <strong>{documentComments ? documentComments.length:"Not available"}</strong>
                 </Typography>
+
+                <Typography variant="body1">Document level comments: 
+                    <Button href={`http://196.188.107.43/api/v1/report/${params.id}`}
+                      variant="contained" 
+                      target="_blank"
+                      color="secondary"
+                      >
+                        Get comment reports here
+                    </Button>
+                </Typography>
               </Stack>
             </Typography>
           </Grid>

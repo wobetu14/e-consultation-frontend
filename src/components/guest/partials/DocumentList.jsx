@@ -104,7 +104,7 @@ const DocumentList = ({status, deadline, draft}) => {
                                     </label>
 
                                     <label>
-                                        <strong>Institution: </strong> FDRE Ministry of tourism &nbsp;
+                                        <strong>Institution: </strong> {draft.institution.name} &nbsp;
                                     </label>
                                 </div>
                             </Stack>

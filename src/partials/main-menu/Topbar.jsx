@@ -48,7 +48,7 @@ const Topbar = ({menuItems}) => {
   const { t } = useTranslation()
 
   // User ContextData
-  const {userRole, setUserRole, userToken, setUserToken}=useContext(UserContext);
+  const {userRole, setUserRole, userInfo, setUserInfo, userToken, setUserToken}=useContext(UserContext);
 
     const theme=useTheme()
     const colors=tokens(theme.palette.mode)
@@ -93,7 +93,7 @@ const Topbar = ({menuItems}) => {
        zIndex:2 }}>
           <Grid container>
             <Grid item xs={10}>
-            <Box display="flex">
+            {/* <Box display="flex">
                             {
                               (userToken!==null && userToken!==undefined && userRole!=null && userRole!==undefined ) ?  (
                                 <>
@@ -109,7 +109,7 @@ const Topbar = ({menuItems}) => {
                                   null
                                 )
                             }
-                        </Box>
+                        </Box> */}
             </Grid>
             <Grid item xs={2}>
               {/* Icons */}
@@ -167,9 +167,13 @@ const Topbar = ({menuItems}) => {
                   <Grid item xs={2}>
                         <Box display="flex">
                             {
-                              (userToken!==null && userToken!==undefined && userRole!=null && userRole!==undefined ) ?  (
+                            (userToken!==null && userToken!==undefined && userRole!=null && userRole!==undefined ) ?  (
                                 <>
-                                  <Logout />
+                                  <Typography variant='h5' sx={{ fontWeight:"600", color:colors.successColor[100] }}>
+                                    {userInfo.user.first_name + " " + userInfo.user.middle_name} &nbsp;
+                                    <Logout />
+                                  </Typography>
+                                  
                                 </>
                                  
                                 ):

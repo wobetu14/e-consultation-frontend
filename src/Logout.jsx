@@ -1,4 +1,4 @@
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from './contexts/UserContext';
@@ -7,7 +7,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 const Logout = () => {
     const navigate=useNavigate();
     // User ContextData
-  const {userRole, setUserRole, userToken, setUserToken}=useContext(UserContext);
+  const {userRole, setUserRole, userToken, setUserToken, userInfo, setUserInfo}=useContext(UserContext);
   
   const logout=()=>{
     localStorage.clear();
@@ -23,6 +23,7 @@ const Logout = () => {
                 <LogoutIcon /> Logout
             </Button>
           )
+          
       }
       </>
   )

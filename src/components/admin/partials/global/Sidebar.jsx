@@ -14,7 +14,17 @@ import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import Logout  from "../../../../Logout";
 import { UserContext } from "../../../../contexts/UserContext";
-import {Button} from '@mui/material'
+import {Button} from '@mui/material';
+import ScheduleSendIcon from '@mui/icons-material/ScheduleSend';
+import SourceIcon from '@mui/icons-material/Source';
+import FactCheckIcon from '@mui/icons-material/FactCheck';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import PersonIcon from '@mui/icons-material/Person';
+import HomeIcon from '@mui/icons-material/Home';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import InstitutionIcon from '@mui/icons-material/AccountBalance';
+import SectorIcon from '@mui/icons-material/Category';
+import RegionIcon from '@mui/icons-material/Public';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -40,6 +50,16 @@ const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
   const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
+
+  const SuperAdminLinks=({children})=>{
+    if(userRole==="Super Admin"){
+      return (
+        <>
+          {children}
+        </>
+      )
+    }
+  }
 
   return (
     <Box
@@ -113,7 +133,7 @@ const Sidebar = () => {
                   {userRole}
                 </Typography>
                 <Typography variant="outlined">
-                  <Button href='user_profile' variant="outlined" size="small" sx={{ textTransform:"none", color:"#000" }}>Go to Profile</Button>
+                  <Button href='/admin/user_profile' variant="outlined" size="small" sx={{ textTransform:"none", color:"#000" }}>Go to Profile</Button>
                 </Typography>
               </Box>
             </Box>
@@ -134,139 +154,334 @@ const Sidebar = () => {
             },
            }}
           >
-            <Item
-              title="Dashboard"
-              to="/admin"
-              icon={<HomeOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
 
-            <Typography
-              variant="h5"
-              // color={colors.primary[100]}
-              sx={{ m: "15px 0 5px 20px", fontWeight:"600", color:`${colors.headerText[100]} !important` }}
-            >
-              Users
-            </Typography>
-            <Item
-              title="Create user"
-              to="create_user"
-              icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Users"
-              to="users"
-              icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            {
+              userRole==="Super Admin" ? ( 
+                  <>
+                    <Item
+                      title="Dashboard"
+                      to="/admin"
+                      icon={<HomeIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+                    <Item
+                      title="Create user"
+                      to="create_user"
+                      icon={<PersonAddIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+                    <Item
+                      title="Users"
+                      to="users"
+                      icon={<PersonIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
 
-            <Typography
-              variant="h5"
-              color={colors.primary[100]}
-              sx={{ m: "15px 0 5px 20px", fontWeight:"600", }}
-            >
-              Sectors
-            </Typography>
-            <Item
-              title="New Sector"
-              to="create_sector"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Sectors"
-              to="sectors"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+                  <Item
+                    title="New Sector"
+                    to="create_sector"
+                    icon={<SectorIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                  <Item
+                    title="Sectors"
+                    to="sectors"
+                    icon={<SectorIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
 
-            <Typography
-              variant="h5"
-              color={colors.primary[100]}
-              sx={{ m: "15px 0 5px 20px", fontWeight:"600", }}
-            >
-              Regions
-            </Typography>
-            <Item
-              title="New Region"
-              to="create_region"
-              icon={<CalendarTodayOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+                  <Item
+                    title="New Region"
+                    to="create_region"
+                    icon={<RegionIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
 
-            <Item
-              title="Regions"
-              to="regions"
-              icon={<CalendarTodayOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+                  <Item
+                    title="Regions"
+                    to="regions"
+                    icon={<RegionIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                  
+                  <Item
+                    title="Resource Center"
+                    to="form"
+                    icon={<PersonOutlinedIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                </>
+              ):""
+            }
 
-            <Typography
-              variant="h5"
-              color={colors.primary[100]}
-              sx={{ m: "15px 0 5px 20px", fontWeight:"600", }}
-            >
-              Institutions
-            </Typography>
-            <Item
-              title="Create Institution"
-              to="create_institution"
-              icon={<CalendarTodayOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Institutions"
-              to="institutions"
-              icon={<CalendarTodayOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            {
+              userRole==="Federal Admin" ? ( 
+                  <>
+                    <Item
+                      title="Dashboard"
+                      to="/admin"
+                      icon={<HomeIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+                    <Item
+                      title="Create user"
+                      to="create_user"
+                      icon={<PersonAddIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+                    <Item
+                      title="Users"
+                      to="users"
+                      icon={<PersonIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
 
-          <Typography
-              variant="h5"
-              color={colors.primary[100]}
-              sx={{ m: "15px 0 5px 20px", fontWeight:"600", }}
-            >
-              Consultations
-            </Typography>
-            <Item
-              title="New Draft"
-              to="create_draft"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Draft Documents"
-              to="drafts"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+                  <Item
+                    title="Create Institution"
+                    to="create_institution"
+                    icon={<InstitutionIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                  <Item
+                    title="Institutions"
+                    to="institutions"
+                    icon={<InstitutionIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                  <Item
+                      title="Resource Center"
+                      to="form"
+                      icon={<SourceIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+                </>
+              ):""
+            }
 
-          <Typography
-              variant="h5"
-              color={colors.primary[100]}
-              sx={{ m: "15px 0 5px 20px", fontWeight:"600", }}
-            >
-              Resource Center
-            </Typography>
-            <Item
-              title="Document Template"
-              to="form"
-              icon={<PersonOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            {
+              userRole==="Federal Institutions Admin" ? ( 
+                  <>
+                    <Item
+                      title="Dashboard"
+                      to="/admin"
+                      icon={<HomeIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+                    <Item
+                      title="Create user"
+                      to="create_user"
+                      icon={<PersonAddIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+                    <Item
+                      title="Users"
+                      to="users"
+                      icon={<PersonIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+
+                    <Item
+                      title="Resource Center"
+                      to="form"
+                      icon={<SourceIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+                </>
+              ):""
+            }
+
+            {
+              userRole==="Regional Admin" ? ( 
+                  <>
+                    <Item
+                      title="Dashboard"
+                      to="/admin"
+                      icon={<HomeIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+                    <Item
+                      title="Create user"
+                      to="create_user"
+                      icon={<PersonAddIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+                    <Item
+                      title="Users"
+                      to="users"
+                      icon={<PersonIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+
+                  <Item
+                    title="Create Institution"
+                    to="create_institution"
+                    icon={<InstitutionIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                  <Item
+                    title="Institutions"
+                    to="institutions"
+                    icon={<InstitutionIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                  <Item
+                      title="Resource Center"
+                      to="form"
+                      icon={<SourceIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+                </>
+              ):""
+            }
+
+              {
+                userRole==="Regional Institutions Admin" ? ( 
+                    <>
+                      <Item
+                      title="Dashboard"
+                      to="/admin"
+                      icon={<HomeIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+                    <Item
+                      title="Create user"
+                      to="create_user"
+                      icon={<PersonAddIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+                    <Item
+                      title="Users"
+                      to="users"
+                      icon={<PersonIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+
+                    <Item
+                      title="Resource Center"
+                      to="form"
+                      icon={<SourceIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+                  </>
+                ):""
+              }
+
+              {
+                userRole==="Approver" ? ( 
+                    <>
+                      <Item
+                        title="Dashboard"
+                        to="/admin"
+                        icon={<HomeIcon />}
+                        selected={selected}
+                        setSelected={setSelected}
+                      />
+
+                      <Item
+                        title="Users"
+                        to="users"
+                        icon={<PersonIcon />}
+                        selected={selected}
+                        setSelected={setSelected}
+                      />
+                       <Item
+                          title="Draft Documents"
+                          to="drafts"
+                          icon={<MenuBookIcon />}
+                          selected={selected}
+                          setSelected={setSelected}
+                        />
+
+                        <Item
+                          title="Draft approvals"
+                          to="draft_approvals"
+                          icon={<FactCheckIcon />}
+                          selected={selected}
+                          setSelected={setSelected}
+                        />
+                        <Item
+                          title="Comment Requests"
+                          to="comment_requests"
+                          icon={<ScheduleSendIcon />}
+                          selected={selected}
+                          setSelected={setSelected}
+                        />
+
+                        <Item
+                          title="Resource Center"
+                          to="form"
+                          icon={<SourceIcon />}
+                          selected={selected}
+                          setSelected={setSelected}
+                        />
+                  </>
+                ):""
+              }
+
+              {
+                userRole==="Uploaders" ? ( 
+                    <>
+                      <Item
+                        title="Dashboard"
+                        to="/admin"
+                        icon={<HomeIcon />}
+                        selected={selected}
+                        setSelected={setSelected}
+                      />
+                    <Item
+                      title="New Draft"
+                      to="create_draft"
+                      icon={<PersonIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+                    <Item
+                      title="Draft Documents"
+                      to="drafts"
+                      icon={<MenuBookIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+
+                    <Item
+                      title="Resource Center"
+                      to="form"
+                      icon={<SourceIcon/>}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />
+                  </>
+                ):""
+              }
+         
           </Box>
         </Menu>
       </ProSidebar>

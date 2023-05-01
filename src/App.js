@@ -4,7 +4,7 @@ import i18next from 'i18next';
 import cookies from 'js-cookie';
 import {Outlet, Route, Routes  } from 'react-router-dom';
 import { ColorModeContext, useMode, tokens, LangaugeContext, useLanguage } from './theme';
-import { CssBaseline, ThemeProvider } from '@mui/material';
+import { CssBaseline, ThemeProvider, Typography } from '@mui/material';
 import Topbar from './partials/main-menu/Topbar'
 import Home from './components/guest/Home';
 import About from './components/guest/About';
@@ -30,24 +30,66 @@ import CreateInstitution from './components/admin/institutions/CreateInstitution
 import CreateUser from './components/admin/users/CreateUser';
 import DocumentLayout from './components/guest/DocumentLayout';
 import DocumentDetailView from './components/guest/DocumentDetailView';
+import { AccessRestricted } from './AccessRestricted';
 
 
 function App() {
   const {t}=useTranslation()
   const [theme, colorMode]=useMode();
 
+  const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
+
   // Setup dynamic font-size changer
   const [fontSize, setFontSize]=useState(20);
+
+  const PublicElement=({children})=>{
+    return (
+      <>
+      {children}
+      </>
+    )
+  }
+
+  const AdminElement=({children})=>{
+    if(userRole==="Super Admin" 
+    || userRole==="Federal Admin" 
+    || userRole==="Federal Institutions Admin" 
+    || userRole==="Regional Admin"
+    || userRole==="Regional Institutions Admin"
+    || userRole==="Approver"
+    || userRole==="Uploaders"
+    ){
+      return (
+        <> 
+        {children}
+        </>
+      )
+    }
+
+    else {
+      return (
+        <>
+          <AccessRestricted />
+        </>
+      )
+    }
+  }
+
+
 
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
-        <UserProvider>
+        {/* <UserProvider> */}
             <CssBaseline />
             <div className="App">
               <main className='content' display="flex">
                   <Routes>
-                    <Route path="/" element={<RootLayout />}>
+                    <Route path="/" element={
+                      <PublicElement>
+                        <RootLayout />
+                      </PublicElement>
+                    }>
                         <Route index element={<Home />} />
                         <Route path="about" element={<About />} />
                         <Route path="help" element={<HelpCenter />} />
@@ -58,11 +100,20 @@ function App() {
                       {/* </Route> */}
                     </Route>
 
-                    <Route path='/draft' element={<DocumentLayout />}>
+                    <Route path='/draft' element={
+                      <PublicElement>
+                        <DocumentLayout />
+                      </PublicElement>
+                    }>
                       <Route path=':id' element={<DocumentDetailView />} />
                     </Route>
                     
-                    <Route path='/admin' element={<AdminLayout />}>
+                    <Route path='/admin' 
+                    element={
+                      <AdminElement>
+                        <AdminLayout />
+                      </AdminElement>
+                    }>
                         <Route index element={<Dashboard />} />
                         <Route path='users' element={<Users />} />
                         <Route path='create_user' element={<CreateUser />} />
@@ -80,7 +131,7 @@ function App() {
                   </Routes>
               </main> 
             </div>  
-        </UserProvider>
+        {/* </UserProvider> */}
       </ThemeProvider>
     </ColorModeContext.Provider>
   );

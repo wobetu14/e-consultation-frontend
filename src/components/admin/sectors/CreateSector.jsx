@@ -7,6 +7,7 @@ import { tokens } from '../../../theme';
 import Header from '../AdminHeader';
 import axios from '../../../axios/AxiosGlobal'
 import { motion } from 'framer-motion';
+import Sectors from '../sectors/Sectors'
 
 
 
@@ -143,6 +144,7 @@ const createSector=async (sectorData) => {
               Save </Button>
             </Grid>
         </form>
+        <Sectors />
       </Stack>
  </motion.span>
 </Box> 

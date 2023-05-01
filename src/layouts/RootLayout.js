@@ -13,8 +13,8 @@ function RootLayout() {
   const menuItemsText=[
     {id:1, linkText:`${t('home')}`, to:"/"},
     {id:2,linkText:`${t('about')}`, to:"/about"},
-    {id:3,linkText:`${t('help')}`, to:"/help"},
-    {id:4,linkText:`${t('admin')}`, to:"/admin"},
+    {id:3,linkText:`${t('help center')}`, to:"/help"},
+    // {id:4,linkText:`${t('admin')}`, to:"/admin"},
   ];
   return (
     <main>

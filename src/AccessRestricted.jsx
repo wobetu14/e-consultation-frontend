@@ -1,10 +1,10 @@
-import { Alert, AlertTitle, Box, Grid, Typography, useTheme } from '@mui/material'
+import { Alert, AlertTitle, Box, Button, Grid, Typography, useTheme } from '@mui/material'
 import {motion} from 'framer-motion'
 import React, { useContext } from 'react'
 import { ColorModeContext, tokens } from './theme'
 
-export const PageNotFound = () => {
-  const theme=useTheme()
+export const AccessRestricted = () => {
+    const theme=useTheme()
     const colors=tokens(theme.palette.mode)
     const colorMode=useContext(ColorModeContext);
   return (
@@ -18,9 +18,10 @@ export const PageNotFound = () => {
          <Box container width="100%" >
             <Alert severity="error" fullWidth>
                 <AlertTitle>
-                    <Typography variant='h3'> Page not found</Typography>
+                    <Typography variant='h3'> Access Denied!</Typography>
                 </AlertTitle>
-                    <Typography variant='h4'>Sorry, the page you are looking for is not found</Typography>
+                    <Typography variant='h4'>Sorry, access to this page is restricted!</Typography>
+                    <Button href="/" variant="outlined" size="small" sx={{ marginTop:"20px", color:colors.grey[300], borderColor:colors.grey[300] }}>Go to home</Button>
             </Alert>
          </Box>
         </Grid>
