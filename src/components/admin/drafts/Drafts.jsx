@@ -108,7 +108,7 @@ const Drafts = () => {
       <Header title="Draft Documents / Consultations" subtitle="Manage draft documents / consultations" />
 
       <FilterTable filter={globalFilter} setFilter={setGlobalFilter} />
-      <table {...getTableProps()}>
+      <table {...getTableProps()} className="table">
         <thead>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>

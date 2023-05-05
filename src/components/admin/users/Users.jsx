@@ -99,7 +99,7 @@ const Users = () => {
       <Header title="Users" subtitle="Manage Users" />
 
       <FilterTable filter={globalFilter} setFilter={setGlobalFilter} />
-      <table {...getTableProps()}>
+      <table {...getTableProps()} className="table">
         <thead>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>

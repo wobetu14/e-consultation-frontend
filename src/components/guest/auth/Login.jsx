@@ -66,7 +66,6 @@ const Login = () => {
                       setUserToken(localStorage.getItem('token'));
                       setUserInfo(JSON.parse(localStorage.getItem('userInfo')));
                       
-                      console.log(userInfo)
 
                       if(localStorage.getItem('userRole')==="Commenters"){
                         navigate('/')

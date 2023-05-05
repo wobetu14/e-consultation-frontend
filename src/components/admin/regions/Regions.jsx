@@ -84,7 +84,7 @@ const Regions = () => {
       <Header title="Regions" subtitle="Manage Regions" />
 
       <FilterTable filter={globalFilter} setFilter={setGlobalFilter} />
-      <table {...getTableProps()}>
+      <table {...getTableProps()} className="table">
         <thead>
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>

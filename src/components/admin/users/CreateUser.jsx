@@ -76,8 +76,8 @@ const CreateUser = () => {
         lastName:"",
         mobileNumber:"",
         email:"",
-        password:"ABCD1234",
-        confirmPassword:"ABCD1234",
+        password:"",
+        confirmPassword:"",
         roleID:"",
         institutionID:"",
         createdBy:1,
@@ -144,7 +144,6 @@ const registerRegion=async (userData) => {
               fullWidth
               sx={{ paddingBottom:"30px" }}
               color="info"
-
               name='firstName'
               value={formik.values.firstName}
               onBlur={formik.handleBlur}

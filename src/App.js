@@ -31,6 +31,11 @@ import CreateUser from './components/admin/users/CreateUser';
 import DocumentLayout from './components/guest/DocumentLayout';
 import DocumentDetailView from './components/guest/DocumentDetailView';
 import { AccessRestricted } from './AccessRestricted';
+import UserProfile from './components/admin/users/UserProfile';
+import DraftApprovalRequest from './components/admin/drafts/DraftApprovalRequest';
+import  DocumentPreview  from './components/admin/drafts/DocumentPreview';
+import ExternalCommentRequests from './components/admin/drafts/ExternalCommentRequests';
+import ExternalRequestsPreview from './components/admin/drafts/ExternalRequestsPreview';
 
 
 function App() {
@@ -114,6 +119,7 @@ function App() {
                         <Route path="contacts" element={<Contacts />} />
                         <Route path="login" element={<Login />} />
                         <Route path="create-account" element={<GuestSignup />} />
+                        <Route path='user_profile' element={<UserProfile />} />
                         <Route path="*" element={<PageNotFound />} />
                       {/* </Route> */}
                     </Route>
@@ -135,6 +141,7 @@ function App() {
                         <Route index element={<Dashboard />} />
                         <Route path='users' element={<Users />} />
                         <Route path='create_user' element={<CreateUser />} />
+                        <Route path='user_profile' element={<UserProfile />} />
                         <Route path="contacts" element={<Contacts />} />
                         <Route path="institutions" element={<Institutions />} />
                         <Route path="create_institution" element={<CreateInstitution />} />
@@ -148,6 +155,10 @@ function App() {
                             <CreateDraft />
                           </Uploaders>
                         } />
+                        <Route path="draft_approval_request" element={<DraftApprovalRequest />} />
+                        <Route path="document_preview/:id" element={<DocumentPreview />} />
+                        <Route path="external_comment_requests" element={<ExternalCommentRequests />} />
+                        <Route path="external_requests_preview/:id" element={<ExternalRequestsPreview />} />
                         <Route path="*" element={<PageNotFound />} />
                     </Route>
                   </Routes>

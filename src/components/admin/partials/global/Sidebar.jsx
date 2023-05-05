@@ -25,6 +25,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import InstitutionIcon from '@mui/icons-material/AccountBalance';
 import SectorIcon from '@mui/icons-material/Category';
 import RegionIcon from '@mui/icons-material/Public';
+import IncomingCommentRequests from '@mui/icons-material/CallReceived';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -214,7 +215,7 @@ const Sidebar = () => {
                   <Item
                     title="Resource Center"
                     to="form"
-                    icon={<PersonOutlinedIcon />}
+                    icon={<SourceIcon />}
                     selected={selected}
                     setSelected={setSelected}
                   />
@@ -421,15 +422,16 @@ const Sidebar = () => {
                         />
 
                         <Item
-                          title="Draft approvals"
-                          to="draft_approvals"
+                          title="Draft Approvals"
+                          to="draft_approval_request"
                           icon={<FactCheckIcon />}
                           selected={selected}
                           setSelected={setSelected}
                         />
+                     
                         <Item
-                          title="Comment Requests"
-                          to="comment_requests"
+                          title="External Requests"
+                          to="external_comment_requests"
                           icon={<ScheduleSendIcon />}
                           selected={selected}
                           setSelected={setSelected}
@@ -470,6 +472,14 @@ const Sidebar = () => {
                       selected={selected}
                       setSelected={setSelected}
                     />
+
+                    <Item
+                      title="Draft Approval"
+                      to="draft_approval_request"
+                      icon={<FactCheckIcon />}
+                      selected={selected}
+                      setSelected={setSelected}
+                    />  
 
                     <Item
                       title="Resource Center"

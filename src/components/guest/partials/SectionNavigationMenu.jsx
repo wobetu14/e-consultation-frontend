@@ -9,7 +9,7 @@ import { Collapse, Typography, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
 import { useTranslation } from 'react-i18next';
 
-export default function SectionNavigationMenu({section}) {
+const SectionNavigationMenu = ({section}) => {
   
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
@@ -55,3 +55,5 @@ export default function SectionNavigationMenu({section}) {
     </div>
   );
 }
+
+export default SectionNavigationMenu;
