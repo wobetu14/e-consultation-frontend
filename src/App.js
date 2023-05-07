@@ -36,6 +36,8 @@ import DraftApprovalRequest from './components/admin/drafts/DraftApprovalRequest
 import  DocumentPreview  from './components/admin/drafts/DocumentPreview';
 import ExternalCommentRequests from './components/admin/drafts/ExternalCommentRequests';
 import ExternalRequestsPreview from './components/admin/drafts/ExternalRequestsPreview';
+import DataTable from 'react-data-table-component';
+import UsersTable from './components/admin/DataTables/UsersTable';
 
 
 function App() {
@@ -62,7 +64,7 @@ function App() {
     || userRole==="Regional Admin"
     || userRole==="Regional Institutions Admin"
     || userRole==="Approver"
-    || userRole==="Uploaders"
+    || userRole==="Uploader"
     ){
       return (
         <> 
@@ -150,6 +152,7 @@ function App() {
                         <Route path="sectors" element={<Sectors />} />
                         <Route path="create_sector" element={<CreateSector />} />
                         <Route path="drafts" element={<Drafts />} />
+                        <Route path="data_table" element={<UsersTable />} />
                         <Route path="create_draft" element={
                           <Uploaders>
                             <CreateDraft />

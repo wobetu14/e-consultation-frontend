@@ -34,6 +34,7 @@
     "js-cookie": "^3.0.1",
     "react": "^18.2.0",
     "react-anchor-link-smooth-scroll": "^1.0.12",
+    "react-data-table-component": "^7.5.3",
     "react-dom": "^18.2.0",
     "react-i18next": "^12.1.1",
     "react-pro-sidebar": "^0.7.1",
@@ -41,6 +42,7 @@
     "react-scripts": "5.0.1",
     "react-scroll": "^1.8.9",
     "react-table": "^7.8.0",
+    "styled-components": "^5.3.10",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },

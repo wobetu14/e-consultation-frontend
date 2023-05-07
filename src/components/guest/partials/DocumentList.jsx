@@ -41,7 +41,7 @@ const DocumentList = ({status, deadline, draft}) => {
                                 <Typography variant='h5'
                                     sx={{ 
                                         display:'inline',
-                                        fontWeight:"500",
+                                        fontWeight:"600",
                                      }}
                                 >
                                     {draft.short_title}
@@ -53,15 +53,14 @@ const DocumentList = ({status, deadline, draft}) => {
                             <Typography
                                 sx={{ display: 'inline' }}
                                 component="span"
-                                variant="body2"
+                                variant="body1"
                                 color="text.primary"
                             >
+                                { draft.summary}
                             </Typography>
 
                             <p>
-                                {
-                                    draft.summary
-                                }
+
                             {/* {`The Government’s commitment to create a favorable domestic condition 
                             for promoting employment opportunities for those who are able to work is intact, 
                             it has been found necessary to protect the rights, ...`} */}
@@ -69,26 +68,36 @@ const DocumentList = ({status, deadline, draft}) => {
                             
                             <Stack direction="row" spacing={1}>
                                 <div style={{ color:colors.grey[600] }}>
-                                    <Chip label={(draft.draft_status.id===1) ? "Open for comment" : "Feedback closed"} 
-                                            sx={draft.draft_status.id===1 ? 
-                                                { 
-                                                backgroundColor:colors.successColor[100], 
-                                                color:colors.grey[500],
-                                                marginRight:"5px"
-                                                }
-                                                :
-                                                {
-                                                    backgroundColor:colors.secondary[100], 
-                                                    color:colors.grey[500],
-                                                    marginRight:"5px"
-                                                }
-                                        }
-                                            size="small"
-                                    />
 
-                                    
+                                {
+                                   (draft.draft_status.name==="Open") 
+                                   ? 
+                                   (
+                                    <Chip label={"Open for comment"} 
+                                    size="small"
+                                    sx={{ 
+                                        backgroundColor:colors.successColor[100], 
+                                        color:colors.grey[500],
+                                        marginRight:"5px"
+                                        }}
+                                    />
+                                   ) 
+                                   : 
+                                   (draft.draft_status.name==="Closed") 
+                                   ?
+                                   (
+                                   <Chip label={"Closed for comment"} 
+                                   size="small"
+                                   sx={{
+                                        backgroundColor:colors.secondary[100], 
+                                        color:colors.grey[500],
+                                        marginRight:"5px"
+                                    }} 
+                                   />):""
+                                   } 
+ 
                                         {
-                                        status===1
+                                        draft.draft_status.name==="Open"
                                          ? 
                                           (
                                           <label>

@@ -1,4 +1,4 @@
-import { Typography, Button, Stack, Chip } from '@mui/material';
+import { Typography, Button, Stack, Chip, Grid, Alert } from '@mui/material';
 import { Box } from '@mui/system'
 import React, { useEffect, useState, useMemo, useLayoutEffect, useContext } from 'react'
 import axios from '../../../axios/AxiosGlobal'
@@ -8,6 +8,7 @@ import { SignalCellularNullOutlined } from '@mui/icons-material';
 import { useTheme } from '@emotion/react';
 import { tokens } from '../../../theme';
 import { useTable } from 'react-table';
+import {motion} from 'framer-motion'
 import '../../Table.css'
 import { useSortBy, useGlobalFilter, usePagination } from 'react-table';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -35,9 +36,24 @@ const DraftApprovalRequest = () => {
     const colors = tokens(theme.palette.mode); 
     const [draftsData, setDraftsData]=useState(null);
 
+    const [serverErrorMsg, setServerErrorMsg]=useState(null);
+  const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
+
+  const errorStyle={
+    color:'red',
+    fontWeight:'400',
+    fontSize:'18px'
+  }
+
+  const successStyle={
+   color:'green',
+   fontWeight:'400',
+   fontSize:'18px'
+ }
+
     const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
 
-    const fetchSectors =async() =>{
+    const fetchDrafts =async() =>{
       return await  axios.get('drafts')
         .then(res=>res.data.data)
         .then(res=>{
@@ -48,14 +64,28 @@ const DraftApprovalRequest = () => {
       }
       
     useEffect(()=>{ 
-        fetchSectors();
-    },[]);
+        fetchDrafts();
+    },[draftsData]);
 
   return (
     <Box m='0 20px' width={'95%'}>
       <Header title="Draft Approval Request" />
-
-      <TableContainer component={Paper} sx={{ marginTop:"100px", marginBottom:"100px" }}>
+        <Grid align='center' sx={{ paddingBottom:"15px", paddingTop:'15px' }}>
+              <motion.span
+                initial={{ opacity: 0}}
+                animate={{ opacity: 1}}
+                transition={{ duration: 0.3 }}
+              > 
+                <Typography variant='h1'>
+                  {serverSuccessMsg ? <Alert severity='success' style={successStyle}>{serverSuccessMsg}</Alert>:null}
+                </Typography>
+                
+                <Typography variant='h1'>
+                {serverErrorMsg ? <Alert severity='error' style={errorStyle}>{serverErrorMsg}</Alert>:null}
+                </Typography> 
+              </motion.span>
+          </Grid>
+      <TableContainer component={Paper} sx={{ marginTop:"50px", marginBottom:"350px" }}>
       <Table sx={{ minWidth: 550 }} size="small" aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -123,6 +153,12 @@ const DraftApprovalRequest = () => {
                     <Chip label={draft.draft_status.name} size="small" sx={{ backgroundColor:"orangered", color:colors.grey[300]}} />
                   ):""
                 }
+
+{
+                  draft.draft_status.name==="Open" ? (
+                    <Chip label={draft.draft_status.name} size="small" sx={{ backgroundColor:colors.successColor[100], color:colors.grey[300]}} />
+                  ):""
+                }
   
               </TableCell>
               <TableCell>
@@ -137,48 +173,19 @@ const DraftApprovalRequest = () => {
                    View
                 </Button>
               {
-                userRole==="Uploaders" ? (
+                userRole==="Uploader" ? (
                   draft.draft_status.name==="Pending" ? (
                     // <TableCell align="right">
-                      <Button 
-                      size='small' 
-                      variant="contained" 
-                      color="secondary" 
-                      href={`/admin/document_preview/${draft.id}`}
-                      sx={{ textTransform:"none", marginRight:"5px" }}
-                      >  
-                      {/* <SendIcon size="small"/> */}
-                      Send Request
-                    </Button>
+                     <SendApprovalRequest draft={draft} setServerSuccessMsg={setServerSuccessMsg} setServerErrorMsg={setServerErrorMsg} />
                   ):""
                 ):
                 (
                   draft.draft_status.name==="Requested" ? (
                     // <TableCell align="right">
                         <>
-                          <Button 
-                          size='small' 
-                          variant="contained" 
-                          color="success" 
-                          href={`/admin/document_preview/${draft.id}`}
-                          sx={{ textTransform:"none", marginRight:"5px" }}
-                          >  
-                          {/* <ApproveIcon size="small" /> */}
-                         Approve
-                        </Button>
-
-                          <Button 
-                            size='small' 
-                            variant="contained" 
-                            color="warning" 
-                            href={`/admin/document_preview/${draft.id}`}
-                            sx={{ textTransform:"none" }}
-                            >  
-                            {/* <RejectIcon size="small"/> */}
-                          Reject
-                          </Button>
+                          <AcceptApprovalRequest draft={draft} setServerSuccessMsg={setServerSuccessMsg} setServerErrorMsg={setServerErrorMsg}/>
+                          <RejectApprovalRequest draft={draft} setServerSuccessMsg={setServerSuccessMsg} setServerErrorMsg={setServerErrorMsg}/>
                         </>
-                    
                   ):""
                 )
               }
@@ -192,4 +199,89 @@ const DraftApprovalRequest = () => {
   )
 }
 
-export default DraftApprovalRequest
+export default DraftApprovalRequest;
+
+const SendApprovalRequest = ({draft, setServerSuccessMsg, setServerErrorMsg}) =>{
+
+  const sendRequestForApproval=async () => {
+    return await axios.post(`request-for-comment/draft/${draft.id}`)
+    .then(res => {
+      setServerSuccessMsg(res.data.message);
+      setServerErrorMsg(null)
+    })
+    .catch(errors =>{
+       setServerErrorMsg(errors.response.data.message);
+      setServerSuccessMsg(null) 
+    }) 
+   }
+
+  return (
+    <>
+       <Button 
+          size='small' 
+          variant="contained" 
+          color="secondary" 
+          sx={{ textTransform:"none", marginRight:"5px" }}
+          onClick={sendRequestForApproval}
+          >  
+          Send Request
+        </Button>
+    </>
+  )
+}
+
+const AcceptApprovalRequest =({draft, setServerSuccessMsg, setServerErrorMsg})=>{
+  const acceptCommentOpening=async () => {
+    return await axios.post(`approve-comment-opening/draft/${draft.id}`)
+    .then(res => {
+      setServerSuccessMsg(res.data.message);
+      setServerErrorMsg(null)
+    })
+    .catch(errors =>{
+       setServerErrorMsg(errors.response.data.message);
+      setServerSuccessMsg(null) 
+    }) 
+   }
+
+return (
+  <>
+    <Button 
+        size='small' 
+        variant="contained" 
+        color="success" 
+        sx={{ textTransform:"none", marginRight:"5px" }}
+        onClick={acceptCommentOpening}
+        >  
+        Accept
+      </Button>
+  </>
+)
+
+}
+
+const RejectApprovalRequest = ({draft, setServerSuccessMsg, setServerErrorMsg}) => {
+  const rejectCommentOpening=async () => {
+    return await axios.post(`request-rejection/draft/${draft.id}`)
+    .then(res => {
+      setServerSuccessMsg(res.data.message);
+      setServerErrorMsg(null)
+    })
+    .catch(errors =>{
+       setServerErrorMsg(errors.response.data.message);
+      setServerSuccessMsg(null) 
+    }) 
+   }
+  return (
+    <>
+      <Button 
+          size='small' 
+          variant="contained" 
+          color="warning" 
+          sx={{ textTransform:"none" }}
+          onClick={rejectCommentOpening}
+          >  
+        Reject
+        </Button>
+    </>
+  )
+}

@@ -449,8 +449,15 @@ const Sidebar = () => {
               }
 
               {
-                userRole==="Uploaders" ? ( 
+                userRole==="Uploader" ? ( 
                     <>
+                    <Item
+                        title="Test Data Table"
+                        to="data_table"
+                        icon={<HomeIcon />}
+                        selected={selected}
+                        setSelected={setSelected}
+                      />
                       <Item
                         title="Dashboard"
                         to="/admin"

@@ -18,14 +18,61 @@ const DocumentsFilters = (
     const colors = tokens(theme.palette.mode);
 
     const [lawCategoryID, setLawCategoryID]=useState(1);
+    const [lawCategories, setLawCategories]=useState(null);
+
     const [regionID, setRegionID] = useState(1);
+    const [regions, setRegions]=useState(null);
+
     const [institutionID, setInstitutionID]=useState(1);
-    const [draftStatusID, setDraftStatusID]=useState(1);
+    const [institutions, setInstitutions]=useState(null);
+    const [draftStatusName, setDraftStatusName]=useState("Open");
 
     // useEffect to calculate dynamic page size for pagination
     useEffect(()=>{
       setPageCount(Math.ceil(parseInt(totalDrafts) / 10))
     }, [drafts])
+
+    useEffect(()=>{
+      fetchLawCategories();
+    },[lawCategories])
+
+    const fetchLawCategories = async() => {
+      return await axios.get('law-categories')
+        .then(res=>{
+          setLawCategories(res.data.data.data)
+        })
+        .catch(error=>{
+          console.log(error.response.message)
+        })
+    }
+
+    useEffect(()=>{
+      fetchRegions();
+    },[lawCategories])
+
+    const fetchRegions = async() => {
+      return await axios.get('regions')
+        .then(res=>{
+          setRegions(res.data.data.data)
+        })
+        .catch(error=>{
+          console.log(error.response.message)
+        })
+    }
+
+    useEffect(()=>{
+      fetchInstitutions();
+    },[lawCategories])
+
+    const fetchInstitutions = async() => {
+      return await axios.get('institutions')
+        .then(res=>{
+          setInstitutions(res.data.data.data)
+        })
+        .catch(error=>{
+          console.log(error.response.message)
+        })
+    }
 
     const handleRegionChange = (event) => {
       event.preventDefault()
@@ -55,7 +102,7 @@ const DocumentsFilters = (
       console.info('You clicked the Chip.');
     };
 
-    const handleCategoryChange=(e)=>{
+    const handleCategoryChange= (e)=>{
       e.preventDefault();
       setLawCategoryID(e.target.value);
       const filteredDrafts=unfilteredDrafts.filter((draft)=>{
@@ -68,10 +115,10 @@ const DocumentsFilters = (
     
     const handleDraftStatusChange=(e)=>{
       e.preventDefault();
-      setDraftStatusID(e.target.value);
+      setDraftStatusName(e.target.value);
       
       const filteredDrafts=unfilteredDrafts.filter((draft)=>{
-        return parseInt(draft.draft_status_id)!==parseInt(draftStatusID)
+        return (draft.draft_status.name===draftStatusName)
       });
       setDrafts(filteredDrafts);
       setTotalDrafts(filteredDrafts.length);
@@ -93,9 +140,12 @@ const DocumentsFilters = (
                     value={lawCategoryID}
                     onChange={handleCategoryChange}
                   >
-                    <FormControlLabel value='1' control={<Radio />} label="Proclamations"  />
-                    <FormControlLabel value='2' control={<Radio />} label="Directives"  />
-                    <FormControlLabel value='3' control={<Radio />} label="Regulations"  />
+                    {
+                      lawCategories ? lawCategories.map((lawCategory)=>(
+                        <FormControlLabel key={lawCategory.id} value={lawCategory.id} control={<Radio />} label={lawCategory.name}  />
+                      )):null
+                    }
+ 
               </RadioGroup>       
             </Box>
 
@@ -117,19 +167,12 @@ const DocumentsFilters = (
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
-                      <MenuItem value="1">Tigray</MenuItem>
-                      <MenuItem value="2">Afar</MenuItem>
-                      <MenuItem value="3">Amhara</MenuItem>
-                      <MenuItem value="4">Oromia</MenuItem>
-                      <MenuItem value="5">Somali</MenuItem>
-                      <MenuItem value="6">Gambella</MenuItem>
-                      <MenuItem value="7">Harari</MenuItem>
-                      <MenuItem value="8">Benishangul-Gumuz</MenuItem>
-                      <MenuItem value="9">Southern Nations, Nationalities and Peoples</MenuItem>
-                      <MenuItem value="10">Sidama</MenuItem>
-                      <MenuItem value="11">South-west Ethiopia Peoples</MenuItem>
-                      <MenuItem value="12">Addis Ababa City Administration</MenuItem>                  
-                      <MenuItem value="13">Diredawa City Administration</MenuItem>                  
+                    {
+                      regions ? regions.map((region)=>(
+                        <MenuItem key={region.id} value={region.id}>{region.name}</MenuItem>
+                      )):null
+                    }
+
                   </Select>
                 </FormControl>
               </div>
@@ -154,15 +197,11 @@ const DocumentsFilters = (
                     <MenuItem value="">
                       <em>All</em>
                     </MenuItem>
-                      <MenuItem value="1">Ministry of Justice</MenuItem>               
-                      <MenuItem value="2">Ministry of Tourism</MenuItem>               
-                      <MenuItem value="3">Ministry of Finance</MenuItem>               
-                      <MenuItem value="4">Ministry of Innovation and technology</MenuItem>               
-                      <MenuItem value="5">Ministry of Education</MenuItem>               
-                      <MenuItem value="6">Ministry of Agriculture</MenuItem>               
-                      <MenuItem value="7">Ministry of Labour and Skills</MenuItem>               
-                      <MenuItem value="8">Amhara Regional State Bureau of Education</MenuItem>               
-                      <MenuItem value="9">Oromia Regional State Bureau of Science, Technology and Innovation</MenuItem>               
+                    {
+                      institutions ? institutions.map((institution)=>(
+                        <MenuItem key={institution.id} value={institution.id}>{institution.name}</MenuItem> 
+                      )):null
+                    }               
                   </Select>
                 </FormControl>
               </div>   
@@ -175,16 +214,16 @@ const DocumentsFilters = (
 
                 <RadioGroup
                     aria-labelledby="draft-status-id"
-                    name="draftStatusID"
-                    value={draftStatusID}
+                    name="draftStatusName"
+                    value={draftStatusName}
                     onChange={handleDraftStatusChange}
                   >
-                    <FormControlLabel value='1' control={<Radio />} label="Open"  />
-                    <FormControlLabel value='2' control={<Radio />} label="Closed"  />
+                    <FormControlLabel value="Open" control={<Radio />} label="Open"  />
+                    <FormControlLabel value="Closed" control={<Radio />} label="Closed"  />
               </RadioGroup>            
             </Box>
 
-            <Box marginBottom="15px">
+            {/* <Box marginBottom="15px">
                 <Typography variant="h6" fontWeight={600}>
                     Publishing Date
                 </Typography>
@@ -205,7 +244,7 @@ const DocumentsFilters = (
                     />
                   </FormControl>
                 </div>                  
-            </Box>
+            </Box> */}
 
             <Box marginBottom="15px">
                 <Typography variant="h6" fontWeight={600}>

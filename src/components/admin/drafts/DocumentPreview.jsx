@@ -1,4 +1,4 @@
-import { Box, Collapse, Card, CardActions, CardContent, CircularProgress, Grid, Paper, Stack, Typography, useTheme, ListItemButton, ListItemText, Button, TextField, List, ListItem, ListItemAvatar, Avatar, Chip } from '@mui/material';
+import { Box, Collapse, Card, CardActions, CardContent, CircularProgress, Grid, Paper, Stack, Typography, useTheme, ListItemButton, ListItemText, Button, TextField, List, ListItem, ListItemAvatar, Avatar, Chip, Alert } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom'
@@ -18,6 +18,8 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { Drafts, FileDownload } from '@mui/icons-material';
 import SectionNavigationMenu from '../../guest/partials/SectionNavigationMenu';
 import { UserContext } from '../../../contexts/UserContext';
+import { useFormik } from 'formik';
+import * as YUP from 'yup';
 
 const DocumentPreview = () => {
   const params=useParams();
@@ -32,6 +34,21 @@ const DocumentPreview = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const {t}=useTranslation();
+
+  const [serverErrorMsg, setServerErrorMsg]=useState(null);
+  const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
+
+  const errorStyle={
+    color:'red',
+    fontWeight:'400',
+    fontSize:'18px'
+  }
+
+  const successStyle={
+   color:'green',
+   fontWeight:'400',
+   fontSize:'18px'
+ }
 
   // Menu collapse functionality
   const [articlesOpen, setArticlesOpen] = React.useState(true);
@@ -62,7 +79,6 @@ const DocumentPreview = () => {
   const fetchDocumentDetails= async()=>{
         return await axios.get(`drafts/${params.id}`)
                 .then(response=>{
-                  console.log(response.data.data);
                     setDocumentDetail(response.data.data);
                 })
   };
@@ -91,6 +107,23 @@ const DocumentPreview = () => {
           <Typography variant="h3" sx={{ paddingBottom:"20px", fontWeight:600, textAlign:"center", color:colors.primary[200] }}>
           {documentDetail ? documentDetail.short_title: null}
           </Typography>
+
+          <Grid align='center' sx={{ paddingBottom:"15px", paddingTop:'15px' }}>
+            <motion.span
+              initial={{ opacity: 0}}
+              animate={{ opacity: 1}}
+              transition={{ duration: 0.3 }}
+            > 
+              <Typography variant='h1'>
+                {serverSuccessMsg ? <Alert severity='success' style={successStyle}>{serverSuccessMsg}</Alert>:null}
+              </Typography>
+              
+              <Typography variant='h1'>
+              {serverErrorMsg ? <Alert severity='error' style={errorStyle}>{serverErrorMsg}</Alert>:null}
+              </Typography> 
+            </motion.span>
+        </Grid>
+
       </Box>
       <Stack direction="row" spacing={1} justifyContent="end" sx={{ marginRight:"20px" }}>
         {/* Actions on the document */}
@@ -105,12 +138,18 @@ const DocumentPreview = () => {
                     <Chip label={documentDetail.draft_status.name} size="small" sx={{ backgroundColor:"orange", color:colors.grey[300]}} />
                   ):""
                 }
+
+{
+                  (documentDetail && documentDetail.draft_status.name==="Open") ? (
+                    <Chip label={documentDetail.draft_status.name} size="small" sx={{ backgroundColor:colors.successColor[100], color:colors.grey[300]}} />
+                  ):""
+                }
             {
            userRole==="Approver" ? (
             (documentDetail && documentDetail.draft_status.name==="Requested") ? (
               <>
-              <Button variant="contained" color="success" size="small" sx={{ textTransform:"none" }}>Approve</Button>
-              <Button variant="contained" color="warning" size="small" sx={{ textTransform:"none" }}>Reject</Button>
+              <AcceptApprovalRequest documentDetail={documentDetail} setServerSuccessMsg={setServerSuccessMsg} setServerErrorMsg={setServerErrorMsg} />
+              <RejectApprovalRequest documentDetail={documentDetail} setServerSuccessMsg={setServerSuccessMsg} setServerErrorMsg={setServerErrorMsg} />
             </>
             ):(
              ""
@@ -121,17 +160,10 @@ const DocumentPreview = () => {
               userRole==="Uploaders" ? (
                 (documentDetail && documentDetail.draft_status.name==="Pending") ?(
                   <>
-                  <Button variant="contained" color="secondary" size="small" sx={{ textTransform:"none" }}>Send request</Button>
+                   <SendApprovalRequest documentDetail={documentDetail} setServerSuccessMsg={setServerSuccessMsg} setServerErrorMsg={setServerErrorMsg} />
                   {/* <Button variant="contained" color="warning" size="small" sx={{ textTransform:"none" }}>Reject</Button> */}
                   </>
-                ):
-                (
-                  (documentDetail && documentDetail.draft_status.name==="Rejected") ? (
-                    <>
-                      <Button variant="contained" color="secondary" size="small" sx={{ textTransform:"none" }}>Re-send approval request</Button>
-                    </>
-                  ):""
-                ) 
+                ):""
               ):""
            )
          }
@@ -248,4 +280,90 @@ const DocumentPreview = () => {
   )
 }
 
-export default DocumentPreview
+export default DocumentPreview;
+
+const SendApprovalRequest = ({documentDetail, setServerSuccessMsg, setServerErrorMsg}) => {
+  
+const sendRequestForApproval=async () => {
+    return await axios.post(`request-for-comment/draft/${documentDetail.id}`)
+    .then(res => {
+      setServerSuccessMsg(res.data.message);
+      setServerErrorMsg(null)
+    })
+    .catch(errors =>{
+       setServerErrorMsg(errors.response.data.message);
+      setServerSuccessMsg(null) 
+    }) 
+   }
+
+  return(
+    <>
+      <Button 
+      variant="contained" 
+      color="secondary" 
+      size="small" 
+      sx={{ textTransform:"none" }}
+       onClick={sendRequestForApproval}
+      >
+        Send request
+      </Button>
+    </>
+  )
+}
+
+
+const AcceptApprovalRequest =({draft, setServerSuccessMsg, setServerErrorMsg})=>{
+  const acceptCommentOpening=async () => {
+    return await axios.post(`approve-comment-opening/draft/${draft.id}`)
+    .then(res => {
+      setServerSuccessMsg(res.data.message);
+      setServerErrorMsg(null)
+    })
+    .catch(errors =>{
+       setServerErrorMsg(errors.response.data.message);
+      setServerSuccessMsg(null) 
+    }) 
+   }
+
+return (
+  <>
+    <Button 
+        size='small' 
+        variant="contained" 
+        color="success" 
+        sx={{ textTransform:"none", marginRight:"5px" }}
+        onClick={acceptCommentOpening}
+        >  
+        Accept
+      </Button>
+  </>
+)
+
+}
+
+const RejectApprovalRequest = ({draft, setServerSuccessMsg, setServerErrorMsg}) => {
+  const rejectCommentOpening=async () => {
+    return await axios.post(`request-rejection/draft/${draft.id}`)
+    .then(res => {
+      setServerSuccessMsg(res.data.message);
+      setServerErrorMsg(null)
+    })
+    .catch(errors =>{
+       setServerErrorMsg(errors.response.data.message);
+      setServerSuccessMsg(null) 
+    }) 
+   }
+  return (
+    <>
+      <Button 
+          size='small' 
+          variant="contained" 
+          color="warning" 
+          sx={{ textTransform:"none" }}
+          onClick={rejectCommentOpening}
+          >  
+        Reject
+        </Button>
+    </>
+  )
+}

@@ -5,51 +5,42 @@ import * as YUP from 'yup';
 import { useContext, useEffect, useState } from 'react';
 import { tokens } from '../../../theme';
 import Header from '../AdminHeader';
-import axios from '../../../axios/AxiosGlobal'
+import axios from '../../../axios/AxiosGlobal';
 import { motion } from 'framer-motion';
+import { UserContext } from '../../../contexts/UserContext';
 import { UsersDataContext } from '../../../contexts/UsersDataContext';
 
-
-
-const CreateUser = () => {
+const EditUser = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode); 
 
     const [institutions, setInstitutions]=useState(null);
     const [userRoles, setUserRoles]=useState(null);
 
-    // UsersDataContext
-    const {
-      users, setUsers, user, setUser, filteredUsers,
-      searchUser,setSearchUser, showUserAddForm, 
-      setShowUserAddForm, 
-      showUserEditForm, 
-      setShowUserEditForm,
-      serverErrorMsg,
-      setServerErrorMsg,
-      serverSuccessMsg,
-      setServerSuccessMsg,
-  }=useContext(UsersDataContext);
+ 
+
+  // User context
+  const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
+
+   // UsersDataContext
+   const {
+    users, setUsers, user, setUser, filteredUsers,
+    searchUser,setSearchUser, showUserAddForm, 
+    setShowUserAddForm, 
+    showUserEditForm, 
+    setShowUserEditForm,
+    serverErrorMsg,
+    setServerErrorMsg,
+    serverSuccessMsg,
+    setServerSuccessMsg,
+}=useContext(UsersDataContext);
 
 
-  const errorStyle={
-    color:'red',
-    fontWeight:'400',
-    fontSize:'18px'
-  }
-
-  const successStyle={
-   color:'green',
-   fontWeight:'400',
-   fontSize:'18px'
- }
-
- const helperTextStyle={
-  color:'red',
-  fontWeight:'400',
-  fontSize:'15px'
- }
-
+const helperTextStyle={
+color:'red',
+fontWeight:'400',
+fontSize:'15px'
+}
 
  useEffect(()=>{
   fetchInstitutions();
@@ -58,7 +49,6 @@ const CreateUser = () => {
  useEffect(()=>{
   fetchUserRoles();
  },[userRoles])
-
  
  const fetchInstitutions =async() =>{
   return await  axios.get('institutions')
@@ -74,7 +64,7 @@ const CreateUser = () => {
     return await  axios.get('roles')
       .then(res=>res.data.data)
       .then(res=>{
-        console.log(res);
+        // console.log(res);
         setUserRoles(res)
       }).catch(error=>{
         console.log(error.response.message);
@@ -84,28 +74,15 @@ const CreateUser = () => {
  
  const formik=useFormik({
     initialValues:{
-        firstName:"",
-        middleName:"",
-        lastName:"",
-        mobileNumber:"",
-        email:"",
-        password:"",
-        confirmPassword:"",
-        roleID:"",
-        institutionID:"",
-        createdBy:1,
-        updatedBy:1
+        firstName:user.first_name ? user.first_name:"",
+        middleName:user.middle_name ? user.middle_name:"",
+        lastName:user.last_name ? user.last_name:"",
+        mobileNumber:user.mobile_number ? user.mobile_number:"",
+        email:user.email ? user.email:"",
+        roleID:user.roles.length>0 ? user.roles[0].id:"",
+        institutionID:user.institution_id ? user.institution_id:"",
+        updatedBy:userInfo.user.updated_by
     },
-
-validationSchema:YUP.object({
-    firstName:YUP.string().required("This field is required. Please enter the first name."),
-    middleName:YUP.string().required("This field is required. Please enter father name."),
-    lastName:YUP.string().required("This field is required. Please enter grandfather name."),
-    mobileNumber:YUP.string().required("This field is required. Please enter mobile number."),
-    email:YUP.string().required("This field is required. Please enter email address."),
-    roleID:YUP.string().required("This field is required. Please select user role."),
-    institutionID:YUP.string().required("This field is required. Please select Institution.")
-  }),
 
   onSubmit:(values)=>{
     const userData={
@@ -113,45 +90,33 @@ validationSchema:YUP.object({
         middle_name:values.middleName,
         last_name:values.lastName,
         mobile_number:values.mobileNumber,
-        password:(values.firstName+"."+values.lastName).toLocaleLowerCase(),
-        confirm_password:(values.firstName+"."+values.lastName).toLocaleLowerCase(),
         email:values.email,
         roles:values.roleID,
-        created_by:values.createdBy,
         updated_by:values.updatedBy, 
         institution_id:values.institutionID
     };
 
-    registerUser(userData);
-    fetchUsers();
+    updateUser(userData);
   }
 }); 
     
-const registerUser=async (userData) => {
+const updateUser=async (userData) => {
     //  console.log(companyData)
-    return await axios.post('users', userData)
+    return await axios.put('users', userData)
     .then(res => {
       setServerSuccessMsg(res.data.message);
-      setServerErrorMsg(null)
+      setServerErrorMsg(null);
+      setShowUserEditForm(false);
     })
     .catch(errors =>{
-      setServerErrorMsg(errors.response.data.message);
+       setServerErrorMsg(errors.response.data.message);
       setServerSuccessMsg(null) 
     }) 
    }
-
-   const fetchUsers =async() =>{
-    try{
-      const res = await  axios.get('users')
-        setUsers(res.data.data);
-    } catch(error){
-        console.log(error);
-     }
-  }
    
   return (
     <Box m='0' width={'95%'}>
-      <Header title="Create New User" subtitle="Manage users" />
+      <Header title="Edit user information" subtitle="" />
       <motion.span
         initial={{ opacity: 0}}
         animate={{ opacity: 1}}
@@ -285,7 +250,7 @@ const registerUser=async (userData) => {
                   sx={{ align:'right', textTransform:'none' }}
                   color='info'
                 >
-                  Save </Button>
+                  Save Changes</Button>
                 </Grid>
             </Grid>
           </Grid>
@@ -295,4 +260,4 @@ const registerUser=async (userData) => {
   )
 }
 
-export default CreateUser
+export default EditUser

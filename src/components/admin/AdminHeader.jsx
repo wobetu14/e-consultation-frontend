@@ -47,9 +47,9 @@ const Header = ({title, subtitle}) => {
   return (
     <Box mb="20px">
         <Typography
-         variant="h3"
+         variant="h5"
          color={colors.headerText[100]}
-         sx={{ mb:"5px", fontWeight:500 }}
+         sx={{ mb:"5px", fontWeight:600 }}
         >
             {t(title)}
         </Typography>
