@@ -102,7 +102,8 @@ fontSize:'15px'
     
 const updateUser=async (userData) => {
     //  console.log(companyData)
-    return await axios.put('users', userData)
+    console.log(userData)
+    return await axios.put(`users/${user.id}`, userData)
     .then(res => {
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null);
@@ -110,7 +111,7 @@ const updateUser=async (userData) => {
     })
     .catch(errors =>{
        setServerErrorMsg(errors.response.data.message);
-      setServerSuccessMsg(null) 
+       setServerSuccessMsg(null) 
     }) 
    }
    

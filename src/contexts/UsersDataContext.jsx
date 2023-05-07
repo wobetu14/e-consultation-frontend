@@ -29,9 +29,6 @@ export const UsersDataProvider = (props) => {
          }
       }
      
-      useEffect(()=>{ 
-          fetchUsers()
-      },[]);
 
       useEffect(()=>{
         const filteredResult=users.filter((user)=>{

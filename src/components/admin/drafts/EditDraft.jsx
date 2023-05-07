@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 import { UserContext } from '../../../contexts/UserContext';
 import { DraftsDataContext } from '../../../contexts/DraftsDataContext';
 
-const CreateDraft = () => {
+const EditDraft = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode); 
 
@@ -105,50 +105,27 @@ const CreateDraft = () => {
 
  const formik=useFormik({
     initialValues:{
-        institutionID:"",
-        shortTitle:"",
-        lawCategoryId:"",
-        draftStatusId:1,
-        sectorId:"",
-        openingDate:"",
-        closingDate:"",
-        file:null,
-        slug:"slug_here",
-        active:"",
-        parent_id:"",
-        tags:"",
-        noteId:"1",
-        baseLegalReference:"",
-        definition:"",
-        scope:"",
-        mainProvision:"",
-        summary:"",
-        amendedLaws:"",
-        repealedLaws:"",
-        transitoryProvision:"",
+        institutionID:draft ? (draft.institution.id):"",
+        shortTitle:draft ? (draft.short_title):"",
+        lawCategoryId:draft ? (draft.law_category_id):"",
+        draftStatusId:draft ? (draft.draft_status_id):"",
+        sectorId:draft ? (draft.sector_id):"",
+        // file:draft ? (draft.file):null,
+        // slug:"slug_here",
+        active:draft ? (draft.active):"",
+        parent_id:draft ? (draft.parent_id):"",
+        // tags:"",
+        // noteId:"1",
+        baseLegalReference:draft ? (draft.base_legal_reference):"",
+        definition:draft ? (draft.definition):"",
+        scope:draft ? (draft.scope):"",
+        mainProvision:draft ? (draft.main_provision):"",
+        summary:draft ? (draft.summary):"",
+        amendedLaws:draft ? (draft.amended_laws):"",
+        repealedLaws:draft ? (draft.repealed_laws):"",
+        transitoryProvision:draft ? (draft.transitory_provision):"",
+        updatedBy:userInfo.user.updated_by
     },
-
-validationSchema:YUP.object({
-    institutionID:YUP.number().required("This field is required. Please enter the institution name."),
-    shortTitle:YUP.string().required("This field is required. Please provide a short description about the document."),
-    lawCategoryId:YUP.number().required("This field is required. Please select law category this document belongs to."),
-    draftStatusId:YUP.number().required("This field is required. Please select the draft status."),
-    sectorId:YUP.number().required("This field is required. Please select sector."),
-    openingDate:YUP.date().required("This field is required. Please provide opening date."),
-    closingDate:YUP.date().required("This field is required. Please provide closing date."),
-    file:YUP.mixed().required("This field is required. Please choose file to upload."),
-    active:YUP.number().required("This field is required. Please provide the status of this document."),
-    parentId:YUP.number().required("This field is required. Please provide parent reference of this document."),
-    tags:YUP.string().required("This field is required. Please provide tag info for this document."),
-    baseLegalReference:YUP.string().required("This field is required. Please provide base legal reference of this document."),
-    definition:YUP.string().required("This field is required. Please provide definition for this document."),
-    scope:YUP.string().required("This field is required. Please provide a scope for this document."),
-    mainProvision:YUP.string().required("This field is required. Please provide main provision for this document."),
-    summary:YUP.string().required("This field is required. Please provide summary."),
-    amendedLaws:YUP.string().required("This field is required."),
-    repealedLaws:YUP.string().required("This field is required."),
-    transitoryProvision:YUP.string().required("This field is required."), 
-  }),
 
   onSubmit:(values)=>{
     const draftsData={
@@ -159,7 +136,7 @@ validationSchema:YUP.object({
       sector_id:values.sectorId,
       comment_opening_date:values.openingDate,
       comment_closing_date:values.closingDate,
-      file:values.file,
+    //   file:values.file,
       slug:values.slug,
       active:values.active,
       parent_id:values.parentId,
@@ -175,15 +152,16 @@ validationSchema:YUP.object({
       transitory_provision:values.transitoryProvision,
       comment_request_description:values.summary,
       comment_summary:values.summary,
+      updated_by:values.updatedBy
     };
 
-    createDraftDocument(draftsData);
+    updateDraftDocument(draftsData);
   }
 }); 
     
-const createDraftDocument=async (draftsData) => {
+const updateDraftDocument=async (draftsData) => {
     //  console.log(companyData)
-    return await axios.post('drafts', draftsData)
+    return await axios.put(`drafts/${draft.id}`, draftsData)
     .then(res => {
       console.log(res.data)
       setServerSuccessMsg(res.data.message);
@@ -198,7 +176,7 @@ const createDraftDocument=async (draftsData) => {
    
   return (
     <Box width={'95%'}>
-      <Header title="Upload new draft document" subtitle="" />
+      <Header title="Edit Draft Document Information" subtitle="" />
       <motion.span
         initial={{ opacity: 0}}
         animate={{ opacity: 1}}
@@ -498,7 +476,7 @@ const createDraftDocument=async (draftsData) => {
               helperText={formik.touched.transitoryProvision && formik.errors.transitoryProvision ? <span style={helperTextStyle}>{formik.errors.transitoryProvision}</span>:null}
             />
 
-  <Typography variant='body1' sx={{ paddingBottom:'10px' }}> 
+  {/* <Typography variant='body1' sx={{ paddingBottom:'10px' }}> 
         <strong>Attachement:</strong> 
         Please attach the draft document file. (Only .doc or .docx files are allowed.)
         </Typography>
@@ -512,7 +490,7 @@ const createDraftDocument=async (draftsData) => {
                 onBlur={formik.handleBlur}
                 onChange={(e)=>{formik.setFieldValue("file",e.target.files[0])}}
                 helperText={formik.touched.file && formik.errors.file ? <span style={helperTextStyle}>{formik.errors.file}</span>:null}
-              />
+              /> */}
 
           <Grid 
                 sx={{ paddingBottom:"20px" }}
@@ -524,7 +502,7 @@ const createDraftDocument=async (draftsData) => {
                 sx={{ align:'right', textTransform:'none' }}
                 color='secondary' elevation={10}
               >
-                Save </Button>
+                Save Changes </Button>
               </Grid>
           </Grid>
         </Grid>
@@ -534,4 +512,4 @@ const createDraftDocument=async (draftsData) => {
   )
 }
 
-export default CreateDraft
+export default EditDraft

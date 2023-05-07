@@ -122,17 +122,18 @@ validationSchema:YUP.object({
         institution_id:values.institutionID
     };
 
-    registerUser(userData);
+    createUser(userData);
     fetchUsers();
   }
 }); 
     
-const registerUser=async (userData) => {
+const createUser=async (userData) => {
     //  console.log(companyData)
     return await axios.post('users', userData)
     .then(res => {
       setServerSuccessMsg(res.data.message);
-      setServerErrorMsg(null)
+      setServerErrorMsg(null);
+      formik.resetForm();
     })
     .catch(errors =>{
       setServerErrorMsg(errors.response.data.message);

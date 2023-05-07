@@ -122,7 +122,7 @@ const Dashboard = () => {
       </Box>
       
       <Box sx={{ marginTop:"100px", marginBottom:"50px" }}>
-          <Drafts />
+          {/* <Drafts /> */}
       </Box>
     </Box>
   );

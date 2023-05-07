@@ -16,8 +16,11 @@ import CreateUser from '../users/CreateUser'
 import EditUser from '../users/EditUser'
 import { UsersDataContext } from '../../../contexts/UsersDataContext';
 import { motion } from 'framer-motion';
+import { DraftsDataContext } from '../../../contexts/DraftsDataContext';
+import CreateDraft from '../drafts/CreateDraft';
+import EditDraft from '../drafts/EditDraft';
 
-const UsersTable = () => {
+const DraftsTable = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode); 
 
@@ -25,16 +28,23 @@ const UsersTable = () => {
     // User context
     const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
     const {
-        users, setUsers, user, setUser, filteredUsers,
-        searchUser,setSearchUser, showUserAddForm, 
-        setShowUserAddForm, 
-        showUserEditForm, 
-        setShowUserEditForm,
+        drafts,
+        setDrafts,
+        filteredDrafts,
+        setFilteredDrafts,
+        searchDraft,
+        setSearchDraft,
+        draft,
+        setDraft,
+        showDraftAddForm,
+        setShowDraftAddForm,
+        showDraftEditForm,
+        setShowDraftEditForm,
         serverErrorMsg,
         setServerErrorMsg,
         serverSuccessMsg,
-        setServerSuccessMsg,
-    }=useContext(UsersDataContext);
+        setServerSuccessMsg
+    }=useContext(DraftsDataContext);
 
 const errorStyle={
     color:'red',
@@ -48,50 +58,35 @@ const errorStyle={
     fontSize:'18px'
     }
 
-    const helperTextStyle={
-    color:'red',
-    fontWeight:'400',
-    fontSize:'15px'
-    }
 
     // Show / Hide Add User Form
-    const showAddUserForm=(msg)=>{
-        setShowUserAddForm(!showUserAddForm)
-        setShowUserEditForm(false);
+    const showAddDraftForm=(msg)=>{
+        setShowDraftAddForm(!showDraftAddForm)
+        setShowDraftEditForm(false);
     }
 
-    const showEditUserForm=(userRow)=>{
-            setUser(userRow)
-            setShowUserEditForm(true);
-            setShowUserAddForm(false);
-            console.log(userRow)
+    const showEditDraftForm=(row)=>{
+            setDraft(row)
+            setShowDraftEditForm(true);
+            setShowDraftAddForm(false);
+            console.log(row)
     }
 
     const hideForm=()=>{
-        setShowUserEditForm(false);
-        setShowUserAddForm(false)
+        setShowDraftEditForm(false);
+        setShowDraftAddForm(false)
     }
 
     const columns=[
         {
-            name:<Typography variant="h5" fontWeight="600">Full Name</Typography>,
-            selector:(row)=><Typography variant="body1">{`${row.first_name} ${row.middle_name}`}</Typography>,
+            name:<Typography variant="h5" fontWeight="600">Title</Typography>,
+            selector:(row)=><Typography variant="body1">{`${row.short_title.substr(0, 20)}`}</Typography>,
             sortable:true,
         },
         
         {
-            name:<Typography variant="h5" fontWeight="600">Mobile</Typography>,
-            selector:(row)=><Typography variant="body1">{row.mobile_number}</Typography>,
-            sortable:true,
-        },
-        {
-            name:<Typography variant="h5" fontWeight="600">Institution</Typography>,
-            selector:(row)=><Typography variant="body1">{row.institution_id}</Typography>,
-            sortable:true,
-        },
-        {
-            name:<Typography variant="h5" fontWeight="600">Region</Typography>,
-            selector:(row)=><Typography variant="body1">{row.region_id}</Typography>,
+            name:<Typography variant="h5" fontWeight="600">Owning Institution</Typography>,
+            selector:(row)=><Typography variant="body1">{row.institution.name}</Typography>,
             sortable:true,
         },
         {
@@ -104,20 +99,13 @@ const errorStyle={
             selector:(row)=><Typography variant="body1">{row.updated_by}</Typography>,
             sortable:true,
         },
-        {
-            name:<Typography variant="h5" fontWeight="600">Role</Typography>,
-            selector:(row)=>row.roles.map((role)=>(
-                <li style={{ listStyleType:"none" }}>
-                    <Typography variant="body1">{role.name}</Typography>
-                </li>
-            ))
-        },
+        
         {
             name:<Typography variant="h5" fontWeight="600">Actions</Typography>,
             selector:(row)=>{
                 return (
                     <Stack spacing={0} direction="row">
-                        <Button variant="Link" size="small" color="secondary" sx={{ textTransform:"none" }} key={row.id} onClick={()=>showEditUserForm(row)}><ModeEditIcon fontSize="small" color="secondary" /></Button>
+                        <Button variant="Link" size="small" color="secondary" sx={{ textTransform:"none" }} key={row.id} onClick={()=>showEditDraftForm(row)}><ModeEditIcon fontSize="small" color="secondary" /></Button>
                         <Button variant="Link" size="small" sx={{textTransform:"none"}} onClick={()=>alert("You deleted user ID: "+row.id)}><DeleteIcon fontSize="small" sx={{ color:colors.dangerColor[200] }} /></Button>
                         {/* <Button variant="contained" size="small" color="warning" sx={{textTransform:"none"}} onClick={()=>alert("You deleted user ID: "+row.id)}>Deactivate Account</Button> */}
                     </Stack>
@@ -127,9 +115,7 @@ const errorStyle={
     ]
 
   return (
-    <Box m='0 20px' width={'95%'}>
-    <Header title="Users" subtitle="Manage Users" />
-
+    <Box width={'95%'}>
         <Grid align='center' sx={{ paddingBottom:"5px", paddingTop:'5px' }}>
             <motion.span
                 initial={{ opacity: 0}}
@@ -146,19 +132,19 @@ const errorStyle={
             </motion.span>
         </Grid>
     {
-        showUserAddForm && (
-          <CreateUser users={users} setUsers={setUsers} />
+        showDraftAddForm && (
+          <CreateDraft />
         )
     } 
     {
-      showUserEditForm && (
-        <EditUser />
+      showDraftEditForm && (
+        <EditDraft />
       )
     }
      <Paper elevation={1} sx={{ marginTop:"10px", marginBottom:"350px"}}>
        <DataTable 
         columns={columns} 
-        data={filteredUsers}
+        data={filteredDrafts}
         pagination
         // selectableRows
         selectableRowsHighlight
@@ -173,13 +159,13 @@ const errorStyle={
                 size='small'
                 color='info'
                 fullWidth
-                value={searchUser}
-                onChange={(e)=>setSearchUser(e.target.value)}
+                value={searchDraft}
+                onChange={(e)=>setSearchDraft(e.target.value)}
                 />
               </Box>
               <Box>
                 {
-                    showUserAddForm ? (
+                    showDraftAddForm ? (
                         <Button 
                         variant="contained" 
                         size="small" 
@@ -189,7 +175,7 @@ const errorStyle={
                     >
                         <VisibilityOffIcon /> Hide Form    
                     </Button>
-                    ):( showUserEditForm ? (
+                    ):( showDraftEditForm ? (
                         <Button 
                             variant="contained" 
                             size="small" 
@@ -205,9 +191,9 @@ const errorStyle={
                             size="small" 
                             color="secondary" 
                             sx={{ textTransform:"none" }}
-                            onClick={showAddUserForm}
+                            onClick={showAddDraftForm}
                             >
-                       <AddIcon /> Add New User
+                       <AddIcon /> Add New Draft
                     </Button>
                     )
                 )
@@ -221,4 +207,4 @@ const errorStyle={
   )
 }
 
-export default UsersTable
+export default DraftsTable

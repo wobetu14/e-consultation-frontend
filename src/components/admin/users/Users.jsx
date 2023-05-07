@@ -4,11 +4,9 @@ import UsersTable from '../DataTables/UsersTable';
 
 const Users = () => {
   return (
-   <>
     <UsersDataProvider>
       <UsersTable />
     </UsersDataProvider>
-   </>
   )
 }
 
