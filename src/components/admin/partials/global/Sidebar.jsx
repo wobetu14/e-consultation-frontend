@@ -166,13 +166,7 @@ const Sidebar = () => {
                       selected={selected}
                       setSelected={setSelected}
                     />
-                    <Item
-                      title="Create user"
-                      to="create_user"
-                      icon={<PersonAddIcon />}
-                      selected={selected}
-                      setSelected={setSelected}
-                    />
+
                     <Item
                       title="Users"
                       to="users"
@@ -182,24 +176,9 @@ const Sidebar = () => {
                     />
 
                   <Item
-                    title="New Sector"
-                    to="create_sector"
-                    icon={<SectorIcon />}
-                    selected={selected}
-                    setSelected={setSelected}
-                  />
-                  <Item
                     title="Sectors"
                     to="sectors"
                     icon={<SectorIcon />}
-                    selected={selected}
-                    setSelected={setSelected}
-                  />
-
-                  <Item
-                    title="New Region"
-                    to="create_region"
-                    icon={<RegionIcon />}
                     selected={selected}
                     setSelected={setSelected}
                   />
@@ -233,13 +212,7 @@ const Sidebar = () => {
                       selected={selected}
                       setSelected={setSelected}
                     />
-                    <Item
-                      title="Create user"
-                      to="create_user"
-                      icon={<PersonAddIcon />}
-                      selected={selected}
-                      setSelected={setSelected}
-                    />
+
                     <Item
                       title="Users"
                       to="users"
@@ -248,13 +221,6 @@ const Sidebar = () => {
                       setSelected={setSelected}
                     />
 
-                  <Item
-                    title="Create Institution"
-                    to="create_institution"
-                    icon={<InstitutionIcon />}
-                    selected={selected}
-                    setSelected={setSelected}
-                  />
                   <Item
                     title="Institutions"
                     to="institutions"
@@ -283,13 +249,7 @@ const Sidebar = () => {
                       selected={selected}
                       setSelected={setSelected}
                     />
-                    <Item
-                      title="Create user"
-                      to="create_user"
-                      icon={<PersonAddIcon />}
-                      selected={selected}
-                      setSelected={setSelected}
-                    />
+
                     <Item
                       title="Users"
                       to="users"
@@ -319,13 +279,7 @@ const Sidebar = () => {
                       selected={selected}
                       setSelected={setSelected}
                     />
-                    <Item
-                      title="Create user"
-                      to="create_user"
-                      icon={<PersonAddIcon />}
-                      selected={selected}
-                      setSelected={setSelected}
-                    />
+                 
                     <Item
                       title="Users"
                       to="users"
@@ -334,13 +288,6 @@ const Sidebar = () => {
                       setSelected={setSelected}
                     />
 
-                  <Item
-                    title="Create Institution"
-                    to="create_institution"
-                    icon={<InstitutionIcon />}
-                    selected={selected}
-                    setSelected={setSelected}
-                  />
                   <Item
                     title="Institutions"
                     to="institutions"
@@ -369,13 +316,7 @@ const Sidebar = () => {
                       selected={selected}
                       setSelected={setSelected}
                     />
-                    <Item
-                      title="Create user"
-                      to="create_user"
-                      icon={<PersonAddIcon />}
-                      selected={selected}
-                      setSelected={setSelected}
-                    />
+                  
                     <Item
                       title="Users"
                       to="users"
@@ -451,13 +392,6 @@ const Sidebar = () => {
               {
                 userRole==="Uploader" ? ( 
                     <>
-                    <Item
-                        title="Test Data Table"
-                        to="data_table"
-                        icon={<HomeIcon />}
-                        selected={selected}
-                        setSelected={setSelected}
-                      />
                       <Item
                         title="Dashboard"
                         to="/admin"
@@ -465,13 +399,7 @@ const Sidebar = () => {
                         selected={selected}
                         setSelected={setSelected}
                       />
-                    <Item
-                      title="New Draft"
-                      to="create_draft"
-                      icon={<PersonIcon />}
-                      selected={selected}
-                      setSelected={setSelected}
-                    />
+
                     <Item
                       title="Draft Documents"
                       to="drafts"

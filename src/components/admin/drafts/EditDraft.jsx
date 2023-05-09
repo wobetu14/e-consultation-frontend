@@ -93,7 +93,7 @@ const EditDraft = () => {
   }
   
   const fetchDrafts = async()=>{
-    return await  axios.get('drafts')
+    return await  axios.get('mydrafts')
     .then(res=>res.data.data)
     .then(res=>{
       setDrafts(res.data)

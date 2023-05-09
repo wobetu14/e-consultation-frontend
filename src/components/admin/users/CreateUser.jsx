@@ -122,8 +122,8 @@ validationSchema:YUP.object({
         institution_id:values.institutionID
     };
 
-    createUser(userData);
-    fetchUsers();
+   createUser(userData);
+   fetchUsers();
   }
 }); 
     

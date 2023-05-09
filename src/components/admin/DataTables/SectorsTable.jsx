@@ -16,8 +16,11 @@ import CreateUser from '../users/CreateUser'
 import EditUser from '../users/EditUser'
 import { UsersDataContext } from '../../../contexts/UsersDataContext';
 import { motion } from 'framer-motion';
+import CreateSector from '../sectors/CreateSector';
+import EditSector from '../sectors/EditSector';
+import { SectorsDataContext } from '../../../contexts/SectorsDataContext';
 
-const UsersTable = () => {
+const SectorsTable = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode); 
 
@@ -25,16 +28,23 @@ const UsersTable = () => {
     // User context
     const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
     const {
-        users, setUsers, user, setUser, filteredUsers,
-        searchUser,setSearchUser, showUserAddForm, 
-        setShowUserAddForm, 
-        showUserEditForm, 
-        setShowUserEditForm,
+        sectors,
+        setSectors,
+        filteredSectors,
+        setFilteredSectors,
+        searchSector,
+        setSearchSector,
+        sector,
+        setSector,
+        showSectorAddForm,
+        setShowSectorAddForm,
+        showSectorEditForm,
+        setShowSectorEditForm,
         serverErrorMsg,
         setServerErrorMsg,
         serverSuccessMsg,
-        setServerSuccessMsg,
-    }=useContext(UsersDataContext);
+        setServerSuccessMsg
+    }=useContext(SectorsDataContext); 
 
 const errorStyle={
     color:'red',
@@ -55,43 +65,32 @@ const errorStyle={
     }
 
     // Show / Hide Add User Form
-    const showAddUserForm=(msg)=>{
-        setShowUserAddForm(!showUserAddForm)
-        setShowUserEditForm(false);
+    const showAddSectorForm=()=>{
+        setShowSectorAddForm(!showSectorAddForm)
+        setShowSectorEditForm(false);
     }
 
-    const showEditUserForm=(userRow)=>{
-            setUser(userRow)
-            setShowUserEditForm(true);
-            setShowUserAddForm(false);
-            console.log(userRow)
+    const showEditSectorForm=(sectorRow)=>{
+            setSector(sectorRow)
+            setShowSectorEditForm(true);
+            setShowSectorAddForm(false);
     }
 
     const hideForm=()=>{
-        setShowUserEditForm(false);
-        setShowUserAddForm(false)
+        setShowSectorEditForm(false);
+        setShowSectorAddForm(false)
     }
 
     const columns=[
         {
-            name:<Typography variant="h5" fontWeight="600">Full Name</Typography>,
-            selector:(row)=><Typography variant="body1">{`${row.first_name} ${row.middle_name}`}</Typography>,
+            name:<Typography variant="h5" fontWeight="600">Name</Typography>,
+            selector:(row)=><Typography variant="body1">{`${row.name}`}</Typography>,
             sortable:true,
         },
         
         {
-            name:<Typography variant="h5" fontWeight="600">Mobile</Typography>,
-            selector:(row)=><Typography variant="body1">{row.mobile_number}</Typography>,
-            sortable:true,
-        },
-        {
-            name:<Typography variant="h5" fontWeight="600">Institution</Typography>,
-            selector:(row)=><Typography variant="body1">{row.institution_id}</Typography>,
-            sortable:true,
-        },
-        {
-            name:<Typography variant="h5" fontWeight="600">Region</Typography>,
-            selector:(row)=><Typography variant="body1">{row.region_id}</Typography>,
+            name:<Typography variant="h5" fontWeight="600">Description</Typography>,
+            selector:(row)=><Typography variant="body1">{row.description.substr(0, 50)}</Typography>,
             sortable:true,
         },
         {
@@ -100,24 +99,17 @@ const errorStyle={
             sortable:true,
         },
         {
-            name:<Typography variant="h5" fontWeight="600">Updated By</Typography>,
-            selector:(row)=><Typography variant="body1">{row.updated_by}</Typography>,
+            name:<Typography variant="h5" fontWeight="600">Region</Typography>,
+            selector:(row)=><Typography variant="body1">{row.region_id}</Typography>,
             sortable:true,
         },
-        {
-            name:<Typography variant="h5" fontWeight="600">Role</Typography>,
-            selector:(row)=>row.roles.map((role)=>(
-                <li style={{ listStyleType:"none" }}>
-                    <Typography variant="body1">{role.name}</Typography>
-                </li>
-            ))
-        },
+        
         {
             name:<Typography variant="h5" fontWeight="600">Actions</Typography>,
             selector:(row)=>{
                 return (
                     <Stack spacing={0} direction="row">
-                        <Button variant="Link" size="small" color="secondary" sx={{ textTransform:"none" }} key={row.id} onClick={()=>showEditUserForm(row)}><ModeEditIcon fontSize="small" color="secondary" /></Button>
+                        <Button variant="Link" size="small" color="secondary" sx={{ textTransform:"none" }} key={row.id} onClick={()=>showEditSectorForm(row)}><ModeEditIcon fontSize="small" color="secondary" /></Button>
                         <Button variant="Link" size="small" sx={{textTransform:"none"}} onClick={()=>alert("You deleted user ID: "+row.id)}><DeleteIcon fontSize="small" sx={{ color:colors.dangerColor[200] }} /></Button>
                         {/* <Button variant="contained" size="small" color="warning" sx={{textTransform:"none"}} onClick={()=>alert("You deleted user ID: "+row.id)}>Deactivate Account</Button> */}
                     </Stack>
@@ -127,8 +119,8 @@ const errorStyle={
     ]
 
   return (
-    <Box m='0 20px' width={'95%'}>
-    <Header title="Users" subtitle="Manage Users" />
+    <Box width={'95%'}>
+    <Header title="Users" subtitle="" />
 
         <Grid align='center' sx={{ paddingBottom:"5px", paddingTop:'5px' }}>
             <motion.span
@@ -146,19 +138,19 @@ const errorStyle={
             </motion.span>
         </Grid>
     {
-        showUserAddForm && (
-          <CreateUser />
+        showSectorAddForm && (
+          <CreateSector />
         )
     } 
     {
-      showUserEditForm && (
-        <EditUser />
+      showSectorEditForm && (
+        <EditSector />
       )
     }
      <Paper elevation={1} sx={{ marginTop:"10px", marginBottom:"350px"}}>
        <DataTable 
         columns={columns} 
-        data={filteredUsers}
+        data={filteredSectors}
         pagination
         // selectableRows
         selectableRowsHighlight
@@ -173,13 +165,13 @@ const errorStyle={
                 size='small'
                 color='info'
                 fullWidth
-                value={searchUser}
-                onChange={(e)=>setSearchUser(e.target.value)}
+                value={searchSector}
+                onChange={(e)=>setSearchSector(e.target.value)}
                 />
               </Box>
               <Box>
                 {
-                    showUserAddForm ? (
+                    showSectorAddForm ? (
                         <Button 
                         variant="contained" 
                         size="small" 
@@ -189,7 +181,7 @@ const errorStyle={
                     >
                         <VisibilityOffIcon /> Hide Form    
                     </Button>
-                    ):( showUserEditForm ? (
+                    ):( showSectorEditForm ? (
                         <Button 
                             variant="contained" 
                             size="small" 
@@ -205,9 +197,9 @@ const errorStyle={
                             size="small" 
                             color="secondary" 
                             sx={{ textTransform:"none" }}
-                            onClick={showAddUserForm}
+                            onClick={showAddSectorForm}
                             >
-                       <AddIcon /> Add New User
+                       <AddIcon /> Add New Sector
                     </Button>
                     )
                 )
@@ -221,4 +213,4 @@ const errorStyle={
   )
 }
 
-export default UsersTable
+export default SectorsTable

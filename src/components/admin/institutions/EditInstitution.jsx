@@ -103,15 +103,14 @@ const fetchRegions =async() =>{
  
  const formik=useFormik({
     initialValues:{
-      institutionName:"",
-      institutionTypeId:"",
-      regionId:"",
-      // authority:"",
-      email:"",
-      telephone:"",
-      address:"",
-      sectorID:"",
-      canCreateDraft:"",
+      institutionName:institution ? (institution.name):"",
+      institutionTypeId:institution ? (institution.institution_type.id):"",
+      regionId:institution ? (institution.region_id):"",
+      email:institution ? (institution.email):"",
+      telephone: institution ? (institution.telephone) : "",
+      address:institution ? (institution.address):"",
+      sectorID:institution ? (institution.sector):"",
+      canCreateDraft:institution ? (institution.can_create_draft):"",
       createdBy:userInfo ? userInfo.user.id:"",
       updatedBy:userInfo ? userInfo.user.id:"",
     },
@@ -163,7 +162,7 @@ const createInstitution=async (institutionData) => {
    
   return (
     <Box width={'95%'}>
-      <Header title="Create New Institution" subtitle="" />
+      <Header title="Update Institution Info" subtitle="" />
       <motion.span
         initial={{ opacity: 0}}
         animate={{ opacity: 1}}

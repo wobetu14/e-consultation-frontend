@@ -12,7 +12,7 @@ import { UserContext } from '../../../contexts/UserContext';
 
 
 
-const CreateRegion = () => {
+const EditRegion = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode); 
 
@@ -59,18 +59,14 @@ const CreateRegion = () => {
  
  const formik=useFormik({
     initialValues:{
-      regionName:"",
-      createdBy:1
+      regionName: region ? region.name : "",
+      updatedBy: userInfo ? userInfo.user.id : ""
     },
-
-validationSchema:YUP.object({
-  regionName:YUP.string().required("This field is required. Please enter the region name."),
-  }),
 
   onSubmit:(values)=>{
     const regionData={
       name:values.regionName,
-      created_by:values.createdBy
+      updated_by:values.updatedBy
     };
 
     registerRegion(regionData);
@@ -79,7 +75,7 @@ validationSchema:YUP.object({
     
 const registerRegion=async (regionData) => {
     //  console.log(companyData)
-    return await axios.post('regions', regionData)
+    return await axios.put(`regions/${region.id}`, regionData)
     .then(res => {
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null);
@@ -128,7 +124,7 @@ const registerRegion=async (regionData) => {
                       sx={{ align:'right', textTransform:'none' }}
                       color='secondary'
                     >
-                      Save </Button>
+                      Save Changes </Button>
                     </Grid>
            </Grid>
           </Grid>            
@@ -138,4 +134,4 @@ const registerRegion=async (regionData) => {
   )
 }
 
-export default CreateRegion
+export default EditRegion

@@ -14,10 +14,12 @@ import { UserContext } from '../../../contexts/UserContext'
 import Header from '../AdminHeader'
 import CreateUser from '../users/CreateUser'
 import EditUser from '../users/EditUser'
-import { UsersDataContext } from '../../../contexts/UsersDataContext';
 import { motion } from 'framer-motion';
+import { InstitutionsDataContext } from '../../../contexts/InstitutionsDataContext';
+import CreateInstitution from '../institutions/CreateInstitution';
+import EditInstitution from '../institutions/EditInstitution';
 
-const UsersTable = () => {
+const InstitutionsTable = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode); 
 
@@ -25,16 +27,23 @@ const UsersTable = () => {
     // User context
     const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
     const {
-        users, setUsers, user, setUser, filteredUsers,
-        searchUser,setSearchUser, showUserAddForm, 
-        setShowUserAddForm, 
-        showUserEditForm, 
-        setShowUserEditForm,
+        institutions,
+        setInstitutions,
+        filteredInstitutions,
+        setFilteredInstitutions,
+        searchInstitution,
+        setSearchInstitution,
+        institution,
+        setInstitution,
+        showInstitutionAddForm,
+        setShowInstitutionAddForm,
+        showInstitutionEditForm,
+        setShowInstitutionEditForm,
         serverErrorMsg,
         setServerErrorMsg,
         serverSuccessMsg,
-        setServerSuccessMsg,
-    }=useContext(UsersDataContext);
+        setServerSuccessMsg
+    }=useContext(InstitutionsDataContext);
 
 const errorStyle={
     color:'red',
@@ -55,42 +64,48 @@ const errorStyle={
     }
 
     // Show / Hide Add User Form
-    const showAddUserForm=(msg)=>{
-        setShowUserAddForm(!showUserAddForm)
-        setShowUserEditForm(false);
+    const showAddInstitutionForm=()=>{
+        setShowInstitutionAddForm(!showInstitutionAddForm)
+        setShowInstitutionEditForm(false);
     }
 
-    const showEditUserForm=(userRow)=>{
-            setUser(userRow)
-            setShowUserEditForm(true);
-            setShowUserAddForm(false);
-            console.log(userRow)
+    const showEditInstitutionForm=(institutionRow)=>{
+            setInstitution(institutionRow)
+            setShowInstitutionEditForm(true);
+            setShowInstitutionAddForm(false);
+            console.log(institutionRow)
     }
 
     const hideForm=()=>{
-        setShowUserEditForm(false);
-        setShowUserAddForm(false)
+        setShowInstitutionEditForm(false);
+        setShowInstitutionAddForm(false)
     }
 
     const columns=[
         {
-            name:<Typography variant="h5" fontWeight="600">Full Name</Typography>,
-            selector:(row)=><Typography variant="body1">{`${row.first_name} ${row.middle_name}`}</Typography>,
+            name:<Typography variant="h5" fontWeight="600">Institution Name</Typography>,
+            selector:(row)=><Typography variant="body1">{`${row.name}`}</Typography>,
             sortable:true,
         },
         
         {
-            name:<Typography variant="h5" fontWeight="600">Mobile</Typography>,
-            selector:(row)=><Typography variant="body1">{row.mobile_number}</Typography>,
+            name:<Typography variant="h5" fontWeight="600">Email</Typography>,
+            selector:(row)=><Typography variant="body1">{row.email}</Typography>,
             sortable:true,
         },
         {
-            name:<Typography variant="h5" fontWeight="600">Institution</Typography>,
-            selector:(row)=><Typography variant="body1">{row.institution_id}</Typography>,
+            name:<Typography variant="h5" fontWeight="600">Telephone</Typography>,
+            selector:(row)=><Typography variant="body1">{row.telephone}</Typography>,
             sortable:true,
         },
         {
-            name:<Typography variant="h5" fontWeight="600">Region</Typography>,
+            name:<Typography variant="h5" fontWeight="600">Address</Typography>,
+            selector:(row)=><Typography variant="body1">{row.address}</Typography>,
+            sortable:true,
+        },
+        
+        {
+            name:<Typography variant="h5" fontWeight="600">Region ID</Typography>,
             selector:(row)=><Typography variant="body1">{row.region_id}</Typography>,
             sortable:true,
         },
@@ -104,20 +119,13 @@ const errorStyle={
             selector:(row)=><Typography variant="body1">{row.updated_by}</Typography>,
             sortable:true,
         },
-        {
-            name:<Typography variant="h5" fontWeight="600">Role</Typography>,
-            selector:(row)=>row.roles.map((role)=>(
-                <li style={{ listStyleType:"none" }}>
-                    <Typography variant="body1">{role.name}</Typography>
-                </li>
-            ))
-        },
+        
         {
             name:<Typography variant="h5" fontWeight="600">Actions</Typography>,
             selector:(row)=>{
                 return (
                     <Stack spacing={0} direction="row">
-                        <Button variant="Link" size="small" color="secondary" sx={{ textTransform:"none" }} key={row.id} onClick={()=>showEditUserForm(row)}><ModeEditIcon fontSize="small" color="secondary" /></Button>
+                        <Button variant="Link" size="small" color="secondary" sx={{ textTransform:"none" }} key={row.id} onClick={()=>showEditInstitutionForm(row)}><ModeEditIcon fontSize="small" color="secondary" /></Button>
                         <Button variant="Link" size="small" sx={{textTransform:"none"}} onClick={()=>alert("You deleted user ID: "+row.id)}><DeleteIcon fontSize="small" sx={{ color:colors.dangerColor[200] }} /></Button>
                         {/* <Button variant="contained" size="small" color="warning" sx={{textTransform:"none"}} onClick={()=>alert("You deleted user ID: "+row.id)}>Deactivate Account</Button> */}
                     </Stack>
@@ -127,9 +135,8 @@ const errorStyle={
     ]
 
   return (
-    <Box m='0 20px' width={'95%'}>
-    <Header title="Users" subtitle="Manage Users" />
-
+    <Box width={'95%'}>
+    <Header title="Institutions" subtitle="Manage Institutions" />
         <Grid align='center' sx={{ paddingBottom:"5px", paddingTop:'5px' }}>
             <motion.span
                 initial={{ opacity: 0}}
@@ -141,24 +148,24 @@ const errorStyle={
                 </Typography>
                 
                 <Typography variant='h1'>
-                {serverErrorMsg ? <Alert severity='error' style={errorStyle}>{serverErrorMsg}</Alert>:null}
+                    {serverErrorMsg ? <Alert severity='error' style={errorStyle}>{serverErrorMsg}</Alert>:null}
                 </Typography> 
             </motion.span>
         </Grid>
     {
-        showUserAddForm && (
-          <CreateUser />
+        showInstitutionAddForm && (
+          <CreateInstitution />
         )
     } 
     {
-      showUserEditForm && (
-        <EditUser />
+      showInstitutionEditForm && (
+        <EditInstitution />
       )
     }
      <Paper elevation={1} sx={{ marginTop:"10px", marginBottom:"350px"}}>
        <DataTable 
         columns={columns} 
-        data={filteredUsers}
+        data={filteredInstitutions}
         pagination
         // selectableRows
         selectableRowsHighlight
@@ -173,13 +180,13 @@ const errorStyle={
                 size='small'
                 color='info'
                 fullWidth
-                value={searchUser}
-                onChange={(e)=>setSearchUser(e.target.value)}
+                value={searchInstitution}
+                onChange={(e)=>setSearchInstitution(e.target.value)}
                 />
               </Box>
               <Box>
                 {
-                    showUserAddForm ? (
+                    showInstitutionAddForm ? (
                         <Button 
                         variant="contained" 
                         size="small" 
@@ -189,7 +196,7 @@ const errorStyle={
                     >
                         <VisibilityOffIcon /> Hide Form    
                     </Button>
-                    ):( showUserEditForm ? (
+                    ):( showInstitutionEditForm ? (
                         <Button 
                             variant="contained" 
                             size="small" 
@@ -205,9 +212,9 @@ const errorStyle={
                             size="small" 
                             color="secondary" 
                             sx={{ textTransform:"none" }}
-                            onClick={showAddUserForm}
+                            onClick={showAddInstitutionForm}
                             >
-                       <AddIcon /> Add New User
+                       <AddIcon /> Add New Institution
                     </Button>
                     )
                 )
@@ -221,4 +228,4 @@ const errorStyle={
   )
 }
 
-export default UsersTable
+export default InstitutionsTable

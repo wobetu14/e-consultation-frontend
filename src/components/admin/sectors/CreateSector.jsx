@@ -2,12 +2,14 @@ import { Typography, Button, FormControlLabel, Checkbox, TextField, Grid, Alert,
 import { Box } from '@mui/system'
 import { useFormik } from 'formik';
 import * as YUP from 'yup';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { tokens } from '../../../theme';
 import Header from '../AdminHeader';
 import axios from '../../../axios/AxiosGlobal'
 import { motion } from 'framer-motion';
 import Sectors from '../sectors/Sectors'
+import { UserContext } from '../../../contexts/UserContext';
+import { SectorsDataContext } from '../../../contexts/SectorsDataContext';
 
 
 
@@ -15,20 +17,15 @@ const CreateSector = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode); 
 
-  const [serverErrorMsg, setServerErrorMsg]=useState(null);
-  const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
 
-  const errorStyle={
-    color:'red',
-    fontWeight:'400',
-    fontSize:'18px'
-  }
-
-  const successStyle={
-   color:'green',
-   fontWeight:'400',
-   fontSize:'18px'
- }
+    // User context
+    const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
+    const {
+        sectors,
+        setSectors,
+        setServerErrorMsg,
+        setServerSuccessMsg
+    }=useContext(SectorsDataContext); 
 
  const helperTextStyle={
   color:'red',
@@ -41,7 +38,7 @@ const CreateSector = () => {
     initialValues:{
       sectorName:"",
       sectorDescription:"",
-      createdBy:1
+      createdBy:userInfo ? userInfo.user.id:""
     },
 
 validationSchema:YUP.object({
@@ -57,6 +54,7 @@ validationSchema:YUP.object({
     };
 
     createSector(sectorData);
+    fetchSectors();
   }
 }); 
     
@@ -66,86 +64,86 @@ const createSector=async (sectorData) => {
         .then(res => {
           setServerSuccessMsg(res.data.message);
           setServerErrorMsg(null)
+          formik.resetForm();
         })
         .catch(errors =>{
            setServerErrorMsg(errors.response.data.message);
           setServerSuccessMsg(null) 
         }) 
    }
+
+   const fetchSectors =async() =>{
+    try{
+      const res = await  axios.get('sectors')
+        console.log(res.data.data.data);
+        setSectors(res.data.data.data);
+    } catch(error){
+        console.log(error);
+     }
+  }
    
   return (
-    <Box m='0 20px' width={'95%'}>
-      <Header title="Create New Sector" subtitle="Manage Sectors" />
+    <Box width={'95%'}>
+      <Header title="Create New Sector" subtitle="" />
       <motion.span
         initial={{ opacity: 0}}
         animate={{ opacity: 1}}
         transition={{ duration: 0.3 }}
       >
-      <Stack
-        sx={{width:"60%" }}
-      >
+
         <form onSubmit={formik.handleSubmit}>
+
+        <Grid container spacing={1}>
+          <Grid item xs={5}>
             <TextField 
-              label="Name of economic sector" 
-              variant='outlined' 
-              fullWidth
-              sx={{ paddingBottom:"30px" }}
-              color="info"
+                label="Name of economic sector" 
+                variant='outlined' 
+                size="small"
+                fullWidth
+                sx={{ paddingBottom:"30px" }}
+                color="info"
+                name='sectorName'
+                value={formik.values.sectorName}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                helperText={formik.touched.sectorName && formik.errors.sectorName ? <span style={helperTextStyle}>{formik.errors.sectorName}</span>:null}
+              />
+          </Grid>
 
-              name='sectorName'
-              value={formik.values.sectorName}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              helperText={formik.touched.sectorName && formik.errors.sectorName ? <span style={helperTextStyle}>{formik.errors.sectorName}</span>:null}
-            />
+          <Grid item xs={5}>
+            <TextField 
+                label="Short description" 
+                variant='outlined' 
+                size="small"
+                fullWidth
+                multiline
+                rows={4}
+                sx={{ paddingBottom:"30px" }}
+                color="info"
+                name='sectorDescription'
+                value={formik.values.sectorDescription}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                helperText={formik.touched.sectorDescription && formik.errors.sectorDescription ? <span style={helperTextStyle}>{formik.errors.sectorDescription}</span>:null}
+              />
+          </Grid>
 
-<TextField 
-              label="Short description" 
-              variant='outlined' 
-              fullWidth
-              multiline
-              rows={4}
-              sx={{ paddingBottom:"30px" }}
-              color="info"
-              name='sectorDescription'
-              value={formik.values.sectorDescription}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
-              helperText={formik.touched.sectorDescription && formik.errors.sectorDescription ? <span style={helperTextStyle}>{formik.errors.sectorDescription}</span>:null}
-            />
-
-    <Grid align='center' sx={{ paddingBottom:"15px", paddingTop:'15px' }}>
-        <motion.span
-            initial={{ opacity: 0}}
-            animate={{ opacity: 1}}
-            transition={{ duration: 0.3 }}
-          > 
-            <Typography variant='h1'>
-              {serverSuccessMsg ? <Alert severity='success' style={successStyle}>{serverSuccessMsg}</Alert>:null}
-            </Typography>
-            
-            <Typography variant='h1'>
-            {serverErrorMsg ? <Alert severity='error' style={errorStyle}>{serverErrorMsg}</Alert>:null}
-            </Typography> 
-
-            </motion.span>
+          <Grid item xs={2}>
+              <Grid 
+                  sx={{ paddingBottom:"20px" }}
+                  align='right'
+                  >
+                  <Button type='submit' variant='contained'
+                    size="small"
+                    sx={{ align:'right', textTransform:'none' }}
+                    color='secondary'
+                  >
+                    Save 
+                </Button>
+              </Grid>
+          </Grid>
         </Grid>
-
-
-        <Grid 
-              sx={{ paddingBottom:"20px" }}
-              align='right'
-            >
-          
-            <Button type='submit' variant='contained'
-              sx={{ align:'right',backgroundColor:colors.primary[400], textTransform:'none' }}
-              color='primary' size='large' elevation={10}
-            >
-              Save </Button>
-            </Grid>
-        </form>
-        <Sectors />
-      </Stack>
+      </form>
  </motion.span>
 </Box> 
   )
