@@ -3,7 +3,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import { tokens } from '../../../theme';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import {motion} from 'framer-motion'
 
 import List from '@mui/material/List';
@@ -16,6 +16,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { useFormik } from 'formik';
 import * as YUP from 'yup';
 import axios from '../../../axios/AxiosGlobal'
+import { UserContext } from '../../../contexts/UserContext';
 
 const SectionFeedbacks = ({section}) => {
   const theme = useTheme();
@@ -26,6 +27,9 @@ const SectionFeedbacks = ({section}) => {
 
   const [serverErrorMsg, setServerErrorMsg]=useState(null);
   const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
+
+  // User context
+  const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
 
   const errorStyle={
     color:'red',
@@ -51,9 +55,9 @@ const SectionFeedbacks = ({section}) => {
     initialValues:{
       sectionID:section.id,
       sectionComment:"",
-      commentedBy:5,
+      commentedBy:userInfo ? (userInfo.user.id):"",
       commentingTeam:1,
-      createdBy:5,
+      createdBy:userInfo ? (userInfo.user.id):"",
     },
 
   onSubmit:(values)=>{
@@ -74,7 +78,8 @@ const addComment=async (sectionCommentData) => {
     .then(res => {
       console.log(res.data.message)
       setServerSuccessMsg(res.data.success);
-      setServerErrorMsg(null)
+      setServerErrorMsg(null);
+      formik.resetForm();
     })
     .catch(errors =>{
       setServerErrorMsg(errors.response.data.message);

@@ -17,13 +17,13 @@ const DocumentsFilters = (
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
-    const [lawCategoryID, setLawCategoryID]=useState(1);
+    const [lawCategoryID, setLawCategoryID]=useState(null);
     const [lawCategories, setLawCategories]=useState(null);
 
-    const [regionID, setRegionID] = useState(1);
+    const [regionID, setRegionID] = useState(null);
     const [regions, setRegions]=useState(null);
 
-    const [institutionID, setInstitutionID]=useState(1);
+    const [institutionID, setInstitutionID]=useState(null);
     const [institutions, setInstitutions]=useState(null);
     const [draftStatusName, setDraftStatusName]=useState("Open");
 
@@ -48,7 +48,7 @@ const DocumentsFilters = (
 
     useEffect(()=>{
       fetchRegions();
-    },[lawCategories])
+    },[regions])
 
     const fetchRegions = async() => {
       return await axios.get('regions')
@@ -62,7 +62,7 @@ const DocumentsFilters = (
 
     useEffect(()=>{
       fetchInstitutions();
-    },[lawCategories])
+    },[institutions])
 
     const fetchInstitutions = async() => {
       return await axios.get('institutions')

@@ -16,12 +16,12 @@ import CreateUser from '../users/CreateUser'
 import EditUser from '../users/EditUser'
 import { UsersDataContext } from '../../../contexts/UsersDataContext';
 import { motion } from 'framer-motion';
+import DeleteUserDialog from '../../../partials/DeleteUserDialog'
 
 const UsersTable = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode); 
-
-    
+ 
     // User context
     const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
     const {
@@ -34,6 +34,9 @@ const UsersTable = () => {
         setServerErrorMsg,
         serverSuccessMsg,
         setServerSuccessMsg,
+        openDialog, 
+        setOpenDialog,
+        getUserInfo
     }=useContext(UsersDataContext);
 
 const errorStyle={
@@ -64,12 +67,16 @@ const errorStyle={
             setUser(userRow)
             setShowUserEditForm(true);
             setShowUserAddForm(false);
-            console.log(userRow)
     }
 
     const hideForm=()=>{
         setShowUserEditForm(false);
         setShowUserAddForm(false)
+    }
+
+    const deleteUserDialog = (userRow) =>{
+            setUser(userRow);
+            setOpenDialog(true);
     }
 
     const columns=[
@@ -118,7 +125,7 @@ const errorStyle={
                 return (
                     <Stack spacing={0} direction="row">
                         <Button variant="Link" size="small" color="secondary" sx={{ textTransform:"none" }} key={row.id} onClick={()=>showEditUserForm(row)}><ModeEditIcon fontSize="small" color="secondary" /></Button>
-                        <Button variant="Link" size="small" sx={{textTransform:"none"}} onClick={()=>alert("You deleted user ID: "+row.id)}><DeleteIcon fontSize="small" sx={{ color:colors.dangerColor[200] }} /></Button>
+                        <Button variant="Link" size="small" sx={{textTransform:"none"}} onClick={()=>deleteUserDialog(row)}><DeleteIcon fontSize="small" sx={{ color:colors.dangerColor[200] }} /></Button>
                         {/* <Button variant="contained" size="small" color="warning" sx={{textTransform:"none"}} onClick={()=>alert("You deleted user ID: "+row.id)}>Deactivate Account</Button> */}
                     </Stack>
                 )
@@ -145,6 +152,15 @@ const errorStyle={
                 </Typography> 
             </motion.span>
         </Grid>
+    {
+        openDialog && (
+            <DeleteUserDialog 
+                title="Deleting User..." 
+                text={`You are about to delete user ${user ? (user.first_name+" "+user.middle_name): ""}. Are you sure?`}
+            />
+        )
+    }
+        
     {
         showUserAddForm && (
           <CreateUser />

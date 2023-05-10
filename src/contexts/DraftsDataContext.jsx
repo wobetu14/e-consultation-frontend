@@ -15,6 +15,8 @@ export const DraftsDataProvider = (props) => {
     const [serverErrorMsg, setServerErrorMsg]=useState(null);
     const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
 
+    const [openDialog, setOpenDialog]=useState(false);
+
     useEffect(()=>{
         fetchDrafts();
     }, [])
@@ -25,6 +27,31 @@ export const DraftsDataProvider = (props) => {
             console.log(res.data.data.data);
             setDrafts(res.data.data.data);
             setFilteredDrafts(res.data.data.data);
+        } catch(error){
+            console.log(error);
+         }
+      }
+
+
+      const deleteDraft=async (draftID) => {
+        return await axios.delete(`drafts/${draftID}`)
+        .then(res => {
+          setServerSuccessMsg(res.data.message);
+          setServerErrorMsg(null);
+          setOpenDialog(false);
+          fetchDrafts();
+        })
+        .catch(errors =>{
+          setServerErrorMsg(errors.response.data.message);
+          setServerSuccessMsg(null) 
+        }) 
+       }
+
+       const getDraftInfo = async(draftRow) =>{
+        try{
+          const res = await axios.get(`drafts/${draftRow}`)
+            setDraft(res.data.data.data);
+            setOpenDialog(true);
         } catch(error){
             console.log(error);
          }
@@ -49,6 +76,7 @@ export const DraftsDataProvider = (props) => {
         setSearchDraft:setSearchDraft,
         draft:draft,
         setDraft:setDraft,
+        fetchDrafts:fetchDrafts,
         showDraftAddForm:showDraftAddForm,
         setShowDraftAddForm:setShowDraftAddForm,
         showDraftEditForm:showDraftEditForm,
@@ -56,7 +84,11 @@ export const DraftsDataProvider = (props) => {
         serverErrorMsg:serverErrorMsg,
         setServerErrorMsg:setServerErrorMsg,
         serverSuccessMsg:serverSuccessMsg,
-        setServerSuccessMsg:setServerSuccessMsg
+        setServerSuccessMsg:setServerSuccessMsg,
+        openDialog:openDialog,
+        setOpenDialog:setOpenDialog,
+        getDraftInfo:getDraftInfo,
+        deleteDraft:deleteDraft,
       }}>
         {props.children}
     </DraftsDataContext.Provider>

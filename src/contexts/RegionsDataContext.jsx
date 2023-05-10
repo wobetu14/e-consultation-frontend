@@ -15,11 +15,13 @@ export const RegionsDataProvider = (props) => {
     const [serverErrorMsg, setServerErrorMsg]=useState(null);
     const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
 
+    const [openDialog, setOpenDialog]=useState(false);
+
     useEffect(()=>{
-       fetchUsers();
+       fetchRegions();
     }, [])
 
-    const fetchUsers =async() =>{
+    const fetchRegions =async() =>{
         try{
           const res = await  axios.get('regions')
             setRegions(res.data.data.data);
@@ -28,6 +30,20 @@ export const RegionsDataProvider = (props) => {
             console.log(error);
          }
       }
+
+      const deleteRegion=async (regionID) => {
+        return await axios.delete(`regions/${regionID}`)
+        .then(res => {
+          setServerSuccessMsg(res.data.message);
+          setServerErrorMsg(null);
+          setOpenDialog(false);
+          fetchRegions();
+        })
+        .catch(errors =>{
+          setServerErrorMsg(errors.response.data.message);
+          setServerSuccessMsg(null) 
+        }) 
+       }
      
 
       useEffect(()=>{
@@ -56,7 +72,10 @@ export const RegionsDataProvider = (props) => {
         serverErrorMsg:serverErrorMsg,
         setServerErrorMsg:setServerErrorMsg,
         serverSuccessMsg:serverSuccessMsg,
-        setServerSuccessMsg:setServerSuccessMsg
+        setServerSuccessMsg:setServerSuccessMsg,
+        openDialog:openDialog,
+        setOpenDialog:setOpenDialog,
+        deleteRegion:deleteRegion,
       }}>
         {props.children}
     </RegionsDataContext.Provider>

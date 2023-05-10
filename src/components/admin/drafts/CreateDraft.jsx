@@ -30,6 +30,7 @@ const CreateDraft = () => {
     setSearchDraft,
     draft,
     setDraft,
+    fetchDrafts,
     showDraftAddForm,
     setShowDraftAddForm,
     showDraftEditForm,
@@ -92,17 +93,6 @@ const CreateDraft = () => {
     })
   }
   
-  const fetchDrafts = async()=>{
-    return await  axios.get('drafts')
-    .then(res=>res.data.data)
-    .then(res=>{
-      setDrafts(res.data)
-    }).catch(error=>{
-      console.log(error.response.message);
-    })
-  }
-
-
  const formik=useFormik({
     initialValues:{
         institutionID:"",
@@ -189,6 +179,7 @@ const createDraftDocument=async (draftsData) => {
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null);
       formik.resetForm();
+      fetchDrafts();
     })
     .catch(errors =>{
        setServerErrorMsg(errors.response.data.message);

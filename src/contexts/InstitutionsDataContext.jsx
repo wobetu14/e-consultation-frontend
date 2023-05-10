@@ -15,6 +15,8 @@ export const InstitutionsDataProvider = (props) => {
     const [serverErrorMsg, setServerErrorMsg]=useState(null);
     const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
 
+    const [openDialog, setOpenDialog]=useState(false);
+
     useEffect(()=>{
         fetchInstitutions();
     }, [])
@@ -28,6 +30,20 @@ export const InstitutionsDataProvider = (props) => {
             console.log(error);
          }
       }
+
+      const deleteInstitution=async (institutionID) => {
+        return await axios.delete(`institutions/${institutionID}`)
+        .then(res => {
+          setServerSuccessMsg(res.data.message);
+          setServerErrorMsg(null);
+          setOpenDialog(false);
+          fetchInstitutions();
+        })
+        .catch(errors =>{
+          setServerErrorMsg(errors.response.data.message);
+          setServerSuccessMsg(null) 
+        }) 
+       }
      
 
       useEffect(()=>{
@@ -59,7 +75,11 @@ export const InstitutionsDataProvider = (props) => {
         serverErrorMsg:serverErrorMsg,
         setServerErrorMsg:setServerErrorMsg,
         serverSuccessMsg:serverSuccessMsg,
-        setServerSuccessMsg:setServerSuccessMsg
+        setServerSuccessMsg:setServerSuccessMsg,
+        openDialog:openDialog,
+        setOpenDialog:setOpenDialog,
+        deleteInstitution:deleteInstitution,
+        fetchInstitutions:fetchInstitutions
       }}>
         {props.children}
     </InstitutionsDataContext.Provider>

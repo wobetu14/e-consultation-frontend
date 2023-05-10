@@ -15,6 +15,8 @@ export const UsersDataProvider = (props) => {
     const [serverErrorMsg, setServerErrorMsg]=useState(null);
     const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
 
+    const [openDialog, setOpenDialog]=useState(false);
+
     useEffect(()=>{
        fetchUsers();
     }, [])
@@ -28,7 +30,31 @@ export const UsersDataProvider = (props) => {
             console.log(error);
          }
       }
-     
+
+      const deleteUser=async (userID) => {
+        return await axios.delete(`users/${userID}`)
+        .then(res => {
+          setServerSuccessMsg(res.data.message);
+          setServerErrorMsg(null);
+          setOpenDialog(false);
+          fetchUsers();
+        })
+        .catch(errors =>{
+          setServerErrorMsg(errors.response.data.message);
+          setServerSuccessMsg(null) 
+        }) 
+       }
+
+       const getUserInfo = async(userRow) =>{
+        try{
+          const res = await axios.get(`users/${userRow}`)
+            setUser(res.data.data);
+            setOpenDialog(true);
+        } catch(error){
+            console.log(error);
+         }
+      }
+
 
       useEffect(()=>{
         const filteredResult=users.filter((user)=>{
@@ -51,6 +77,7 @@ export const UsersDataProvider = (props) => {
         setSearchUser:setSearchUser,
         user:user,
         setUser:setUser,
+        fetchUsers:fetchUsers,
         showUserAddForm:showUserAddForm,
         setShowUserAddForm:setShowUserAddForm,
         showUserEditForm:showUserEditForm,
@@ -58,7 +85,11 @@ export const UsersDataProvider = (props) => {
         serverErrorMsg:serverErrorMsg,
         setServerErrorMsg:setServerErrorMsg,
         serverSuccessMsg:serverSuccessMsg,
-        setServerSuccessMsg:setServerSuccessMsg
+        setServerSuccessMsg:setServerSuccessMsg,
+        openDialog:openDialog,
+        setOpenDialog:setOpenDialog,
+        deleteUser:deleteUser,
+        getUserInfo:getUserInfo
       }}>
         {props.children}
     </UsersDataContext.Provider>

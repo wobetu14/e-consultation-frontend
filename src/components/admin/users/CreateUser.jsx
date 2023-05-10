@@ -20,7 +20,7 @@ const CreateUser = () => {
 
     // UsersDataContext
     const {
-      users, setUsers, user, setUser, filteredUsers,
+      users, setUsers, user, setUser, fetchUsers, filteredUsers,
       searchUser,setSearchUser, showUserAddForm, 
       setShowUserAddForm, 
       showUserEditForm, 
@@ -134,21 +134,13 @@ const createUser=async (userData) => {
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null);
       formik.resetForm();
+      fetchUsers();
     })
     .catch(errors =>{
       setServerErrorMsg(errors.response.data.message);
       setServerSuccessMsg(null) 
     }) 
    }
-
-   const fetchUsers =async() =>{
-    try{
-      const res = await  axios.get('users')
-        setUsers(res.data.data);
-    } catch(error){
-        console.log(error);
-     }
-  }
    
   return (
     <Box m='0' width={'95%'}>

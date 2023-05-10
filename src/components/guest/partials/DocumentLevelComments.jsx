@@ -37,7 +37,9 @@ const DocumentLevelComments = ({comment}) => {
                     <ListItemText sx={{ backgroundColor:colors.grey[200], borderRadius:"10px", padding:"10px" }}
                     primary={
                         <>
-                        <Typography variant="h5" fontWeight="600">Anonymous</Typography>
+                        <Typography variant="h5" fontWeight="600">
+                          {comment.commented_by ? comment.commented_by: "Anonymous"}
+                        </Typography>
                         </>
                     }
                     secondary={

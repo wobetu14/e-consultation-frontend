@@ -18,6 +18,7 @@ import { motion } from 'framer-motion';
 import { InstitutionsDataContext } from '../../../contexts/InstitutionsDataContext';
 import CreateInstitution from '../institutions/CreateInstitution';
 import EditInstitution from '../institutions/EditInstitution';
+import DeleteInstitutionDialog from '../institutions/DeleteInstitutionDialog';
 
 const InstitutionsTable = () => {
     const theme = useTheme();
@@ -42,7 +43,9 @@ const InstitutionsTable = () => {
         serverErrorMsg,
         setServerErrorMsg,
         serverSuccessMsg,
-        setServerSuccessMsg
+        setServerSuccessMsg,
+        openDialog,
+        setOpenDialog
     }=useContext(InstitutionsDataContext);
 
 const errorStyle={
@@ -79,6 +82,11 @@ const errorStyle={
     const hideForm=()=>{
         setShowInstitutionEditForm(false);
         setShowInstitutionAddForm(false)
+    }
+
+    const deleteInstitutionDialog = (institutionRow) =>{
+        setInstitution(institutionRow);
+        setOpenDialog(true);
     }
 
     const columns=[
@@ -126,7 +134,7 @@ const errorStyle={
                 return (
                     <Stack spacing={0} direction="row">
                         <Button variant="Link" size="small" color="secondary" sx={{ textTransform:"none" }} key={row.id} onClick={()=>showEditInstitutionForm(row)}><ModeEditIcon fontSize="small" color="secondary" /></Button>
-                        <Button variant="Link" size="small" sx={{textTransform:"none"}} onClick={()=>alert("You deleted user ID: "+row.id)}><DeleteIcon fontSize="small" sx={{ color:colors.dangerColor[200] }} /></Button>
+                        <Button variant="Link" size="small" sx={{textTransform:"none"}} onClick={()=>deleteInstitutionDialog(row)}><DeleteIcon fontSize="small" sx={{ color:colors.dangerColor[200] }} /></Button>
                         {/* <Button variant="contained" size="small" color="warning" sx={{textTransform:"none"}} onClick={()=>alert("You deleted user ID: "+row.id)}>Deactivate Account</Button> */}
                     </Stack>
                 )
@@ -152,6 +160,15 @@ const errorStyle={
                 </Typography> 
             </motion.span>
         </Grid>
+
+        {
+        openDialog && (
+            <DeleteInstitutionDialog 
+                title="Deleting Institution..." 
+                text={`You are about to delete institution \"${institution ? (institution.name): ""}\". Are you sure?`}
+            />
+        )
+        }
     {
         showInstitutionAddForm && (
           <CreateInstitution />

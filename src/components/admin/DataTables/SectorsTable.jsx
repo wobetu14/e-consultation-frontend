@@ -19,6 +19,7 @@ import { motion } from 'framer-motion';
 import CreateSector from '../sectors/CreateSector';
 import EditSector from '../sectors/EditSector';
 import { SectorsDataContext } from '../../../contexts/SectorsDataContext';
+import DeleteSectorDialog from '../sectors/DeleteSectorDialog';
 
 const SectorsTable = () => {
     const theme = useTheme();
@@ -43,7 +44,9 @@ const SectorsTable = () => {
         serverErrorMsg,
         setServerErrorMsg,
         serverSuccessMsg,
-        setServerSuccessMsg
+        setServerSuccessMsg,
+        openDialog,
+        setOpenDialog,
     }=useContext(SectorsDataContext); 
 
 const errorStyle={
@@ -81,6 +84,11 @@ const errorStyle={
         setShowSectorAddForm(false)
     }
 
+    const deleteSectorDialog = (sectorRow) =>{
+        setSector(sectorRow);
+        setOpenDialog(true);
+    }
+
     const columns=[
         {
             name:<Typography variant="h5" fontWeight="600">Name</Typography>,
@@ -110,7 +118,7 @@ const errorStyle={
                 return (
                     <Stack spacing={0} direction="row">
                         <Button variant="Link" size="small" color="secondary" sx={{ textTransform:"none" }} key={row.id} onClick={()=>showEditSectorForm(row)}><ModeEditIcon fontSize="small" color="secondary" /></Button>
-                        <Button variant="Link" size="small" sx={{textTransform:"none"}} onClick={()=>alert("You deleted user ID: "+row.id)}><DeleteIcon fontSize="small" sx={{ color:colors.dangerColor[200] }} /></Button>
+                        <Button variant="Link" size="small" sx={{textTransform:"none"}} onClick={()=>deleteSectorDialog(row)}><DeleteIcon fontSize="small" sx={{ color:colors.dangerColor[200] }} /></Button>
                         {/* <Button variant="contained" size="small" color="warning" sx={{textTransform:"none"}} onClick={()=>alert("You deleted user ID: "+row.id)}>Deactivate Account</Button> */}
                     </Stack>
                 )
@@ -120,8 +128,6 @@ const errorStyle={
 
   return (
     <Box width={'95%'}>
-    <Header title="Users" subtitle="" />
-
         <Grid align='center' sx={{ paddingBottom:"5px", paddingTop:'5px' }}>
             <motion.span
                 initial={{ opacity: 0}}
@@ -137,6 +143,15 @@ const errorStyle={
                 </Typography> 
             </motion.span>
         </Grid>
+
+        {
+        openDialog && (
+            <DeleteSectorDialog 
+                title="Deleting Sector Info..." 
+                text={`You are about to delete sector named \"${sector ? (sector.name): ""}\". Are you sure?`}
+            />
+        )
+        }
     {
         showSectorAddForm && (
           <CreateSector />

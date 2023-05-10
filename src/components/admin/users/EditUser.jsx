@@ -24,7 +24,7 @@ const EditUser = () => {
 
    // UsersDataContext
    const {
-    users, setUsers, user, setUser, filteredUsers,
+    users, setUsers, user, setUser, fetchUsers, filteredUsers,
     searchUser,setSearchUser, showUserAddForm, 
     setShowUserAddForm, 
     showUserEditForm, 
@@ -108,6 +108,7 @@ const updateUser=async (userData) => {
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null);
       setShowUserEditForm(false);
+      fetchUsers();
     })
     .catch(errors =>{
        setServerErrorMsg(errors.response.data.message);

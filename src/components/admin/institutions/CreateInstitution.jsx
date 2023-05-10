@@ -37,7 +37,8 @@ const CreateInstitution = () => {
        serverErrorMsg,
        setServerErrorMsg,
        serverSuccessMsg,
-       setServerSuccessMsg
+       setServerSuccessMsg,
+       fetchInstitutions,
    }=useContext(InstitutionsDataContext);
 
   const errorStyle={
@@ -154,6 +155,7 @@ const createInstitution=async (institutionData) => {
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null);
       formik.resetForm();
+      fetchInstitutions();
     })
     .catch(errors =>{
        setServerErrorMsg(errors.response.data.message);

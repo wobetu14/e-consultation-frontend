@@ -58,11 +58,11 @@ const Home = () => {
     
   useEffect(()=>{ 
     fetchDrafts()
-  },[drafts]);
+  },[]);
 
   useEffect(()=>{
     setPageCount(Math.ceil(parseInt(totalDrafts) / 10))
-  }, [drafts])
+  }, [])
 
 
   const searchDocs = async (e)=>{

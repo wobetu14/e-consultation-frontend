@@ -24,7 +24,8 @@ const CreateSector = () => {
         sectors,
         setSectors,
         setServerErrorMsg,
-        setServerSuccessMsg
+        setServerSuccessMsg,
+        fetchSectors
     }=useContext(SectorsDataContext); 
 
  const helperTextStyle={
@@ -65,22 +66,13 @@ const createSector=async (sectorData) => {
           setServerSuccessMsg(res.data.message);
           setServerErrorMsg(null)
           formik.resetForm();
+          fetchSectors();
         })
         .catch(errors =>{
            setServerErrorMsg(errors.response.data.message);
           setServerSuccessMsg(null) 
         }) 
    }
-
-   const fetchSectors =async() =>{
-    try{
-      const res = await  axios.get('sectors')
-        console.log(res.data.data.data);
-        setSectors(res.data.data.data);
-    } catch(error){
-        console.log(error);
-     }
-  }
    
   return (
     <Box width={'95%'}>
@@ -92,7 +84,6 @@ const createSector=async (sectorData) => {
       >
 
         <form onSubmit={formik.handleSubmit}>
-
         <Grid container spacing={1}>
           <Grid item xs={5}>
             <TextField 

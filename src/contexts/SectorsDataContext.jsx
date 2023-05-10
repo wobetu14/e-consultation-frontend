@@ -15,6 +15,8 @@ export const SectorsDataProvider = (props) => {
     const [serverErrorMsg, setServerErrorMsg]=useState(null);
     const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
 
+    const [openDialog, setOpenDialog]=useState(false);
+
     useEffect(()=>{
        fetchSectors();
     }, [])
@@ -28,6 +30,20 @@ export const SectorsDataProvider = (props) => {
             console.log(error);
          }
       }
+
+      const deleteSector=async (sectorID) => {
+        return await axios.delete(`sectors/${sectorID}`)
+        .then(res => {
+          setServerSuccessMsg(res.data.message);
+          setServerErrorMsg(null);
+          setOpenDialog(false);
+          fetchSectors();
+        })
+        .catch(errors =>{
+          setServerErrorMsg(errors.response.data.message);
+          setServerSuccessMsg(null) 
+        }) 
+       }
      
 
       useEffect(()=>{
@@ -57,7 +73,11 @@ export const SectorsDataProvider = (props) => {
         serverErrorMsg:serverErrorMsg,
         setServerErrorMsg:setServerErrorMsg,
         serverSuccessMsg:serverSuccessMsg,
-        setServerSuccessMsg:setServerSuccessMsg
+        setServerSuccessMsg:setServerSuccessMsg,
+        openDialog:openDialog,
+        setOpenDialog:setOpenDialog,
+        deleteSector:deleteSector,
+        fetchSectors:fetchSectors
       }}>
         {props.children}
     </SectorsDataContext.Provider>

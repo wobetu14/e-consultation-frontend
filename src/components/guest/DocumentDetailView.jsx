@@ -299,7 +299,7 @@ const DocumentDetailView = () => {
                 {commentsOpen ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={commentsOpen} timeout="auto" unmountOnExit>
-                <Paper elevation={1} sx={{borderRadius:"3px", borderLeftStyle:"solid", borderLeftWidth:"5px", borderLeftColor:colors.primary[400]}}>
+                <Paper elevation={1} sx={{borderRadius:"3px", borderLeftStyle:"solid", borderLeftWidth:"3px", borderLeftColor:colors.primary[300]}}>
                   {documentComments ? (
                     documentComments.map((comment)=>(
                      

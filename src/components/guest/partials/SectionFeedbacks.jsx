@@ -3,7 +3,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import { tokens } from '../../../theme';
 import { useTranslation } from 'react-i18next';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import {motion} from 'framer-motion'
 
 import List from '@mui/material/List';
@@ -16,6 +16,7 @@ import SendIcon from '@mui/icons-material/Send';
 import { useFormik } from 'formik';
 import * as YUP from 'yup';
 import axios from '../../../axios/AxiosGlobal'
+import { UserContext } from '../../../contexts/UserContext';
 
 const SectionFeedbacks = ({comments}) => {
   const theme = useTheme();
@@ -28,6 +29,9 @@ const SectionFeedbacks = ({comments}) => {
 
   const [serverErrorMsg, setServerErrorMsg]=useState(null);
   const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
+
+   // User context
+   const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
 
   const errorStyle={
     color:'red',
@@ -81,7 +85,7 @@ validationSchema:YUP.object({
     
 const addComment=async (commentData) => {
     //  console.log(companyData)
-    return await axios.post('regions', commentData)
+    return await axios.post('comments', commentData)
     .then(res => {
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null)
@@ -106,14 +110,14 @@ const addComment=async (commentData) => {
          >
             <ChatBubbleOutlineIcon/> &nbsp; Comments ({comments.length})
         </Button>
-        <Button variant="text" 
+       {/*  <Button variant="text" 
         size="medium" 
         sx={{marginRight:"5px", 
         textTransform:"none",  
         alignSelf:"right", 
         color:colors.primary[200]}}>
             <ShareIcon /> &nbsp; Share
-        </Button>
+        </Button> */}
       </Box>
       {
         showComments && (
@@ -139,7 +143,9 @@ const addComment=async (commentData) => {
                           <ListItemText sx={{ backgroundColor:colors.grey[200], borderRadius:"15px", padding:"10px" }}
                             primary={
                               <>
-                                <Typography variant="h5" fontWeight="600">Anonymous</Typography>
+                                <Typography variant="h5" fontWeight="600">
+                                    {comment.commented_by ? comment.commented_by:"Anonymous"}
+                                  </Typography>
                               </>
                             }
                             secondary={

@@ -19,6 +19,7 @@ import { motion } from 'framer-motion';
 import { DraftsDataContext } from '../../../contexts/DraftsDataContext';
 import CreateDraft from '../drafts/CreateDraft';
 import EditDraft from '../drafts/EditDraft';
+import DeleteDraftDialog from '../drafts/DeleteDraftDialog';
 
 const DraftsTable = () => {
     const theme = useTheme();
@@ -43,7 +44,11 @@ const DraftsTable = () => {
         serverErrorMsg,
         setServerErrorMsg,
         serverSuccessMsg,
-        setServerSuccessMsg
+        setServerSuccessMsg,
+        openDialog,
+        setOpenDialog,
+        fetchDrafts,
+        getDraftInfo,
     }=useContext(DraftsDataContext);
 
 const errorStyle={
@@ -77,6 +82,11 @@ const errorStyle={
         setShowDraftAddForm(false)
     }
 
+    const deleteDraftDialog = (draftRow) =>{
+        setDraft(draftRow);
+        setOpenDialog(true);
+    }
+
     const columns=[
         {
             name:<Typography variant="h5" fontWeight="600">Title</Typography>,
@@ -106,7 +116,7 @@ const errorStyle={
                 return (
                     <Stack spacing={0} direction="row">
                         <Button variant="Link" size="small" color="secondary" sx={{ textTransform:"none" }} key={row.id} onClick={()=>showEditDraftForm(row)}><ModeEditIcon fontSize="small" color="secondary" /></Button>
-                        <Button variant="Link" size="small" sx={{textTransform:"none"}} onClick={()=>alert("You deleted user ID: "+row.id)}><DeleteIcon fontSize="small" sx={{ color:colors.dangerColor[200] }} /></Button>
+                        <Button variant="Link" size="small" sx={{textTransform:"none"}} onClick={()=>deleteDraftDialog(row)}><DeleteIcon fontSize="small" sx={{ color:colors.dangerColor[200] }} /></Button>
                         {/* <Button variant="contained" size="small" color="warning" sx={{textTransform:"none"}} onClick={()=>alert("You deleted user ID: "+row.id)}>Deactivate Account</Button> */}
                     </Stack>
                 )
@@ -131,6 +141,15 @@ const errorStyle={
                 </Typography> 
             </motion.span>
         </Grid>
+
+        {
+        openDialog && (
+            <DeleteDraftDialog 
+                title="Deleting Draft Document..." 
+                text={`You are about to delete draft document \"${draft ? (draft.short_title): ""}\". Are you sure?`}
+            />
+        )
+        }
     {
         showDraftAddForm && (
           <CreateDraft />
