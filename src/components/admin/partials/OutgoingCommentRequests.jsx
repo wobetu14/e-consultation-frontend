@@ -1,4 +1,4 @@
-import { Typography, Button, Stack, Chip } from '@mui/material';
+import { Typography, Button, Stack, Chip, Grid, Alert } from '@mui/material';
 import { Box } from '@mui/system'
 import React, { useEffect, useState, useMemo, useLayoutEffect, useContext } from 'react'
 import axios from '../../../axios/AxiosGlobal'
@@ -8,6 +8,7 @@ import { SignalCellularNullOutlined } from '@mui/icons-material';
 import { useTheme } from '@emotion/react';
 import { tokens } from '../../../theme';
 import { useTable } from 'react-table';
+import {motion} from 'framer-motion'
 import '../../Table.css'
 import { useSortBy, useGlobalFilter, usePagination } from 'react-table';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -27,13 +28,35 @@ import ApproveIcon from '@mui/icons-material/Done';
 import RejectIcon from '@mui/icons-material/Clear';
 import ScheduleSendIcon from '@mui/icons-material/ScheduleSend';
 import SendIcon from '@mui/icons-material/Send';
+import OutgoingCommentRequestsDialog from './OutgoingCommentRequestsDialog';
 
 
 const OutgoingCommentRequests = () => {
     const theme = useTheme();
+    const [openDialog, setOpenDialog]=useState(false);
+
 
     const colors = tokens(theme.palette.mode); 
     const [draftsData, setDraftsData]=useState(null);
+
+    const [serverErrorMsg, setServerErrorMsg]=useState(null);
+    const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
+
+    const showDialog=(e)=>{
+      setOpenDialog(true);
+    }
+
+  const errorStyle={
+    color:'red',
+    fontWeight:'400',
+    fontSize:'18px'
+  }
+
+  const successStyle={
+   color:'green',
+   fontWeight:'400',
+   fontSize:'18px'
+ }
 
     const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
 
@@ -61,6 +84,22 @@ const OutgoingCommentRequests = () => {
             Outgoing request for comment to other institutions.
         </Typography>
       </Paper>
+
+      <Grid align='center' sx={{ paddingBottom:"15px", paddingTop:'15px' }}>
+              <motion.span
+                initial={{ opacity: 0}}
+                animate={{ opacity: 1}}
+                transition={{ duration: 0.3 }}
+              > 
+                <Typography variant='h1'>
+                  {serverSuccessMsg ? <Alert severity='success' style={successStyle}>{serverSuccessMsg}</Alert>:null}
+                </Typography>
+                
+                <Typography variant='h1'>
+                {serverErrorMsg ? <Alert severity='error' style={errorStyle}>{serverErrorMsg}</Alert>:null}
+                </Typography> 
+              </motion.span>
+          </Grid>
 
       <TableContainer component={Paper} sx={{ marginTop:"20px", marginBottom:"100px" }}>
       <Table sx={{ minWidth: 550 }} size="small" aria-label="simple table">
@@ -136,7 +175,30 @@ const OutgoingCommentRequests = () => {
               {
                   draft.draft_status.name==="Pending" ? (
                     // <TableCell align="right">
-                      <SendRequest draft={draft} />
+                    <>
+                      <Button 
+                      size='small' 
+                      variant="contained" 
+                      color="secondary" 
+                      sx={{ textTransform:"none", marginRight:"5px" }}
+                      onClick={showDialog}
+                      >  
+                    Send Request
+                  </Button>
+                  {
+                    openDialog && (
+                        <OutgoingCommentRequestsDialog
+                          draft={draft} 
+                          setServerSuccessMsg={setServerSuccessMsg} 
+                          setServerErrorMsg={setServerErrorMsg}
+                          openDialog={openDialog}
+                          setOpenDialog={setOpenDialog}
+                          title="Request Institutions for draft commenting"
+                        />
+                    )
+                  }
+
+                    </>
                   ):""
               }
               </TableCell>
@@ -150,21 +212,4 @@ const OutgoingCommentRequests = () => {
 }
 
 export default OutgoingCommentRequests;
-
-const SendRequest =({draft}) =>{
-  return(
-    <>
-      <Button 
-        size='small' 
-        variant="contained" 
-        color="secondary" 
-        href={`/admin/document_preview/${draft.id}`}
-        sx={{ textTransform:"none", marginRight:"5px" }}
-        >  
-        {/* <SendIcon size="small"/> */}
-        Send Request
-      </Button>
-    </>
-  )
-}
 

@@ -36,7 +36,7 @@ const DraftApprovalRequest = () => {
     const colors = tokens(theme.palette.mode); 
     const [draftsData, setDraftsData]=useState(null);
 
-    const [serverErrorMsg, setServerErrorMsg]=useState(null);
+  const [serverErrorMsg, setServerErrorMsg]=useState(null);
   const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
 
   const errorStyle={

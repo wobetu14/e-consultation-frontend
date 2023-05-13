@@ -44,7 +44,8 @@
     "react-table": "^7.8.0",
     "styled-components": "^5.3.10",
     "web-vitals": "^2.1.4",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "yup-phone": "^1.3.2"
   },
   "scripts": {
     "start": "react-scripts start",

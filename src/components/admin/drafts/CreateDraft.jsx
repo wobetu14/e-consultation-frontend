@@ -95,7 +95,7 @@ const CreateDraft = () => {
   
  const formik=useFormik({
     initialValues:{
-        institutionID:"",
+        institutionID:userInfo ? userInfo.user.institution_id:"",
         shortTitle:"",
         lawCategoryId:"",
         draftStatusId:1,
@@ -199,7 +199,7 @@ const createDraftDocument=async (draftsData) => {
         <form onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={4}>
-              <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+              {/* <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
                 <InputLabel>Select Institution</InputLabel>
                 <Select
                   labelId="institution_id"
@@ -218,7 +218,7 @@ const createDraftDocument=async (draftsData) => {
                     }
                 </Select>
               <FormHelperText>{formik.touched.institutionID && formik.errors.institutionID ? <span style={helperTextStyle}>{formik.errors.institutionID}</span>:null}</FormHelperText>
-            </FormControl>
+            </FormControl> */}
 
                 <TextField 
                   label="Short title" 
@@ -282,7 +282,7 @@ const createDraftDocument=async (draftsData) => {
               <FormHelperText>{formik.touched.sectorId && formik.errors.sectorId ? <span style={helperTextStyle}>{formik.errors.sectorId}</span>:null}</FormHelperText>
             </FormControl>
 
-          <Typography variant='body1' sx={{ paddingBottom:'10px' }}> 
+          {/* <Typography variant='body1' sx={{ paddingBottom:'10px' }}> 
             Opening Date
           </Typography>
                 <TextField 
@@ -314,7 +314,7 @@ const createDraftDocument=async (draftsData) => {
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
                   helperText={formik.touched.closingDate && formik.errors.closingDate ? <span style={helperTextStyle}>{formik.errors.closingDate}</span>:null}
-                />
+                /> */}
           </Grid>
           <Grid item xs={4}>
               <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Active status</Typography>
@@ -329,7 +329,7 @@ const createDraftDocument=async (draftsData) => {
                         <FormControlLabel value='2' control={<Radio />} label="No"  />
                   </RadioGroup>      
 
-              <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+              {/* <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
                 <InputLabel>Previous Version</InputLabel>
                 <Select
                   labelId="previous_verion"
@@ -348,7 +348,7 @@ const createDraftDocument=async (draftsData) => {
                     }
                 </Select>
               <FormHelperText>{formik.touched.parentId && formik.errors.parentId ? <span style={helperTextStyle}>{formik.errors.parentId}</span>:null}</FormHelperText>
-            </FormControl>
+            </FormControl> */}
 
               <TextField 
                 label="Tags" 

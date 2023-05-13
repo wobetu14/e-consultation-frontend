@@ -2,6 +2,7 @@ import {Alert, Avatar, Box, Button, Checkbox, FormControl, FormControlLabel, Ite
 import { tokens } from '../../../theme';
 import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 import { useFormik } from 'formik';
+import "yup-phone";
 import * as YUP from 'yup';
 import {useState} from 'react';
 import axios from '../../../axios/AxiosGlobal';
@@ -44,7 +45,7 @@ const GuestSignup = () => {
         middleName:YUP.string().required("This field is required. Please enter your father name."),
         lastName:YUP.string().required("This field is required. Please enter your grand father name."),
         email:YUP.string().email("Invalid email. Please enter a correct email address.").required("This field is required. Please enter email address."),
-        mobileNumber:YUP.string().required("This field is required. Please enter your mobile number."),
+        mobileNumber:YUP.string().required("This field is required. Please enter mobile number.").phone("ET",true, "Invalid phone number. Use +251, or 251 or 09... etc. Note: phone numbers starting with 07 are invalid for the time being."),
         password:YUP.string().required("This field is required. Please enter password."),
         confirmPassword:YUP.string().required("This field is required. Please re-enter password to confirm.").oneOf([YUP.ref('password'), null], "Password didn't match.")
       }),

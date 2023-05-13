@@ -2,12 +2,14 @@ import { Typography, Button, FormControlLabel, Checkbox, TextField, Grid, Alert,
 import { Box } from '@mui/system'
 import { useFormik } from 'formik';
 import * as YUP from 'yup';
+import "yup-phone";
 import { useContext, useEffect, useState } from 'react';
 import { tokens } from '../../../theme';
 import Header from '../AdminHeader';
 import axios from '../../../axios/AxiosGlobal'
 import { motion } from 'framer-motion';
 import { UsersDataContext } from '../../../contexts/UsersDataContext';
+import { UserContext } from '../../../contexts/UserContext';
 
 
 
@@ -16,7 +18,11 @@ const CreateUser = () => {
     const colors = tokens(theme.palette.mode); 
 
     const [institutions, setInstitutions]=useState(null);
+    const [regions, setRegions]=useState(null);
     const [userRoles, setUserRoles]=useState(null);
+
+      // User context
+  const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
 
     // UsersDataContext
     const {
@@ -53,15 +59,28 @@ const CreateUser = () => {
 
  useEffect(()=>{
   fetchInstitutions();
- },[institutions])
+ },[])
 
  useEffect(()=>{
   fetchUserRoles();
- },[userRoles])
+ },[])
 
- 
+ useEffect(()=>{
+  fetchRegions();
+ },[])
+
+ const fetchRegions =async() =>{
+  return await  axios.get('public/regions')
+    .then(res=>res.data.data)
+    .then(res=>{
+      setRegions(res.data)
+    }).catch(error=>{
+      console.log(error.response.message);
+    })
+  }
+
  const fetchInstitutions =async() =>{
-  return await  axios.get('institutions')
+  return await  axios.get('public/institutions')
     .then(res=>res.data.data)
     .then(res=>{
       setInstitutions(res.data)
@@ -69,6 +88,7 @@ const CreateUser = () => {
       console.log(error.response.message);
     })
   }
+
 
   const fetchUserRoles =async() =>{
     return await  axios.get('roles')
@@ -92,17 +112,18 @@ const CreateUser = () => {
         password:"",
         confirmPassword:"",
         roleID:"",
+        regionID:userInfo ? userInfo.user.region_id:"",
         institutionID:"",
-        createdBy:1,
-        updatedBy:1
+        createdBy:userInfo ? userInfo.user.id:"",
+        updatedBy:userInfo ? userInfo.user.id:"",
     },
 
 validationSchema:YUP.object({
     firstName:YUP.string().required("This field is required. Please enter the first name."),
     middleName:YUP.string().required("This field is required. Please enter father name."),
     lastName:YUP.string().required("This field is required. Please enter grandfather name."),
-    mobileNumber:YUP.string().required("This field is required. Please enter mobile number."),
-    email:YUP.string().required("This field is required. Please enter email address."),
+    mobileNumber:YUP.string().required("This field is required. Please enter mobile number.").phone("ET",true, "Invalid phone number. Use +251, or 251 or 09... etc. Note: phone numbers starting with 07 are invalid for the time being."),
+    email:YUP.string().required("This field is required. Please enter email address.").email("Invalid email address"),
     roleID:YUP.string().required("This field is required. Please select user role."),
     institutionID:YUP.string().required("This field is required. Please select Institution.")
   }),
@@ -119,6 +140,7 @@ validationSchema:YUP.object({
         roles:values.roleID,
         created_by:values.createdBy,
         updated_by:values.updatedBy, 
+        region_id:values.regionID, 
         institution_id:values.institutionID
     };
 
@@ -131,6 +153,7 @@ const createUser=async (userData) => {
     //  console.log(companyData)
     return await axios.post('users', userData)
     .then(res => {
+      console.log(res)
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null);
       formik.resetForm();
@@ -247,7 +270,36 @@ const createUser=async (userData) => {
             </FormControl>
           </Grid>
           <Grid item xs={4}>
-                {/* <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Select Institution</Typography> */}
+
+            {
+              userInfo ? (
+                userInfo.user.roles[0].name==="Super Admin" ? 
+                (
+                  <FormControl sx={{minWidth: '100%', paddingBottom:'5px' }}>
+                      <InputLabel>Select Region</InputLabel>
+                      <Select
+                        labelId="region_id"
+                        id="region_id"  
+                        size="small"
+                        color="info"          
+                        name='regionID'
+                        value={formik.values.regionID}
+                        onChange={formik.handleChange}
+                        helperText={formik.touched.regionID && formik.errors.regionID ? <span style={helperTextStyle}>{formik.errors.regionID}</span>:null}
+                      >
+                          {
+                            regions ? regions.map((region)=>(
+                              <MenuItem value={region.id} key={region.id}>{region.name}</MenuItem>
+                            )): null
+                          }
+                      </Select>
+                    <FormHelperText>{formik.touched.regionID && formik.errors.regionID ? <span style={helperTextStyle}>{formik.errors.regionID}</span>:null}</FormHelperText>
+                  </FormControl>
+                ):""
+              ):""
+            }
+
+          {/* <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Select Institution</Typography> */}
               <FormControl sx={{minWidth: '100%', paddingBottom:'5px' }}>
                 <InputLabel>Select Institution</InputLabel>
                 <Select

@@ -113,6 +113,8 @@ const fetchRegions =async() =>{
       address:"",
       sectorID:"",
       canCreateDraft:"",
+      institution_category_id:"",
+      
       createdBy:userInfo ? userInfo.user.id:"",
       updatedBy:userInfo ? userInfo.user.id:"",
     },
@@ -121,9 +123,10 @@ validationSchema:YUP.object({
     institutionName:YUP.string().required("This field is required. Please enter the institution name."),
     institutionTypeId:YUP.number().required("This field is required. Please enter the institution type."),
     regionId:YUP.number().required("This field is required. Please enter the region name of the institution."),
-    // authority:YUP.string().required("This field is required. Please enter the institutions authority."),
-    email:YUP.string().required("This field is required. Please enter the email address of the institution."),
-    telephone:YUP.number().required("This field is required. Please enter the telephone number of the institution."),
+
+    telephone:YUP.string().required("This field is required. Please enter mobile number.").phone("ET",true, "Invalid phone number. Use +251, or 251 or 09... etc. Note: phone numbers starting with 07 are invalid for the time being."),
+    email:YUP.string().required("This field is required. Please enter email address.").email("Invalid email address"),
+
     address:YUP.string().required("This field is required. Please enter the address of the institution."),
     sectorID:YUP.string().required("This field is required. Please select economic sector."),
     canCreateDraft:YUP.number().required("This field is required. Please choose an option."),

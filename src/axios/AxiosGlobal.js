@@ -10,5 +10,7 @@ const instance = axios.create(
             // 'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
           }, 
     }
-)
+);
+
+export const rootURL="http://196.188.107.43/api/v1/";
 export default instance

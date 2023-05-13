@@ -3,17 +3,25 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from './contexts/UserContext';
 import LogoutIcon from '@mui/icons-material/Logout';
+import axios from '../src/axios/AxiosGlobal';
 
 const Logout = () => {
     const navigate=useNavigate();
     // User ContextData
   const {userRole, setUserRole, userToken, setUserToken, userInfo, setUserInfo}=useContext(UserContext);
   
-  const logout=()=>{
-    localStorage.clear();
-    setUserToken(null);
-    setUserRole(null);
-    navigate("/");
+  const logout=async()=>{
+    return await axios.post('logout')
+    .then((res)=>{
+      localStorage.clear();
+      setUserToken(null);
+      setUserRole(null);
+      navigate("/");
+    }  
+  ).catch((error)=>{
+    alert(error.response.message)
+  })
+    
   }
   return (
       <>

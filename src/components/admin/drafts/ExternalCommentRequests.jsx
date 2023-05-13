@@ -15,6 +15,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import FilterTable from '../FilterTable';
 import IncomingCommentRequests from '../partials/IncomingCommentRequests';
 import OutgoingCommentRequests from '../partials/OutgoingCommentRequests';
+import AutoCompleteExample from '../../../AutocompleteExample';
 
 
 const ExternalCommentRequests = () => {
@@ -31,6 +32,8 @@ const ExternalCommentRequests = () => {
       <IncomingCommentRequests />
 
       <OutgoingCommentRequests />
+
+      <AutoCompleteExample />
     </Box> 
   )
 }

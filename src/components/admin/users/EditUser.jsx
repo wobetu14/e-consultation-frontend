@@ -15,6 +15,7 @@ const EditUser = () => {
     const colors = tokens(theme.palette.mode); 
 
     const [institutions, setInstitutions]=useState(null);
+    const [regions, setRegions]=useState(null);
     const [userRoles, setUserRoles]=useState(null);
 
  
@@ -49,6 +50,20 @@ fontSize:'15px'
  useEffect(()=>{
   fetchUserRoles();
  },[userRoles])
+
+ useEffect(()=>{
+  fetchRegions();
+ },[regions])
+
+ const fetchRegions =async() =>{
+  return await  axios.get('regions')
+    .then(res=>res.data.data)
+    .then(res=>{
+      setRegions(res.data)
+    }).catch(error=>{
+      console.log(error.response.message);
+    })
+  }
  
  const fetchInstitutions =async() =>{
   return await  axios.get('institutions')
@@ -80,6 +95,7 @@ fontSize:'15px'
         mobileNumber:user.mobile_number ? user.mobile_number:"",
         email:user.email ? user.email:"",
         roleID:user.roles.length>0 ? user.roles[0].id:"",
+        regionID:user.region_id ? user.region_id:"",
         institutionID:user.institution_id ? user.institution_id:"",
         updatedBy:userInfo.user.updated_by
     },
@@ -93,6 +109,7 @@ fontSize:'15px'
         email:values.email,
         roles:values.roleID,
         updated_by:values.updatedBy, 
+        region_id:values.regionID,
         institution_id:values.institutionID
     };
 
@@ -221,6 +238,27 @@ const updateUser=async (userData) => {
             </FormControl>
           </Grid>
           <Grid item xs={4}>
+
+          <FormControl sx={{minWidth: '100%', paddingBottom:'5px' }}>
+                <InputLabel>Select Region</InputLabel>
+                <Select
+                  labelId="region_id"
+                  id="region_id"  
+                  size="small"
+                  color="info"          
+                  name='regionID'
+                  value={formik.values.regionID}
+                  onChange={formik.handleChange}
+                  helperText={formik.touched.regionID && formik.errors.regionID ? <span style={helperTextStyle}>{formik.errors.regionID}</span>:null}
+                >
+                    {
+                      regions ? regions.map((region)=>(
+                        <MenuItem value={region.id} key={region.id}>{region.name}</MenuItem>
+                      )): null
+                    }
+                </Select>
+              <FormHelperText>{formik.touched.regionID && formik.errors.regionID ? <span style={helperTextStyle}>{formik.errors.regionID}</span>:null}</FormHelperText>
+            </FormControl>
                 {/* <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Select Institution</Typography> */}
               <FormControl sx={{minWidth: '100%', paddingBottom:'5px' }}>
                 <InputLabel>Select Institution</InputLabel>

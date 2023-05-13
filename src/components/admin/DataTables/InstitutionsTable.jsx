@@ -95,6 +95,12 @@ const errorStyle={
             selector:(row)=><Typography variant="body1">{`${row.name}`}</Typography>,
             sortable:true,
         },
+
+        {
+            name:<Typography variant="h5" fontWeight="600">Institution Type</Typography>,
+            selector:(row)=><Typography variant="body1">{`${row.institution_type.name}`}</Typography>,
+            sortable:true,
+        },
         
         {
             name:<Typography variant="h5" fontWeight="600">Email</Typography>,
@@ -113,20 +119,20 @@ const errorStyle={
         },
         
         {
-            name:<Typography variant="h5" fontWeight="600">Region ID</Typography>,
-            selector:(row)=><Typography variant="body1">{row.region_id}</Typography>,
+            name:<Typography variant="h5" fontWeight="600">Region</Typography>,
+            selector:(row)=><Typography variant="body1">{row.region.name}</Typography>,
             sortable:true,
         },
         {
             name:<Typography variant="h5" fontWeight="600">Created By</Typography>,
-            selector:(row)=><Typography variant="body1">{row.created_by}</Typography>,
+            selector:(row)=><Typography variant="body1">{row.creator.name}</Typography>,
             sortable:true,
         },
-        {
+   /*      {
             name:<Typography variant="h5" fontWeight="600">Updated By</Typography>,
             selector:(row)=><Typography variant="body1">{row.updated_by}</Typography>,
             sortable:true,
-        },
+        }, */
         
         {
             name:<Typography variant="h5" fontWeight="600">Actions</Typography>,

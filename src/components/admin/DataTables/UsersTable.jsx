@@ -93,12 +93,12 @@ const errorStyle={
         },
         {
             name:<Typography variant="h5" fontWeight="600">Institution</Typography>,
-            selector:(row)=><Typography variant="body1">{row.institution_id}</Typography>,
+            selector:(row)=><Typography variant="body1">{row.institution}</Typography>,
             sortable:true,
         },
         {
             name:<Typography variant="h5" fontWeight="600">Region</Typography>,
-            selector:(row)=><Typography variant="body1">{row.region_id}</Typography>,
+            selector:(row)=><Typography variant="body1">{row.region}</Typography>,
             sortable:true,
         },
         {
@@ -106,11 +106,11 @@ const errorStyle={
             selector:(row)=><Typography variant="body1">{row.created_by}</Typography>,
             sortable:true,
         },
-        {
+     /*    {
             name:<Typography variant="h5" fontWeight="600">Updated By</Typography>,
             selector:(row)=><Typography variant="body1">{row.updated_by}</Typography>,
             sortable:true,
-        },
+        }, */
         {
             name:<Typography variant="h5" fontWeight="600">Role</Typography>,
             selector:(row)=>row.roles.map((role)=>(

@@ -25,7 +25,7 @@ const DocumentsFilters = (
 
     const [institutionID, setInstitutionID]=useState(null);
     const [institutions, setInstitutions]=useState(null);
-    const [draftStatusName, setDraftStatusName]=useState("Open");
+    const [draftStatusName, setDraftStatusName]=useState(null);
 
     // useEffect to calculate dynamic page size for pagination
     useEffect(()=>{
@@ -37,7 +37,7 @@ const DocumentsFilters = (
     },[lawCategories])
 
     const fetchLawCategories = async() => {
-      return await axios.get('law-categories')
+      return await axios.get('public/law-categories')
         .then(res=>{
           setLawCategories(res.data.data.data)
         })
@@ -51,7 +51,7 @@ const DocumentsFilters = (
     },[regions])
 
     const fetchRegions = async() => {
-      return await axios.get('regions')
+      return await axios.get('public/regions')
         .then(res=>{
           setRegions(res.data.data.data)
         })
@@ -65,7 +65,7 @@ const DocumentsFilters = (
     },[institutions])
 
     const fetchInstitutions = async() => {
-      return await axios.get('institutions')
+      return await axios.get('public/institutions')
         .then(res=>{
           setInstitutions(res.data.data.data)
         })

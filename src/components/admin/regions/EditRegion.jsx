@@ -75,6 +75,8 @@ const EditRegion = () => {
     
 const registerRegion=async (regionData) => {
     //  console.log(companyData)
+    console.log(regionData)
+    
     return await axios.put(`regions/${region.id}`, regionData)
     .then(res => {
       setServerSuccessMsg(res.data.message);

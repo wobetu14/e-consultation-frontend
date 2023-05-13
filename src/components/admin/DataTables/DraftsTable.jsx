@@ -20,6 +20,7 @@ import { DraftsDataContext } from '../../../contexts/DraftsDataContext';
 import CreateDraft from '../drafts/CreateDraft';
 import EditDraft from '../drafts/EditDraft';
 import DeleteDraftDialog from '../drafts/DeleteDraftDialog';
+import { rootURL } from '../../../axios/AxiosGlobal';
 
 const DraftsTable = () => {
     const theme = useTheme();
@@ -104,11 +105,27 @@ const errorStyle={
             selector:(row)=><Typography variant="body1">{row.created_by}</Typography>,
             sortable:true,
         },
+
         {
+            name:<Typography variant="h5" fontWeight="600">Download File</Typography>,
+            selector:(row)=><a href={row.file} target='_blank'><Typography variant="body1">Download</Typography></a>,
+            sortable:true,
+        },
+
+        {
+            name:<Typography variant="h5" fontWeight="600">Download Comments Report</Typography>,
+            selector:(row)=>(
+                row.draft_status.name==="Pending" ? (
+                    <a href={`${rootURL}report/${row.id}`} target='_blank'><Typography variant="body1">Get comments report</Typography></a>
+                ):""
+            ),
+            sortable:true,
+        },
+       /*  {
             name:<Typography variant="h5" fontWeight="600">Updated By</Typography>,
             selector:(row)=><Typography variant="body1">{row.updated_by}</Typography>,
             sortable:true,
-        },
+        }, */
         
         {
             name:<Typography variant="h5" fontWeight="600">Actions</Typography>,
