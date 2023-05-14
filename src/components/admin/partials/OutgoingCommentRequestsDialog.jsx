@@ -1,11 +1,10 @@
 
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from '../../../axios/AxiosGlobal'
 import { 
     Autocomplete,
     Button,
      Dialog, 
-     DialogActions, 
      DialogContent, 
      DialogContentText, 
      DialogTitle,
@@ -18,7 +17,7 @@ import { tokens } from '../../../theme';
 import { useFormik } from 'formik';
 
 const OutgoingCommentRequestsDialog = ({
-    draft, 
+    draftID, 
     title, 
     setServerSuccessMsg, 
     setServerErrorMsg, 
@@ -36,7 +35,16 @@ const OutgoingCommentRequestsDialog = ({
 
     React.useEffect(()=>{
         fetchInstitutions();
-     }, [])
+        getInstitutionsID();
+     }, [selectedInstitutions])
+
+     const getInstitutionsID=()=>{
+         if(selectedInstitutions.length>0){
+            selectedInstitutions.map((selectedInstitution)=>(
+                setInsIDs([...instIDs, selectedInstitution.id])
+            ))
+         }
+     }
 
      const fetchInstitutions =async() =>{
         try{
@@ -49,14 +57,14 @@ const OutgoingCommentRequestsDialog = ({
 
      const formik=useFormik({
         initialValues:{
-            draft_id:draft.id,
+            draft_id:0,
             institutions:[]
         },
 
       onSubmit:(values)=>{
         const requestData={
-            draft_id:values.draft_id,
-            institutions:selectedInstitutions.map((selectedInstitution)=>(selectedInstitution.id)),
+            draft_id:draftID,
+            institutions:instIDs
         };
     
         sendCommentsRequest(requestData);
@@ -83,7 +91,6 @@ const OutgoingCommentRequestsDialog = ({
   return (
     <Dialog 
       open={openDialog}
-      onClose={()=>setOpenDialog(false)}
      >
     <form onSubmit={formik.handleSubmit}>
          <DialogTitle>
@@ -93,10 +100,13 @@ const OutgoingCommentRequestsDialog = ({
          </DialogTitle>
          <DialogContent>
              <DialogContentText>
+                 <h1>{draftID}</h1>
              <Stack spacing={3} sx={{ width: 500 }}>
         <Autocomplete
             multiple
             id="tags-standard"
+            freeSolo
+            autoSelect
             options={institutions}
             getOptionLabel={(option) => option.name}
             onChange={(e,value)=>setSelectedInstitutions(value)}
@@ -134,12 +144,7 @@ const OutgoingCommentRequestsDialog = ({
     </Stack>
     </DialogContentText>
          </DialogContent>
-         <DialogActions>
-             
-                
-         </DialogActions>
-
-         </form>
+        </form>
      </Dialog>
   )
 }

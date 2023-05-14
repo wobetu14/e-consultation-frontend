@@ -154,7 +154,7 @@ const DraftApprovalRequest = () => {
                   ):""
                 }
 
-{
+                {
                   draft.draft_status.name==="Open" ? (
                     <Chip label={draft.draft_status.name} size="small" sx={{ backgroundColor:colors.successColor[100], color:colors.grey[300]}} />
                   ):""
@@ -186,7 +186,12 @@ const DraftApprovalRequest = () => {
                           <AcceptApprovalRequest draft={draft} setServerSuccessMsg={setServerSuccessMsg} setServerErrorMsg={setServerErrorMsg}/>
                           <RejectApprovalRequest draft={draft} setServerSuccessMsg={setServerSuccessMsg} setServerErrorMsg={setServerErrorMsg}/>
                         </>
-                  ):""
+                  ):
+                    (
+                      draft.draft_status.name==="Open" ? (
+                        <Button variant="contained" size="small" sx={{ textTransform:"none", backgroundColor:colors.dangerColor[200], color:colors.grey[300] }}>Close</Button>
+                      ):""
+                  )
                 )
               }
               </TableCell>

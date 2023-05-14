@@ -12,6 +12,7 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import Drafts from "./drafts/Drafts";
 import axios from '../../axios/AxiosGlobal'
+import UserProfile from "./users/UserProfile";
 
 const Dashboard = () => {
   const theme = useTheme();
@@ -176,6 +177,7 @@ const fetchDrafts =async() =>{
       
       <Box sx={{ marginTop:"100px", marginBottom:"50px" }}>
           {/* <Drafts /> */}
+          <UserProfile />
       </Box>
     </Box>
   );

@@ -11,16 +11,16 @@ const Logout = () => {
   const {userRole, setUserRole, userToken, setUserToken, userInfo, setUserInfo}=useContext(UserContext);
   
   const logout=async()=>{
-    return await axios.post('logout')
-    .then((res)=>{
+   /*  return await axios.post('logout')
+    .then((res)=>{ */
       localStorage.clear();
       setUserToken(null);
       setUserRole(null);
       navigate("/");
-    }  
+   /*  }  
   ).catch((error)=>{
     alert(error.response.message)
-  })
+  }) */
     
   }
   return (

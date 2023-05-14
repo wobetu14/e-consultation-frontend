@@ -39,10 +39,13 @@ const OutgoingCommentRequests = () => {
     const colors = tokens(theme.palette.mode); 
     const [draftsData, setDraftsData]=useState(null);
 
+    const [draftID, setDraftID]=useState(null);
+
     const [serverErrorMsg, setServerErrorMsg]=useState(null);
     const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
 
-    const showDialog=(e)=>{
+    const showDialog=(id)=>{
+      setDraftID(id)
       setOpenDialog(true);
     }
 
@@ -61,7 +64,7 @@ const OutgoingCommentRequests = () => {
     const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
 
     const fetchDrafts =async() =>{
-      return await  axios.get(`drafts?institution_id=${userInfo.user.institution_id}`)
+      return await  axios.get(`drafts`)
         .then(res=>res.data.data)
         .then(res=>{
           setDraftsData(res.data)
@@ -133,7 +136,7 @@ const OutgoingCommentRequests = () => {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
                 <TableCell>
-                <Typography variant="body1">{draft.institution_id}</Typography>
+                <Typography variant="body1">{draft.id}</Typography>
                 </TableCell>
               <TableCell>
                 <Typography variant="body1">{draft.short_title.substr(0, 30)}</Typography>
@@ -146,6 +149,12 @@ const OutgoingCommentRequests = () => {
                 {
                   draft.draft_status.name==="Pending" ? (
                     <Chip label={draft.draft_status.name} size="small" sx={{ backgroundColor:colors.dangerColor[200], color:colors.grey[300] }} />
+                  ):""
+                }
+
+                {
+                  draft.draft_status.name==="Open" ? (
+                    <Chip label={draft.draft_status.name} size="small" sx={{ backgroundColor:colors.successColor[200], color:colors.grey[300] }} />
                   ):""
                 }
 
@@ -173,22 +182,25 @@ const OutgoingCommentRequests = () => {
                    View
                 </Button>
               {
-                  draft.draft_status.name==="Pending" ? (
+                  draft.draft_status.name==="Open" ? (
                     // <TableCell align="right">
                     <>
                       <Button 
+                      key={draft.id}
                       size='small' 
                       variant="contained" 
                       color="secondary" 
                       sx={{ textTransform:"none", marginRight:"5px" }}
-                      onClick={showDialog}
+                      onClick={()=>showDialog(draft.id)}
                       >  
+                      
                     Send Request
                   </Button>
                   {
                     openDialog && (
                         <OutgoingCommentRequestsDialog
-                          draft={draft} 
+                          key={draft.id}
+                          draftID={draftID} 
                           setServerSuccessMsg={setServerSuccessMsg} 
                           setServerErrorMsg={setServerErrorMsg}
                           openDialog={openDialog}

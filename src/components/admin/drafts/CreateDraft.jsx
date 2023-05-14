@@ -95,7 +95,7 @@ const CreateDraft = () => {
   
  const formik=useFormik({
     initialValues:{
-        institutionID:userInfo ? userInfo.user.institution_id:"",
+        // institutionID:userInfo ? userInfo.user.institution_id:"",
         shortTitle:"",
         lawCategoryId:"",
         draftStatusId:1,
@@ -103,8 +103,8 @@ const CreateDraft = () => {
         openingDate:"",
         closingDate:"",
         file:null,
-        slug:"slug_here",
-        active:"",
+        slug:"",
+        isPrivate:"",
         parent_id:"",
         tags:"",
         noteId:"1",
@@ -119,30 +119,30 @@ const CreateDraft = () => {
     },
 
 validationSchema:YUP.object({
-    institutionID:YUP.number().required("This field is required. Please enter the institution name."),
-    shortTitle:YUP.string().required("This field is required. Please provide a short description about the document."),
-    lawCategoryId:YUP.number().required("This field is required. Please select law category this document belongs to."),
-    draftStatusId:YUP.number().required("This field is required. Please select the draft status."),
-    sectorId:YUP.number().required("This field is required. Please select sector."),
-    openingDate:YUP.date().required("This field is required. Please provide opening date."),
-    closingDate:YUP.date().required("This field is required. Please provide closing date."),
-    file:YUP.mixed().required("This field is required. Please choose file to upload."),
-    active:YUP.number().required("This field is required. Please provide the status of this document."),
-    parentId:YUP.number().required("This field is required. Please provide parent reference of this document."),
-    tags:YUP.string().required("This field is required. Please provide tag info for this document."),
-    baseLegalReference:YUP.string().required("This field is required. Please provide base legal reference of this document."),
-    definition:YUP.string().required("This field is required. Please provide definition for this document."),
-    scope:YUP.string().required("This field is required. Please provide a scope for this document."),
-    mainProvision:YUP.string().required("This field is required. Please provide main provision for this document."),
-    summary:YUP.string().required("This field is required. Please provide summary."),
-    amendedLaws:YUP.string().required("This field is required."),
-    repealedLaws:YUP.string().required("This field is required."),
-    transitoryProvision:YUP.string().required("This field is required."), 
+    // institutionID:YUP.number().required("This field is required. Please enter the institution name."),
+    // shortTitle:YUP.string().required("This field is required. Please provide a short description about the document."),
+    // lawCategoryId:YUP.number().required("This field is required. Please select law category this document belongs to."),
+    // draftStatusId:YUP.number().required("This field is required. Please select the draft status."),
+    // sectorId:YUP.number().required("This field is required. Please select sector."),
+    // openingDate:YUP.date().required("This field is required. Please provide opening date."),
+    // closingDate:YUP.date().required("This field is required. Please provide closing date."),
+    // file:YUP.mixed().required("This field is required. Please choose file to upload."),
+    // isPublic:YUP.number().required("This field is required. Please provide the status of this document."),
+    // parentId:YUP.number().required("This field is required. Please provide parent reference of this document."),
+    // tags:YUP.string().required("This field is required. Please provide tag info for this document."),
+    // baseLegalReference:YUP.string().required("This field is required. Please provide base legal reference of this document."),
+    // definition:YUP.string().required("This field is required. Please provide definition for this document."),
+    // scope:YUP.string().required("This field is required. Please provide a scope for this document."),
+    // mainProvision:YUP.string().required("This field is required. Please provide main provision for this document."),
+    // summary:YUP.string().required("This field is required. Please provide summary."),
+    // amendedLaws:YUP.string().required("This field is required."),
+    // repealedLaws:YUP.string().required("This field is required."),
+    // transitoryProvision:YUP.string().required("This field is required."), 
   }),
 
   onSubmit:(values)=>{
     const draftsData={
-      institution_id:values.institutionID,
+      // institution_id:values.institutionID,
       short_title:values.shortTitle,
       law_category_id:values.lawCategoryId,
       draft_status_id:values.draftStatusId,
@@ -151,7 +151,7 @@ validationSchema:YUP.object({
       comment_closing_date:values.closingDate,
       file:values.file,
       slug:values.slug,
-      active:values.active,
+      is_private:values.isPrivate,
       parent_id:values.parentId,
       tags:values.tags,
       note_id:values.noteId,
@@ -172,7 +172,7 @@ validationSchema:YUP.object({
 }); 
     
 const createDraftDocument=async (draftsData) => {
-    //  console.log(companyData)
+     console.log(draftsData)
     return await axios.post('drafts', draftsData)
     .then(res => {
       console.log(res.data)
@@ -315,19 +315,36 @@ const createDraftDocument=async (draftsData) => {
                   onChange={formik.handleChange}
                   helperText={formik.touched.closingDate && formik.errors.closingDate ? <span style={helperTextStyle}>{formik.errors.closingDate}</span>:null}
                 /> */}
-          </Grid>
-          <Grid item xs={4}>
-              <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Active status</Typography>
+
+            <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Document Access</Typography>
                 <RadioGroup
                         aria-labelledby="demo-controlled-radio-buttons-group"
-                        name="active"
+                        name="isPrivate"
                         size="small"
-                        value={formik.values.active}
+                        value={formik.values.isPrivate}
                         onChange={formik.handleChange}
                       >
-                        <FormControlLabel value='1' control={<Radio />} label="Yes"  />
-                        <FormControlLabel value='2' control={<Radio />} label="No"  />
-                  </RadioGroup>      
+                        <FormControlLabel value='0' control={<Radio />} label="Public"  />
+                        <FormControlLabel value='1' control={<Radio />} label="Private"  />
+                  </RadioGroup> 
+
+                  <TextField 
+                      label="Tags" 
+                      variant='outlined' 
+                      multiline
+                      rows={4} 
+                      fullWidth
+                      sx={{ paddingBottom:"30px" }}
+                      color="info"
+                      name='tags'
+                      value={formik.values.tags}
+                      onBlur={formik.handleBlur}
+                      onChange={formik.handleChange}
+                      helperText={formik.touched.tags && formik.errors.tags ? <span style={helperTextStyle}>{formik.errors.tags}</span>:null}
+                  />
+          </Grid>
+          <Grid item xs={4}>
+                   
 
               {/* <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
                 <InputLabel>Previous Version</InputLabel>
@@ -350,20 +367,7 @@ const createDraftDocument=async (draftsData) => {
               <FormHelperText>{formik.touched.parentId && formik.errors.parentId ? <span style={helperTextStyle}>{formik.errors.parentId}</span>:null}</FormHelperText>
             </FormControl> */}
 
-              <TextField 
-                label="Tags" 
-                variant='outlined' 
-                multiline
-                rows={4} 
-                fullWidth
-                sx={{ paddingBottom:"30px" }}
-                color="info"
-                name='tags'
-                value={formik.values.tags}
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                helperText={formik.touched.tags && formik.errors.tags ? <span style={helperTextStyle}>{formik.errors.tags}</span>:null}
-              />
+              
 
               <TextField 
                 label="Base Legal Reference" 
@@ -412,9 +416,8 @@ const createDraftDocument=async (draftsData) => {
                 onChange={formik.handleChange}
                 helperText={formik.touched.scope && formik.errors.scope ? <span style={helperTextStyle}>{formik.errors.scope}</span>:null}
               />
-          </Grid>
-          <Grid item xs={4}>
-            <TextField 
+
+<TextField 
               label="Main Provision" 
               variant='outlined' 
               size='small'
@@ -429,7 +432,9 @@ const createDraftDocument=async (draftsData) => {
               onChange={formik.handleChange}
               helperText={formik.touched.mainProvision && formik.errors.mainProvision ? <span style={helperTextStyle}>{formik.errors.mainProvision}</span>:null}
             />
-            <TextField 
+          </Grid>
+          <Grid item xs={4}>
+          <TextField 
               label="Summary" 
               variant='outlined' 
               size="small"
@@ -444,11 +449,11 @@ const createDraftDocument=async (draftsData) => {
               onChange={formik.handleChange}
               helperText={formik.touched.summary && formik.errors.summary ? <span style={helperTextStyle}>{formik.errors.summary}</span>:null}
             />
-
             <TextField 
               label="Amended Laws"
               variant='outlined' 
               size="small"
+              multiline
               fullWidth
               sx={{ paddingBottom:"30px" }}
               color="info"
@@ -463,6 +468,7 @@ const createDraftDocument=async (draftsData) => {
               label="Repealed Laws"
               variant='outlined' 
               size='small'
+              multiline
               fullWidth
               sx={{ paddingBottom:"30px" }}
               color="info"

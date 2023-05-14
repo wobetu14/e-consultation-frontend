@@ -16,6 +16,8 @@ const CreateInstitution = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode); 
     const [institutionsTypes, setInstitutionTypes]=useState(null);
+    const [institutionsCategories, setInstitutionCategories]=useState(null);
+    const [institutionsLevels, setInstitutionLevels]=useState(null);
     const [regions, setRegions]=useState(null);
     const [sectors, setSectors]=useState(null);
 
@@ -61,21 +63,49 @@ const CreateInstitution = () => {
 
  useEffect(()=>{
   fetchInstitutionTypes();
-},[institutionsTypes]);
+},[]);
 
 useEffect(()=>{
   fetchRegions();
-},[regions])
+},[])
 
 useEffect(()=>{
   fetchEconomicSectors();
-},[regions])
+},[])
 
 const fetchInstitutionTypes =async() =>{
 return await  axios.get('institution-types')
   .then(res=>res.data.data)
   .then(res=>{
     setInstitutionTypes(res.data)
+  }).catch(error=>{
+    console.log(error.response.message);
+  })
+}
+
+useEffect(()=>{
+  fetchInstitutionCategories();
+},[regions])
+
+const fetchInstitutionCategories =async() =>{
+return await  axios.get('institution-categories')
+  .then(res=>res.data.data)
+  .then(res=>{
+    setInstitutionCategories(res.data)
+  }).catch(error=>{
+    console.log(error.response.message);
+  })
+}
+
+useEffect(()=>{
+  fetchInstitutionLevels();
+},[regions])
+
+const fetchInstitutionLevels =async() =>{
+return await  axios.get('institution-levels')
+  .then(res=>res.data.data)
+  .then(res=>{
+    setInstitutionLevels(res.data)
   }).catch(error=>{
     console.log(error.response.message);
   })
@@ -106,6 +136,8 @@ const fetchRegions =async() =>{
     initialValues:{
       institutionName:"",
       institutionTypeId:"",
+      institutionCategoryId:"",
+      institutionLevelId:"",
       regionId:"",
       // authority:"",
       email:"",
@@ -123,6 +155,8 @@ validationSchema:YUP.object({
     institutionName:YUP.string().required("This field is required. Please enter the institution name."),
     institutionTypeId:YUP.number().required("This field is required. Please enter the institution type."),
     regionId:YUP.number().required("This field is required. Please enter the region name of the institution."),
+    institutionCategoryId:YUP.number().required("This field is required. Please select institution category."),
+    institutionLevelId:YUP.number().required("This field is required. Please select level of institution."),
 
     telephone:YUP.string().required("This field is required. Please enter mobile number.").phone("ET",true, "Invalid phone number. Use +251, or 251 or 09... etc. Note: phone numbers starting with 07 are invalid for the time being."),
     email:YUP.string().required("This field is required. Please enter email address.").email("Invalid email address"),
@@ -136,6 +170,8 @@ validationSchema:YUP.object({
     const institutionData={
       name:values.institutionName,
       institution_type_id:values.institutionTypeId,
+      institution_category_id:values.institutionCategoryId,
+      institution_level_id:values.institutionLevelId,
       region_id:values.regionId,
       // authority:values.authority,
       email:values.email,
@@ -213,8 +249,55 @@ const createInstitution=async (institutionData) => {
                 </Select>
               <FormHelperText>{formik.touched.institutionTypeId && formik.errors.institutionTypeId ? <span style={helperTextStyle}>{formik.errors.institutionTypeId}</span>:null}</FormHelperText>
             </FormControl>
-                
-              <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+
+            <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+                <InputLabel>Select Institution Category</InputLabel>
+                <Select
+                  labelId="institution_category_id"
+                  id="institution_category"  
+                  size='small'
+                  label="Select Institution Category"
+                  placeholder='Select Institution Category'
+                  color="info"          
+                  name='institutionCategoryId'
+                  value={formik.values.institutionCategoryId}
+                  onChange={formik.handleChange}
+                  helperText={formik.touched.institutionCategoryId && formik.errors.institutionCategoryId ? <span style={helperTextStyle}>{formik.errors.institutionCategoryId}</span>:null}
+                >
+                    {
+                      institutionsCategories ? institutionsCategories.map((institutionsCategory)=>(
+                        <MenuItem value={institutionsCategory.id} key={institutionsCategory.id}>{institutionsCategory.name}</MenuItem>
+                      )): null
+                    }
+                </Select>
+              <FormHelperText>{formik.touched.institutionCategoryId && formik.errors.institutionCategoryId ? <span style={helperTextStyle}>{formik.errors.institutionCategoryId}</span>:null}</FormHelperText>
+            </FormControl>
+
+            <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+                <InputLabel>Select Institution Level</InputLabel>
+                <Select
+                  labelId="institution_level_id"
+                  id="institution_level"  
+                  size='small'
+                  label="Select Institution Level"
+                  placeholder='Select Institution Level'
+                  color="info"          
+                  name='institutionLevelId'
+                  value={formik.values.institutionLevelId}
+                  onChange={formik.handleChange}
+                  helperText={formik.touched.institutionLevelId && formik.errors.institutionLevelId ? <span style={helperTextStyle}>{formik.errors.institutionLevelId}</span>:null}
+                >
+                    {
+                      institutionsLevels ? institutionsLevels.map((institutionsLevel)=>(
+                        <MenuItem value={institutionsLevel.id} key={institutionsLevel.id}>{institutionsLevel.name}</MenuItem>
+                      )): null
+                    }
+                </Select>
+              <FormHelperText>{formik.touched.institutionLevelId && formik.errors.institutionLevelId ? <span style={helperTextStyle}>{formik.errors.institutionLevelId}</span>:null}</FormHelperText>
+            </FormControl>
+          </Grid>
+          <Grid item xs={4}>
+          <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
                 <InputLabel>Select Region</InputLabel>
                 <Select
                   labelId="region_id"
@@ -236,8 +319,7 @@ const createInstitution=async (institutionData) => {
                 </Select>
               <FormHelperText>{formik.touched.regionId && formik.errors.regionId ? <span style={helperTextStyle}>{formik.errors.regionId}</span>:null}</FormHelperText>
             </FormControl>
-          </Grid>
-          <Grid item xs={4}>
+            
             <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
               <InputLabel>Select Economic Sector</InputLabel>
               <Select

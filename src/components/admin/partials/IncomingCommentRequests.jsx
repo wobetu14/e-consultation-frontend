@@ -33,22 +33,23 @@ const IncomingCommentRequests = () => {
     const theme = useTheme();
 
     const colors = tokens(theme.palette.mode); 
-    const [draftsData, setDraftsData]=useState(null);
+    const [incomingCommentData, setIncomingCommentData]=useState(null);
 
     const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
 
-    const fetchSectors =async() =>{
-      return await  axios.get('drafts')
+    const incomingCommentRequests =async() =>{
+      return await  axios.get('comment-request')
         .then(res=>res.data.data)
         .then(res=>{
-          setDraftsData(res.data)
+          console.log(res.data)
+          setIncomingCommentData(res.data)
         }).catch(error=>{
           console.log(error.message);
         })
       }
       
     useEffect(()=>{ 
-        fetchSectors();
+      incomingCommentRequests();
     },[]);
 
   return (
@@ -78,9 +79,6 @@ const IncomingCommentRequests = () => {
             <Typography variant="h5" fontWeight={600}>Title</Typography>
             </TableCell>
             <TableCell>
-              <Typography variant="h5" fontWeight={600}>Description</Typography>
-              </TableCell>
-            <TableCell>
             <Typography variant="h5" fontWeight={600}>Draft Status</Typography>
             </TableCell>
             <TableCell>
@@ -89,38 +87,23 @@ const IncomingCommentRequests = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {draftsData ? draftsData.filter((draft)=>(draft.draft_status.name!=="Pending")).map((draft) => (
+          {incomingCommentData ? incomingCommentData.map((incommingData) => (
             <TableRow
-              key={draft.id}
+              key={incommingData.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
                 <TableCell>
-                <Typography variant="body1">{draft.institution_id}</Typography>
+                <Typography variant="body1">{incommingData.requestor_institution.name}</Typography>
                 </TableCell>
               <TableCell>
-                <Typography variant="body1">{draft.short_title.substr(0, 30)}</Typography>
+                <Typography variant="body1">{incommingData.draft.short_title}</Typography>
               </TableCell>
               <TableCell>
-                <Typography variant="body1">{draft.summary.substr(0, 20)}...</Typography>
+                <Typography variant="body1">{incommingData.status === 0 ? "Pending":"Accepted"}</Typography>
               </TableCell>
               <TableCell>
 
-                {
-                  draft.draft_status.name==="Pending" ? (
-                    <Chip label={draft.draft_status.name} size="small" sx={{ backgroundColor:colors.dangerColor[200], color:colors.grey[300] }} />
-                  ):""
-                }
-
-                {
-                  draft.draft_status.name==="Requested" ? (
-                    <Chip label={draft.draft_status.name} size="small" sx={{ backgroundColor:"orange", color:colors.grey[300]}} />
-                  ):""
-                }
-                {
-                  draft.draft_status.name==="Rejected" ? (
-                    <Chip label={draft.draft_status.name} size="small" sx={{ backgroundColor:"orangered", color:colors.grey[300]}} />
-                  ):""
-                }
+                
   
               </TableCell>
               <TableCell>
@@ -128,38 +111,14 @@ const IncomingCommentRequests = () => {
                  size='small' 
                  variant="contained" 
                  color="primary" 
-                 href={`/admin/external_requests_preview/${draft.id}`}
+                //  href={`/admin/external_requests_preview/${draft.id}`}
                  sx={{ textTransform:"none", marginRight:"5px" }}
                  >
                    {/* <PreviewIcon size="small"/> */}
                    View
                 </Button>
               {
-                userRole==="Uploaders" ? (
-                  draft.draft_status.name==="Pending" ? (
-                    // <TableCell align="right">
-                      <Button 
-                      size='small' 
-                      variant="contained" 
-                      color="secondary" 
-                      href={`/admin/document_preview/${draft.id}`}
-                      sx={{ textTransform:"none", marginRight:"5px" }}
-                      >  
-                      {/* <SendIcon size="small"/> */}
-                      Send Request
-                    </Button>
-                  ):""
-                ):
-                (
-                  draft.draft_status.name==="Requested" ? (
-                    // <TableCell align="right">
-                        <>
-                          <AcceptRequest draft={draft} />
-                          <RejectRequest draft={draft}/>
-                        </>
-                    
-                  ):""
-                )
+                
               }
               </TableCell>
             </TableRow>
@@ -173,14 +132,15 @@ const IncomingCommentRequests = () => {
 
 export default IncomingCommentRequests;
 
-const AcceptRequest=({draft})=>{
+
+const AcceptRequest=({})=>{
   return (
     <>
     <Button 
         size='small' 
         variant="contained" 
         color="success" 
-        href={`/admin/document_preview/${draft.id}`}
+        // href={`/admin/document_preview/${draft.id}`}
         sx={{ textTransform:"none", marginRight:"5px" }}
         >  
         {/* <ApproveIcon size="small" /> */}
@@ -190,14 +150,14 @@ const AcceptRequest=({draft})=>{
   )
 }
 
-const RejectRequest =({draft})=>{
+const RejectRequest =({})=>{
   return (
     <>
       <Button 
           size='small' 
           variant="contained" 
           color="warning" 
-          href={`/admin/document_preview/${draft.id}`}
+          // href={`/admin/document_preview/${draft.id}`}
           sx={{ textTransform:"none" }}
           >  
           {/* <RejectIcon size="small"/> */}

@@ -94,7 +94,7 @@ fontSize:'15px'
         lastName:user.last_name ? user.last_name:"",
         mobileNumber:user.mobile_number ? user.mobile_number:"",
         email:user.email ? user.email:"",
-        roleID:user.roles.length>0 ? user.roles[0].id:"",
+        roleName:user.roles.length>0 ? user.roles[0].name:"",
         regionID:user.region_id ? user.region_id:"",
         institutionID:user.institution_id ? user.institution_id:"",
         updatedBy:userInfo.user.updated_by
@@ -107,7 +107,7 @@ fontSize:'15px'
         last_name:values.lastName,
         mobile_number:values.mobileNumber,
         email:values.email,
-        roles:values.roleID,
+        roles:values.roleName,
         updated_by:values.updatedBy, 
         region_id:values.regionID,
         institution_id:values.institutionID
@@ -119,8 +119,23 @@ fontSize:'15px'
     
 const updateUser=async (userData) => {
     //  console.log(companyData)
-    console.log(userData)
-    return await axios.put(`users/${user.id}`, userData)
+    try{
+      const res = await  axios({
+        method:"put",
+        url:`users/${user.id}`,
+        data:userData
+      })
+      // .post(`users/${user.id}`, userData)
+        setServerSuccessMsg(res.data.message);
+        setServerErrorMsg(null);
+        setShowUserEditForm(false);
+        fetchUsers();
+    } catch(error){
+      setServerErrorMsg(error.response.data.message);
+      setServerSuccessMsg(null) 
+     }
+
+/*     return await axios.put(`users/${user.id}`, userData)
     .then(res => {
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null);
@@ -130,7 +145,7 @@ const updateUser=async (userData) => {
     .catch(errors =>{
        setServerErrorMsg(errors.response.data.message);
        setServerSuccessMsg(null) 
-    }) 
+    }) */ 
    }
    
   return (
@@ -223,18 +238,18 @@ const updateUser=async (userData) => {
                   size="small"
                   id="user_role"  
                   color="info"          
-                  name='roleID'
-                  value={formik.values.roleID}
+                  name='roleName'
+                  value={formik.values.roleName}
                   onChange={formik.handleChange}
-                  helperText={formik.touched.roleID && formik.errors.roleID ? <span style={helperTextStyle}>{formik.errors.roleID}</span>:null}
+                  helperText={formik.touched.roleName && formik.errors.roleName ? <span style={helperTextStyle}>{formik.errors.roleName}</span>:null}
                 >
                     {
                       userRoles ? userRoles.map((userRole)=>(
-                        <MenuItem value={userRole.role.id} key={userRole.id}>{userRole.role.name}</MenuItem>
+                        <MenuItem value={userRole.role.name} key={userRole.role.name}>{userRole.role.name}</MenuItem>
                       )): null
                     }
                 </Select>
-              <FormHelperText>{formik.touched.roleID && formik.errors.roleID ? <span style={helperTextStyle}>{formik.errors.roleID}</span>:null}</FormHelperText>
+              <FormHelperText>{formik.touched.roleName && formik.errors.roleName ? <span style={helperTextStyle}>{formik.errors.roleName}</span>:null}</FormHelperText>
             </FormControl>
           </Grid>
           <Grid item xs={4}>
