@@ -28,7 +28,7 @@ const Dashboard = () => {
     fetchUsers();
     fetchComments();
     fetchOpenDrafts();
-}, [])
+}, [drafts, users, comments, openDrafts])
 
 const fetchDrafts =async() =>{
     try{
