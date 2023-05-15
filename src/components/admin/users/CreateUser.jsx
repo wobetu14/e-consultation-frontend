@@ -287,6 +287,10 @@ const createUser=async (userData) => {
                         onChange={formik.handleChange}
                         helperText={formik.touched.regionID && formik.errors.regionID ? <span style={helperTextStyle}>{formik.errors.regionID}</span>:null}
                       >
+
+                      <MenuItem value="">
+                        <em>Not applicable</em>
+                      </MenuItem>
                           {
                             regions ? regions.map((region)=>(
                               <MenuItem value={region.id} key={region.id}>{region.name}</MenuItem>

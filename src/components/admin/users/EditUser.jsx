@@ -110,7 +110,8 @@ fontSize:'15px'
         roles:values.roleName,
         updated_by:values.updatedBy, 
         region_id:values.regionID,
-        institution_id:values.institutionID
+        institution_id:values.institutionID,
+        _method:"put"
     };
 
     updateUser(userData);
@@ -120,11 +121,7 @@ fontSize:'15px'
 const updateUser=async (userData) => {
     //  console.log(companyData)
     try{
-      const res = await  axios({
-        method:"put",
-        url:`users/${user.id}`,
-        data:userData
-      })
+      const res = await  axios.put(`users/${user.id}`, userData);
       // .post(`users/${user.id}`, userData)
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);

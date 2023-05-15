@@ -100,7 +100,6 @@ const OutgoingCommentRequestsDialog = ({
          </DialogTitle>
          <DialogContent>
              <DialogContentText>
-                 <h1>{draftID}</h1>
              <Stack spacing={3} sx={{ width: 500 }}>
         <Autocomplete
             multiple
@@ -114,8 +113,9 @@ const OutgoingCommentRequestsDialog = ({
             <TextField
                 {...params}
                 variant="standard"
-                label="Select Sectors"
-                placeholder="Sectors"
+                label="Select Institutions"
+                placeholder="Institutions"
+                value={(option)=>option.name}
             />
             )}
         />

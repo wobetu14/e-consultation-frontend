@@ -100,12 +100,10 @@ const EditDraft = () => {
         lawCategoryId:draft ? (draft.law_category_id):"",
         draftStatusId:draft ? (draft.draft_status_id):"",
         sectorId:draft ? (draft.sector_id):"",
-        // file:draft ? (draft.file):null,
-        // slug:"slug_here",
+
         active:draft ? (draft.active):"",
-        parent_id:draft ? (draft.parent_id):"",
-        // tags:"",
-        // noteId:"1",
+        isPrivate: draft ? (draft.is_private):"",
+        tags:draft ? (draft.tags):"",
         baseLegalReference:draft ? (draft.base_legal_reference):"",
         definition:draft ? (draft.definition):"",
         scope:draft ? (draft.scope):"",
@@ -128,7 +126,8 @@ const EditDraft = () => {
       comment_closing_date:values.closingDate,
     //   file:values.file,
       slug:values.slug,
-      active:values.active,
+      // active:values.active,
+      is_private:values.isPrivate,
       parent_id:values.parentId,
       tags:values.tags,
       note_id:values.noteId,
@@ -142,7 +141,8 @@ const EditDraft = () => {
       transitory_provision:values.transitoryProvision,
       comment_request_description:values.summary,
       comment_summary:values.summary,
-      updated_by:values.updatedBy
+      updated_by:values.updatedBy,
+      _method:"put"
     };
 
     updateDraftDocument(draftsData);
@@ -151,11 +151,12 @@ const EditDraft = () => {
     
 const updateDraftDocument=async (draftsData) => {
     //  console.log(companyData)
-    return await axios.put(`drafts/${draft.id}`, draftsData)
+    return await axios.post(`drafts/${draft.id}`, draftsData)
     .then(res => {
       console.log(res.data)
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null);
+      setShowDraftEditForm(false);
       formik.resetForm();
       fetchDrafts();
     })
@@ -167,7 +168,7 @@ const updateDraftDocument=async (draftsData) => {
    
   return (
     <Box width={'95%'}>
-      <Header title="Edit Draft Document Information" subtitle="" />
+      <Header title="Edit Drfat Document Information" subtitle="" />
       <motion.span
         initial={{ opacity: 0}}
         animate={{ opacity: 1}}
@@ -177,7 +178,7 @@ const updateDraftDocument=async (draftsData) => {
         <form onSubmit={formik.handleSubmit}>
         <Grid container spacing={2}>
           <Grid item xs={4}>
-              <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+              {/* <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
                 <InputLabel>Select Institution</InputLabel>
                 <Select
                   labelId="institution_id"
@@ -196,7 +197,7 @@ const updateDraftDocument=async (draftsData) => {
                     }
                 </Select>
               <FormHelperText>{formik.touched.institutionID && formik.errors.institutionID ? <span style={helperTextStyle}>{formik.errors.institutionID}</span>:null}</FormHelperText>
-            </FormControl>
+            </FormControl> */}
 
                 <TextField 
                   label="Short title" 
@@ -260,7 +261,7 @@ const updateDraftDocument=async (draftsData) => {
               <FormHelperText>{formik.touched.sectorId && formik.errors.sectorId ? <span style={helperTextStyle}>{formik.errors.sectorId}</span>:null}</FormHelperText>
             </FormControl>
 
-          <Typography variant='body1' sx={{ paddingBottom:'10px' }}> 
+          {/* <Typography variant='body1' sx={{ paddingBottom:'10px' }}> 
             Opening Date
           </Typography>
                 <TextField 
@@ -292,22 +293,39 @@ const updateDraftDocument=async (draftsData) => {
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
                   helperText={formik.touched.closingDate && formik.errors.closingDate ? <span style={helperTextStyle}>{formik.errors.closingDate}</span>:null}
-                />
-          </Grid>
-          <Grid item xs={4}>
-              <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Active status</Typography>
+                /> */}
+
+            <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Document Access</Typography>
                 <RadioGroup
                         aria-labelledby="demo-controlled-radio-buttons-group"
-                        name="active"
+                        name="isPrivate"
                         size="small"
-                        value={formik.values.active}
+                        value={formik.values.isPrivate}
                         onChange={formik.handleChange}
                       >
-                        <FormControlLabel value='1' control={<Radio />} label="Yes"  />
-                        <FormControlLabel value='2' control={<Radio />} label="No"  />
-                  </RadioGroup>      
+                        <FormControlLabel value='0' control={<Radio />} label="Public"  />
+                        <FormControlLabel value='1' control={<Radio />} label="Private"  />
+                  </RadioGroup> 
 
-              <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+                  <TextField 
+                      label="Tags" 
+                      variant='outlined' 
+                      multiline
+                      rows={4} 
+                      fullWidth
+                      sx={{ paddingBottom:"30px" }}
+                      color="info"
+                      name='tags'
+                      value={formik.values.tags}
+                      onBlur={formik.handleBlur}
+                      onChange={formik.handleChange}
+                      helperText={formik.touched.tags && formik.errors.tags ? <span style={helperTextStyle}>{formik.errors.tags}</span>:null}
+                  />
+          </Grid>
+          <Grid item xs={4}>
+                   
+
+              {/* <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
                 <InputLabel>Previous Version</InputLabel>
                 <Select
                   labelId="previous_verion"
@@ -326,22 +344,9 @@ const updateDraftDocument=async (draftsData) => {
                     }
                 </Select>
               <FormHelperText>{formik.touched.parentId && formik.errors.parentId ? <span style={helperTextStyle}>{formik.errors.parentId}</span>:null}</FormHelperText>
-            </FormControl>
+            </FormControl> */}
 
-              <TextField 
-                label="Tags" 
-                variant='outlined' 
-                multiline
-                rows={4} 
-                fullWidth
-                sx={{ paddingBottom:"30px" }}
-                color="info"
-                name='tags'
-                value={formik.values.tags}
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                helperText={formik.touched.tags && formik.errors.tags ? <span style={helperTextStyle}>{formik.errors.tags}</span>:null}
-              />
+              
 
               <TextField 
                 label="Base Legal Reference" 
@@ -390,9 +395,8 @@ const updateDraftDocument=async (draftsData) => {
                 onChange={formik.handleChange}
                 helperText={formik.touched.scope && formik.errors.scope ? <span style={helperTextStyle}>{formik.errors.scope}</span>:null}
               />
-          </Grid>
-          <Grid item xs={4}>
-            <TextField 
+
+<TextField 
               label="Main Provision" 
               variant='outlined' 
               size='small'
@@ -407,7 +411,9 @@ const updateDraftDocument=async (draftsData) => {
               onChange={formik.handleChange}
               helperText={formik.touched.mainProvision && formik.errors.mainProvision ? <span style={helperTextStyle}>{formik.errors.mainProvision}</span>:null}
             />
-            <TextField 
+          </Grid>
+          <Grid item xs={4}>
+          <TextField 
               label="Summary" 
               variant='outlined' 
               size="small"
@@ -422,11 +428,11 @@ const updateDraftDocument=async (draftsData) => {
               onChange={formik.handleChange}
               helperText={formik.touched.summary && formik.errors.summary ? <span style={helperTextStyle}>{formik.errors.summary}</span>:null}
             />
-
             <TextField 
               label="Amended Laws"
               variant='outlined' 
               size="small"
+              multiline
               fullWidth
               sx={{ paddingBottom:"30px" }}
               color="info"
@@ -441,6 +447,7 @@ const updateDraftDocument=async (draftsData) => {
               label="Repealed Laws"
               variant='outlined' 
               size='small'
+              multiline
               fullWidth
               sx={{ paddingBottom:"30px" }}
               color="info"
@@ -493,7 +500,7 @@ const updateDraftDocument=async (draftsData) => {
                 sx={{ align:'right', textTransform:'none' }}
                 color='secondary' elevation={10}
               >
-                Save Changes </Button>
+                Save Changes</Button>
               </Grid>
           </Grid>
         </Grid>

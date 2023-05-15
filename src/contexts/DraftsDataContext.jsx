@@ -23,7 +23,7 @@ export const DraftsDataProvider = (props) => {
 
     const fetchDrafts =async() =>{
         try{
-          const res = await  axios.get('drafts')
+          const res = await  axios.get('mydrafts')
             console.log(res.data.data.data);
             setDrafts(res.data.data.data);
             setFilteredDrafts(res.data.data.data);

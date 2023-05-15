@@ -164,7 +164,7 @@ const DocumentDetailView = () => {
                 </Typography>
 
                 <Typography variant="body1">Document level comments: 
-                    <Button href={`http://196.188.107.43/api/v1/report/${params.id}`}
+                    <Button href={`http://196.188.107.43/api/v1/report/draft/${params.id}`}
                       variant="contained" 
                       target="_blank"
                       color="secondary"

@@ -6,8 +6,8 @@ const instance = axios.create(
         headers:{
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
             'Accept':'application/json',
-            // 'Content-Type' : 'multipart/form-data',
-            'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
+            'Content-Type' : 'multipart/form-data',
+            // 'Content-Type' : 'application/x-www-form-urlencoded; charset=UTF-8',
           }, 
     }
 );

@@ -26,6 +26,7 @@ import InstitutionIcon from '@mui/icons-material/AccountBalance';
 import SectorIcon from '@mui/icons-material/Category';
 import RegionIcon from '@mui/icons-material/Public';
 import IncomingCommentRequests from '@mui/icons-material/CallReceived';
+import AssessmentIcon from '@mui/icons-material/Assessment';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -190,6 +191,14 @@ const Sidebar = () => {
                     selected={selected}
                     setSelected={setSelected}
                   />
+
+                  <Item
+                    title="Audit and Reports"
+                    to="reports"
+                    icon={<AssessmentIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
                   
                   <Item
                     title="Resource Center"
@@ -228,6 +237,15 @@ const Sidebar = () => {
                     selected={selected}
                     setSelected={setSelected}
                   />
+
+                  <Item
+                    title="Audit and Reports"
+                    to="reports"
+                    icon={<AssessmentIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+
                   <Item
                       title="Resource Center"
                       to="form"
@@ -295,6 +313,15 @@ const Sidebar = () => {
                     selected={selected}
                     setSelected={setSelected}
                   />
+
+                  <Item
+                    title="Audit and Reports"
+                    to="reports"
+                    icon={<AssessmentIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+
                   <Item
                       title="Resource Center"
                       to="form"
@@ -325,6 +352,14 @@ const Sidebar = () => {
                       setSelected={setSelected}
                     />
 
+                  <Item
+                    title="Audit and Reports"
+                    to="reports"
+                    icon={<AssessmentIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+
                     <Item
                       title="Resource Center"
                       to="form"
@@ -347,20 +382,20 @@ const Sidebar = () => {
                         setSelected={setSelected}
                       />
 
-                      <Item
+                      {/* <Item
                         title="Users"
                         to="users"
                         icon={<PersonIcon />}
                         selected={selected}
                         setSelected={setSelected}
-                      />
-                       <Item
+                      /> */}
+                      {/*  <Item
                           title="Draft Documents"
                           to="drafts"
                           icon={<MenuBookIcon />}
                           selected={selected}
                           setSelected={setSelected}
-                        />
+                        /> */}
 
                         <Item
                           title="Draft Approvals"

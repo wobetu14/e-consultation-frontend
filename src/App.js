@@ -38,6 +38,7 @@ import ExternalCommentRequests from './components/admin/drafts/ExternalCommentRe
 import ExternalRequestsPreview from './components/admin/drafts/ExternalRequestsPreview';
 import DataTable from 'react-data-table-component';
 import UsersTable from './components/admin/DataTables/UsersTable';
+import Reports from './components/admin/Reports';
 
 
 function App() {
@@ -153,6 +154,7 @@ function App() {
                         <Route path="create_sector" element={<CreateSector />} />
                         <Route path="drafts" element={<Drafts />} />
                         <Route path="data_table" element={<UsersTable />} />
+                        <Route path="reports" element={<Reports />} />
                         <Route path="create_draft" element={
                           <Uploaders>
                             <CreateDraft />

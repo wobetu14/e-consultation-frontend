@@ -103,8 +103,6 @@ const IncomingCommentRequests = () => {
               </TableCell>
               <TableCell>
 
-                
-  
               </TableCell>
               <TableCell>
                 <Button

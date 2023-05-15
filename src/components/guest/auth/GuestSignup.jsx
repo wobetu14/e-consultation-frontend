@@ -68,7 +68,7 @@ const GuestSignup = () => {
    }); 
 
    const registerUser = async (userData)=> {
-    return await axios.post('register', userData)
+    return await axios.post('signup', userData)
           .then(res => {
             setServerSuccessMsg(res.data.message);
             setServerErrorMsg(null)

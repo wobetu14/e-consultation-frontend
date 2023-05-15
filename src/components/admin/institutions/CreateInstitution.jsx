@@ -10,8 +10,6 @@ import { motion } from 'framer-motion';
 import { UserContext } from '../../../contexts/UserContext';
 import { InstitutionsDataContext } from '../../../contexts/InstitutionsDataContext';
 
-
-
 const CreateInstitution = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode); 

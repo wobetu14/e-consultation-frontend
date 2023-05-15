@@ -132,7 +132,7 @@ const updateSector=async (sectorData) => {
                     sx={{ align:'right', textTransform:'none' }}
                     color='secondary'
                   >
-                    Save 
+                    Save Changes
                 </Button>
               </Grid>
           </Grid>

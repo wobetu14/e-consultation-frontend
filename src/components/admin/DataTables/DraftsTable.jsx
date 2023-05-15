@@ -97,12 +97,12 @@ const errorStyle={
         
         {
             name:<Typography variant="h5" fontWeight="600">Owning Institution</Typography>,
-            selector:(row)=><Typography variant="body1">{row.institution.name}</Typography>,
+            selector:(row)=><Typography variant="body1">{row.institution ? (row.institution.name):""}</Typography>,
             sortable:true,
         },
         {
             name:<Typography variant="h5" fontWeight="600">Created By</Typography>,
-            selector:(row)=><Typography variant="body1">{row.created_by}</Typography>,
+            selector:(row)=><Typography variant="body1">{row.creator ? (row.creator.name):""}</Typography>,
             sortable:true,
         },
 
@@ -115,7 +115,7 @@ const errorStyle={
         {
             name:<Typography variant="h5" fontWeight="600">Download Comments Report</Typography>,
             selector:(row)=>(
-                row.draft_status.name==="Pending" ? (
+               ( row.draft_status!==null && row.draft_status.name==="Pending") ? (
                     <a href={`${rootURL}report/${row.id}`} target='_blank'><Typography variant="body1">Get comments report</Typography></a>
                 ):""
             ),
@@ -177,7 +177,7 @@ const errorStyle={
         <EditDraft />
       )
     }
-     <Paper elevation={1} sx={{ marginTop:"10px", marginBottom:"350px"}}>
+     <Paper elevation={1} sx={{ marginTop:"10px", marginBottom:"350px", maxWidth:"1200px"}}>
        <DataTable 
         columns={columns} 
         data={filteredDrafts}
