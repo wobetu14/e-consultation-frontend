@@ -1,4 +1,4 @@
-import { Box, Collapse, Card, CardActions, CardContent, CircularProgress, Grid, Paper, Stack, Typography, useTheme, ListItemButton, ListItemText, Button, TextField, List, ListItem, ListItemAvatar, Avatar, Chip, Alert } from '@mui/material';
+import { Box, Collapse, Card, CardActions, CardContent, CircularProgress, Grid, Paper, Stack, Typography, useTheme, ListItemButton, ListItemText, Button, TextField, List, ListItem, ListItemAvatar, Avatar, Chip, Alert, LinearProgress } from '@mui/material';
 import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom'
@@ -21,11 +21,15 @@ import { UserContext } from '../../../contexts/UserContext';
 import { useFormik } from 'formik';
 import * as YUP from 'yup';
 
-const DocumentPreview = () => {
+const DocumentPreview = ({
+        documentDetail,
+        setDocumentDetail,
+        documentSections,
+        setDocumentSections,
+        documentComments,
+        setDocumentComments
+}) => {
   const params=useParams();
-  const [documentDetail, setDocumentDetail]=useState(null);
-  const [documentSections, setDocumentSections]=useState(null);
-  const [documentComments, setDocumentComments]=useState(null);
 
   const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
 
@@ -64,130 +68,15 @@ const DocumentPreview = () => {
     setCommentsOpen(!commentsOpen);
   };
 
-    useEffect(()=>{
-        fetchDocumentDetails();
-    }, [documentDetail])
-
-    useEffect(()=>{
-      fetchDocumentSections();
-    }, [documentSections])
-
-    useEffect(()=>{
-      fetchDocumentComments();
-    }, [documentComments])
-
-  const fetchDocumentDetails= async()=>{
-        return await axios.get(`drafts/${params.id}`)
-                .then(response=>{
-                    setDocumentDetail(response.data.data);
-                })
-  };
-
-  const fetchDocumentSections = async()=>{
-    return await axios.get(`draft/${params.id}/draft-sections`)
-              .then(response =>{
-                setDocumentSections(response.data.data)
-              }).catch(error=>{
-                <p color='red'>{error.response.message}</p>
-              })
-  }
-
-  const fetchDocumentComments= async()=>{
-    return await axios.get(`draft/${params.id}/general-comments`)
-              .then(response =>{
-                setDocumentComments(response.data.data)
-              }).catch(error=>{
-                <p color='red'>{error.response.message}</p>
-              })
-  }
-
   return (
     <Box>
-      <Box>
-          <Typography variant="h3" sx={{ paddingBottom:"20px", fontWeight:600, textAlign:"center", color:colors.primary[200] }}>
-          {documentDetail ? documentDetail.short_title: null}
-          </Typography>
-
-          <Grid align='center' sx={{ paddingBottom:"15px", paddingTop:'15px' }}>
-            <motion.span
-              initial={{ opacity: 0}}
-              animate={{ opacity: 1}}
-              transition={{ duration: 0.3 }}
-            > 
-              <Typography variant='h1'>
-                {serverSuccessMsg ? <Alert severity='success' style={successStyle}>{serverSuccessMsg}</Alert>:null}
-              </Typography>
-              
-              <Typography variant='h1'>
-              {serverErrorMsg ? <Alert severity='error' style={errorStyle}>{serverErrorMsg}</Alert>:null}
-              </Typography> 
-            </motion.span>
-        </Grid>
-
-      </Box>
-      <Stack direction="row" spacing={1} justifyContent="end" sx={{ marginRight:"20px" }}>
-        {/* Actions on the document */}
-            {
-                 (documentDetail && documentDetail.draft_status.name==="Pending") ? (
-                    <Chip label={`Status: ${documentDetail.draft_status.name}`} size="small" sx={{ backgroundColor:colors.dangerColor[200], color:colors.grey[300] }} />
-                  ):""
-                }
-
-                {
-                  (documentDetail && documentDetail.draft_status.name==="Requested") ? (
-                    <Chip label={documentDetail.draft_status.name} size="small" sx={{ backgroundColor:"orange", color:colors.grey[300]}} />
-                  ):""
-                }
-
-{
-                  (documentDetail && documentDetail.draft_status.name==="Open") ? (
-                    <Chip label={documentDetail.draft_status.name} size="small" sx={{ backgroundColor:colors.successColor[100], color:colors.grey[300]}} />
-                  ):""
-                }
-            {
-           userRole==="Approver" ? (
-            (documentDetail && documentDetail.draft_status.name==="Requested") ? (
-              <>
-              <AcceptApprovalRequest documentDetail={documentDetail} setServerSuccessMsg={setServerSuccessMsg} setServerErrorMsg={setServerErrorMsg} />
-              <RejectApprovalRequest documentDetail={documentDetail} setServerSuccessMsg={setServerSuccessMsg} setServerErrorMsg={setServerErrorMsg} />
-            </>
-            ):(
-             ""
-            )
-            
-           ):
-           (
-              userRole==="Uploaders" ? (
-                (documentDetail && documentDetail.draft_status.name==="Pending") ?(
-                  <>
-                   <SendApprovalRequest documentDetail={documentDetail} setServerSuccessMsg={setServerSuccessMsg} setServerErrorMsg={setServerErrorMsg} />
-                  {/* <Button variant="contained" color="warning" size="small" sx={{ textTransform:"none" }}>Reject</Button> */}
-                  </>
-                ):""
-              ):""
-           )
-         }
-      </Stack>
-    <Box>
-      <motion.span
-        initial={{ opacity: 0}}
-        animate={{ opacity: 1}}
-        transition={{ duration: 0.3 }}
-      >
-      <Box sx={{ 
-        marginRight:"30px",
-        marginLeft:"30px",
-        paddingBottom:"30px",
-         }}>
-
-         <Grid container spacing={2} sx={{ paddingTop:"30px", display:"flex", justifyContent:"space-between" }}>
-            <Grid item xs={12} md={12}>
-              <Typography variant="h3" sx={{ fontWeight:"500", textAlign:"center", color:colors.primary[100] }}>
-                Document Preview 
-              </Typography>
-            </Grid>
-         </Grid>
-          <Grid container spacing={2} sx={{ paddingTop:"30px", display:"flex", justifyContent:"space-between" }}>
+        <motion.span
+          initial={{ opacity: 0}}
+          animate={{ opacity: 1}}
+          transition={{ duration: 0.3 }}
+        >
+         
+          <Grid container spacing={2} sx={{ paddingTop:"10px", display:"flex", justifyContent:"space-between" }}>
             <Grid item xs={3}>
               {/* <Typography variant="h4">Articles</Typography> */}
 
@@ -203,7 +92,10 @@ const DocumentPreview = () => {
 
                     <SectionNavigationMenu section={section} setContentBgColor={setContentBgColor} />
                   ))
-                ):(<Box>Content unavailable</Box>)}
+                ):(
+                <>
+                &nbsp;
+                </>)}
               </Collapse>
               {/* </ul> */}
             </Grid>
@@ -266,16 +158,17 @@ const DocumentPreview = () => {
                         </CardContent>
                       </Card>
                   ))
-                ):(<Box>Content unavailable</Box>)
+                ):(
+                <Box>
+                  <LinearProgress color="secondary" />
+                </Box>)
               }
             </Grid>
             <Grid item xs={2}>
               &nbsp;
             </Grid>
           </Grid>
-      </Box>
-      </motion.span>
-    </Box>    
+      </motion.span>    
     </Box>
   )
 }

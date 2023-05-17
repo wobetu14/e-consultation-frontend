@@ -39,6 +39,7 @@ import ExternalRequestsPreview from './components/admin/drafts/ExternalRequestsP
 import DataTable from 'react-data-table-component';
 import UsersTable from './components/admin/DataTables/UsersTable';
 import Reports from './components/admin/Reports';
+import DocumentDetails from './components/admin/drafts/DocumentDetails';
 
 
 function App() {
@@ -161,7 +162,7 @@ function App() {
                           </Uploaders>
                         } />
                         <Route path="draft_approval_request" element={<DraftApprovalRequest />} />
-                        <Route path="document_preview/:id" element={<DocumentPreview />} />
+                        <Route path="document_details/:id" element={<DocumentDetails />} />
                         <Route path="external_comment_requests" element={<ExternalCommentRequests />} />
                         <Route path="external_requests_preview/:id" element={<ExternalRequestsPreview />} />
                         <Route path="*" element={<PageNotFound />} />

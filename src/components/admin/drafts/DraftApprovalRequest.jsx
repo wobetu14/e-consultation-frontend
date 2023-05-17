@@ -1,4 +1,4 @@
-import { Typography, Button, Stack, Chip, Grid, Alert } from '@mui/material';
+import { Typography, Button, Stack, Chip, Grid, Alert, CircularProgress, LinearProgress } from '@mui/material';
 import { Box } from '@mui/system'
 import React, { useEffect, useState, useMemo, useLayoutEffect, useContext } from 'react'
 import axios from '../../../axios/AxiosGlobal'
@@ -54,7 +54,7 @@ const DraftApprovalRequest = () => {
     const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
 
     const fetchDrafts =async() =>{
-      return await  axios.get('drafts')
+      return await  axios.get('mydrafts')
         .then(res=>res.data.data)
         .then(res=>{
           setDraftsData(res.data)
@@ -92,7 +92,7 @@ const DraftApprovalRequest = () => {
           {
                 userRole==="Approver"? ( 
                   <TableCell>
-                    <Typography variant="h5" fontWeight={600}>Requested By</Typography>
+                    <Typography variant="h5" fontWeight={600}>Uploader</Typography>
                   </TableCell>
                 ):""
               }
@@ -102,9 +102,6 @@ const DraftApprovalRequest = () => {
             <TableCell>
               <Typography variant="h5" fontWeight={600}>Description</Typography>
               </TableCell>
-            <TableCell>
-            <Typography variant="h5" fontWeight={600}>My Institution</Typography>
-            </TableCell>
             <TableCell>
             <Typography variant="h5" fontWeight={600}>Draft Status</Typography>
             </TableCell>
@@ -122,7 +119,7 @@ const DraftApprovalRequest = () => {
               {
                 userRole==="Approver"? ( 
                   <TableCell>
-                    <Typography variant="body1">{'User Name'}</Typography>
+                    <Typography variant="body1">{draft.uploader.first_name +" "+ draft.uploader.middle_name}</Typography>
                   </TableCell>
                 ):""
               }
@@ -131,9 +128,6 @@ const DraftApprovalRequest = () => {
               </TableCell>
               <TableCell>
                 <Typography variant="body1">{draft.summary.substr(0, 20)}...</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography>{draft.institution_id}</Typography>
               </TableCell>
               <TableCell>
 
@@ -166,11 +160,11 @@ const DraftApprovalRequest = () => {
                  size='small' 
                  variant="contained" 
                  color="primary" 
-                 href={`/admin/document_preview/${draft.id}`}
+                 href={`/admin/document_details/${draft.id}`}
                  sx={{ textTransform:"none", marginRight:"5px" }}
                  >
                    {/* <PreviewIcon size="small"/> */}
-                   View
+                   Detail
                 </Button>
               {
                 userRole==="Uploader" ? (
@@ -196,7 +190,15 @@ const DraftApprovalRequest = () => {
               }
               </TableCell>
             </TableRow>
-          )):""}
+          )):
+          (
+            <TableRow>
+              <TableCell colsPan={5}>
+                <LinearProgress color='secondary'  />
+              </TableCell>
+            </TableRow>
+          )
+          }
         </TableBody>
       </Table>
     </TableContainer>
@@ -216,7 +218,7 @@ const SendApprovalRequest = ({draft, setServerSuccessMsg, setServerErrorMsg}) =>
     })
     .catch(errors =>{
        setServerErrorMsg(errors.response.data.message);
-      setServerSuccessMsg(null) 
+       setServerSuccessMsg(null) 
     }) 
    }
 
