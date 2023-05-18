@@ -152,7 +152,7 @@ const fetchRegions =async() =>{
 validationSchema:YUP.object({
     institutionName:YUP.string().required("This field is required. Please enter the institution name."),
     institutionTypeId:YUP.number().required("This field is required. Please enter the institution type."),
-    regionId:YUP.number().required("This field is required. Please enter the region name of the institution."),
+    // regionId:YUP.number().required("This field is required. Please enter the region name of the institution."),
     institutionCategoryId:YUP.number().required("This field is required. Please select institution category."),
     institutionLevelId:YUP.number().required("This field is required. Please select level of institution."),
 

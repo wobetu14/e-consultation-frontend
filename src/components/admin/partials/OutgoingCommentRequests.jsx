@@ -39,13 +39,13 @@ const OutgoingCommentRequests = () => {
     const colors = tokens(theme.palette.mode); 
     const [draftsData, setDraftsData]=useState(null);
 
-    const [draftID, setDraftID]=useState(null);
+    const [draftInfo, setDraftInfo]=useState(null);
 
     const [serverErrorMsg, setServerErrorMsg]=useState(null);
     const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
 
-    const showDialog=(id)=>{
-      setDraftID(id)
+    const showDialog=(draft)=>{
+      setDraftInfo(draft)
       setOpenDialog(true);
     }
 
@@ -191,7 +191,7 @@ const OutgoingCommentRequests = () => {
                       variant="contained" 
                       color="secondary" 
                       sx={{ textTransform:"none", marginRight:"5px" }}
-                      onClick={()=>showDialog(draft.id)}
+                      onClick={()=>showDialog(draft)}
                       >  
                       
                     Send Request
@@ -200,7 +200,7 @@ const OutgoingCommentRequests = () => {
                     openDialog && (
                         <OutgoingCommentRequestsDialog
                           key={draft.id}
-                          draftID={draftID} 
+                          draftInfo={draftInfo} 
                           setServerSuccessMsg={setServerSuccessMsg} 
                           setServerErrorMsg={setServerErrorMsg}
                           openDialog={openDialog}

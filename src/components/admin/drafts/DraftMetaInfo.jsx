@@ -182,18 +182,13 @@ const DraftMetaInfo = ({documentDetail,setDocumentDetail}) => {
                 <strong>Document Access</strong> 
               </Grid>
               <Grid item xs={6} md={6}>
-              {documentDetail.is_private ? documentDetail.is_private:
-                (
-                    <Chip 
-                label={documentDetail.comment_opening_date 
-                    ? 
-                    documentDetail.comment_opening_date
-                    :
-                    "Unavailable"}
+                <Chip 
+                  label={documentDetail ? documentDetail.is_private===0 ? "Public":"Private"
+                :
+                "Unavailable"}
                 size="small" 
-                sx={{ backgroundColor:colors.dangerColor[200], color:colors.grey[300] }} />
-                )
-              }
+                // sx={{ backgroundColor:colors.dangerColor[200], color:colors.grey[300] }}
+              />
               </Grid>
 
           {/*     <Grid item xs={6} md={6}>

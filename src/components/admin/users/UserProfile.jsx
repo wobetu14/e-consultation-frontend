@@ -216,7 +216,7 @@ const UserProfile = () => {
                     <Typography variant='h5' sx={{ fontWeight:"600" }}>Institution</Typography>
                   </Grid>
                   <Grid item xs={8}>
-                    <Typography variant="h5">{usersData ? usersData.institution_id:""}</Typography>
+                    <Typography variant="h5">{usersData ? usersData.institution:""}</Typography>
                   </Grid>
 
                   <Grid item xs={4}>

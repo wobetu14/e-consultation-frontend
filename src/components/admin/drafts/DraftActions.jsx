@@ -22,11 +22,21 @@ import { useFormik } from 'formik';
 import * as YUP from 'yup';
 import DraftMetaInfo from './DraftMetaInfo';
 import DocumentPreview from './DocumentPreview';
+import OutgoingCommentRequestsDialog from '../partials/OutgoingCommentRequestsDialog';
 
-const DraftActions = ({documentDetail,setDocumentDetail}) => {
+const DraftActions = ({
+      documentDetail,
+      serverErrorMsg, 
+      serverSuccessMsg, 
+      setServerErrorMsg, 
+      setServerSuccessMsg, 
+      setDocumentDetail
+    }) => {
   const params=useParams();
   const [documentSections, setDocumentSections]=useState(null);
   const [documentComments, setDocumentComments]=useState(null);
+
+  const [openDialog, setOpenDialog]=useState(false);
 
   const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
 
@@ -36,63 +46,6 @@ const DraftActions = ({documentDetail,setDocumentDetail}) => {
   const colors = tokens(theme.palette.mode);
   const {t}=useTranslation();
 
-  const [serverErrorMsg, setServerErrorMsg]=useState(null);
-  const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
-
-  const errorStyle={
-    color:'red',
-    fontWeight:'400',
-    fontSize:'18px'
-  }
-
-  const successStyle={
-   color:'green',
-   fontWeight:'400',
-   fontSize:'18px'
- }
-
-  // Menu collapse functionality
-  const [articlesOpen, setArticlesOpen] = React.useState(true);
-
-  // General comments collapse functionality
-  const [commentsOpen, setCommentsOpen] = React.useState(true);
-
-  const handleArticlesCollapse = () => {
-    setArticlesOpen(!articlesOpen);
-  };
-
-  const handleCommentsCollapse = () => {
-    setCommentsOpen(!commentsOpen);
-  };
-
-
-    useEffect(()=>{
-      fetchDocumentSections();
-    }, [documentSections])
-
-    useEffect(()=>{
-      fetchDocumentComments();
-    }, [documentComments])
-
-
-  const fetchDocumentSections = async()=>{
-    return await axios.get(`draft/${params.id}/draft-sections`)
-              .then(response =>{
-                setDocumentSections(response.data.data)
-              }).catch(error=>{
-                <p color='red'>{error.response.message}</p>
-              })
-  }
-
-  const fetchDocumentComments= async()=>{
-    return await axios.get(`draft/${params.id}/general-comments`)
-              .then(response =>{
-                setDocumentComments(response.data.data)
-              }).catch(error=>{
-                <p color='red'>{error.response.message}</p>
-              })
-  }
-
   return (
     <Box>
  
@@ -101,13 +54,23 @@ const DraftActions = ({documentDetail,setDocumentDetail}) => {
            userRole==="Approver" ? (
             (documentDetail && documentDetail.draft_status.name==="Requested") ? (
               <>
-              <AcceptApprovalRequest documentDetail={documentDetail} setServerSuccessMsg={setServerSuccessMsg} setServerErrorMsg={setServerErrorMsg} />
+              <AcceptApprovalRequest
+               documentDetail={documentDetail} 
+               serverSuccessMsg={serverSuccessMsg}
+               serverErrorMsg={serverErrorMsg}
+               setServerSuccessMsg={setServerSuccessMsg} 
+               setServerErrorMsg={setServerErrorMsg}
+               openDialog={openDialog}
+               setOpenDialog={setOpenDialog}
+                />
               <RejectApprovalRequest documentDetail={documentDetail} setServerSuccessMsg={setServerSuccessMsg} setServerErrorMsg={setServerErrorMsg} />
             </>
-            ):(
-             ""
-            )
-            
+            ):(documentDetail && documentDetail.draft_status.name==="Open") ? (
+              <>
+              <InviteCommenters documentDetail={documentDetail} setServerSuccessMsg={setServerSuccessMsg} setServerErrorMsg={setServerErrorMsg} />
+              <AssignRepliers documentDetail={documentDetail} setServerSuccessMsg={setServerSuccessMsg} setServerErrorMsg={setServerErrorMsg} />
+              </>
+            ) :""
            ):
            (
               userRole==="Uploader" ? (
@@ -160,16 +123,20 @@ const sendOpeningRequest=async () => {
 }
 
 
-const AcceptApprovalRequest =({draft, setServerSuccessMsg, setServerErrorMsg})=>{
+const AcceptApprovalRequest =({documentDetail, serverSuccessMsg, serverErrorMsg, setServerSuccessMsg, setServerErrorMsg, openDialog, setOpenDialog})=>{
+  const showDialog=()=>{
+    setOpenDialog(true);
+}
+
   const acceptCommentOpening=async () => {
-    return await axios.post(`approve-comment-opening/draft/${draft.id}`)
+    return await axios.post(`approve-comment-opening/draft/${documentDetail.id}`)
     .then(res => {
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null)
     })
     .catch(errors =>{
        setServerErrorMsg(errors.response.data.message);
-      setServerSuccessMsg(null) 
+       setServerSuccessMsg(null) 
     }) 
    }
 
@@ -180,18 +147,35 @@ return (
         variant="contained" 
         color="success" 
         sx={{ textTransform:"none", marginRight:"5px" }}
-        onClick={acceptCommentOpening}
+        onClick={showDialog}
         >  
         Accept
       </Button>
+
+      {
+                    openDialog && (
+                        <OutgoingCommentRequestsDialog
+                          key={documentDetail.id}
+                          draftInfo={documentDetail} 
+                          serverSuccessMsg={serverSuccessMsg}
+                          serverErrorMsg={serverErrorMsg}
+                          setServerSuccessMsg={setServerSuccessMsg} 
+                          setServerErrorMsg={setServerErrorMsg}
+                          openDialog={openDialog}
+                          setOpenDialog={setOpenDialog}
+                          showDialog={showDialog}
+                          title="Accept and Invite Document for Comment."
+                        />
+                    )
+                  }
   </>
 )
 
 }
 
-const RejectApprovalRequest = ({draft, setServerSuccessMsg, setServerErrorMsg}) => {
+const RejectApprovalRequest = ({documentDetail, setServerSuccessMsg, setServerErrorMsg}) => {
   const rejectCommentOpening=async () => {
-    return await axios.post(`request-rejection/draft/${draft.id}`)
+    return await axios.post(`request-rejection/draft/${documentDetail.id}`)
     .then(res => {
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null)
@@ -214,4 +198,66 @@ const RejectApprovalRequest = ({draft, setServerSuccessMsg, setServerErrorMsg}) 
         </Button>
     </>
   )
+}
+
+const InviteCommenters =({documentDetail, setServerSuccessMsg, setServerErrorMsg})=>{
+  const inviteCommenters=async () => {
+    return await axios.post(`approve-comment-opening/draft/${documentDetail.id}`)
+    .then(res => {
+      setServerSuccessMsg(res.data.message);
+      setServerErrorMsg(null)
+    })
+    .catch(errors =>{
+       setServerErrorMsg(errors.response.data.message);
+       setServerSuccessMsg(null) 
+    }) 
+   }
+
+return (
+  <>
+    <Button 
+        size='small' 
+        variant="contained" 
+        color="success" 
+        sx={{ textTransform:"none", marginRight:"5px" }}
+        onClick={inviteCommenters}
+        > 
+        <Typography variant="body2">
+          Invite
+        </Typography> 
+      </Button>
+  </>
+)
+
+}
+
+const AssignRepliers =({documentDetail, setServerSuccessMsg, setServerErrorMsg})=>{
+  const assignRepliers=async () => {
+    return await axios.post(`approve-comment-opening/draft/${documentDetail.id}`)
+    .then(res => {
+      setServerSuccessMsg(res.data.message);
+      setServerErrorMsg(null)
+    })
+    .catch(errors =>{
+       setServerErrorMsg(errors.response.data.message);
+       setServerSuccessMsg(null) 
+    }) 
+   }
+
+return (
+  <>
+    <Button 
+        size='small' 
+        variant="contained" 
+        color="primary" 
+        sx={{ textTransform:"none", marginRight:"5px" }}
+        onClick={assignRepliers}
+        >  
+        <Typography variant="body2">
+          Assign Repliers
+        </Typography>
+      </Button>
+  </>
+)
+
 }

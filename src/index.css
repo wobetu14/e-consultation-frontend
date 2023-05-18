@@ -6,10 +6,10 @@ body,
 /* #root, */
 .App,
 .content{
-  /* height: 100%; */
+  height: 120vh;
   width: 100%;
   font-family: 'arial', sans-serif;
-  /* background-color: white; */
+  background-color: white;
 }
 
 .App{
