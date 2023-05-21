@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from '../../../axios/AxiosGlobal'
 import { motion } from 'framer-motion';
+import { useParams } from 'react-router-dom'
 import { 
      Autocomplete,
      Button,
@@ -28,7 +29,7 @@ const OutgoingCommentRequestsDialog = ({
     setOpenDialog,
     showDialog
 }) => {
-    
+    const params=useParams()
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [formData, setFormData]=useState([]); 
@@ -38,7 +39,8 @@ const OutgoingCommentRequestsDialog = ({
 
     // Set list of email address for invitation
     const [peopleEmail, setPeopleEmail]=useState([]);
-    // const [instIDs, setInsIDs]=useState([]);
+    const [instIDs, setInsIDs]=useState([]);
+    const [repliersEmail, setRepliersEmail]=useState([]);
 
     const helperTextStyle={
         color:'red',
@@ -60,16 +62,16 @@ const OutgoingCommentRequestsDialog = ({
 
     React.useEffect(()=>{
         fetchInstitutions();
-        // getInstitutionsID();
+        getInstitutionsID();
      }, [selectedInstitutions])
 
-   /*   const getInstitutionsID=()=>{
+      const getInstitutionsID=()=>{
          if(selectedInstitutions.length>0){
             selectedInstitutions.map((selectedInstitution)=>(
                 setInsIDs([...instIDs, selectedInstitution.id])
             ))
          }
-     } */
+     } 
 
      const fetchInstitutions = async() =>{
         try{
@@ -82,10 +84,13 @@ const OutgoingCommentRequestsDialog = ({
 
      const formikAcceptanceForm=useFormik({
         initialValues:{
-            draft_id:draftInfo ? draftInfo.id:"",
-            institutions: selectedInstitutions ? selectedInstitutions.map((selectedInstitution)=>(
-                selectedInstitution.id
-            )):[], 
+            draft_id:"",
+            institutions: [],
+            institutionMessage:"",
+            emails: [],
+            comment_repliers:[],
+            personalMessage:"",
+
             draftOpeningDate:"",
             draftClosingDate:"",
             acceptanceRemark:""
@@ -93,11 +98,19 @@ const OutgoingCommentRequestsDialog = ({
 
       onSubmit:(values)=>{
         const requestData={
-            draft_id:values.draft_id,
-            institutions:values.institutions,
+            draft_id:params.id,
+
             comment_opening_date:values.draftOpeningDate,
             comment_closing_date:values.draftClosingDate,
             acceptance_remark:values.acceptanceRemark,
+
+            institutions:instIDs.length>0 ? instIDs.map((instIDs)=>instIDs):[],
+            institution_message:values.institutionMessage,
+
+            emails:peopleEmail.length>0 ? peopleEmail.map((email)=>(email)):[],
+            personnel_message:values.personalMessage,
+
+            comment_repliers:repliersEmail.length>0 ? repliersEmail.map((replierEmail)=>(replierEmail)):[],
         };
     
         acceptCommentOpening(requestData);
@@ -105,7 +118,9 @@ const OutgoingCommentRequestsDialog = ({
     }); 
 
     const acceptCommentOpening=async (requestData) => {
-        return await axios.post(`approve-comment-opening/draft/${draftInfo.id}`, requestData)
+        console.log(requestData)
+        
+      return await axios.post(`approve-comment-opening`, requestData)
         .then(res => {
           setServerSuccessMsg(res.data.message);
           setServerErrorMsg(null)
@@ -113,10 +128,11 @@ const OutgoingCommentRequestsDialog = ({
         .catch(errors =>{
            setServerErrorMsg(errors.response.data.message);
            setServerSuccessMsg(null) 
-        }) 
+        })  
+
        }
 
-     const formikInviteInstitutionForm=useFormik({
+ /*     const formikInviteInstitutionForm=useFormik({
         initialValues:{
             draft_id:draftInfo ? draftInfo.id:"",
             institutions: selectedInstitutions ? selectedInstitutions.map((selectedInstitution)=>(
@@ -134,10 +150,10 @@ const OutgoingCommentRequestsDialog = ({
     
         inviteInstitutions(requestData);
       }
-    }); 
+    });  */
  
  
-     const inviteInstitutions=async (requestData) => {
+  /*    const inviteInstitutions=async (requestData) => {
          console.log(requestData)
             return await axios.post('request-institution-for-comment', requestData)
             .then(res => {
@@ -150,8 +166,8 @@ const OutgoingCommentRequestsDialog = ({
                 setServerErrorMsg(errors.response.data.message);
                 setServerSuccessMsg(null) 
             }) 
-       }
-
+       } */
+/* 
        const formikInvitePeopleForm=useFormik({
         initialValues:{
             draft_id:draftInfo.id,
@@ -169,20 +185,12 @@ const OutgoingCommentRequestsDialog = ({
         invitePeople(requestData);
       }
     }); 
-
-    const invitePeople=async (requestData) => {
+ */
+   /*  const invitePeople=async (requestData) => {
         console.log(requestData)
 
-        /* return await axios.post('request-institution-for-comment', requestData)
-           .then(res => {
-               setServerSuccessMsg(res.data.message);
-               setServerErrorMsg(null);
-           })
-           .catch(errors =>{
-               setServerErrorMsg(errors.response.data.message);
-               setServerSuccessMsg(null) 
-           }) */ 
-      }
+       
+      } */
     
   return (
     <Dialog 
@@ -213,13 +221,15 @@ const OutgoingCommentRequestsDialog = ({
             </motion.span>
         </Grid>
 
+
+
                 <form style={{ marginBottom:"30px" }} onSubmit={formikAcceptanceForm.handleSubmit}>
                     <Typography variant='h5' fontWeight="600">
                         Set draft opening and closing date
                     </Typography>
                     <TextField 
                         // label="Draft Openining Date" 
-                        type="date"
+                        type="datetime-local"
                         variant='outlined'
                         size='small' 
                         fullWidth
@@ -234,7 +244,7 @@ const OutgoingCommentRequestsDialog = ({
                         />
                     <TextField 
                         // label="Draft Closing Date" 
-                        type="date"
+                        type="datetime-local"
                         variant='outlined'
                         size='small' 
                         fullWidth
@@ -261,9 +271,10 @@ const OutgoingCommentRequestsDialog = ({
                         value={formikAcceptanceForm.values.acceptanceRemark}
                         onBlur={formikAcceptanceForm.handleBlur}
                         onChange={formikAcceptanceForm.handleChange}
-                        helperText={formikAcceptanceForm.touched.acceptanceRemark && formikAcceptanceForm.errors.acceptanceRemark ? <span style={helperTextStyle}>{formikAcceptanceForm.errors.acceptanceRemark}</span>:null}
+                        // helperText={formikAcceptanceForm.touched.acceptanceRemark && formikAcceptanceForm.errors.acceptanceRemark ? <span style={helperTextStyle}>{formikAcceptanceForm.errors.acceptanceRemark}</span>:null}
                         />
-                    <Button 
+                  
+                 {/*    <Button 
                         variant="contained" color='secondary'
                         size='small'
                         type="submit"
@@ -272,10 +283,37 @@ const OutgoingCommentRequestsDialog = ({
                         <Typography variant="body2">
                             Accept and Open Document
                         </Typography>
-                    </Button>
-            </form>
+                    </Button> */}
+           <Typography variant="subtitle1" fontWeight="600">
+                Assign Repliers
             
-            <form onSubmit={formikInviteInstitutionForm.handleSubmit} style={{ paddingBottom:"30px" }}>
+            </Typography>
+            
+            <Autocomplete
+                multiple
+                id="tags-standard"
+                freeSolo
+                autoSelect
+                color="info"
+                sx={{ paddingBottom:"10px" }}
+                options={repliersEmail}
+                getOptionLabel={(option) => option}
+                onChange={(e,value)=>setRepliersEmail(value)}
+                renderInput={(params) => (
+                <TextField
+                    {...params}
+                    variant="standard"
+                    label="Enter email addresses"
+                    value={(option)=>option}
+                />
+                )}
+            />
+           
+            {/* </form>
+
+            
+            
+            <form onSubmit={formikInviteInstitutionForm.handleSubmit} style={{ paddingBottom:"30px" }}> */}
                     <Typography variant="subtitle1" fontWeight="600">
                         Invite Institutions
                     </Typography>
@@ -310,14 +348,14 @@ const OutgoingCommentRequestsDialog = ({
                         rows={4}
                         sx={{ paddingBottom:"5px" }}
                         color="info"
-                        name='invitationRemark'
-                        value={formikInviteInstitutionForm.values.invitationRemark}
-                        onBlur={formikInviteInstitutionForm.handleBlur}
-                        onChange={formikInviteInstitutionForm.handleChange}
+                        name='institutionMessage'
+                        value={formikAcceptanceForm.values.institutionMessage}
+                        onBlur={formikAcceptanceForm.handleBlur}
+                        onChange={formikAcceptanceForm.handleChange}
                         // helperText={formik.touched.shortTitle && formik.errors.shortTitle ? <span style={helperTextStyle}>{formik.errors.shortTitle}</span>:null}
                         />
 
-            <Box>
+            {/* <Box>
                 <Button 
                     size='small' 
                     variant="contained" 
@@ -328,11 +366,12 @@ const OutgoingCommentRequestsDialog = ({
                     >  
                     Send Invitation
                 </Button>
-            </Box> 
-        {/* </Stack> */}
-    </form>
+            </Box>  */}
 
-        <form onSubmit={formikInvitePeopleForm.handleSubmit}>
+        {/* </Stack> */}
+    {/* </form>
+
+        <form onSubmit={formikInvitePeopleForm.handleSubmit}> */}
             <Typography variant="subtitle1" fontWeight="600">
                 Invite People
                 {
@@ -371,10 +410,10 @@ const OutgoingCommentRequestsDialog = ({
                         rows={4}
                         sx={{ paddingBottom:"5px" }}
                         color="info"
-                        name='invitationRemark'
-                        value={formikInvitePeopleForm.values.invitationRemark}
-                        onBlur={formikInvitePeopleForm.handleBlur}
-                        onChange={formikInvitePeopleForm.handleChange}
+                        name='personalMessage'
+                        value={formikAcceptanceForm.values.personalMessage}
+                        onBlur={formikAcceptanceForm.handleBlur}
+                        onChange={formikAcceptanceForm.handleChange}
                         // helperText={formik.touched.shortTitle && formik.errors.shortTitle ? <span style={helperTextStyle}>{formik.errors.shortTitle}</span>:null}
                         />
 
@@ -385,9 +424,11 @@ const OutgoingCommentRequestsDialog = ({
                     color="secondary" 
                     type='submit'
                     sx={{ textTransform:"none", marginRight:"5px" }}
-                    onClick={invitePeople}
+                    onClick={acceptCommentOpening}
                     >  
-                     Send Invitation
+                     <Typography variant='body1'>
+                        Finish and close
+                     </Typography>
                 </Button>
             </Box> 
         {/* </Stack> */}
@@ -401,7 +442,9 @@ const OutgoingCommentRequestsDialog = ({
             size="small"
             sx={{ textTransform:"none", backgroundColor:colors.dangerColor[200], color:colors.grey[300] }}
             >
-                Close
+                 <Typography variant='body1'>
+                        Close
+                 </Typography>
             </Button>
     </DialogActions>
 </DialogContent>  

@@ -32,7 +32,7 @@ const Dashboard = () => {
 
 const fetchDrafts =async() =>{
     try{
-      const res = await  axios.get('drafts')
+      const res = await  axios.get('mydrafts')
         console.log(res.data.data.data);
         setDrafts(res.data.data.data);
     } catch(error){
@@ -42,7 +42,7 @@ const fetchDrafts =async() =>{
 
   const fetchUsers =async() =>{
     try{
-      const res = await  axios.get('users')
+      const res = await  axios.get(`users?institution_id=${userInfo.user.institution_id}`)
         setUsers(res.data.data);
     } catch(error){
         console.log(error);

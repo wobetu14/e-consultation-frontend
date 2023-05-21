@@ -9,7 +9,7 @@ import { Collapse, Typography, useTheme } from '@mui/material';
 import { tokens } from '../../../theme';
 import { useTranslation } from 'react-i18next';
 
-const SectionNavigationMenu = ({section}) => {
+const SectionNavigationMenu = ({section, paddingValue}) => {
   
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
@@ -27,14 +27,11 @@ const SectionNavigationMenu = ({section}) => {
 
   return (
       <div>
-        
-
-        
                 <List
                 sx={{ width: '90%', maxWidth: 360, height:"35px"}}
                 component="nav"   
                 >
-                <ListItemButton sx={{ height:"35px" }}>
+                <ListItemButton sx={{ height:"35px", pl:paddingValue }}>
                     <ListItemIcon>
                      <LocalLibraryIcon />
                     </ListItemIcon>

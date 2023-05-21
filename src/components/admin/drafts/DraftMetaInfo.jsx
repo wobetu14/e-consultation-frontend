@@ -22,7 +22,14 @@ import { useFormik } from 'formik';
 import * as YUP from 'yup';
 import DraftActions from './DraftActions';
 
-const DraftMetaInfo = ({documentDetail,setDocumentDetail}) => {
+const DraftMetaInfo = ({
+  documentDetail,
+  setDocumentDetail,
+  serverErrorMsg,
+  serverSuccessMsg,
+  setServerErrorMsg,
+  setServerSuccessMsg,
+}) => {
   const params=useParams();
   const [documentSections, setDocumentSections]=useState(null);
   const [documentComments, setDocumentComments]=useState(null);
@@ -34,9 +41,6 @@ const DraftMetaInfo = ({documentDetail,setDocumentDetail}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const {t}=useTranslation();
-
-  const [serverErrorMsg, setServerErrorMsg]=useState(null);
-  const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
   
 
   const errorStyle={
@@ -206,7 +210,15 @@ const DraftMetaInfo = ({documentDetail,setDocumentDetail}) => {
           </Grid>
 
           <Grid item xs={4}>
-                <DraftActions documentDetail={documentDetail} setDocumentDetail={setDocumentDetail} />
+                <DraftActions 
+                documentDetail={documentDetail} 
+                setDocumentDetail={setDocumentDetail} 
+                
+                serverErrorMsg={serverErrorMsg}
+                serverSuccessMsg={serverSuccessMsg}
+                setServerErrorMsg={setServerErrorMsg}
+                setServerSuccessMsg={setServerSuccessMsg}
+                />
           </Grid>
           
         </Grid>

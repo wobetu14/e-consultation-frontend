@@ -101,7 +101,7 @@ const DocumentList = ({status, deadline, draft}) => {
                                          ? 
                                           (
                                           <label>
-                                              <strong> Closing Date: </strong> {deadline} &nbsp;
+                                              <strong> Closing Date: </strong> {draft.comment_closing_date} &nbsp;
                                           </label>
                                           )
                                           :

@@ -6,7 +6,7 @@ body,
 /* #root, */
 .App,
 .content{
-  height: 120vh;
+  height: 100%;
   width: 100%;
   font-family: 'arial', sans-serif;
   background-color: white;

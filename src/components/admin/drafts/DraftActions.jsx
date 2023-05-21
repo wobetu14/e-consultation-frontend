@@ -23,6 +23,7 @@ import * as YUP from 'yup';
 import DraftMetaInfo from './DraftMetaInfo';
 import DocumentPreview from './DocumentPreview';
 import OutgoingCommentRequestsDialog from '../partials/OutgoingCommentRequestsDialog';
+import DraftOpeningRejectionDialog from './DraftOpeningRejectionDialog';
 
 const DraftActions = ({
       documentDetail,
@@ -37,6 +38,7 @@ const DraftActions = ({
   const [documentComments, setDocumentComments]=useState(null);
 
   const [openDialog, setOpenDialog]=useState(false);
+  const [openRejectionDialog, setOpenRejectionDialog]=useState(false);
 
   const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
 
@@ -63,7 +65,15 @@ const DraftActions = ({
                openDialog={openDialog}
                setOpenDialog={setOpenDialog}
                 />
-              <RejectApprovalRequest documentDetail={documentDetail} setServerSuccessMsg={setServerSuccessMsg} setServerErrorMsg={setServerErrorMsg} />
+              <RejectApprovalRequest 
+                documentDetail={documentDetail} 
+                serverSuccessMsg={serverSuccessMsg}
+                serverErrorMsg={serverErrorMsg}
+                setServerSuccessMsg={setServerSuccessMsg} 
+                setServerErrorMsg={setServerErrorMsg}
+                openRejectionDialog={openRejectionDialog}
+                setOpenRejectionDialog={setOpenRejectionDialog} 
+                />
             </>
             ):(documentDetail && documentDetail.draft_status.name==="Open") ? (
               <>
@@ -167,13 +177,26 @@ return (
                           title="Accept and Invite Document for Comment."
                         />
                     )
-                  }
+        }
   </>
 )
 
 }
 
-const RejectApprovalRequest = ({documentDetail, setServerSuccessMsg, setServerErrorMsg}) => {
+const RejectApprovalRequest = ({
+    documentDetail,
+    serverSuccessMsg,
+    serverErrorMsg,
+    setServerSuccessMsg,
+    setServerErrorMsg,
+    openRejectionDialog,
+    setOpenRejectionDialog,
+}) => {
+
+  const showRejectionDialog=()=>{
+    setOpenRejectionDialog(true)
+  }
+
   const rejectCommentOpening=async () => {
     return await axios.post(`request-rejection/draft/${documentDetail.id}`)
     .then(res => {
@@ -192,10 +215,28 @@ const RejectApprovalRequest = ({documentDetail, setServerSuccessMsg, setServerEr
           variant="contained" 
           color="warning" 
           sx={{ textTransform:"none" }}
-          onClick={rejectCommentOpening}
+          onClick={showRejectionDialog}
           >  
         Reject
         </Button>
+
+        {
+                    openRejectionDialog && (
+                        <DraftOpeningRejectionDialog
+                          key={documentDetail.id}
+                          documentDetail={documentDetail}
+                          serverSuccessMsg={serverSuccessMsg}
+                          serverErrorMsg={serverErrorMsg}
+                          setServerSuccessMsg={setServerSuccessMsg}
+                          setServerErrorMsg={setServerErrorMsg}
+                          openRejectionDialog={openRejectionDialog}
+                          setOpenRejectionDialog={setOpenRejectionDialog}
+                          showRejectionDialog={showRejectionDialog}
+                          title="Reject Draft Opening Request."
+                        />
+                    )
+        }
+
     </>
   )
 }

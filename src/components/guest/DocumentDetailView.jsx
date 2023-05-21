@@ -1,8 +1,8 @@
-import { Box, Collapse, Card, CardActions, CardContent, CircularProgress, Grid, Paper, Stack, Typography, useTheme, ListItemButton, ListItemText, Button, TextField, List, ListItem, ListItemAvatar, Avatar } from '@mui/material';
-import React, { useEffect, useState } from 'react'
+import { Box, Collapse, Card, CardActions, CardContent, CircularProgress, Grid, Paper, Stack, Typography, useTheme, ListItemButton, ListItemText, Button, TextField, List, ListItem, ListItemAvatar, Avatar, Chip } from '@mui/material';
+import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom'
-import axios from '../../axios/AxiosGlobal'
+import axios, { rootURL } from '../../axios/AxiosGlobal'
 import { tokens } from '../../theme';
 import {motion} from 'framer-motion'
 import SectionFeedbacks from './partials/SectionFeedbacks';
@@ -17,6 +17,7 @@ import DocumentLevelComments from './partials/DocumentLevelComments';
 import AddDocumentLevelComments from './partials/AddDocumentLevelComments';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { FileDownload } from '@mui/icons-material';
+import { UserContext } from '../../contexts/UserContext';
 
 const DocumentDetailView = () => {
   const params=useParams();
@@ -25,6 +26,13 @@ const DocumentDetailView = () => {
   const [documentComments, setDocumentComments]=useState(null);
 
   const [contentBgColor, setContentBgColor]=useState(null);
+  
+  // Show commenting box and comments on mouse enter
+  const [commentsVisible, setCommentsVisible]=useState(false);
+  const [sectionID, setSectionID]=useState(0);
+
+  // User context
+  const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -81,99 +89,173 @@ const DocumentDetailView = () => {
               })
   }
 
+  const showComments= (boxID) =>{
+    setSectionID(boxID);
+    setCommentsVisible(true)
+  }
+
+  const hideComments = (boxID) => {
+    setSectionID(boxID);
+    setCommentsVisible(false)
+  }
+
   return (
-    <Box>
-      <Box sx={{ backgroundColor:colors.grey[400], marginBottom:"30px", padding:"40px" }}>
+    <Box 
+      sx={{ backgroundColor:colors.grey[200] }}
+    >
+      <Box sx={{ backgroundColor:"#255B7E", marginBottom:"30px", paddingRight:"80px", paddingLeft:"80px", paddingBottom:"40px", paddingTop:"40px" }}>
         {
           documentDetail ? (
         <Grid container spacing={10} >
           <Grid item xs={8}>
-            <Typography variant="h2" sx={{ paddingBottom:"20px", fontWeight:600, textAlign:"center", color:colors.primary[200] }}>{documentDetail.id} : {documentDetail.short_title}</Typography>
-            <Typography variant='h5' sx={{ paddingBottom:"20px", textAlign:"justify" }}>
+            <Typography variant="h3" 
+            sx={{ paddingBottom:"20px", fontWeight:600, textAlign:"center", color:"white" }}>
+              {documentDetail.short_title}
+              </Typography>
+            <Typography variant='body1' sx={{ paddingBottom:"30px", textAlign:"justify", color:"white" }}>
                 {documentDetail.summary}
             </Typography>
             
-            <Typography variant="h5" sx={{ paddingBottom:"20px", textAlign:"justify", fontWeight:600 }}>Document Details</Typography>
+            <Typography variant="h4" sx={{ paddingBottom:"20px", textAlign:"justify", fontWeight:500, color:"white" }}>Document Details</Typography>
 
             <Grid container spacing={1}>
               <Grid item xs={6} md={6}>
-                <strong>Institution</strong> 
+                <Typography variant="h5" sx={{ color:"white" }}>
+                    <strong>Institution</strong> 
+                </Typography>
               </Grid>
-              <Grid item xs={6} md={6}>
+              <Grid item xs={6} md={6} sx={{ color:"white" }}>
               {documentDetail.institution ? documentDetail.institution.name:null}
               </Grid>
 
               <Grid item xs={6} md={6}>
-                <strong>Institution's authority</strong> 
+                <Typography variant="h5" sx={{ color:"white" }}>
+                  <strong>Law category</strong> 
+                </Typography>
               </Grid>
-              <Grid item xs={6} md={6}>
-              {documentDetail.institution  ? documentDetail.institution.authority:null}
-              </Grid>
-
-              <Grid item xs={6} md={6}>
-                <strong>Law category</strong> 
-              </Grid>
-              <Grid item xs={6} md={6}>
+              <Grid item xs={6} md={6} sx={{ color:"white" }}>
               {documentDetail.law_category ? documentDetail.law_category.name:null}
               </Grid>
 
               <Grid item xs={6} md={6}>
-                <strong>Region</strong> 
+                <Typography variant="h5" sx={{ color:"white" }}>
+                  <strong>Draft status</strong> 
+                </Typography>
               </Grid>
               <Grid item xs={6} md={6}>
-              {documentDetail.institution ? documentDetail.institution.region_id:null}
+                    {
+                        (documentDetail && documentDetail.draft_status.name==="Pending") ? (
+                            <Chip label={`${documentDetail.draft_status.name}`} size="small" sx={{ backgroundColor:colors.dangerColor[200], color:colors.grey[300] }} />
+                        ):""
+                    }
+
+                    {
+                        (documentDetail && documentDetail.draft_status.name==="Requested") ? (
+                            <Chip label={documentDetail.draft_status.name} size="small" sx={{ backgroundColor:"orange", color:colors.grey[300]}} />
+                        ):""
+                    }
+
+                    {
+                        (documentDetail && documentDetail.draft_status.name==="Open") ? (
+                            <Chip label={documentDetail.draft_status.name} size="small" sx={{ backgroundColor:colors.successColor[100], color:colors.grey[300]}} />
+                        ):""
+                    }
               </Grid>
 
               <Grid item xs={6} md={6}>
-                <strong>Draft status</strong> 
+                <Typography variant="h5" sx={{ color:"white" }}>
+                  <strong>Opening date for comment</strong> 
+                </Typography>
               </Grid>
               <Grid item xs={6} md={6}>
-              {documentDetail.draft_status ? documentDetail.draft_status.name:null}
+              <Chip 
+                label={documentDetail.comment_opening_date 
+                    ? 
+                    documentDetail.comment_opening_date
+                    :
+                    "Unavailable"}
+                size="small" 
+                sx={{ backgroundColor:colors.successColor[200], color:colors.grey[300] }} />
+              </Grid>
+
+              <Grid item xs={6} md={6}>
+                <Typography variant='h5' sx={{ color:"white" }}>
+                    <strong>Closing date for comment</strong> 
+                </Typography>
+              </Grid>
+              <Grid item xs={6} md={6}>
+              <Chip 
+                label={documentDetail.comment_closing_date ? documentDetail.comment_closing_date:"Unavailable"}
+                size="small" 
+                sx={{ backgroundColor:colors.dangerColor[200], color:colors.grey[300] }} />
+              
               </Grid>
 
               <Grid item xs={6} md={6}>
-                <strong>Sectors</strong> 
+                <Typography variant="h5" sx={{ color:"white" }}>
+                  <strong>Base Legal Reference</strong>
+                </Typography> 
               </Grid>
+              <Grid item xs={6} md={6} sx={{ color:"white" }}>
+              {documentDetail.base_legal_reference ? documentDetail.base_legal_reference:null}
+              </Grid>
+
               <Grid item xs={6} md={6}>
-              {documentDetail.sector ? documentDetail.sector.name:null}
+                <Typography variant="h5" sx={{ color:"white" }}>
+                    <strong>Definition</strong> 
+                </Typography>
+              </Grid>
+              <Grid item xs={6} md={6} sx={{ color:"white" }}>
+              {documentDetail.definition ? documentDetail.definition:null}
               </Grid>
 
               <Grid item xs={6} md={6}>
-                <strong>Download</strong> 
-              </Grid> 
-              <Grid item xs={6} md={6}>
-              {documentDetail.file ? (
-                // <a href={documentDetail.file} target="_blank" rel='noreferrer' variant="button">
-                //   Download
-                // </a>
-                <Button href={documentDetail.file} variant="contained" color="secondary" target="_blank" sx={{ textTransform:"none", color:"#fff" }}><FileDownload /> Download</Button>
-              ):
-              (null)} 
-              </Grid>
+                <Typography variant='h5' sx={{ color:"white" }}>
+                  <strong>Document File</strong>
+                </Typography>
 
-            </Grid>      
+              </Grid>
+              <Grid item xs={6} md={6}>
+                  <Button 
+                    href={documentDetail.file} 
+                    variant="contained" color="secondary" 
+                    target="_blank" 
+                    size="small"
+                    sx={{ textTransform:"none", color:"#fff", backgroundColor:"#3dac94", borderRadius:"10px 10px" }}
+                    >
+                      <Typography variant="body1">
+                          <FileDownload fontSize='small' /> Download
+                      </Typography>
+                  </Button>
+              </Grid>
+            </Grid>
           </Grid>
           
-          <Grid item xs={4}>
-            <Typography variant="h4">
-              <strong>Document Statistics</strong>
-
-              <Stack spacing={1}> 
-                <Typography variant="body1">Document level comments: 
-                    <strong>{documentComments ? documentComments.length:"Not available"}</strong>
+          <Grid item xs={3}>
+              <Paper elevation={1} sx={{ padding:"20px", backgroundColor:"#ff6900", borderRadius:"0px 30px" }}>
+                <Typography variant="h4" sx={{ color:"white" }}>
+                  <strong>Document Statistics</strong>
                 </Typography>
-
-                <Typography variant="body1">Document level comments: 
-                    <Button href={`http://196.188.107.43/api/v1/report/draft/${params.id}`}
+                    <br />
+                <Stack spacing={1}> 
+                  <Typography variant="body1" sx={{ color:"white" }}>Document level comments: 
+                      <strong>{documentComments ? documentComments.length:"Not available"}</strong>
+                  </Typography>
+                  <Button 
+                      href={`${rootURL}report/draft/${params.id}`}
                       variant="contained" 
-                      target="_blank"
-                      color="secondary"
+                      color="secondary" 
+                      target="_blank" 
+                      size="small"
+                      sx={{ textTransform:"none", color:"#fff", backgroundColor:"#3dac94", borderRadius:"10px 10px" }}
                       >
-                        Get comment reports here
+                        <Typography variant="body1">
+                          Download comment reports
+                        </Typography>
                     </Button>
-                </Typography>
-              </Stack>
-            </Typography>
+                </Stack>
+              </Paper>
+            {/* </Typography> */}
           </Grid>
         </Grid>
           ):(
@@ -182,7 +264,9 @@ const DocumentDetailView = () => {
         }
       </Box>
 
-    <Box>
+    <Box 
+      sx={{ backgroundColor:colors.grey[200] }}
+    >
       <motion.span
         initial={{ opacity: 0}}
         animate={{ opacity: 1}}
@@ -196,7 +280,7 @@ const DocumentDetailView = () => {
 
          <Grid container spacing={2} sx={{ paddingTop:"30px", display:"flex", justifyContent:"space-between" }}>
             <Grid item xs={12} md={12}>
-              <Typography variant="h3" sx={{ fontWeight:"500", textAlign:"center", color:colors.primary[100] }}>
+              <Typography variant="h4" sx={{ fontWeight:"600", textAlign:"center", color:colors.primary[100] }}>
                 Document Content 
               </Typography>
             </Grid>
@@ -214,10 +298,59 @@ const DocumentDetailView = () => {
               <Collapse in={articlesOpen} timeout="auto" unmountOnExit>
                 {documentSections ? (
                   documentSections.map((section)=>(
+                    <>
+                      <SectionNavigationMenu section={section} setContentBgColor={setContentBgColor} paddingValue={0} />
+                      {
+                        section.children.length>0 ? (
+                          section.children.map((child1)=>(
+                            <>
+                              <SectionNavigationMenu section={child1} setContentBgColor={setContentBgColor} paddingValue={4}  />
+                                {
+                                  child1.children.length>0 ? (
+                                      child1.children.map((child11)=>(
+                                        <>
+                                          <SectionNavigationMenu section={child11} setContentBgColor={setContentBgColor} paddingValue={8}  />
 
-                    <SectionNavigationMenu section={section} setContentBgColor={setContentBgColor} />
+                                          {
+                                            child11.children.length>0 ? (
+                                              child11.children.map((child111)=>(
+                                                <>
+                                                  <SectionNavigationMenu section={child111} setContentBgColor={setContentBgColor} paddingValue={12} />
+                                                    {
+                                                      child111.children.length>0 ? (
+                                                        child111.children.map((child1111)=>(
+                                                          <>
+                                                            <SectionNavigationMenu section={child1111} setContentBgColor={setContentBgColor} paddingValue={16}  />
+                                                            {
+                                                              child1111.children.length>0 ? (
+                                                                child1111.children.map((child11111)=>(
+                                                                  <>
+                                                                    <SectionNavigationMenu section={child11111} setContentBgColor={setContentBgColor} paddingValue={18}  />
+                                                                  </>
+                                                                ))
+                                                              ):""
+                                                            }
+                                                          </>
+                                                        ))
+                                                      ):""
+                                                    }
+                                                </>
+                                              ))
+                                            ):""
+                                          }
+                                        </>
+                                      ))
+                                    ):""
+                                }
+                            </>
+                          ))
+                        ):""
+                      }
+                    </>
                   ))
-                ):(<Box>Content unavailable</Box>)}
+                ):(<Box>
+                  <CircularProgress color="secondary" />
+                </Box>)}
               </Collapse>
               {/* </ul> */}
             </Grid>
@@ -227,40 +360,81 @@ const DocumentDetailView = () => {
                   documentSections.map((section)=>(
                       <Card 
                         elevation={1}
-                        sx={{ marginBottom:"20px", padding:"20px" }}
-                      key={section.id} id={section.id}>
+                        sx={{ marginBottom:"20px" }}
+                      key={section.id}>
                         <CardContent>
-                          <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center", marginBottom:"30px" }}>{section.section_title}</Typography>
-                          <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px" }}>{section.section_body}</Typography>
-
+                          <Box id={section.id} sx={{ padding:"20px" }} onMouseOver={()=>showComments(section.id)} onMouseOut={()=>hideComments(section.id)}>
+                            <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center", marginBottom:"30px" }}>{section.section_title}</Typography>
+                            <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px" }}>{section.section_body}</Typography>
+                              
+                              {
+                                (commentsVisible && sectionID===section.id && userRole==="Commenter") && (
+                                  <SectionFeedbacks comments={section.comments} section={section} />
+                                )
+                              }
+                          </Box>
                            {
                            section.children.length>0 ? section.children.map((sectionChild1)=>(
                             <>
-                              <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center" }}>{sectionChild1.section_title}</Typography>
-                              <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1.section_body}</Typography>
+                              <Box id={sectionChild1.id} sx={{ padding:"20px" }} onMouseOver={()=>showComments(sectionChild1.id)} onMouseOut={()=>hideComments(sectionChild1.id)}>
+                                <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center" }}>{sectionChild1.section_title}</Typography>
+                                <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1.section_body}</Typography>
+                                
+                                {
+                                (commentsVisible && sectionID===sectionChild1.id && userRole==="Commenter") && (
+                                  <SectionFeedbacks comments={sectionChild1.comments} section={sectionChild1} />
+                                )
+                               }
+                              </Box>
                               {
                                 sectionChild1.children.length>0 ? sectionChild1.children.map((sectionChild1Sub1)=>(
                                   <>
+                                  <Box id={sectionChild1Sub1.id} sx={{ padding:"20px" }} onMouseOver={()=>showComments(sectionChild1Sub1.id)} onMouseOut={()=>hideComments(sectionChild1Sub1.id)}>
                                     <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center"}}>{sectionChild1Sub1.section_title}</Typography>
                                     <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1Sub1.section_body}</Typography>
-
+                                        {
+                                        (commentsVisible && sectionID===sectionChild1Sub1.id && userRole==="Commenter") && (
+                                          <SectionFeedbacks comments={sectionChild1Sub1.comments} section={sectionChild1Sub1} />
+                                          )
+                                        }
+                                  </Box>
                                     {
                                       sectionChild1Sub1.children.length>0 ? sectionChild1Sub1.children.map((sectionChild1Sub1Sub1)=>(
                                         <>
+                                        <Box id={sectionChild1Sub1Sub1.id} sx={{ padding:"20px" }} onMouseOver={()=>showComments(sectionChild1Sub1Sub1.id)} onMouseOut={()=>hideComments(sectionChild1Sub1Sub1.id)}>
                                           <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center" }}>{sectionChild1Sub1Sub1.section_title}</Typography>
                                           <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1Sub1Sub1.section_body}</Typography>
-
+                                          {
+                                        (commentsVisible && sectionID===sectionChild1Sub1Sub1.id && userRole==="Commenter") && (
+                                          <SectionFeedbacks comments={sectionChild1Sub1Sub1.comments} section={sectionChild1Sub1Sub1} />
+                                            )
+                                          }
+                                        </Box>
                                           {
                                             sectionChild1Sub1Sub1.children.length>0 ? sectionChild1Sub1Sub1.children.map((sectionChild1Sub1Sub1Sub1)=>(
                                               <>
+                                              <Box id={sectionChild1Sub1Sub1Sub1.id} sx={{ padding:"20px" }} onMouseOver={()=>showComments(sectionChild1Sub1Sub1Sub1.id)} onMouseOut={()=>hideComments(sectionChild1Sub1Sub1Sub1.id)}>
                                                 <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center" }}>{sectionChild1Sub1Sub1Sub1.section_title}</Typography>
                                                 <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1Sub1Sub1Sub1.section_body}</Typography>
-
+                                                
+                                                {
+                                                  (commentsVisible && sectionID===sectionChild1Sub1Sub1Sub1.id && userRole==="Commenter") && (
+                                                    <SectionFeedbacks comments={sectionChild1Sub1Sub1Sub1.comments} section={sectionChild1Sub1Sub1Sub1} />
+                                                  )
+                                                }
+                                              </Box>
                                                 {
                                                   sectionChild1Sub1Sub1Sub1.children.length>0 ? sectionChild1Sub1Sub1Sub1.children.map((sectionChild1Sub1Sub1Sub1Sub1)=>(
                                                     <>
-                                                      <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center" }}>{sectionChild1Sub1Sub1Sub1.section_title}</Typography>
-                                                      <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1Sub1Sub1Sub1.section_body}</Typography>
+                                                    <Box id={sectionChild1Sub1Sub1Sub1Sub1.id} sx={{ padding:"20px" }} onMouseOver={()=>showComments(sectionChild1Sub1Sub1Sub1Sub1.id)} onMouseOut={()=>hideComments(sectionChild1Sub1Sub1Sub1Sub1.id)}>
+                                                      <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center" }}>{sectionChild1Sub1Sub1Sub1Sub1.section_title}</Typography>
+                                                      <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1Sub1Sub1Sub1Sub1.section_body}</Typography>   
+                                                      {
+                                                        (commentsVisible && sectionID===sectionChild1Sub1Sub1Sub1Sub1.id && userRole==="Commenter") && (
+                                                          <SectionFeedbacks comments={sectionChild1Sub1Sub1Sub1Sub1.comments} section={sectionChild1Sub1Sub1Sub1Sub1} /> 
+                                                        )
+                                                      }
+                                                    </Box>
                                                     </>
                                                   )):""
                                                 }
@@ -278,16 +452,11 @@ const DocumentDetailView = () => {
                            ):""
                           }
                         </CardContent>
-
-                        <CardActions>
-                            <SectionFeedbacks comments={section.comments} />
-                        </CardActions>
-                        <CardActions>
-                          <AddSectionComment section={section} />
-                        </CardActions>
                       </Card>
                   ))
-                ):(<Box>Content unavailable</Box>)
+                ):(<Box>
+                  <CircularProgress color='secondary' />
+                </Box>)
               }
             </Grid>
             <Grid item xs={3}>

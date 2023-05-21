@@ -406,7 +406,7 @@ const Sidebar = () => {
                         />
                      
                         <Item
-                          title="External Requests"
+                          title="Incoming Requests"
                           to="external_comment_requests"
                           icon={<ScheduleSendIcon />}
                           selected={selected}

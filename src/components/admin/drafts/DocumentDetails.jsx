@@ -24,6 +24,9 @@ import DraftMetaInfo from './DraftMetaInfo';
 import DocumentPreview from './DocumentPreview';
 import DraftActions from './DraftActions';
 
+import PersonalInvitations from './Personalnvitations';
+import InstitutionInvitations from './InstitutionInvitations';
+
 const DocumentDetails = () => {
   const params=useParams();
   const [documentDetail, setDocumentDetail]=useState(null);
@@ -123,7 +126,14 @@ const DocumentDetails = () => {
             </motion.span>
         </Grid>
 
-      <DraftMetaInfo documentDetail={documentDetail} setDocumentDetail={setDocumentDetail}/>
+      <DraftMetaInfo 
+        documentDetail={documentDetail} 
+        setDocumentDetail={setDocumentDetail} 
+        serverErrorMsg={serverErrorMsg}
+        serverSuccessMsg={serverSuccessMsg}
+        setServerErrorMsg={setServerErrorMsg}
+        setServerSuccessMsg={setServerSuccessMsg}
+      />
 
       <ListItemButton 
       onClick={handlePreviewCollapse} 
@@ -156,14 +166,22 @@ const DocumentDetails = () => {
         sx={{ marginLeft:"30px", marginRight:"30px" }}
         >
             <DocumentPreview 
-            documentDetail={documentDetail} 
-            setDocumentDetail={setDocumentDetail} 
-            documentSections={documentSections}
-            setDocumentSections={setDocumentSections}
-            documentComments={documentComments}
-            setDocumentComments={setDocumentComments}
+              documentDetail={documentDetail} 
+              setDocumentDetail={setDocumentDetail} 
+              documentSections={documentSections}
+              setDocumentSections={setDocumentSections}
+              documentComments={documentComments}
+              setDocumentComments={setDocumentComments}
             />
      </Collapse>
+
+     <InstitutionInvitations 
+      documentDetail={documentDetail}
+      />
+
+     <PersonalInvitations 
+      documentDetail={documentDetail}
+     />
     </Box>
   )
 }

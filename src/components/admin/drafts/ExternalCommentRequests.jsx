@@ -27,20 +27,10 @@ const ExternalCommentRequests = () => {
    
   return (
     <Box m='0 20px' width={'95%'}>
-      <Header title="External Comment Requests" subtitle="Send and Receive Request for Comment to and from other Institutions" />
-      <div sx={{ backgroundColor:colors.brandColor[300], width:"900", height:"900", marginBottom:"100px"  }} onMouseEnter={()=>setShowBox(true)} onMouseLeave={()=>setShowBox(false)}>
-        {
-          <>
-          Hello from React. {showBox && (<ChatBubbleIcon fontSize='small' color='info' sx={{ cursor:"pointer" }} onClick={()=>alert("Mouse hover demo.")} />)}
-          </>
-        }
-      </div>
-
+      <Header title="External Comment Requests" subtitle="Receive Request for Comment from other Institutions" />
+    
       <IncomingCommentRequests />
 
-      <OutgoingCommentRequests />
-
-     
     </Box> 
   )
 }

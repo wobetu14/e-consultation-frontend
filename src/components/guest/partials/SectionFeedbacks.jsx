@@ -5,6 +5,7 @@ import { tokens } from '../../../theme';
 import { useTranslation } from 'react-i18next';
 import { useContext, useState } from 'react';
 import {motion} from 'framer-motion'
+import AddSectionComment from '../partials/AddSectionComment'
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -18,7 +19,7 @@ import * as YUP from 'yup';
 import axios from '../../../axios/AxiosGlobal'
 import { UserContext } from '../../../contexts/UserContext';
 
-const SectionFeedbacks = ({comments}) => {
+const SectionFeedbacks = ({comments, section}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const {t}=useTranslation();
@@ -92,7 +93,7 @@ const addComment=async (commentData) => {
     })
     .catch(errors =>{
        setServerErrorMsg(errors.response.data.message);
-      setServerSuccessMsg(null) 
+       setServerSuccessMsg(null) 
     }) 
    }
   
@@ -166,6 +167,7 @@ const addComment=async (commentData) => {
                   ) :( "No comments")
                 }
             </List>
+            <AddSectionComment section={section} />
           </motion.span>
         </Box>
         )
