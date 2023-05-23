@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Grid, Link, Paper, TextField, Typography, useTheme } from '@mui/material'
+import { Alert, Box, Button, Grid, LinearProgress, Link, Paper, TextField, Typography, useTheme } from '@mui/material'
 import React, { useContext, useEffect, useState } from 'react'
 import axios from '../../../axios/AxiosGlobal'
 import DataTable from 'react-data-table-component'
@@ -50,6 +50,8 @@ const DraftsTable = () => {
         setOpenDialog,
         fetchDrafts,
         getDraftInfo,
+        loading,
+        setLoading
     }=useContext(DraftsDataContext);
 
 const errorStyle={
@@ -156,6 +158,10 @@ const errorStyle={
                 <Typography variant='h1'>
                 {serverErrorMsg ? <Alert severity='error' style={errorStyle}>{serverErrorMsg}</Alert>:null}
                 </Typography> 
+
+                {
+                    loading ? (<LinearProgress size="small" color='info'/>):null
+                }
             </motion.span>
         </Grid>
 
@@ -177,68 +183,74 @@ const errorStyle={
         <EditDraft />
       )
     }
-     <Paper elevation={1} sx={{ marginTop:"10px", marginBottom:"350px", maxWidth:"1200px"}}>
-       <DataTable 
-        columns={columns} 
-        data={filteredDrafts}
-        pagination
-        // selectableRows
-        selectableRowsHighlight
-        // highlightOnHover
-        subHeader
-        subHeaderComponent={
-            <Box width="100%" sx={{ display:"flex", justifyContent:"space-between", direction:"row" }}>
-              <Box width="30%" >
-                <TextField 
-                label="Search..." 
-                variant="outlined"
-                size='small'
-                color='info'
-                fullWidth
-                value={searchDraft}
-                onChange={(e)=>setSearchDraft(e.target.value)}
-                />
-              </Box>
-              <Box>
-                {
-                    showDraftAddForm ? (
-                        <Button 
-                        variant="contained" 
-                        size="small" 
-                        color="secondary" 
-                        sx={{ textTransform:"none" }}
-                        onClick={hideForm}
-                    >
-                        <VisibilityOffIcon /> Hide Form    
-                    </Button>
-                    ):( showDraftEditForm ? (
-                        <Button 
-                            variant="contained" 
-                            size="small" 
-                            color="secondary" 
-                            sx={{ textTransform:"none" }}
-                            onClick={hideForm}
-                        >
-                            <VisibilityOffIcon /> Hide Form    
-                        </Button>
-                    ): (
-                        <Button 
-                            variant="contained" 
-                            size="small" 
-                            color="secondary" 
-                            sx={{ textTransform:"none" }}
-                            onClick={showAddDraftForm}
-                            >
-                       <AddIcon /> Add New Draft
-                    </Button>
-                    )
-                )
-                }
-              </Box>
-            </Box>
-        }
-        />
- </Paper>
+     {
+         drafts.length>0 || filteredDrafts.length>0 ? (
+            <Paper elevation={1} sx={{ marginTop:"10px", marginBottom:"350px", maxWidth:"1200px"}}>
+            <DataTable 
+             columns={columns} 
+             data={filteredDrafts}
+             pagination
+             // selectableRows
+             selectableRowsHighlight
+             // highlightOnHover
+             subHeader
+             subHeaderComponent={
+                 <Box width="100%" sx={{ display:"flex", justifyContent:"space-between", direction:"row" }}>
+                   <Box width="30%" >
+                     <TextField 
+                     label="Search..." 
+                     variant="outlined"
+                     size='small'
+                     color='info'
+                     fullWidth
+                     value={searchDraft}
+                     onChange={(e)=>setSearchDraft(e.target.value)}
+                     />
+                   </Box>
+                   <Box>
+                     {
+                         showDraftAddForm ? (
+                             <Button 
+                             variant="contained" 
+                             size="small" 
+                             color="secondary" 
+                             sx={{ textTransform:"none" }}
+                             onClick={hideForm}
+                         >
+                             <VisibilityOffIcon /> Hide Form    
+                         </Button>
+                         ):( showDraftEditForm ? (
+                             <Button 
+                                 variant="contained" 
+                                 size="small" 
+                                 color="secondary" 
+                                 sx={{ textTransform:"none" }}
+                                 onClick={hideForm}
+                             >
+                                 <VisibilityOffIcon /> Hide Form    
+                             </Button>
+                         ): (
+                             <Button 
+                                 variant="contained" 
+                                 size="small" 
+                                 color="secondary" 
+                                 sx={{ textTransform:"none" }}
+                                 onClick={showAddDraftForm}
+                                 >
+                            <AddIcon /> Add New Draft
+                         </Button>
+                         )
+                     )
+                     }
+                   </Box>
+                 </Box>
+             }
+             />
+      </Paper>
+         ) : (
+             <LinearProgress size="small" color="info" />
+         )
+     }
 </Box> 
   )
 }

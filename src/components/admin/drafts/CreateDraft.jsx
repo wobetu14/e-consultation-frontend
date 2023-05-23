@@ -40,7 +40,9 @@ const CreateDraft = () => {
     serverErrorMsg,
     setServerErrorMsg,
     serverSuccessMsg,
-    setServerSuccessMsg
+    setServerSuccessMsg,
+    loading,
+    setLoading
 }=useContext(DraftsDataContext);
 
  const helperTextStyle={
@@ -174,19 +176,20 @@ validationSchema:YUP.object({
 }); 
     
 const createDraftDocument=async (draftsData) => {
-     console.log(draftsData)
-
+      setLoading(true)
       return await axios.post('drafts', draftsData)
       .then(res => {
         console.log(res.data)
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+        setLoading(false)
         formik.resetForm();
         fetchDrafts();
       })
       .catch(errors =>{
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null) 
+        setLoading(false)
       }) 
    }
    

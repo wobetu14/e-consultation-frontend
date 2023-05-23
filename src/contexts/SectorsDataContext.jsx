@@ -8,6 +8,7 @@ export const SectorsDataProvider = (props) => {
     const [filteredSectors, setFilteredSectors]=useState([]);
     const [searchSector, setSearchSector]=useState("");
     const [sector, setSector]=useState(null);
+    const [loading, setLoading]=useState(false);
 
     const [showSectorAddForm, setShowSectorAddForm]=useState(false);
     const [showSectorEditForm, setShowSectorEditForm]=useState(false);
@@ -77,7 +78,9 @@ export const SectorsDataProvider = (props) => {
         openDialog:openDialog,
         setOpenDialog:setOpenDialog,
         deleteSector:deleteSector,
-        fetchSectors:fetchSectors
+        fetchSectors:fetchSectors,
+        loading:loading,
+        setLoading:setLoading
       }}>
         {props.children}
     </SectorsDataContext.Provider>

@@ -25,7 +25,9 @@ const CreateSector = () => {
         setSectors,
         setServerErrorMsg,
         setServerSuccessMsg,
-        fetchSectors
+        fetchSectors,
+        loading,
+        setLoading
     }=useContext(SectorsDataContext); 
 
  const helperTextStyle={
@@ -61,16 +63,19 @@ validationSchema:YUP.object({
     
 const createSector=async (sectorData) => {
     //  console.log(companyData)
+    setLoading(true)
     return await axios.post('sectors', sectorData)
         .then(res => {
           setServerSuccessMsg(res.data.message);
           setServerErrorMsg(null)
+          setLoading(false)
           formik.resetForm();
           fetchSectors();
         })
         .catch(errors =>{
            setServerErrorMsg(errors.response.data.message);
-          setServerSuccessMsg(null) 
+           setServerSuccessMsg(null) 
+           setLoading(false)
         }) 
    }
    

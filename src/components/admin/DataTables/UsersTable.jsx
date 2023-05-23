@@ -154,13 +154,11 @@ const errorStyle={
                 {serverErrorMsg ? <Alert severity='error' style={errorStyle}>{serverErrorMsg}</Alert>:null}
                 </Typography> 
 
-                <Typography variant='h1'>
-                {loading ? 
-                (
-                    <LinearProgress size="small" color='info'/>
-                )
-                :null}
-                </Typography>
+               
+                {
+                    loading ? (<LinearProgress size="small" color='info'/>):null
+                }
+                
             </motion.span>
         </Grid>
     {
@@ -182,68 +180,74 @@ const errorStyle={
         <EditUser />
       )
     }
-     <Paper elevation={1} sx={{ marginTop:"10px", marginBottom:"350px"}}>
-       <DataTable 
-        columns={columns} 
-        data={filteredUsers}
-        pagination
-        // selectableRows
-        selectableRowsHighlight
-        // highlightOnHover
-        subHeader
-        subHeaderComponent={
-            <Box width="100%" sx={{ display:"flex", justifyContent:"space-between", direction:"row" }}>
-              <Box width="30%" >
-                <TextField 
-                label="Search..." 
-                variant="outlined"
-                size='small'
-                color='info'
-                fullWidth
-                value={searchUser}
-                onChange={(e)=>setSearchUser(e.target.value)}
-                />
-              </Box>
-              <Box>
-                {
-                    showUserAddForm ? (
-                        <Button 
-                        variant="contained" 
-                        size="small" 
-                        color="secondary" 
-                        sx={{ textTransform:"none" }}
-                        onClick={hideForm}
-                    >
-                        <VisibilityOffIcon /> Hide Form    
-                    </Button>
-                    ):( showUserEditForm ? (
-                        <Button 
-                            variant="contained" 
-                            size="small" 
-                            color="secondary" 
-                            sx={{ textTransform:"none" }}
-                            onClick={hideForm}
-                        >
-                            <VisibilityOffIcon /> Hide Form    
-                        </Button>
-                    ): (
-                        <Button 
-                            variant="contained" 
-                            size="small" 
-                            color="secondary" 
-                            sx={{ textTransform:"none" }}
-                            onClick={showAddUserForm}
-                            >
-                       <AddIcon /> Add New User
-                    </Button>
-                    )
-                )
-                }
-              </Box>
-            </Box>
-        }
-        />
- </Paper>
+     {
+         users.length>0 || filteredUsers.length>0 ? (
+            <Paper elevation={1} sx={{ marginTop:"10px", marginBottom:"350px"}}>
+            <DataTable 
+             columns={columns} 
+             data={filteredUsers}
+             pagination
+             // selectableRows
+             selectableRowsHighlight
+             // highlightOnHover
+             subHeader
+             subHeaderComponent={
+                 <Box width="100%" sx={{ display:"flex", justifyContent:"space-between", direction:"row" }}>
+                   <Box width="30%" >
+                     <TextField 
+                     label="Search..." 
+                     variant="outlined"
+                     size='small'
+                     color='info'
+                     fullWidth
+                     value={searchUser}
+                     onChange={(e)=>setSearchUser(e.target.value)}
+                     />
+                   </Box>
+                   <Box>
+                     {
+                         showUserAddForm ? (
+                             <Button 
+                             variant="contained" 
+                             size="small" 
+                             color="secondary" 
+                             sx={{ textTransform:"none" }}
+                             onClick={hideForm}
+                         >
+                             <VisibilityOffIcon /> Hide Form    
+                         </Button>
+                         ):( showUserEditForm ? (
+                             <Button 
+                                 variant="contained" 
+                                 size="small" 
+                                 color="secondary" 
+                                 sx={{ textTransform:"none" }}
+                                 onClick={hideForm}
+                             >
+                                 <VisibilityOffIcon /> Hide Form    
+                             </Button>
+                         ): (
+                             <Button 
+                                 variant="contained" 
+                                 size="small" 
+                                 color="secondary" 
+                                 sx={{ textTransform:"none" }}
+                                 onClick={showAddUserForm}
+                                 >
+                            <AddIcon /> Add New User
+                         </Button>
+                         )
+                     )
+                     }
+                   </Box>
+                 </Box>
+             }
+             />
+      </Paper>
+         ):(
+             <LinearProgress size="small" color="info" />
+         )
+     }
 </Box> 
   )
 }

@@ -35,7 +35,9 @@ const CreateRegion = () => {
       serverErrorMsg,
       setServerErrorMsg,
       serverSuccessMsg,
-      setServerSuccessMsg
+      setServerSuccessMsg,
+      loading,
+      setLoading
   }=useContext(RegionsDataContext);
 
   const errorStyle={
@@ -79,15 +81,18 @@ validationSchema:YUP.object({
     
 const registerRegion=async (regionData) => {
     //  console.log(companyData)
+      setLoading(true)
     return await axios.post('regions', regionData)
     .then(res => {
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null);
+      setLoading(false);
       formik.resetForm();
     })
     .catch(errors =>{
        setServerErrorMsg(errors.response.data.message);
        setServerSuccessMsg(null) 
+       setLoading(false)
     }) 
    }
    

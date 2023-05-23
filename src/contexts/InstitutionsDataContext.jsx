@@ -8,6 +8,7 @@ export const InstitutionsDataProvider = (props) => {
     const [filteredInstitutions, setFilteredInstitutions]=useState([]);
     const [searchInstitution, setSearchInstitution]=useState("");
     const [institution, setInstitution]=useState(null);
+    const [loading, setLoading]=useState(false);
 
     const [showInstitutionAddForm, setShowInstitutionAddForm]=useState(false);
     const [showInstitutionEditForm, setShowInstitutionEditForm]=useState(false);
@@ -79,7 +80,9 @@ export const InstitutionsDataProvider = (props) => {
         openDialog:openDialog,
         setOpenDialog:setOpenDialog,
         deleteInstitution:deleteInstitution,
-        fetchInstitutions:fetchInstitutions
+        fetchInstitutions:fetchInstitutions,
+        loading:loading,
+        setLoading:setLoading
       }}>
         {props.children}
     </InstitutionsDataContext.Provider>

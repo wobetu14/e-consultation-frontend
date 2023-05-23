@@ -8,6 +8,7 @@ export const RegionsDataProvider = (props) => {
     const [filteredRegions, setFilteredRegions]=useState([]);
     const [searchRegion, setSearchRegion]=useState("");
     const [region, setRegion]=useState(null);
+    const [loading, setLoading]=useState(false);
 
     const [showRegionAddForm, setShowRegionAddForm]=useState(false);
     const [showRegionEditForm, setShowRegionEditForm]=useState(false);
@@ -76,6 +77,8 @@ export const RegionsDataProvider = (props) => {
         openDialog:openDialog,
         setOpenDialog:setOpenDialog,
         deleteRegion:deleteRegion,
+        loading:loading,
+        setLoading:setLoading
       }}>
         {props.children}
     </RegionsDataContext.Provider>

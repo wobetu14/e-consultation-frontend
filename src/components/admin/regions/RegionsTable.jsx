@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Grid, Link, Paper, TextField, Typography, useTheme } from '@mui/material'
+import { Alert, Box, Button, Grid, LinearProgress, Link, Paper, TextField, Typography, useTheme } from '@mui/material'
 import React, { useContext, useEffect, useState } from 'react'
 import axios from '../../../axios/AxiosGlobal'
 import DataTable from 'react-data-table-component'
@@ -48,6 +48,8 @@ const RegionsTable = () => {
         setServerSuccessMsg,
         openDialog,
         setOpenDialog,
+        loading,
+        setLoading
     }=useContext(RegionsDataContext);
 
 const errorStyle={
@@ -132,6 +134,12 @@ const errorStyle={
                 <Typography variant='h1'>
                 {serverErrorMsg ? <Alert severity='error' style={errorStyle}>{serverErrorMsg}</Alert>:null}
                 </Typography> 
+
+                {
+                    loading ? (
+                        <LinearProgress size="small" color="info" />
+                    ):null
+                }
             </motion.span>
         </Grid>
 
@@ -153,68 +161,75 @@ const errorStyle={
         <EditRegion />
       )
     }
-     <Paper elevation={1} sx={{ marginTop:"10px", marginBottom:"350px"}}>
-       <DataTable 
-        columns={columns} 
-        data={filteredRegions}
-        pagination
-        // selectableRows
-        selectableRowsHighlight
-        // highlightOnHover
-        subHeader
-        subHeaderComponent={
-            <Box width="100%" sx={{ display:"flex", justifyContent:"space-between", direction:"row" }}>
-              <Box width="30%" >
-                <TextField 
-                label="Search..." 
-                variant="outlined"
-                size='small'
-                color='info'
-                fullWidth
-                value={searchRegion}
-                onChange={(e)=>setSearchRegion(e.target.value)}
-                />
-              </Box>
-              <Box>
-                {
-                    showRegionAddForm ? (
-                        <Button 
-                        variant="contained" 
-                        size="small" 
-                        color="secondary" 
-                        sx={{ textTransform:"none" }}
-                        onClick={hideForm}
-                    >
-                        <VisibilityOffIcon /> Hide Form    
-                    </Button>
-                    ):( showRegionEditForm ? (
-                        <Button 
-                            variant="contained" 
-                            size="small" 
-                            color="secondary" 
-                            sx={{ textTransform:"none" }}
-                            onClick={hideForm}
-                        >
-                            <VisibilityOffIcon /> Hide Form    
-                        </Button>
-                    ): (
-                        <Button 
-                            variant="contained" 
-                            size="small" 
-                            color="secondary" 
-                            sx={{ textTransform:"none" }}
-                            onClick={showAddRegionForm}
-                            >
-                       <AddIcon /> Add New User
-                    </Button>
-                    )
-                )
-                }
-              </Box>
-            </Box>
-        }
-        />
- </Paper>
+     
+     {
+         regions.length>0 || filteredRegions.length>0 ? (
+            <Paper elevation={1} sx={{ marginTop:"10px", marginBottom:"350px"}}>
+            <DataTable 
+             columns={columns} 
+             data={filteredRegions}
+             pagination
+             // selectableRows
+             selectableRowsHighlight
+             // highlightOnHover
+             subHeader
+             subHeaderComponent={
+                 <Box width="100%" sx={{ display:"flex", justifyContent:"space-between", direction:"row" }}>
+                   <Box width="30%" >
+                     <TextField 
+                     label="Search..." 
+                     variant="outlined"
+                     size='small'
+                     color='info'
+                     fullWidth
+                     value={searchRegion}
+                     onChange={(e)=>setSearchRegion(e.target.value)}
+                     />
+                   </Box>
+                   <Box>
+                     {
+                         showRegionAddForm ? (
+                             <Button 
+                             variant="contained" 
+                             size="small" 
+                             color="secondary" 
+                             sx={{ textTransform:"none" }}
+                             onClick={hideForm}
+                         >
+                             <VisibilityOffIcon /> Hide Form    
+                         </Button>
+                         ):( showRegionEditForm ? (
+                             <Button 
+                                 variant="contained" 
+                                 size="small" 
+                                 color="secondary" 
+                                 sx={{ textTransform:"none" }}
+                                 onClick={hideForm}
+                             >
+                                 <VisibilityOffIcon /> Hide Form    
+                             </Button>
+                         ): (
+                             <Button 
+                                 variant="contained" 
+                                 size="small" 
+                                 color="secondary" 
+                                 sx={{ textTransform:"none" }}
+                                 onClick={showAddRegionForm}
+                                 >
+                            <AddIcon /> Add New User
+                         </Button>
+                         )
+                     )
+                     }
+                   </Box>
+                 </Box>
+             }
+             />
+      </Paper>
+         ):(
+             <LinearProgress size="small" color="info" />
+         )
+     }
 </Box> 
   )
 }

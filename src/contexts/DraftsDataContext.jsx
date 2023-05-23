@@ -8,6 +8,7 @@ export const DraftsDataProvider = (props) => {
     const [filteredDrafts, setFilteredDrafts]=useState([]);
     const [searchDraft, setSearchDraft]=useState("");
     const [draft, setDraft]=useState(null);
+    const [loading, setLoading]=useState(false);
 
     const [showDraftAddForm, setShowDraftAddForm]=useState(false);
     const [showDraftEditForm, setShowDraftEditForm]=useState(false);
@@ -89,6 +90,8 @@ export const DraftsDataProvider = (props) => {
         setOpenDialog:setOpenDialog,
         getDraftInfo:getDraftInfo,
         deleteDraft:deleteDraft,
+        loading:loading,
+        setLoading:setLoading
       }}>
         {props.children}
     </DraftsDataContext.Provider>

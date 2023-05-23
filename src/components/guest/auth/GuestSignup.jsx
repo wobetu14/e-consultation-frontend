@@ -1,4 +1,4 @@
-import {Alert, Avatar, Box, Button, Checkbox, FormControl, FormControlLabel, Item, Grid, Paper, TextField, Typography, useTheme } from '@mui/material'
+import {Alert, Avatar, Box, Button, Checkbox, FormControl, FormControlLabel, Item, Grid, Paper, TextField, Typography, useTheme, LinearProgress, CircularProgress } from '@mui/material'
 import { tokens } from '../../../theme';
 import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 import { useFormik } from 'formik';
@@ -11,6 +11,7 @@ import { motion } from 'framer-motion';
 const GuestSignup = () => {
    const theme=useTheme();
    const colors=tokens(theme.palette.mode)
+   const [loading, setLoading]=useState(false)
 
    const [serverErrorMsg, setServerErrorMsg]=useState(null);
    const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
@@ -68,14 +69,17 @@ const GuestSignup = () => {
    }); 
 
    const registerUser = async (userData)=> {
+       setLoading(true)
     return await axios.post('signup', userData)
           .then(res => {
             setServerSuccessMsg(res.data.message);
             setServerErrorMsg(null)
+            setLoading(false)
           })
           .catch(errors =>{
             setServerErrorMsg(errors.response.data.message);
             setServerSuccessMsg(null)
+            setLoading(false)
           })  
   }
 
@@ -107,6 +111,11 @@ const GuestSignup = () => {
             <p>
               {serverErrorMsg ? <Alert severity='error' style={errorStyle}>{serverErrorMsg}</Alert>:null}
             </p> 
+            <p>
+            {
+              loading ? (<CircularProgress color="info" />):null
+            }
+            </p>
         </Grid>
 
         <form onSubmit={formik.handleSubmit}>

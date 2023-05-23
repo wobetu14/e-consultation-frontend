@@ -39,6 +39,8 @@ const CreateInstitution = () => {
        serverSuccessMsg,
        setServerSuccessMsg,
        fetchInstitutions,
+       loading,
+       setLoading
    }=useContext(InstitutionsDataContext);
 
   const errorStyle={
@@ -186,17 +188,20 @@ validationSchema:YUP.object({
     
 const createInstitution=async (institutionData) => {
     //  console.log(companyData)
+    setLoading(true)
     return await axios.post('institutions', institutionData)
     .then(res => {
       console.log(res.data)
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null);
+      setLoading(false)
       formik.resetForm();
       fetchInstitutions();
     })
     .catch(errors =>{
        setServerErrorMsg(errors.response.data.message);
        setServerSuccessMsg(null) 
+       setLoading(false)
     }) 
    }
    
