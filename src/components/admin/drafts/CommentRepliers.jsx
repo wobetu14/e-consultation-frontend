@@ -19,11 +19,11 @@ import { UsersDataContext } from '../../../contexts/UsersDataContext';
 import { motion } from 'framer-motion';
 import DeleteUserDialog from '../../../partials/DeleteUserDialog'
 
-const PersonalInvitations = () => {
+const CommentRepliers = () => {
     const params=useParams()
     const theme = useTheme();
     const colors = tokens(theme.palette.mode); 
-    const [invitedPeople, setInvitedPeople]=useState(null)
+    const [assignedPeople, setAssignedPeople]=useState(null)
  
     // User context
     const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
@@ -53,9 +53,9 @@ const errorStyle={
    }, [])
 
    const fetchInvitedInstitutions =async() =>{
-      return await  axios.get(`comment-request?is_personal=${1}&draft_id=${params.id}`)
+      return await  axios.get(`comment-repliers?draft_id=${params.id}`)
         .then(res=>{
-          setInvitedPeople(res.data.data);
+          setAssignedPeople(res.data.data);
         }).catch(error=>{
           console.log(error.message);
         })
@@ -65,7 +65,7 @@ const errorStyle={
   return (
     <Box m='0 20px' width={'95%'}>
     <Typography variant="h5" fontWeight="600">
-        Invitations to People
+        Assigned staff to reply for comments on this document
     </Typography>
     <TableContainer component={Paper} sx={{ marginTop:"15px", marginBottom:"30px" }}>
       <Table sx={{ minWidth: 550 }} size="small" aria-label="simple table">
@@ -74,32 +74,32 @@ const errorStyle={
           {
                 userRole==="Approver"? ( 
                   <TableCell>
-                    <Typography variant="h5" fontWeight={600}>To (Email Addresses)</Typography>
+                    <Typography variant="h5" fontWeight={600}>To (Name)</Typography>
                   </TableCell>
                 ):""
               }
-            <TableCell>
+            {/* <TableCell>
               <Typography variant="h5" fontWeight={600}>Requesting User</Typography>
-            </TableCell>
+            </TableCell> */}
             {/* <TableCell>
               <Typography variant="h5" fontWeight={600}>Acceptance Status</Typography>
             </TableCell> */}
           </TableRow>
         </TableHead>
         <TableBody>
-          {invitedPeople ? invitedPeople.map((people) => (
+          {assignedPeople ? assignedPeople.map((people) => (
             <TableRow
               key={people.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               
               <TableCell>
-                <Typography variant="body1">{people.email ? people.email:""}</Typography>
+                <Typography variant="body1">{people.replier ? people.replier:""}</Typography>
               </TableCell>
 
-              <TableCell>
+             {/*  <TableCell>
                 <Typography variant="body1">{people.requested_by_name ? people.requested_by_name:""}</Typography>
-              </TableCell>
+              </TableCell> */}
 
              {/*  <TableCell>
                 <Typography variant="body1">{people.status===0 ? "Pending":(people.status===1)? "Accepted":"Rejected"}</Typography>
@@ -126,4 +126,4 @@ const errorStyle={
   )
 }
 
-export default PersonalInvitations
+export default CommentRepliers

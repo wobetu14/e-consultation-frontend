@@ -65,7 +65,7 @@ const errorStyle={
     <Typography variant="h5" fontWeight="600">
         Invitations to Institutions
     </Typography>
-    <TableContainer component={Paper} sx={{ marginTop:"50px", marginBottom:"350px" }}>
+    <TableContainer component={Paper} sx={{ marginTop:"10px", marginBottom:"20px" }}>
       <Table sx={{ minWidth: 550 }} size="small" aria-label="simple table">
         <TableHead>
           <TableRow>

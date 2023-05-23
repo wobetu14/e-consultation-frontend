@@ -9,7 +9,7 @@ body,
   height: 100%;
   width: 100%;
   font-family: 'arial', sans-serif;
-  background-color: white;
+  /* background-color: white; */
 }
 
 .App{

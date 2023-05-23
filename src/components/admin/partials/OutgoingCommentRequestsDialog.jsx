@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import axios from '../../../axios/AxiosGlobal'
 import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom'
@@ -13,10 +13,11 @@ import {
      Stack,
      TextField,
      Typography, 
-     useTheme, Box, DialogActions, Grid, Alert
+     useTheme, Box, DialogActions, Grid, Alert, LinearProgress
     } from '@mui/material'
 import { tokens } from '../../../theme';
 import { useFormik } from 'formik';
+import { UserContext } from '../../../contexts/UserContext';
 
 const OutgoingCommentRequestsDialog = ({
     draftInfo, 
@@ -41,6 +42,12 @@ const OutgoingCommentRequestsDialog = ({
     const [peopleEmail, setPeopleEmail]=useState([]);
     const [instIDs, setInsIDs]=useState([]);
     const [repliersEmail, setRepliersEmail]=useState([]);
+    const [myUsers, setMyUsers]=useState([]);
+    const [repliersID, setRepliersID]=useState([]);
+    const [loading, setLoading]=useState(false);
+
+     // User context
+     const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
 
     const helperTextStyle={
         color:'red',
@@ -63,15 +70,25 @@ const OutgoingCommentRequestsDialog = ({
     React.useEffect(()=>{
         fetchInstitutions();
         getInstitutionsID();
-     }, [selectedInstitutions])
+        getMyUsersID();
+        fetchMyUsers();
+     }, [selectedInstitutions, repliersEmail])
 
-      const getInstitutionsID=()=>{
-         if(selectedInstitutions.length>0){
-            selectedInstitutions.map((selectedInstitution)=>(
-                setInsIDs([...instIDs, selectedInstitution.id])
+      const getMyUsersID=()=>{
+         if(repliersEmail.length>0){
+            repliersEmail.map((replier)=>(
+                setRepliersID([...repliersID, replier.id])
             ))
          }
      } 
+
+     const getInstitutionsID=()=>{
+        if(selectedInstitutions.length>0){
+           selectedInstitutions.map((selectedInstitution)=>(
+               setInsIDs([...instIDs, selectedInstitution.id])
+           ))
+        }
+    } 
 
      const fetchInstitutions = async() =>{
         try{
@@ -82,9 +99,20 @@ const OutgoingCommentRequestsDialog = ({
          }
       }
 
+      const fetchMyUsers = async() =>{
+        try{
+          const res = await  axios.get(`users?institution_id=${userInfo.user.institution_id}`)
+          console.log("My users");
+          console.log(res.data.data)
+          setMyUsers(res.data.data);
+        } catch(error){
+            console.log(error);
+         }
+      }
+
      const formikAcceptanceForm=useFormik({
         initialValues:{
-            draft_id:"",
+            draft_id:params.id,
             institutions: [],
             institutionMessage:"",
             emails: [],
@@ -110,7 +138,7 @@ const OutgoingCommentRequestsDialog = ({
             emails:peopleEmail.length>0 ? peopleEmail.map((email)=>(email)):[],
             personnel_message:values.personalMessage,
 
-            comment_repliers:repliersEmail.length>0 ? repliersEmail.map((replierEmail)=>(replierEmail)):[],
+            comment_repliers: repliersID.length>0 ? repliersID.map((replierID)=>(replierID)):[],
         };
     
         acceptCommentOpening(requestData);
@@ -119,15 +147,18 @@ const OutgoingCommentRequestsDialog = ({
 
     const acceptCommentOpening=async (requestData) => {
         console.log(requestData)
+        setLoading(true)
         
       return await axios.post(`approve-comment-opening`, requestData)
         .then(res => {
           setServerSuccessMsg(res.data.message);
           setServerErrorMsg(null)
+          setLoading(false)
         })
         .catch(errors =>{
            setServerErrorMsg(errors.response.data.message);
            setServerSuccessMsg(null) 
+           setLoading(false)
         })  
 
        }
@@ -218,6 +249,11 @@ const OutgoingCommentRequestsDialog = ({
                 <Typography variant='h1'>
                 {serverErrorMsg ? <Alert severity='error' style={errorStyle}>{serverErrorMsg}</Alert>:null}
                 </Typography> 
+                {
+                    loading ? (
+                        <LinearProgress size="small" color='info' />
+                    ):""
+                }
             </motion.span>
         </Grid>
 
@@ -296,8 +332,8 @@ const OutgoingCommentRequestsDialog = ({
                 autoSelect
                 color="info"
                 sx={{ paddingBottom:"10px" }}
-                options={repliersEmail}
-                getOptionLabel={(option) => option}
+                options={myUsers}
+                getOptionLabel={(option) => option.first_name+" "+option.middle_name}
                 onChange={(e,value)=>setRepliersEmail(value)}
                 renderInput={(params) => (
                 <TextField

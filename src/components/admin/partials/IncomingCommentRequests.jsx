@@ -38,11 +38,11 @@ const IncomingCommentRequests = () => {
     const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
 
     const incomingCommentRequests =async() =>{
-      return await  axios.get('comment-request')
+      return await  axios.get(`comment-request?commenter_institution_id=${userInfo.user.institution_id}`)
         .then(res=>res.data.data)
         .then(res=>{
-          console.log(res.data)
-          setIncomingCommentData(res.data)
+          console.log("Incoming requests")
+          setIncomingCommentData(res)
         }).catch(error=>{
           console.log(error.message);
         })
@@ -79,7 +79,7 @@ const IncomingCommentRequests = () => {
             <Typography variant="h5" fontWeight={600}>Title</Typography>
             </TableCell>
             <TableCell>
-            <Typography variant="h5" fontWeight={600}>Draft Status</Typography>
+            <Typography variant="h5" fontWeight={600}>Acceptance Status</Typography>
             </TableCell>
             <TableCell>
             <Typography variant="h5" fontWeight={600}>Actions</Typography>
@@ -93,10 +93,10 @@ const IncomingCommentRequests = () => {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
                 <TableCell>
-                <Typography variant="body1">{incommingData.requestor_institution.name}</Typography>
+                <Typography variant="body1">{incommingData.requester_institution_name}</Typography>
                 </TableCell>
               <TableCell>
-                <Typography variant="body1">{incommingData.draft.short_title}</Typography>
+                <Typography variant="body1">{incommingData.draft_id}</Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="body1">{incommingData.status === 0 ? "Pending":"Accepted"}</Typography>
@@ -109,15 +109,22 @@ const IncomingCommentRequests = () => {
                  size='small' 
                  variant="contained" 
                  color="primary" 
-                //  href={`/admin/external_requests_preview/${draft.id}`}
+                 href={`/admin/document_details/${incommingData.draft_id}`}
                  sx={{ textTransform:"none", marginRight:"5px" }}
                  >
                    {/* <PreviewIcon size="small"/> */}
-                   View
+                   Detail
                 </Button>
-              {
-                
-              }
+
+                {/* <Button
+                  size='small' 
+                  variant="contained" 
+                  color="success" 
+                  // href={`/admin/document_details/${incommingData.draft_id}`}
+                  sx={{ textTransform:"none", marginRight:"5px" }}
+                  >
+                   Accept
+                </Button> */}
               </TableCell>
             </TableRow>
           )):""}

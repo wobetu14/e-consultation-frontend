@@ -180,8 +180,7 @@ const errorStyle={
         <EditUser />
       )
     }
-     {
-         users.length>0 || filteredUsers.length>0 ? (
+     
             <Paper elevation={1} sx={{ marginTop:"10px", marginBottom:"350px"}}>
             <DataTable 
              columns={columns} 
@@ -244,10 +243,6 @@ const errorStyle={
              }
              />
       </Paper>
-         ):(
-             <LinearProgress size="small" color="info" />
-         )
-     }
 </Box> 
   )
 }

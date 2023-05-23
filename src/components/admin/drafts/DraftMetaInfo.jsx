@@ -209,7 +209,10 @@ const DraftMetaInfo = ({
             </Grid>      
           </Grid>
 
-          <Grid item xs={4}>
+          {
+            userInfo.user.institution_id===documentDetail.institution_id ? 
+            (
+              <Grid item xs={4}>
                 <DraftActions 
                 documentDetail={documentDetail} 
                 setDocumentDetail={setDocumentDetail} 
@@ -220,6 +223,8 @@ const DraftMetaInfo = ({
                 setServerSuccessMsg={setServerSuccessMsg}
                 />
           </Grid>
+            ):""
+          }
           
         </Grid>
           ):(

@@ -183,8 +183,7 @@ const errorStyle={
         <EditDraft />
       )
     }
-     {
-         drafts.length>0 || filteredDrafts.length>0 ? (
+     
             <Paper elevation={1} sx={{ marginTop:"10px", marginBottom:"350px", maxWidth:"1200px"}}>
             <DataTable 
              columns={columns} 
@@ -247,10 +246,6 @@ const errorStyle={
              }
              />
       </Paper>
-         ) : (
-             <LinearProgress size="small" color="info" />
-         )
-     }
 </Box> 
   )
 }

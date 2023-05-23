@@ -10,6 +10,7 @@ import AddSectionComment from '../../guest/partials/AddSectionComment';
 // import NestedList from './partials/SectionNavigationMenu';
 import SendIcon from '@mui/icons-material/Send';
 
+
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import DocumentLevelComments from '../../guest/partials/DocumentLevelComments';
@@ -26,12 +27,15 @@ import DraftActions from './DraftActions';
 
 import PersonalInvitations from './Personalnvitations';
 import InstitutionInvitations from './InstitutionInvitations';
+import CommentRepliers from './CommentRepliers';
+import ExternalRequestAcceptanceDialog from './ExternalRequestAcceptanceDialog';
 
 const DocumentDetails = () => {
   const params=useParams();
   const [documentDetail, setDocumentDetail]=useState(null);
   const [documentSections, setDocumentSections]=useState(null);
   const [documentComments, setDocumentComments]=useState(null);
+  const [openAcceptanceDialog, setOpenAcceptanceDialog]=useState(false);
 
   const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
 
@@ -107,6 +111,10 @@ const DocumentDetails = () => {
               })
   }
 
+  const handleAcceptanceDialog = ()=>{
+    setOpenAcceptanceDialog(true)
+  }
+
   return (
     <Box>
 
@@ -126,6 +134,23 @@ const DocumentDetails = () => {
             </motion.span>
         </Grid>
 
+    <Button variant="contained" color="success" size="small" onClick={handleAcceptanceDialog}>Accept</Button>
+
+      {
+        openAcceptanceDialog && (
+          <ExternalRequestAcceptanceDialog 
+            documentDetail={documentDetail} 
+            setDocumentDetail={setDocumentDetail} 
+            serverErrorMsg={serverErrorMsg}
+            serverSuccessMsg={serverSuccessMsg}
+            setServerErrorMsg={setServerErrorMsg}
+            setServerSuccessMsg={setServerSuccessMsg}
+            openAcceptanceDialog={openAcceptanceDialog}
+            setOpenAcceptanceDialog={setOpenAcceptanceDialog}
+          />
+        )
+      }
+
       <DraftMetaInfo 
         documentDetail={documentDetail} 
         setDocumentDetail={setDocumentDetail} 
@@ -134,6 +159,8 @@ const DocumentDetails = () => {
         setServerErrorMsg={setServerErrorMsg}
         setServerSuccessMsg={setServerSuccessMsg}
       />
+
+      
 
       <ListItemButton 
       onClick={handlePreviewCollapse} 
@@ -175,13 +202,25 @@ const DocumentDetails = () => {
             />
      </Collapse>
 
-     <InstitutionInvitations 
-      documentDetail={documentDetail}
-      />
+     {
+       userInfo.user.institution_id===params.id ? (
+        <>
+          <InstitutionInvitations 
+          documentDetail={documentDetail}
+          />
 
-     <PersonalInvitations 
-      documentDetail={documentDetail}
-     />
+          <CommentRepliers documentDetail={documentDetail} />
+
+          <PersonalInvitations 
+            documentDetail={documentDetail}
+          />
+        </>
+       ):""
+     }
+        
+     
+
+     
     </Box>
   )
 }

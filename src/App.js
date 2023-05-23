@@ -41,6 +41,8 @@ import UsersTable from './components/admin/DataTables/UsersTable';
 import Reports from './components/admin/Reports';
 import DocumentDetails from './components/admin/drafts/DocumentDetails';
 import AccountActivation from './components/guest/AccountActivation';
+import CommenterLayout from './layouts/CommenterLayout';
+import CommenterDashboard from './components/guest/CommenterDashboard';
 
 
 function App() {
@@ -136,6 +138,10 @@ function App() {
                       </PublicElement>
                     }>
                       <Route path=':id' element={<DocumentDetailView />} />
+                    </Route>
+
+                    <Route path='/commenter' element={<CommenterLayout />}>
+                      <Route index element={<CommenterDashboard />} />
                     </Route>
                     
                     <Route path='/admin' 
