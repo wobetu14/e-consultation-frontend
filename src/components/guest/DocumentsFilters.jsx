@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react';
-import { Box, Checkbox, Chip, FormControl, FormControlLabel, InputLabel, MenuItem, Paper, Radio, RadioGroup, Select, Stack, TextField, Typography } from '@mui/material'
+import { Autocomplete, Box, Checkbox, Chip, FormControl, FormControlLabel, InputLabel, MenuItem, Paper, Radio, RadioGroup, Select, Stack, TextField, Typography } from '@mui/material'
 import axios from '../../axios/AxiosGlobal'
 import React, { useEffect, useState } from 'react'
 import { tokens } from '../../theme';
@@ -26,6 +26,9 @@ const DocumentsFilters = (
     const [institutionID, setInstitutionID]=useState(null);
     const [institutions, setInstitutions]=useState(null);
     const [draftStatusName, setDraftStatusName]=useState(null);
+
+    const [sectors, setSectors]=useState([]);
+    const [selectedSectors, setSelectedSectors]=useState([]);
 
     // useEffect to calculate dynamic page size for pagination
     useEffect(()=>{
@@ -72,6 +75,20 @@ const DocumentsFilters = (
         .catch(error=>{
           console.log(error.response.message)
         })
+    }
+
+    useEffect(()=>{
+      fetchSectors()
+    }, [])
+    
+    const fetchSectors = async() =>{
+      return await  axios.get('sectors')
+      .then(res=>res.data.data)
+      .then(res=>{
+        setSectors(res.data)
+      }).catch(error=>{
+        console.log(error.response.message);
+      })
     }
 
     const handleRegionChange = (event) => {
@@ -251,43 +268,26 @@ const DocumentsFilters = (
                     Economic Sector
                 </Typography>
 
-                <div>
-                  <Stack direction="row" spacing={1} padding="5px">
-                    <Chip 
-                    label="Technology and Innovation" 
-                    variant="outlined"
-                    onClick={handleClick} 
-                    />
-                    <Chip 
-                    label="Fintech and E-Commerce" 
-                    variant="outlined"
-                    onClick={handleClick} />
-                  </Stack>
-
-                  <Stack direction="row" spacing={1} padding="5px">
-                    <Chip 
-                    label="Agriculture" 
-                    variant="outlined"
-                    onClick={handleClick} 
-                    />
-                    <Chip 
-                    label="Transport and Logistics" 
-                    variant="outlined"
-                    onClick={handleClick} />
-                  </Stack>
-
-                  <Stack direction="row" spacing={1} padding="5px">
-                    <Chip 
-                    label="Education" 
-                    variant="outlined"
-                    onClick={handleClick} 
-                    />
-                    <Chip 
-                    label="Tourism" 
-                    variant="outlined"
-                    onClick={handleClick} />
-                  </Stack>
-                </div>           
+                <Autocomplete
+                      multiple
+                      id="tags-standard"
+                      autoSelect
+                      color="info"
+                      size="small"
+                      sx={{ paddingBottom:"10px" }}
+                      options={sectors}
+                      getOptionLabel={(option) => option.name}
+                      onChange={(e,value)=>setSelectedSectors(value)}
+                      renderInput={(params) => (
+                      <TextField
+                          {...params}
+                          // variant="standard"
+                          label="Select sectors"
+                          placeholder="Sectors "
+                          value={(option)=>option.name}
+                      />
+                      )}
+                  />          
             </Box>
         {/* </form> */}
     </Paper>

@@ -109,7 +109,7 @@ const addComment=async (commentData) => {
          color:colors.primary[200]}}
          onClick={()=>setShowComments(!showComments)} 
          >
-            <ChatBubbleOutlineIcon/> &nbsp; Comments ({comments.length})
+            <ChatBubbleOutlineIcon fontSize="small"/> &nbsp; Comments ({comments.length})
         </Button>
        {/*  <Button variant="text" 
         size="medium" 
@@ -145,7 +145,7 @@ const addComment=async (commentData) => {
                             primary={
                               <>
                                 <Typography variant="h5" fontWeight="600">
-                                    {comment.commented_by ? comment.commented_by:"Anonymous"}
+                                    {comment.commenter ? `${comment.commenter.first_name+" "+comment.commenter.middle_name}`:"Anonymous"}
                                   </Typography>
                               </>
                             }

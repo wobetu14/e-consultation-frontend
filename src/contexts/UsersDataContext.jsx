@@ -15,6 +15,8 @@ export const UsersDataProvider = (props) => {
     const [serverErrorMsg, setServerErrorMsg]=useState(null);
     const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
 
+    const [loading, setLoading]=useState(false);
+
     const [openDialog, setOpenDialog]=useState(false);
 
     useEffect(()=>{
@@ -89,7 +91,9 @@ export const UsersDataProvider = (props) => {
         openDialog:openDialog,
         setOpenDialog:setOpenDialog,
         deleteUser:deleteUser,
-        getUserInfo:getUserInfo
+        getUserInfo:getUserInfo,
+        loading:loading,
+        setLoading:setLoading
       }}>
         {props.children}
     </UsersDataContext.Provider>

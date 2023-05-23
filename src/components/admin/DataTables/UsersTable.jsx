@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Grid, Link, Paper, TextField, Typography, useTheme } from '@mui/material'
+import { Alert, Box, Button, Grid, LinearProgress, Link, Paper, TextField, Typography, useTheme } from '@mui/material'
 import React, { useContext, useEffect, useState } from 'react'
 import axios from '../../../axios/AxiosGlobal'
 import DataTable from 'react-data-table-component'
@@ -21,6 +21,7 @@ import DeleteUserDialog from '../../../partials/DeleteUserDialog'
 const UsersTable = () => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode); 
+    
  
     // User context
     const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
@@ -36,7 +37,9 @@ const UsersTable = () => {
         setServerSuccessMsg,
         openDialog, 
         setOpenDialog,
-        getUserInfo
+        getUserInfo,
+        loading,
+        setLoading
     }=useContext(UsersDataContext);
 
 const errorStyle={
@@ -150,6 +153,14 @@ const errorStyle={
                 <Typography variant='h1'>
                 {serverErrorMsg ? <Alert severity='error' style={errorStyle}>{serverErrorMsg}</Alert>:null}
                 </Typography> 
+
+                <Typography variant='h1'>
+                {loading ? 
+                (
+                    <LinearProgress size="small" color='info'/>
+                )
+                :null}
+                </Typography>
             </motion.span>
         </Grid>
     {

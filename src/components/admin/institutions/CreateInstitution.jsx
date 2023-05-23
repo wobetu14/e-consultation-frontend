@@ -141,7 +141,7 @@ const fetchRegions =async() =>{
       email:"",
       telephone:"",
       address:"",
-      sectorID:"",
+      // sectorID:"",
       canCreateDraft:"",
       institution_category_id:"",
       
@@ -160,7 +160,7 @@ validationSchema:YUP.object({
     email:YUP.string().required("This field is required. Please enter email address.").email("Invalid email address"),
 
     address:YUP.string().required("This field is required. Please enter the address of the institution."),
-    sectorID:YUP.string().required("This field is required. Please select economic sector."),
+    // sectorID:YUP.string().required("This field is required. Please select economic sector."),
     canCreateDraft:YUP.number().required("This field is required. Please choose an option."),
   }),
 
@@ -175,7 +175,7 @@ validationSchema:YUP.object({
       email:values.email,
       telephone:values.telephone,
       address:values.address,
-      sector_id:values.sectorID,
+      // sector_id:values.sectorID,
       created_by:values.createdBy,
       can_create_draft:values.canCreateDraft,
       updated_by:values.updatedBy
@@ -318,7 +318,7 @@ const createInstitution=async (institutionData) => {
               <FormHelperText>{formik.touched.regionId && formik.errors.regionId ? <span style={helperTextStyle}>{formik.errors.regionId}</span>:null}</FormHelperText>
             </FormControl>
             
-            <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+            {/* <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
               <InputLabel>Select Economic Sector</InputLabel>
               <Select
                 labelId="sector_id"
@@ -339,7 +339,7 @@ const createInstitution=async (institutionData) => {
                   }
               </Select>
             <FormHelperText>{formik.touched.sectorID && formik.errors.sectorID ? <span style={helperTextStyle}>{formik.errors.sectorID}</span>:null}</FormHelperText>
-          </FormControl>
+          </FormControl> */}
           
               <TextField 
                 label="Email Address" 

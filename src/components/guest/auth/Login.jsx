@@ -48,12 +48,13 @@ const Login = () => {
 
    const userLogin = async (userData)=>{
       return await axios.post('login', userData)
+              
                 .then(res=>{
                   if(res.status!==200){
                     setServerError(res.data.message)
                   }
                   else{
-                    if(res.status===200){
+                    if(res.status===200 && res.data.token){
                       
                       setLoggedIn(true)
                       setServerError(null)
@@ -73,7 +74,11 @@ const Login = () => {
                       else{
                         navigate('/admin')
                       }
-                    }  
+                    } 
+                    
+                    else {
+                      setServerError("Invalid email or password. Please try again.")
+                    }
                   }
                 }).catch(errors=>{
                   setServerError(errors.message)

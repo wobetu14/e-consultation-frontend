@@ -171,13 +171,13 @@ const UserProfile = () => {
       <Grid container>
         <Grid item xs={4}>
         <Box display="flex" justifyContent="center" alignItems="center">
-                <img
+                {/* <img
                   alt="profile-user"
                   width="200px"
                   height="200px"
                   src={`../../assets/images/img_avatar.png`}
                   style={{ cursor: "pointer", borderRadius:"10px 50px"}}
-                />
+                /> */}
               </Box>
         </Grid>
         <Grid item xs={8}>

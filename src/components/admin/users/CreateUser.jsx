@@ -35,6 +35,8 @@ const CreateUser = () => {
       setServerErrorMsg,
       serverSuccessMsg,
       setServerSuccessMsg,
+      loading,
+      setLoading
   }=useContext(UsersDataContext);
 
 
@@ -80,7 +82,7 @@ const CreateUser = () => {
   }
 
  const fetchInstitutions =async() =>{
-  return await  axios.get('public/institutions')
+  return await  axios.get('institutions')
     .then(res=>res.data.data)
     .then(res=>{
       setInstitutions(res.data)
@@ -125,7 +127,7 @@ validationSchema:YUP.object({
     mobileNumber:YUP.string().required("This field is required. Please enter mobile number.").phone("ET",true, "Invalid phone number. Use +251, or 251 or 09... etc. Note: phone numbers starting with 07 are invalid for the time being."),
     email:YUP.string().required("This field is required. Please enter email address.").email("Invalid email address"),
     roleID:YUP.string().required("This field is required. Please select user role."),
-    institutionID:YUP.string().required("This field is required. Please select Institution.")
+    // institutionID:YUP.string().required("This field is required. Please select Institution.")
   }),
 
   onSubmit:(values)=>{
@@ -151,6 +153,7 @@ validationSchema:YUP.object({
     
 const createUser=async (userData) => {
     //  console.log(companyData)
+    setLoading(true);
     return await axios.post('users', userData)
     .then(res => {
       console.log(res)
@@ -158,6 +161,7 @@ const createUser=async (userData) => {
       setServerErrorMsg(null);
       formik.resetForm();
       fetchUsers();
+      setLoading(false);
     })
     .catch(errors =>{
       setServerErrorMsg(errors.response.data.message);
@@ -303,7 +307,12 @@ const createUser=async (userData) => {
               ):""
             }
 
-          {/* <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Select Institution</Typography> */}
+          {
+            (userRole && (userRole==="Regional Institutions Admin" || userRole==="Federal Institutions Admin")) ? 
+            (
+              ""
+            ):
+            (
               <FormControl sx={{minWidth: '100%', paddingBottom:'5px' }}>
                 <InputLabel>Select Institution</InputLabel>
                 <Select
@@ -324,7 +333,8 @@ const createUser=async (userData) => {
                 </Select>
               <FormHelperText>{formik.touched.institutionID && formik.errors.institutionID ? <span style={helperTextStyle}>{formik.errors.institutionID}</span>:null}</FormHelperText>
             </FormControl>
-
+            )
+          }
             <Grid 
                   sx={{ paddingBottom:"20px" }}
                   align='right'

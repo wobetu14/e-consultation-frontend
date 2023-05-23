@@ -40,6 +40,7 @@ import DataTable from 'react-data-table-component';
 import UsersTable from './components/admin/DataTables/UsersTable';
 import Reports from './components/admin/Reports';
 import DocumentDetails from './components/admin/drafts/DocumentDetails';
+import AccountActivation from './components/guest/AccountActivation';
 
 
 function App() {
@@ -124,6 +125,7 @@ function App() {
                         <Route path="login" element={<Login />} />
                         <Route path="create-account" element={<GuestSignup />} />
                         <Route path='user_profile' element={<UserProfile />} />
+                        <Route path='activation/:token' element={<AccountActivation />} />
                         <Route path="*" element={<PageNotFound />} />
                       {/* </Route> */}
                     </Route>

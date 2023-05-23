@@ -250,7 +250,7 @@ const DocumentDetailView = () => {
                       sx={{ textTransform:"none", color:"#fff", backgroundColor:"#3dac94", borderRadius:"10px 10px" }}
                       >
                         <Typography variant="body1">
-                          Download comment reports
+                          Comment reports
                         </Typography>
                     </Button>
                 </Stack>
@@ -363,12 +363,12 @@ const DocumentDetailView = () => {
                         sx={{ marginBottom:"20px" }}
                       key={section.id}>
                         <CardContent>
-                          <Box id={section.id} sx={{ padding:"20px" }} onMouseOver={()=>showComments(section.id)} onMouseOut={()=>hideComments(section.id)}>
+                          <Box id={section.id} sx={{ padding:"20px" }} /* onMouseOver={()=>showComments(section.id)} onMouseOut={()=>hideComments(section.id)} */>
                             <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center", marginBottom:"30px" }}>{section.section_title}</Typography>
                             <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px" }}>{section.section_body}</Typography>
                               
                               {
-                                (commentsVisible && sectionID===section.id && userRole==="Commenter") && (
+                                (userRole==="Commenter") && (
                                   <SectionFeedbacks comments={section.comments} section={section} />
                                 )
                               }
@@ -376,12 +376,12 @@ const DocumentDetailView = () => {
                            {
                            section.children.length>0 ? section.children.map((sectionChild1)=>(
                             <>
-                              <Box id={sectionChild1.id} sx={{ padding:"20px" }} onMouseOver={()=>showComments(sectionChild1.id)} onMouseOut={()=>hideComments(sectionChild1.id)}>
+                              <Box id={sectionChild1.id} sx={{ padding:"20px" }} /* onMouseOver={()=>showComments(sectionChild1.id)} onMouseOut={()=>hideComments(sectionChild1.id)} */>
                                 <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center" }}>{sectionChild1.section_title}</Typography>
                                 <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1.section_body}</Typography>
                                 
                                 {
-                                (commentsVisible && sectionID===sectionChild1.id && userRole==="Commenter") && (
+                                (/* commentsVisible && sectionID===sectionChild1.id &&  */ userRole==="Commenter") && (
                                   <SectionFeedbacks comments={sectionChild1.comments} section={sectionChild1} />
                                 )
                                }
@@ -389,11 +389,11 @@ const DocumentDetailView = () => {
                               {
                                 sectionChild1.children.length>0 ? sectionChild1.children.map((sectionChild1Sub1)=>(
                                   <>
-                                  <Box id={sectionChild1Sub1.id} sx={{ padding:"20px" }} onMouseOver={()=>showComments(sectionChild1Sub1.id)} onMouseOut={()=>hideComments(sectionChild1Sub1.id)}>
+                                  <Box id={sectionChild1Sub1.id} sx={{ padding:"20px" }}>
                                     <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center"}}>{sectionChild1Sub1.section_title}</Typography>
                                     <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1Sub1.section_body}</Typography>
                                         {
-                                        (commentsVisible && sectionID===sectionChild1Sub1.id && userRole==="Commenter") && (
+                                        (userRole==="Commenter") && (
                                           <SectionFeedbacks comments={sectionChild1Sub1.comments} section={sectionChild1Sub1} />
                                           )
                                         }
@@ -401,11 +401,11 @@ const DocumentDetailView = () => {
                                     {
                                       sectionChild1Sub1.children.length>0 ? sectionChild1Sub1.children.map((sectionChild1Sub1Sub1)=>(
                                         <>
-                                        <Box id={sectionChild1Sub1Sub1.id} sx={{ padding:"20px" }} onMouseOver={()=>showComments(sectionChild1Sub1Sub1.id)} onMouseOut={()=>hideComments(sectionChild1Sub1Sub1.id)}>
+                                        <Box id={sectionChild1Sub1Sub1.id} sx={{ padding:"20px" }} >
                                           <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center" }}>{sectionChild1Sub1Sub1.section_title}</Typography>
                                           <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1Sub1Sub1.section_body}</Typography>
                                           {
-                                        (commentsVisible && sectionID===sectionChild1Sub1Sub1.id && userRole==="Commenter") && (
+                                        (userRole==="Commenter") && (
                                           <SectionFeedbacks comments={sectionChild1Sub1Sub1.comments} section={sectionChild1Sub1Sub1} />
                                             )
                                           }
@@ -413,12 +413,12 @@ const DocumentDetailView = () => {
                                           {
                                             sectionChild1Sub1Sub1.children.length>0 ? sectionChild1Sub1Sub1.children.map((sectionChild1Sub1Sub1Sub1)=>(
                                               <>
-                                              <Box id={sectionChild1Sub1Sub1Sub1.id} sx={{ padding:"20px" }} onMouseOver={()=>showComments(sectionChild1Sub1Sub1Sub1.id)} onMouseOut={()=>hideComments(sectionChild1Sub1Sub1Sub1.id)}>
+                                              <Box id={sectionChild1Sub1Sub1Sub1.id} sx={{ padding:"20px" }} >
                                                 <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center" }}>{sectionChild1Sub1Sub1Sub1.section_title}</Typography>
                                                 <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1Sub1Sub1Sub1.section_body}</Typography>
                                                 
                                                 {
-                                                  (commentsVisible && sectionID===sectionChild1Sub1Sub1Sub1.id && userRole==="Commenter") && (
+                                                  (userRole==="Commenter") && (
                                                     <SectionFeedbacks comments={sectionChild1Sub1Sub1Sub1.comments} section={sectionChild1Sub1Sub1Sub1} />
                                                   )
                                                 }
@@ -426,11 +426,11 @@ const DocumentDetailView = () => {
                                                 {
                                                   sectionChild1Sub1Sub1Sub1.children.length>0 ? sectionChild1Sub1Sub1Sub1.children.map((sectionChild1Sub1Sub1Sub1Sub1)=>(
                                                     <>
-                                                    <Box id={sectionChild1Sub1Sub1Sub1Sub1.id} sx={{ padding:"20px" }} onMouseOver={()=>showComments(sectionChild1Sub1Sub1Sub1Sub1.id)} onMouseOut={()=>hideComments(sectionChild1Sub1Sub1Sub1Sub1.id)}>
+                                                    <Box id={sectionChild1Sub1Sub1Sub1Sub1.id} sx={{ padding:"20px" }} >
                                                       <Typography variant="h4" sx={{ fontWeight:600, textAlign:"center" }}>{sectionChild1Sub1Sub1Sub1Sub1.section_title}</Typography>
                                                       <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1Sub1Sub1Sub1Sub1.section_body}</Typography>   
                                                       {
-                                                        (commentsVisible && sectionID===sectionChild1Sub1Sub1Sub1Sub1.id && userRole==="Commenter") && (
+                                                        (userRole==="Commenter") && (
                                                           <SectionFeedbacks comments={sectionChild1Sub1Sub1Sub1Sub1.comments} section={sectionChild1Sub1Sub1Sub1Sub1} /> 
                                                         )
                                                       }
@@ -468,7 +468,7 @@ const DocumentDetailView = () => {
                 {commentsOpen ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={commentsOpen} timeout="auto" unmountOnExit>
-                <Paper elevation={1} sx={{borderRadius:"3px", borderLeftStyle:"solid", borderLeftWidth:"3px", borderLeftColor:colors.primary[300]}}>
+                <Paper elevation={1} sx={{borderRadius:"3px", borderLeftStyle:"solid", borderLeftWidth:"3px", borderLeftColor:"#255B7E"}}>
                   {documentComments ? (
                     documentComments.map((comment)=>(
                      

@@ -136,7 +136,7 @@ const addComment=async (sectionCommentData) => {
                             primary={
                                 <>
                                     <Typography variant="body2">
-                                    {serverSuccessMsg ? <Alert severity='success' style={successStyle}>Thank you for your feedback. Your comment will be displayed once reviewed by administrators and after commenting period is closed.</Alert>:null}
+                                    {serverSuccessMsg ? <Alert severity='success' style={successStyle}>Thank you for your feedback. </Alert>:null}
                                     </Typography>
                                     
                                     <Typography variant="body2">

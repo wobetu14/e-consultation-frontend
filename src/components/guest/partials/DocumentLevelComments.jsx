@@ -38,7 +38,7 @@ const DocumentLevelComments = ({comment}) => {
                     primary={
                         <>
                         <Typography variant="h5" fontWeight="600">
-                          {comment.commented_by ? comment.commented_by: "Anonymous"}
+                          {comment.commenter ? `${comment.commenter.first_name + " "+comment.commenter.middle_name}`: "Anonymous"}
                         </Typography>
                         </>
                     }

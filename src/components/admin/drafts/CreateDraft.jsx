@@ -1,4 +1,4 @@
-import { Typography, Button, FormControlLabel, TextField, Grid, Alert, Paper, Stack, FormControl, InputLabel, Select, useTheme, FormHelperText, MenuItem, RadioGroup, Radio } from '@mui/material';
+import { Typography, Button, FormControlLabel, TextField, Grid, Alert, Paper, Stack, FormControl, InputLabel, Select, useTheme, FormHelperText, MenuItem, RadioGroup, Radio, Autocomplete } from '@mui/material';
 import { Box } from '@mui/system'
 import { useFormik } from 'formik';
 import * as YUP from 'yup';
@@ -16,7 +16,9 @@ const CreateDraft = () => {
 
     const [institutions, setInstitutions]=useState(null);
     const [lawCategories, setLawCategories]=useState(null);
-    const [sectors, setSectors]=useState(null);
+    const [sectors, setSectors]=useState([]);
+    const [tagLists, setTagLists]=useState([]);
+    const [selectedSectors, setSelectedSectors]=useState([]);
 
   // User context
   const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
@@ -99,14 +101,14 @@ const CreateDraft = () => {
         shortTitle:"",
         lawCategoryId:"",
         draftStatusId:1,
-        sectorId:"",
+        sectors:[],
         openingDate:"",
         closingDate:"",
         file:null,
         slug:"",
         isPrivate:"",
         parent_id:"",
-        tags:"",
+        tags:[],
         noteId:"1",
         baseLegalReference:"",
         definition:"",
@@ -146,14 +148,14 @@ validationSchema:YUP.object({
       short_title:values.shortTitle,
       law_category_id:values.lawCategoryId,
       draft_status_id:values.draftStatusId,
-      sector_id:values.sectorId,
+      sectors:selectedSectors.length>0 ? selectedSectors.map((selectedSector)=>(selectedSector.name)):[],
       comment_opening_date:values.openingDate,
       comment_closing_date:values.closingDate,
       file:values.file,
       slug:values.slug,
       is_private:values.isPrivate,
       parent_id:values.parentId,
-      tags:values.tags,
+      tags:tagLists.length>0 ? tagLists.map((tagLists)=>tagLists):[],
       note_id:values.noteId,
       base_legal_reference:values.baseLegalReference,
       definition:values.definition,
@@ -173,18 +175,19 @@ validationSchema:YUP.object({
     
 const createDraftDocument=async (draftsData) => {
      console.log(draftsData)
-    return await axios.post('drafts', draftsData)
-    .then(res => {
-      console.log(res.data)
-      setServerSuccessMsg(res.data.message);
-      setServerErrorMsg(null);
-      formik.resetForm();
-      fetchDrafts();
-    })
-    .catch(errors =>{
-       setServerErrorMsg(errors.response.data.message);
-       setServerSuccessMsg(null) 
-    }) 
+
+      return await axios.post('drafts', draftsData)
+      .then(res => {
+        console.log(res.data)
+        setServerSuccessMsg(res.data.message);
+        setServerErrorMsg(null);
+        formik.resetForm();
+        fetchDrafts();
+      })
+      .catch(errors =>{
+        setServerErrorMsg(errors.response.data.message);
+        setServerSuccessMsg(null) 
+      }) 
    }
    
   return (
@@ -260,7 +263,28 @@ const createDraftDocument=async (draftsData) => {
             </FormControl>
 
       <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Economic Sector</Typography>
-              <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+            <Autocomplete
+                      multiple
+                      id="tags-standard"
+                      autoSelect
+                      color="info"
+                      size="small"
+                      sx={{ paddingBottom:"10px" }}
+                      options={sectors}
+                      getOptionLabel={(option) => option.name}
+                      onChange={(e,value)=>setSelectedSectors(value)}
+                      renderInput={(params) => (
+                      <TextField
+                          {...params}
+                          // variant="standard"
+                          label="Select sectors"
+                          placeholder="Sectors "
+                          value={(option)=>option.name}
+                      />
+                      )}
+                  />
+
+              {/* <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
                 <InputLabel>Select Economic Sector</InputLabel>
                 <Select
                   labelId="law_category_Id"
@@ -280,7 +304,7 @@ const createDraftDocument=async (draftsData) => {
                     }
                 </Select>
               <FormHelperText>{formik.touched.sectorId && formik.errors.sectorId ? <span style={helperTextStyle}>{formik.errors.sectorId}</span>:null}</FormHelperText>
-            </FormControl>
+            </FormControl> */}
 
           {/* <Typography variant='body1' sx={{ paddingBottom:'10px' }}> 
             Opening Date
@@ -328,7 +352,27 @@ const createDraftDocument=async (draftsData) => {
                         <FormControlLabel value='1' control={<Radio />} label="Private"  />
                   </RadioGroup> 
 
-                  <TextField 
+                  <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Enter Draft Tags</Typography>
+                  <Autocomplete
+                      multiple
+                      id="tags-standard"
+                      freeSolo
+                      autoSelect
+                      color="info"
+                      sx={{ paddingBottom:"10px" }}
+                      options={tagLists}
+                      getOptionLabel={(option) => option}
+                      onChange={(e,value)=>setTagLists(value)}
+                      renderInput={(params) => (
+                      <TextField
+                          {...params}
+                          label="List of tags"
+                          value={(option)=>option}
+                      />
+                      )}
+                  />
+
+                  {/* <TextField 
                       label="Tags" 
                       variant='outlined' 
                       multiline
@@ -341,7 +385,7 @@ const createDraftDocument=async (draftsData) => {
                       onBlur={formik.handleBlur}
                       onChange={formik.handleChange}
                       helperText={formik.touched.tags && formik.errors.tags ? <span style={helperTextStyle}>{formik.errors.tags}</span>:null}
-                  />
+                  /> */}
           </Grid>
           <Grid item xs={4}>
                    
