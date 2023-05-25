@@ -2,24 +2,25 @@ import { Box, Collapse, Card, CardActions, CardContent, CircularProgress, Grid, 
 import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom'
-import axios, { rootURL } from '../../axios/AxiosGlobal'
-import { tokens } from '../../theme';
+import axios, { rootURL } from '../../../axios/AxiosGlobal'
+
 import {motion} from 'framer-motion'
-import SectionFeedbacks from './partials/SectionFeedbacks';
-import AddSectionComment from './partials/AddSectionComment';
-import NestedList from './partials/SectionNavigationMenu';
-import SectionNavigationMenu from './partials/SectionNavigationMenu';
+import SectionFeedbacks from '../../guest/partials/SectionFeedbacks'
+import AddSectionComment from '../../guest/partials/AddSectionComment';
+import SectionNavigationMenu from '../../guest/partials/SectionNavigationMenu';
 import SendIcon from '@mui/icons-material/Send';
 
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import DocumentLevelComments from './partials/DocumentLevelComments';
-import AddDocumentLevelComments from './partials/AddDocumentLevelComments';
+import DocumentLevelComments from '../../guest/partials/DocumentLevelComments';
+import AddDocumentLevelComments from '../../guest/partials/AddDocumentLevelComments';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { FileDownload } from '@mui/icons-material';
-import { UserContext } from '../../contexts/UserContext';
+import { tokens } from '../../../theme';
+import { UserContext } from '../../../contexts/UserContext';
+import ReplyFeedbacks from './ReplyFeedbacks';
 
-const DocumentDetailView = () => {
+const CommentReflections = () => {
   const params=useParams();
   const [documentDetail, setDocumentDetail]=useState(null);
   const [documentSections, setDocumentSections]=useState(null);
@@ -369,7 +370,7 @@ const DocumentDetailView = () => {
                               
                               {
                                 (userRole==="Commenter") && (
-                                  <SectionFeedbacks comments={section.comments} section={section} />
+                                  <ReplyFeedbacks comments={section.comments} section={section} />
                                 )
                               }
                           </Box>
@@ -382,7 +383,7 @@ const DocumentDetailView = () => {
                                 
                                 {
                                 (/* commentsVisible && sectionID===sectionChild1.id &&  */ userRole==="Commenter") && (
-                                  <SectionFeedbacks comments={sectionChild1.comments} section={sectionChild1} />
+                                  <ReplyFeedbacks comments={sectionChild1.comments} section={sectionChild1} />
                                 )
                                }
                               </Box>
@@ -394,7 +395,7 @@ const DocumentDetailView = () => {
                                     <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1Sub1.section_body}</Typography>
                                         {
                                         (userRole==="Commenter") && (
-                                          <SectionFeedbacks comments={sectionChild1Sub1.comments} section={sectionChild1Sub1} />
+                                          <ReplyFeedbacks comments={sectionChild1Sub1.comments} section={sectionChild1Sub1} />
                                           )
                                         }
                                   </Box>
@@ -406,7 +407,7 @@ const DocumentDetailView = () => {
                                           <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1Sub1Sub1.section_body}</Typography>
                                           {
                                         (userRole==="Commenter") && (
-                                          <SectionFeedbacks comments={sectionChild1Sub1Sub1.comments} section={sectionChild1Sub1Sub1} />
+                                          <ReplyFeedbacks comments={sectionChild1Sub1Sub1.comments} section={sectionChild1Sub1Sub1} />
                                             )
                                           }
                                         </Box>
@@ -419,7 +420,7 @@ const DocumentDetailView = () => {
                                                 
                                                 {
                                                   (userRole==="Commenter") && (
-                                                    <SectionFeedbacks comments={sectionChild1Sub1Sub1Sub1.comments} section={sectionChild1Sub1Sub1Sub1} />
+                                                    <ReplyFeedbacks comments={sectionChild1Sub1Sub1Sub1.comments} section={sectionChild1Sub1Sub1Sub1} />
                                                   )
                                                 }
                                               </Box>
@@ -431,7 +432,7 @@ const DocumentDetailView = () => {
                                                       <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1Sub1Sub1Sub1Sub1.section_body}</Typography>   
                                                       {
                                                         (userRole==="Commenter") && (
-                                                          <SectionFeedbacks comments={sectionChild1Sub1Sub1Sub1Sub1.comments} section={sectionChild1Sub1Sub1Sub1Sub1} /> 
+                                                          <ReplyFeedbacks comments={sectionChild1Sub1Sub1Sub1Sub1.comments} section={sectionChild1Sub1Sub1Sub1Sub1} /> 
                                                         )
                                                       }
                                                     </Box>
@@ -489,4 +490,4 @@ const DocumentDetailView = () => {
   )
 }
 
-export default DocumentDetailView
+export default CommentReflections

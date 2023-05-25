@@ -209,9 +209,7 @@ const DraftMetaInfo = ({
             </Grid>      
           </Grid>
 
-          {
-            userInfo.user.institution_id===documentDetail.institution_id ? 
-            (
+          
               <Grid item xs={4}>
                 <DraftActions 
                 documentDetail={documentDetail} 
@@ -224,7 +222,7 @@ const DraftMetaInfo = ({
                 />
           </Grid>
             ):""
-          }
+          
           
         </Grid>
           ):(

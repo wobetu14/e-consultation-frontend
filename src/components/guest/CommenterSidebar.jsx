@@ -172,7 +172,7 @@ const CommenterSidebar = () => {
 
                                 <Item
                                 title="Assignments"
-                                to="commenting_assignments"
+                                to="assigned_drafts"
                                 icon={<ListIcon />}
                                 selected={selected}
                                 setSelected={setSelected}

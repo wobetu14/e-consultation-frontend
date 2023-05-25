@@ -5,7 +5,9 @@ import { tokens } from '../../../theme';
 import { useTranslation } from 'react-i18next';
 import { useContext, useState } from 'react';
 import {motion} from 'framer-motion'
-import AddSectionComment from '../partials/AddSectionComment'
+// import AddSectionComment from '../partials/AddSectionComment'
+
+
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -18,13 +20,18 @@ import { useFormik } from 'formik';
 import * as YUP from 'yup';
 import axios from '../../../axios/AxiosGlobal'
 import { UserContext } from '../../../contexts/UserContext';
+// import RepliesToComments from './RepliesToComments.jsx';
+import RepliesToComments from '../../guest/partials/RepliesToComments.jsx';
+import AddSectionComment from '../../guest/partials/AddSectionComment';
+import AddNewReflection from './AddNewReflection';
 
-const SectionFeedbacks = ({comments, section}) => {
+const ReplyFeedbacks = ({comments, section}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const {t}=useTranslation();
 
-  const [showFeedbacks, setShowFeedbacks]=useState(false);
+  const [showComments, setShowComments]=useState(false);
+  const [showReplies, setShowReplies]=useState(false);
 
   // Add new comment to a section
 
@@ -107,21 +114,13 @@ const addComment=async (commentData) => {
          textTransform:"none", 
          alignSelf:"right", 
          color:colors.primary[200]}}
-         onClick={()=>setShowFeedbacks(!showFeedbacks)} 
+         onClick={()=>setShowComments(!showComments)} 
          >
             <ChatBubbleOutlineIcon fontSize="small"/> &nbsp; Comments ({comments.length})
         </Button>
-       {/*  <Button variant="text" 
-        size="medium" 
-        sx={{marginRight:"5px", 
-        textTransform:"none",  
-        alignSelf:"right", 
-        color:colors.primary[200]}}>
-            <ShareIcon /> &nbsp; Share
-        </Button> */}
       </Box>
       {
-        showFeedbacks && (
+        showComments && (
         <Box sx={{ padding:"10px", borderRadius:"15px" }}>
           <motion.span
             initial={{ opacity: 0}}
@@ -134,9 +133,9 @@ const addComment=async (commentData) => {
 
             <List sx={{ width: '100%' }}>
                 {
-                  comments.length>0 ? (
+                  comments ? (
                     comments.map((comment)=>(
-                      
+                     <>
                       <ListItem alignItems="flex-center" key={comment.id}>
                           <ListItemAvatar>
                             <Avatar alt="User" size="large" src="/static/images/avatar/1.jpg" />
@@ -163,10 +162,18 @@ const addComment=async (commentData) => {
                             }
                           />
                         </ListItem>
+                        <ListItem>
+                             
+                            <RepliesToComments comment={comment} reflections={comment.reflection_on_comments} />
+                           
+                        </ListItem>
+                        </>
                     ))
                   ) :( "No comments")
                 }
             </List>
+            {/* <AddSectionComment /> */}
+            {/* <AddNewReflection comments={comments} /> */}
             <AddSectionComment section={section} />
           </motion.span>
         </Box>
@@ -176,4 +183,4 @@ const addComment=async (commentData) => {
   )
 }
 
-export default SectionFeedbacks
+export default ReplyFeedbacks

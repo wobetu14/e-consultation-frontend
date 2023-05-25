@@ -134,7 +134,7 @@ const DocumentDetails = () => {
             </motion.span>
         </Grid>
 
-    <Button variant="contained" color="success" size="small" onClick={handleAcceptanceDialog}>Accept</Button>
+    {/* <Button variant="contained" color="success" size="small" onClick={handleAcceptanceDialog}>Accept</Button> */}
 
       {
         openAcceptanceDialog && (
@@ -178,7 +178,7 @@ const DocumentDetails = () => {
       >
             <ListItemText primary={
                 <Typography variant="body1" 
-                    sx={{ fontWeight:"600", textAlign:"center", color:colors.grey[300] }}
+                    sx={{ fontWeight:"500", textAlign:"center", color:colors.grey[300] }}
                 >
                     Document Preview 
                 </Typography>
@@ -202,8 +202,7 @@ const DocumentDetails = () => {
             />
      </Collapse>
 
-     {
-       userInfo.user.institution_id===params.id ? (
+  
         <>
           <InstitutionInvitations 
           documentDetail={documentDetail}
@@ -215,8 +214,7 @@ const DocumentDetails = () => {
             documentDetail={documentDetail}
           />
         </>
-       ):""
-     }
+     
         
      
 

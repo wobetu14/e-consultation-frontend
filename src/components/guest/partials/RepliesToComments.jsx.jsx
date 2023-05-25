@@ -5,7 +5,7 @@ import { tokens } from '../../../theme';
 import { useTranslation } from 'react-i18next';
 import { useContext, useState } from 'react';
 import {motion} from 'framer-motion'
-import AddSectionComment from '../partials/AddSectionComment'
+import AddSectionComment from './AddSectionComment'
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -18,13 +18,16 @@ import { useFormik } from 'formik';
 import * as YUP from 'yup';
 import axios from '../../../axios/AxiosGlobal'
 import { UserContext } from '../../../contexts/UserContext';
+import AddNewReflection from '../../admin/drafts/AddNewReflection';
+import ReplyIcon from '@mui/icons-material/Reply';
 
-const SectionFeedbacks = ({comments, section}) => {
+
+const RepliesToComments = ({reflections, comment}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const {t}=useTranslation();
 
-  const [showFeedbacks, setShowFeedbacks]=useState(false);
+  const [showReplies, setShowReplies]=useState(false);
 
   // Add new comment to a section
 
@@ -80,11 +83,11 @@ validationSchema:YUP.object({
 
     };
 
-    addComment(commentData);
+    // addComment(commentData);
   }
 }); 
     
-const addComment=async (commentData) => {
+/* const addComment=async (commentData) => {
     //  console.log(companyData)
     return await axios.post('comments', commentData)
     .then(res => {
@@ -95,49 +98,41 @@ const addComment=async (commentData) => {
        setServerErrorMsg(errors.response.data.message);
        setServerSuccessMsg(null) 
     }) 
-   }
+   } */
   
 
   return (
-    <Box width="100%">
-      <Box  sx={{marginBottom:"0", textAlign:"right" }}>
-        <Button variant="text"
-         size="medium" 
-         sx={{marginRight:"5px", 
-         textTransform:"none", 
-         alignSelf:"right", 
-         color:colors.primary[200]}}
-         onClick={()=>setShowFeedbacks(!showFeedbacks)} 
-         >
-            <ChatBubbleOutlineIcon fontSize="small"/> &nbsp; Comments ({comments.length})
-        </Button>
-       {/*  <Button variant="text" 
-        size="medium" 
-        sx={{marginRight:"5px", 
-        textTransform:"none",  
-        alignSelf:"right", 
-        color:colors.primary[200]}}>
-            <ShareIcon /> &nbsp; Share
-        </Button> */}
-      </Box>
-      {
-        showFeedbacks && (
-        <Box sx={{ padding:"10px", borderRadius:"15px" }}>
+      
+        <Box sx={{ padding:"10px", borderRadius:"15px", width:"100%" }}>
+          <Box sx={{marginBottom:"0", textAlign:"right" }}>
+              <Button 
+                variant="text"                                 
+                size="small"
+                sx={{marginRight:"5px", 
+                    textTransform:"none", 
+                    alignSelf:"right", 
+                    color:colors.primary[200]}}
+                  onClick={()=>setShowReplies(!showReplies)}
+                >
+                  <ReplyIcon color="secondary" fontSize='small' />
+                Replies 
+              </Button>
+          </Box>
+
+    {
+      showReplies && (
+        <>
           <motion.span
             initial={{ opacity: 0}}
             animate={{ opacity: 1}}
             transition={{ duration: 0.3 }}
           >
-          
-          <hr style={{ height:"2px", backgroundColor:colors.grey[600], opacity:"30%" }} />
-            <Typography variant="h5" sx={{ paddingBottom:"5px", fontWeight:"600" }}>Comments ({comments.length})</Typography>
-
-            <List sx={{ width: '100%' }}>
+                  <List sx={{ width: '100%' }}>
                 {
-                  comments.length>0 ? (
-                    comments.map((comment)=>(
-                      
-                      <ListItem alignItems="flex-center" key={comment.id}>
+                  reflections ? (
+                    reflections.map((reflection)=>(
+                     <>
+                      <ListItem alignItems="flex-center" key={reflection.id}>
                           <ListItemAvatar>
                             <Avatar alt="User" size="large" src="/static/images/avatar/1.jpg" />
                           </ListItemAvatar>
@@ -145,7 +140,9 @@ const addComment=async (commentData) => {
                             primary={
                               <>
                                 <Typography variant="h5" fontWeight="600">
-                                    {comment.commenter ? `${comment.commenter.first_name+" "+comment.commenter.middle_name}`:"Anonymous"}
+                                  {reflection.message}
+                                  {/* Modifications will be added here */}
+                                    {/* {comment.commenter ? `${comment.commenter.first_name+" "+comment.commenter.middle_name}`:"Anonymous"} */}
                                   </Typography>
                               </>
                             }
@@ -157,23 +154,25 @@ const addComment=async (commentData) => {
                                   variant="body1"
                                   color="text.primary"
                                 >
-                                  {comment.section_comment}
+                                 
                                 </Typography>
                               </>
                             }
                           />
                         </ListItem>
+                     </>
                     ))
-                  ) :( "No comments")
+                  ) :("")
                 }
-            </List>
-            <AddSectionComment section={section} />
-          </motion.span>
-        </Box>
-        )
+            </List> 
+
+            <AddNewReflection comment={comment}/>
+          </motion.span>  
+        </>
+      )
       }
     </Box>
   )
 }
 
-export default SectionFeedbacks
+export default RepliesToComments  

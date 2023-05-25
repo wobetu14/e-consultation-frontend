@@ -96,19 +96,7 @@ const errorStyle={
               <TableCell>
                 <Typography variant="body1">{people.replier ? people.replier:""}</Typography>
               </TableCell>
-
-             {/*  <TableCell>
-                <Typography variant="body1">{people.requested_by_name ? people.requested_by_name:""}</Typography>
-              </TableCell> */}
-
-             {/*  <TableCell>
-                <Typography variant="body1">{people.status===0 ? "Pending":(people.status===1)? "Accepted":"Rejected"}</Typography>
-              </TableCell> */}
-
-            {/*   <TableCell>
-                <Typography variant="body1">{(InvitedInstitution.status && InvitedInstitution.status===0) ? "Pending":((InvitedInstitution.status && InvitedInstitution.status===1) ? "Accepted":"Rejected")}</Typography>
-              </TableCell> */}
-              
+ 
             </TableRow>
           )):
           (

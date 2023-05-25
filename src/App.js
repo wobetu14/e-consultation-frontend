@@ -43,6 +43,8 @@ import DocumentDetails from './components/admin/drafts/DocumentDetails';
 import AccountActivation from './components/guest/AccountActivation';
 import CommenterLayout from './layouts/CommenterLayout';
 import CommenterDashboard from './components/guest/CommenterDashboard';
+import DraftAssignments from './components/admin/drafts/DraftAssignments';
+import CommentReflections from './components/admin/drafts/CommentReflections';
 
 
 function App() {
@@ -138,10 +140,14 @@ function App() {
                       </PublicElement>
                     }>
                       <Route path=':id' element={<DocumentDetailView />} />
+                      <Route path='reflection-on-comments/:id' element={<CommentReflections />} />
+
                     </Route>
 
                     <Route path='/commenter' element={<CommenterLayout />}>
                       <Route index element={<CommenterDashboard />} />
+                      <Route path='assigned_drafts' element={<DraftAssignments />} />
+                      <Route path='comment_reflections' element={<DraftAssignments />} />
                     </Route>
                     
                     <Route path='/admin' 
