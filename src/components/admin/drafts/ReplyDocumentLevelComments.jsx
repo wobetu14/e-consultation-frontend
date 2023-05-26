@@ -16,9 +16,8 @@ import { useFormik } from 'formik';
 import * as YUP from 'yup';
 import axios from '../../../axios/AxiosGlobal'
 import RepliesToGeneralComments from '../../admin/drafts/RepliesToGeneralComments';
-import PublicRepliesToGeneralComments from './PublicRepliesToGeneralComments';
 
-const DocumentLevelComments = ({comment}) => {
+const ReplyDocumentLevelComments = ({comment}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const {t}=useTranslation();
@@ -31,7 +30,7 @@ const DocumentLevelComments = ({comment}) => {
             animate={{ opacity: 1}}
             transition={{ duration: 0.3 }}
           >
-            <List sx={{ width: '100%', paddingBottom:"0", paddingTop:"20px" }}>
+            <List sx={{ width: '100%', paddingTop:"20px" }}>
                 <ListItem alignItems="flex-center" key={comment.id} sx={{ height:"40px" }}>
                     <ListItemAvatar>
                     <Avatar alt="User" size="large" src="/static/images/avatar/1.jpg" />
@@ -58,11 +57,11 @@ const DocumentLevelComments = ({comment}) => {
                     }
                     />
                 </ListItem>  
-                <PublicRepliesToGeneralComments comment={comment} reflections={comment.reflection_on_general_comments} />
+                <RepliesToGeneralComments comment={comment} reflections={comment.reflection_on_general_comments} />
             </List>
           </motion.span>
     </>
   )
 }
 
-export default DocumentLevelComments
+export default ReplyDocumentLevelComments

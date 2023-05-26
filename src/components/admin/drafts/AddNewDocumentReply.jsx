@@ -18,7 +18,7 @@ import * as YUP from 'yup';
 import axios from '../../../axios/AxiosGlobal'
 import { UserContext } from '../../../contexts/UserContext';
 
-const AddNewReflection = ({comment, reflections}) => {
+const AddNewDocumentReply = ({comment, reflections}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const {t}=useTranslation();
@@ -60,17 +60,17 @@ const AddNewReflection = ({comment, reflections}) => {
 
   onSubmit:(values)=>{
     const replyData={
-      comment_id:values.commentID,
+        general_comment_id:values.commentID,
       message:values.commentMessage,
       file:values.file
     };
 
-    replyComment(replyData);
+    replyDocComment(replyData);
   }
 }); 
     
-const replyComment=async (replyData) => {
-    return await axios.post('reply-comment', replyData)
+const replyDocComment=async (replyData) => {
+    return await axios.post('reply-general-comment', replyData)
     .then(res => {
       console.log(res)
       setServerSuccessMsg(res.data.message);
@@ -148,4 +148,4 @@ const replyComment=async (replyData) => {
   )
 }
 
-export default AddNewReflection
+export default AddNewDocumentReply

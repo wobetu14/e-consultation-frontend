@@ -136,7 +136,7 @@ const addComment=async (commentData) => {
                   comments ? (
                     comments.map((comment)=>(
                      <>
-                      <ListItem alignItems="flex-center" key={comment.id}>
+                      <ListItem alignItems="flex-center" key={comment.id} sx={{ height:"40px" }}>
                           <ListItemAvatar>
                             <Avatar alt="User" size="large" src="/static/images/avatar/1.jpg" />
                           </ListItemAvatar>

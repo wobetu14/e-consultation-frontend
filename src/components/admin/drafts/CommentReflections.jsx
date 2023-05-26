@@ -19,6 +19,8 @@ import { FileDownload } from '@mui/icons-material';
 import { tokens } from '../../../theme';
 import { UserContext } from '../../../contexts/UserContext';
 import ReplyFeedbacks from './ReplyFeedbacks';
+import ReplyDocumentLevelComments from './ReplyDocumentLevelComments';
+
 
 const CommentReflections = () => {
   const params=useParams();
@@ -473,7 +475,7 @@ const CommentReflections = () => {
                   {documentComments ? (
                     documentComments.map((comment)=>(
                      
-                      <DocumentLevelComments comment={comment} />
+                      <ReplyDocumentLevelComments comment={comment} />
                     ))
                   ):(<Box>No comments</Box>)}
 

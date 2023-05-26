@@ -463,14 +463,22 @@ const DocumentDetailView = () => {
 
             <ListItemButton onClick={handleCommentsCollapse}>
                 <ListItemText primary={
-                  <Typography variant='h5' fontWeight="600">General comments ({documentComments && (documentComments.length)})</Typography>
+                  <Typography variant='h5' fontWeight="600">General comments ({documentComments && (documentComments.filter((comment)=>{
+                    return (
+                      parseInt(comment.commenter ? comment.commenter.id:"")===parseInt(userInfo.user.id)
+                    )
+                  }).length)})</Typography>
                 } />
                 {commentsOpen ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={commentsOpen} timeout="auto" unmountOnExit>
                 <Paper elevation={1} sx={{borderRadius:"3px", borderLeftStyle:"solid", borderLeftWidth:"3px", borderLeftColor:"#255B7E"}}>
                   {documentComments ? (
-                    documentComments.map((comment)=>(
+                    documentComments.filter((comment)=>{
+                      return (
+                        parseInt(comment.commenter ? comment.commenter.id:"")===parseInt(userInfo.user.id)
+                      )
+                    }).map((comment)=>(
                      
                       <DocumentLevelComments comment={comment} />
                     ))

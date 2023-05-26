@@ -115,7 +115,9 @@ validationSchema:YUP.object({
                   onClick={()=>setShowReplies(!showReplies)}
                 >
                   <ReplyIcon color="secondary" fontSize='small' />
-                Replies 
+                Replies ({
+                  reflections ? reflections.length:""
+                })
               </Button>
           </Box>
 
@@ -136,11 +138,11 @@ validationSchema:YUP.object({
                           <ListItemAvatar>
                             <Avatar alt="User" size="large" src="/static/images/avatar/1.jpg" />
                           </ListItemAvatar>
-                          <ListItemText sx={{ backgroundColor:colors.grey[200], borderRadius:"15px", padding:"10px" }}
+                          <ListItemText sx={{ backgroundColor:colors.grey[400], borderRadius:"15px", padding:"10px" }}
                             primary={
                               <>
                                 <Typography variant="h5" fontWeight="600">
-                                  {reflection.message}
+                                  {reflection.replier.first_name + " "+ reflection.replier.middle_name}
                                   {/* Modifications will be added here */}
                                     {/* {comment.commenter ? `${comment.commenter.first_name+" "+comment.commenter.middle_name}`:"Anonymous"} */}
                                   </Typography>
@@ -154,7 +156,7 @@ validationSchema:YUP.object({
                                   variant="body1"
                                   color="text.primary"
                                 >
-                                 
+                                 {reflection.message}
                                 </Typography>
                               </>
                             }
