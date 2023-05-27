@@ -141,6 +141,7 @@ const DraftMetaInfo = ({
                             <Chip label={documentDetail.draft_status.name} size="small" sx={{ backgroundColor:colors.successColor[100], color:colors.grey[300]}} />
                         ):""
                     }
+                  
               </Grid>
 
               <Grid item xs={6} md={6}>

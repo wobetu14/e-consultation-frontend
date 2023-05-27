@@ -22,7 +22,7 @@ import AddNewReflection from '../../admin/drafts/AddNewReflection';
 import ReplyIcon from '@mui/icons-material/Reply';
 
 
-const RepliesToComments = ({reflections, comment}) => {
+const RepliesToComments = ({reflections, comment, documentDetail}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const {t}=useTranslation();
@@ -167,8 +167,13 @@ validationSchema:YUP.object({
                   ) :("")
                 }
             </List> 
-
-            <AddNewReflection comment={comment}/>
+              <>
+              {
+                documentDetail.draft_status.name==="Open" ? (
+                  <AddNewReflection comment={comment}/>
+                ):""
+              }
+              </>
           </motion.span>  
         </>
       )

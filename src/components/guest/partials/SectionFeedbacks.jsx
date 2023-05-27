@@ -20,7 +20,7 @@ import axios from '../../../axios/AxiosGlobal'
 import { UserContext } from '../../../contexts/UserContext';
 import PublicCommentReplies from './PublicCommentReplies';
 
-const SectionFeedbacks = ({comments, section}) => {
+const SectionFeedbacks = ({comments, section, documentDetail}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const {t}=useTranslation();
@@ -110,7 +110,7 @@ const addComment=async (commentData) => {
          color:colors.primary[200]}}
          onClick={()=>setShowFeedbacks(!showFeedbacks)} 
          >
-            <ChatBubbleOutlineIcon fontSize="small"/> &nbsp; Comments ({comments.filter((comment)=>{
+            <ChatBubbleOutlineIcon fontSize="small"/> &nbsp; Comments ({userInfo &&  comments.filter((comment)=>{
               return (
                 parseInt(comment.commented_by)===parseInt(userInfo.user.id)
               )
@@ -136,7 +136,7 @@ const addComment=async (commentData) => {
           
           <hr style={{ height:"2px", backgroundColor:colors.grey[600], opacity:"30%" }} />
             <Typography variant="h5" sx={{ paddingBottom:"5px", fontWeight:"600" }}>
-              Comments ({comments.filter((comment)=>{
+              Comments ({userInfo && comments.filter((comment)=>{
                 return (
                   parseInt(comment.commented_by)===parseInt(userInfo.user.id)
                 )
@@ -145,7 +145,7 @@ const addComment=async (commentData) => {
             <List sx={{ width: '100%' }}>
                 {
                   comments.length>0 ? (
-                    comments.filter((comment)=>{
+                    userInfo && comments.filter((comment)=>{
                       return (
                         parseInt(comment.commented_by)===parseInt(userInfo.user.id)
                       )
@@ -179,16 +179,24 @@ const addComment=async (commentData) => {
                           />
                         </ListItem>
                         <ListItem>
-                             
-                        <PublicCommentReplies comment={comment} reflections={comment.reflection_on_comments} />
-                       
+                          {
+                            documentDetail && documentDetail.draft_status.name==="Open" ? (
+                              <PublicCommentReplies comment={comment} reflections={comment.reflection_on_comments} />
+                            ):""
+                          }
                     </ListItem>
                       </>
                     ))
                   ) :( "No comments")
                 }
             </List>
-            <AddSectionComment section={section} />
+            {
+              documentDetail && documentDetail.draft_status.name==="Open" ? (
+                <>
+                  <AddSectionComment section={section} />
+                </>
+              ):""
+            }
           </motion.span>
         </Box>
         )

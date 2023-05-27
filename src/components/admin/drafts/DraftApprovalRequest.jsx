@@ -67,6 +67,18 @@ const DraftApprovalRequest = () => {
         fetchDrafts();
     },[draftsData]);
 
+    const closeCommenting=async (draftID) => {
+      return await axios.post(`close-comment/draft/${draftID}`)
+      .then(res => {
+        setServerSuccessMsg(res.data.message);
+        setServerErrorMsg(null)
+      })
+      .catch(errors =>{
+         setServerErrorMsg(errors.response.data.message);
+        setServerSuccessMsg(null) 
+      }) 
+     }
+
   return (
     <Box m='0 20px' width={'95%'}>
       <Header title="Draft Approval Request" />
@@ -153,6 +165,12 @@ const DraftApprovalRequest = () => {
                     <Chip label={draft.draft_status.name} size="small" sx={{ backgroundColor:colors.successColor[100], color:colors.grey[300]}} />
                   ):""
                 }
+
+                {
+                  draft.draft_status.name==="Closed" ? (
+                    <Chip label={draft.draft_status.name} size="small" sx={{ backgroundColor:colors.dangerColor[200], color:colors.grey[300]}} />
+                  ):""
+                }
   
               </TableCell>
               <TableCell>
@@ -183,7 +201,14 @@ const DraftApprovalRequest = () => {
                   ):
                     (
                       draft.draft_status.name==="Open" ? (
-                        <Button variant="contained" size="small" sx={{ textTransform:"none", backgroundColor:colors.dangerColor[200], color:colors.grey[300] }}>Close</Button>
+                        <Button 
+                        variant="contained" 
+                        size="small" 
+                        sx={{ textTransform:"none", backgroundColor:colors.dangerColor[200], color:colors.grey[300] }}
+                        onClick={()=>closeCommenting(draft.id)}
+                        >
+                          Close Commenting
+                        </Button>
                       ):""
                   )
                 )

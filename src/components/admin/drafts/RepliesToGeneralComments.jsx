@@ -23,7 +23,7 @@ import ReplyIcon from '@mui/icons-material/Reply';
 import AddNewDocumentReply from './AddNewDocumentReply';
 
 
-const RepliesToGeneralComments = ({reflections, comment}) => {
+const RepliesToGeneralComments = ({reflections, comment, documentDetail}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const {t}=useTranslation();
@@ -168,8 +168,13 @@ validationSchema:YUP.object({
                   ) :("")
                 }
             </List> 
-
-            <AddNewDocumentReply comment={comment}/>
+              {
+                documentDetail && documentDetail.draft_status.name==="Open" ? (
+                  <>
+                    <AddNewDocumentReply comment={comment}/>
+                  </>
+                ):""
+              }
           </motion.span>  
         </>
       )

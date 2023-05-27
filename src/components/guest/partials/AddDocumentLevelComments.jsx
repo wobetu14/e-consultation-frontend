@@ -3,7 +3,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import { tokens } from '../../../theme';
 import { useTranslation } from 'react-i18next';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import {motion} from 'framer-motion'
 
 import List from '@mui/material/List';
@@ -72,6 +72,7 @@ const AddDocumentLevelComments = ({documentID}) => {
     addComment(documentCommentData);
   }
 }); 
+
     
 const addComment=async (documentCommentData) => {
     return await axios.post('general-comments', documentCommentData)
@@ -90,7 +91,7 @@ const addComment=async (documentCommentData) => {
 
   return (
     <Box width="100%">
-      <form onSubmit={formik.handleSubmit}>
+    <form onSubmit={formik.handleSubmit}>
             <List width="100%">
                 <ListItem>
                   <ListItemAvatar>
@@ -147,7 +148,7 @@ const addComment=async (documentCommentData) => {
                         />
                 </ListItem>
             </List>
-        </form>
+        </form> 
     </Box>
   )
 }

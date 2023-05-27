@@ -25,7 +25,7 @@ import RepliesToComments from '../../guest/partials/RepliesToComments.jsx';
 import AddSectionComment from '../../guest/partials/AddSectionComment';
 import AddNewReflection from './AddNewReflection';
 
-const ReplyFeedbacks = ({comments, section}) => {
+const ReplyFeedbacks = ({comments, section, documentDetail}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const {t}=useTranslation();
@@ -116,7 +116,11 @@ const addComment=async (commentData) => {
          color:colors.primary[200]}}
          onClick={()=>setShowComments(!showComments)} 
          >
-            <ChatBubbleOutlineIcon fontSize="small"/> &nbsp; Comments ({comments.length})
+            <ChatBubbleOutlineIcon fontSize="small"/> &nbsp; Comments ({userInfo &&  comments.filter((comment)=>{
+              return (
+                parseInt(comment.commented_by)===parseInt(userInfo.user.id)
+              )
+            }).length})
         </Button>
       </Box>
       {
@@ -129,12 +133,21 @@ const addComment=async (commentData) => {
           >
           
           <hr style={{ height:"2px", backgroundColor:colors.grey[600], opacity:"30%" }} />
-            <Typography variant="h5" sx={{ paddingBottom:"5px", fontWeight:"600" }}>Comments ({comments.length})</Typography>
+            <Typography variant="h5" sx={{ paddingBottom:"5px", fontWeight:"600" }}>
+              Comments ({userInfo && comments.filter((comment)=>{
+                return (
+                  parseInt(comment.commented_by)===parseInt(userInfo.user.id)
+                )
+            }).length})</Typography>
 
             <List sx={{ width: '100%' }}>
                 {
-                  comments ? (
-                    comments.map((comment)=>(
+                  comments.length>0 ? (
+                    userInfo && comments.filter((comment)=>{
+                      return (
+                        parseInt(comment.commented_by)===parseInt(userInfo.user.id)
+                      )
+                    }).map((comment)=>(
                      <>
                       <ListItem alignItems="flex-center" key={comment.id} sx={{ height:"40px" }}>
                           <ListItemAvatar>
@@ -163,18 +176,20 @@ const addComment=async (commentData) => {
                           />
                         </ListItem>
                         <ListItem>
-                             
-                            <RepliesToComments comment={comment} reflections={comment.reflection_on_comments} />
-                           
+                            <RepliesToComments documentDetail={documentDetail} comment={comment} reflections={comment.reflection_on_comments} />
                         </ListItem>
                         </>
                     ))
                   ) :( "No comments")
                 }
             </List>
-            {/* <AddSectionComment /> */}
-            {/* <AddNewReflection comments={comments} /> */}
-            <AddSectionComment section={section} />
+            {
+              documentDetail.draft_status.name==="Open" ? (
+                <>
+                  <AddSectionComment section={section} />
+                </>
+              ):""
+            }
           </motion.span>
         </Box>
         )

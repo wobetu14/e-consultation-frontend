@@ -17,7 +17,7 @@ import * as YUP from 'yup';
 import axios from '../../../axios/AxiosGlobal'
 import RepliesToGeneralComments from '../../admin/drafts/RepliesToGeneralComments';
 
-const ReplyDocumentLevelComments = ({comment}) => {
+const ReplyDocumentLevelComments = ({comment, documentDetail}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const {t}=useTranslation();
@@ -57,7 +57,7 @@ const ReplyDocumentLevelComments = ({comment}) => {
                     }
                     />
                 </ListItem>  
-                <RepliesToGeneralComments comment={comment} reflections={comment.reflection_on_general_comments} />
+                <RepliesToGeneralComments documentDetail={documentDetail} comment={comment} reflections={comment.reflection_on_general_comments} />
             </List>
           </motion.span>
     </>

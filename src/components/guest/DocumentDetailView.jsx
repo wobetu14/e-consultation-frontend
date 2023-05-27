@@ -160,6 +160,12 @@ const DocumentDetailView = () => {
                             <Chip label={documentDetail.draft_status.name} size="small" sx={{ backgroundColor:colors.successColor[100], color:colors.grey[300]}} />
                         ):""
                     }
+
+{
+                        (documentDetail && documentDetail.draft_status.name==="Closed") ? (
+                            <Chip label={documentDetail.draft_status.name} size="small" sx={{ backgroundColor:colors.dangerColor[200], color:colors.grey[300]}} />
+                        ):""
+                    }
               </Grid>
 
               <Grid item xs={6} md={6}>
@@ -232,7 +238,9 @@ const DocumentDetailView = () => {
           </Grid>
           
           <Grid item xs={3}>
-              <Paper elevation={1} sx={{ padding:"20px", backgroundColor:"#fff3eb", borderRadius:"0px 30px" }}>
+              {
+                documentDetail.draft_status.name==="Closed" ? (
+                  <Paper elevation={1} sx={{ padding:"20px", backgroundColor:"#fff3eb", borderRadius:"0px 30px" }}>
                 <Typography variant="h4" sx={{ color:colors.primary[200] }}>
                   <strong>Document Statistics</strong>
                 </Typography>
@@ -255,7 +263,8 @@ const DocumentDetailView = () => {
                     </Button>
                 </Stack>
               </Paper>
-            {/* </Typography> */}
+                ):""
+              }
           </Grid>
         </Grid>
           ):(
@@ -369,7 +378,7 @@ const DocumentDetailView = () => {
                               
                               {
                                 (userRole==="Commenter") && (
-                                  <SectionFeedbacks comments={section.comments} section={section} />
+                                  <SectionFeedbacks documentDetail={documentDetail} comments={section.comments} section={section} />
                                 )
                               }
                           </Box>
@@ -382,7 +391,7 @@ const DocumentDetailView = () => {
                                 
                                 {
                                 (/* commentsVisible && sectionID===sectionChild1.id &&  */ userRole==="Commenter") && (
-                                  <SectionFeedbacks comments={sectionChild1.comments} section={sectionChild1} />
+                                  <SectionFeedbacks documentDetail={documentDetail} comments={sectionChild1.comments} section={sectionChild1} />
                                 )
                                }
                               </Box>
@@ -394,7 +403,7 @@ const DocumentDetailView = () => {
                                     <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1Sub1.section_body}</Typography>
                                         {
                                         (userRole==="Commenter") && (
-                                          <SectionFeedbacks comments={sectionChild1Sub1.comments} section={sectionChild1Sub1} />
+                                          <SectionFeedbacks documentDetail={documentDetail} comments={sectionChild1Sub1.comments} section={sectionChild1Sub1} />
                                           )
                                         }
                                   </Box>
@@ -406,7 +415,7 @@ const DocumentDetailView = () => {
                                           <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1Sub1Sub1.section_body}</Typography>
                                           {
                                         (userRole==="Commenter") && (
-                                          <SectionFeedbacks comments={sectionChild1Sub1Sub1.comments} section={sectionChild1Sub1Sub1} />
+                                          <SectionFeedbacks documentDetail={documentDetail} comments={sectionChild1Sub1Sub1.comments} section={sectionChild1Sub1Sub1} />
                                             )
                                           }
                                         </Box>
@@ -419,7 +428,7 @@ const DocumentDetailView = () => {
                                                 
                                                 {
                                                   (userRole==="Commenter") && (
-                                                    <SectionFeedbacks comments={sectionChild1Sub1Sub1Sub1.comments} section={sectionChild1Sub1Sub1Sub1} />
+                                                    <SectionFeedbacks documentDetail={documentDetail} comments={sectionChild1Sub1Sub1Sub1.comments} section={sectionChild1Sub1Sub1Sub1} />
                                                   )
                                                 }
                                               </Box>
@@ -431,7 +440,7 @@ const DocumentDetailView = () => {
                                                       <Typography variant='body1' sx={{ textAlign:"justify", lineSpacing:"45px", marginBottom:"30px" }}>{sectionChild1Sub1Sub1Sub1Sub1.section_body}</Typography>   
                                                       {
                                                         (userRole==="Commenter") && (
-                                                          <SectionFeedbacks comments={sectionChild1Sub1Sub1Sub1Sub1.comments} section={sectionChild1Sub1Sub1Sub1Sub1} /> 
+                                                          <SectionFeedbacks documentDetail={documentDetail} comments={sectionChild1Sub1Sub1Sub1Sub1.comments} section={sectionChild1Sub1Sub1Sub1Sub1} /> 
                                                         )
                                                       }
                                                     </Box>
@@ -463,7 +472,7 @@ const DocumentDetailView = () => {
 
             <ListItemButton onClick={handleCommentsCollapse}>
                 <ListItemText primary={
-                  <Typography variant='h5' fontWeight="600">General comments ({documentComments && (documentComments.filter((comment)=>{
+                  <Typography variant='h5' fontWeight="600">General comments ({documentComments && userInfo && (documentComments.filter((comment)=>{
                     return (
                       parseInt(comment.commenter ? comment.commenter.id:"")===parseInt(userInfo.user.id)
                     )
@@ -474,7 +483,7 @@ const DocumentDetailView = () => {
             <Collapse in={commentsOpen} timeout="auto" unmountOnExit>
                 <Paper elevation={1} sx={{borderRadius:"3px", borderLeftStyle:"solid", borderLeftWidth:"3px", borderLeftColor:"#255B7E"}}>
                   {documentComments ? (
-                    documentComments.filter((comment)=>{
+                    userInfo && documentComments.filter((comment)=>{
                       return (
                         parseInt(comment.commenter ? comment.commenter.id:"")===parseInt(userInfo.user.id)
                       )
@@ -483,8 +492,11 @@ const DocumentDetailView = () => {
                       <DocumentLevelComments comment={comment} />
                     ))
                   ):(<Box>No comments</Box>)}
-
+                  {
+                    (userRole==="Commenter") && documentDetail && (documentDetail.draft_status.name==="Open") ? (
                       <AddDocumentLevelComments documentID={documentDetail ? documentDetail.id : params.id} />
+                    ):""
+                  }
                  </Paper>
               </Collapse>
              
