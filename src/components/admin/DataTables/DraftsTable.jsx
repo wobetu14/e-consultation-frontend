@@ -117,7 +117,7 @@ const errorStyle={
         {
             name:<Typography variant="h5" fontWeight="600">Download Comments Report</Typography>,
             selector:(row)=>(
-               ( row.draft_status!==null && row.draft_status.name==="Pending") ? (
+               ( row.draft_status!==null && row.draft_status.name==="Closed") ? (
                     <a href={`${rootURL}report/${row.id}`} target='_blank'><Typography variant="body1">Get comments report</Typography></a>
                 ):""
             ),

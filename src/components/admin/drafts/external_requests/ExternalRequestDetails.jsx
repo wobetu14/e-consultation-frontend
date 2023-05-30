@@ -2,34 +2,30 @@ import { Box, Collapse, Card, CardActions, CardContent, CircularProgress, Grid, 
 import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom'
-import axios from '../../../axios/AxiosGlobal'
-import { tokens } from '../../../theme'
+import axios from '../../../../axios/AxiosGlobal'
 import {motion} from 'framer-motion'
-import SectionFeedbacks from '../../guest/partials/SectionFeedbacks';
-import AddSectionComment from '../../guest/partials/AddSectionComment';
-// import NestedList from './partials/SectionNavigationMenu';
-import SendIcon from '@mui/icons-material/Send';
 
+import SendIcon from '@mui/icons-material/Send';
 
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
-import DocumentLevelComments from '../../guest/partials/DocumentLevelComments';
-import AddDocumentLevelComments from '../../guest/partials/AddDocumentLevelComments';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
+
 import { Drafts, FileDownload } from '@mui/icons-material';
-import SectionNavigationMenu from '../../guest/partials/SectionNavigationMenu';
-import { UserContext } from '../../../contexts/UserContext';
+
 import { useFormik } from 'formik';
 import * as YUP from 'yup';
-import DraftMetaInfo from './DraftMetaInfo';
-import DocumentPreview from './DocumentPreview';
-import DraftActions from './DraftActions';
 
-import PersonalInvitations from './Personalnvitations';
-import InstitutionInvitations from './InstitutionInvitations';
-import CommentRepliers from './CommentRepliers';
+import DocumentPreview from '../DocumentPreview';
 
-const DocumentDetails = () => {
+
+import PersonalInvitations from '../Personalnvitations';
+import InstitutionInvitations from '../InstitutionInvitations';
+import CommentRepliers from '../CommentRepliers';
+import ExternalRequestMetaInfo from './ExternalRequestMetaInfo';
+import { tokens } from '../../../../theme';
+import { UserContext } from '../../../../contexts/UserContext';
+
+const ExternalRequestDetails = () => {
   const params=useParams();
   const [documentDetail, setDocumentDetail]=useState(null);
   const [documentSections, setDocumentSections]=useState(null);
@@ -135,7 +131,7 @@ const DocumentDetails = () => {
 
     {/* <Button variant="contained" color="success" size="small" onClick={handleAcceptanceDialog}>Accept</Button> */}
 
-      <DraftMetaInfo 
+      <ExternalRequestMetaInfo 
         documentDetail={documentDetail} 
         setDocumentDetail={setDocumentDetail} 
         serverErrorMsg={serverErrorMsg}
@@ -188,24 +184,13 @@ const DocumentDetails = () => {
 
   
         <>
-          <InstitutionInvitations 
-          documentDetail={documentDetail}
-          />
-
-          <CommentRepliers documentDetail={documentDetail} />
-
           <PersonalInvitations 
             documentDetail={documentDetail}
           />
-        </>
-     
-        
-     
-
-     
+        </> 
     </Box>
   )
 }
 
-export default DocumentDetails;
+export default ExternalRequestDetails;
 

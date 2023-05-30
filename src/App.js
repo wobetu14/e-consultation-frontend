@@ -45,6 +45,7 @@ import CommenterLayout from './layouts/CommenterLayout';
 import CommenterDashboard from './components/guest/CommenterDashboard';
 import DraftAssignments from './components/admin/drafts/DraftAssignments';
 import CommentReflections from './components/admin/drafts/CommentReflections';
+import ExternalRequestDetails from './components/admin/drafts/external_requests/ExternalRequestDetails';
 
 
 function App() {
@@ -177,6 +178,7 @@ function App() {
                         } />
                         <Route path="draft_approval_request" element={<DraftApprovalRequest />} />
                         <Route path="document_details/:id" element={<DocumentDetails />} />
+                        <Route path="external_request_details/:id" element={<ExternalRequestDetails />} />
                         <Route path="external_comment_requests" element={<ExternalCommentRequests />} />
                         <Route path="external_requests_preview/:id" element={<ExternalRequestsPreview />} />
                         <Route path="*" element={<PageNotFound />} />

@@ -266,7 +266,7 @@ const createUser=async (userData) => {
                 >
                     {
                       userRoles ? userRoles.map((userRole)=>(
-                        <MenuItem value={userRole.role.id} key={userRole.id}>{userRole.role.name}</MenuItem>
+                        <MenuItem value={userRole.role.id} key={userRole.id}>{userRole.role.name} </MenuItem>
                       )): null
                     }
                 </Select>
@@ -277,7 +277,7 @@ const createUser=async (userData) => {
 
             {
               userInfo ? (
-                userInfo.user.roles[0].name==="Super Admin" ? 
+                userInfo.user.roles[0].name==="Super Admin" && formik.values.roleID===4 ? 
                 (
                   <FormControl sx={{minWidth: '100%', paddingBottom:'5px' }}>
                       <InputLabel>Select Region</InputLabel>
@@ -308,7 +308,7 @@ const createUser=async (userData) => {
             }
 
           {
-            (userRole && (userRole==="Regional Institutions Admin" || userRole==="Federal Institutions Admin")) ? 
+            (userRole && (userRole==="Regional Institutions Admin" || userRole==="Federal Institutions Admin" || userRole==="Super Admin")) ? 
             (
               ""
             ):

@@ -2,27 +2,20 @@ import { Box, Collapse, Card, CardActions, CardContent, CircularProgress, Grid, 
 import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom'
-import axios from '../../../axios/AxiosGlobal'
-import { tokens } from '../../../theme'
+import axios from '../../../../axios/AxiosGlobal'
+
 import {motion} from 'framer-motion'
-import SectionFeedbacks from '../../guest/partials/SectionFeedbacks';
-import AddSectionComment from '../../guest/partials/AddSectionComment';
-// import NestedList from './partials/SectionNavigationMenu';
+
 import SendIcon from '@mui/icons-material/Send';
 
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
-import DocumentLevelComments from '../../guest/partials/DocumentLevelComments';
-import AddDocumentLevelComments from '../../guest/partials/AddDocumentLevelComments';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import { Drafts, FileDownload } from '@mui/icons-material';
-import SectionNavigationMenu from '../../guest/partials/SectionNavigationMenu';
-import { UserContext } from '../../../contexts/UserContext';
 import { useFormik } from 'formik';
 import * as YUP from 'yup';
-import DraftActions from './DraftActions';
 
-const DraftMetaInfo = ({
+import ExternalRequestActions from './ExternalRequestActions';
+import { tokens } from '../../../../theme';
+import { UserContext } from '../../../../contexts/UserContext';
+
+const ExternalRequestMetaInfo = ({
   documentDetail,
   setDocumentDetail,
   serverErrorMsg,
@@ -218,7 +211,7 @@ const DraftMetaInfo = ({
 
           
               <Grid item xs={4}>
-                <DraftActions 
+                <ExternalRequestActions 
                 documentDetail={documentDetail} 
                 setDocumentDetail={setDocumentDetail} 
                 
@@ -241,4 +234,4 @@ const DraftMetaInfo = ({
   )
 }
 
-export default DraftMetaInfo;
+export default ExternalRequestMetaInfo;

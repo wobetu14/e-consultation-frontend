@@ -541,10 +541,9 @@ const createDraftDocument=async (draftsData) => {
               onChange={formik.handleChange}
               helperText={formik.touched.transitoryProvision && formik.errors.transitoryProvision ? <span style={helperTextStyle}>{formik.errors.transitoryProvision}</span>:null}
             />
-
   <Typography variant='body1' sx={{ paddingBottom:'10px' }}> 
         <strong>Attachement:</strong> 
-        Please attach the draft document file. (Only .doc or .docx files are allowed.)
+        Please attach the draft document file. (Only .docx files are allowed.)
         </Typography>
             <TextField 
                 variant='outlined' 

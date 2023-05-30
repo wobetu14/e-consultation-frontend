@@ -52,7 +52,7 @@ const errorStyle={
      }, [])
 
      const fetchInvitedInstitutions =async() =>{
-        return await  axios.get(`comment-request?draft_id=${params.id}`)
+        return await  axios.get(`comment-request?draft_id=${params.id}&requester_institution_id=${userInfo.user.institution_id}`)
           .then(res=>{
             setInvitedInstitutions(res.data.data);
           }).catch(error=>{
@@ -85,7 +85,11 @@ const errorStyle={
           </TableRow>
         </TableHead>
         <TableBody>
-          {invitedInstitutions ? invitedInstitutions.map((InvitedInstitution) => (
+          {invitedInstitutions ? invitedInstitutions.filter((institution)=>{
+            return (
+              institution.commenter_institution_name!==null
+            )
+          }).map((InvitedInstitution) => (
             <TableRow
               key={InvitedInstitution.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
