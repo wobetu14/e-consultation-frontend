@@ -3,6 +3,9 @@ import { useTranslation } from 'react-i18next';
 import i18next from 'i18next';
 import cookies from 'js-cookie';
 import { BrowserRouter, Link, Outlet, Route, RouterProvider, Routes  } from 'react-router-dom';
+import Topbar from '../../partials/main-menu/Topbar';
+import { tokens, useMode } from '../../theme';
+import Footer from '../../partials/Footer';
 
 // import { ColorModeContext, useMode, token } from '../theme';
 // import { CssBaseline, ThemeProvider } from '@mui/material';
@@ -16,8 +19,16 @@ import { BrowserRouter, Link, Outlet, Route, RouterProvider, Routes  } from 'rea
 
 const DocumentLayout = () => {
  
-//   const [theme, colorMode]=useMode();
-//   const colors = tokens(theme.palette.mode);
+  const [theme, colorMode]=useMode();
+  const colors = tokens(theme.palette.mode);
+const {t}=useTranslation();
+
+const menuItemsText=[
+  {id:1, linkText:`${t('home')}`, to:"/"},
+  {id:2,linkText:`${t('about')}`, to:"/about"},
+  {id:3,linkText:`${t('help_center')}`, to:"/help"},
+  // {id:4,linkText:`${t('admin')}`, to:"/admin"},
+];
 
   return (
     // <ColorModeContext.Provider value={colorMode}>
@@ -25,7 +36,9 @@ const DocumentLayout = () => {
   
         <div >  
           <main className='content'>   
-            <Outlet />
+            <Topbar menuItems={menuItemsText} />
+              <Outlet />
+            <Footer />
           </main> 
         </div>
     //   </ThemeProvider>

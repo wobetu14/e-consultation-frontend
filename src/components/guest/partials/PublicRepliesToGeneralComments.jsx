@@ -114,7 +114,7 @@ validationSchema:YUP.object({
                   onClick={()=>setShowReplies(!showReplies)}
                 >
                   <ReplyIcon color="secondary" fontSize='small' />
-                Replies ({
+                {t('replies')} ({
                   reflections ? reflections.length:""
                 })
               </Button>

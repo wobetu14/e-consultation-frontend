@@ -72,35 +72,22 @@ const fetchDrafts =async() =>{
 
   return (
     <Box m="20px">
-      {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
-
-        {/* <Box>
-          <Button
-            sx={{
-              backgroundColor: colors.grey[200],
-              // color: colors.headerText[100],
-              fontSize: "14px",
-              fontWeight: "bold",
-              padding: "10px 20px",
-            }}
-          >
-            <DownloadOutlinedIcon sx={{ mr: "10px" }} />
-            Download Reports
-          </Button>
-        </Box> */}
       </Box>
 
-      {/* GRID & CHARTS */}
-      <Box
+      {
+        userRole==="Uploader" || userRole==="Approver" ? (
+          ""
+        ):
+        (
+          <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
         gridAutoRows="140px"
         gap="20px"
         
       >
-        {/* ROW 1 */}
         <Box
           gridColumn="span 3"
           backgroundColor={colors.grey[400]}
@@ -174,9 +161,10 @@ const fetchDrafts =async() =>{
           />
         </Box>
       </Box>
-      
+        )
+      }
+
       <Box sx={{ marginTop:"100px", marginBottom:"50px" }}>
-          {/* <Drafts /> */}
           <UserProfile />
       </Box>
     </Box>

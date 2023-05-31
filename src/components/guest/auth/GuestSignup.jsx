@@ -7,11 +7,13 @@ import * as YUP from 'yup';
 import {useState} from 'react';
 import axios from '../../../axios/AxiosGlobal';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 const GuestSignup = () => {
    const theme=useTheme();
    const colors=tokens(theme.palette.mode)
    const [loading, setLoading]=useState(false)
+   const {t}=useTranslation()
 
    const [serverErrorMsg, setServerErrorMsg]=useState(null);
    const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
@@ -99,7 +101,7 @@ const GuestSignup = () => {
       >
         <Grid container spacing={2}>
           <Typography variant='h3' sx={{ fontWeight:500, padding:'20px', color:colors.primary[200] }} >
-            Create user account
+            {t('create_account')}
           </Typography>
         </Grid>
 
@@ -122,9 +124,9 @@ const GuestSignup = () => {
           <Grid container spacing={10}>
             <Grid item xs={6}>
             <TextField 
-            label="First Name" 
+            label={t('first_name')+'*'}
             variant='outlined' 
-            placeholder='Enter your first name'
+            placeholder={t('enter_first_name')}
             fullWidth
             sx={{ paddingBottom:"25px" }}
             color="info"
@@ -136,9 +138,9 @@ const GuestSignup = () => {
           />
 
           <TextField 
-            label="Father Name" 
+            label={t('middle_name')+'*'}
             variant='outlined' 
-            placeholder='Enter your father name'
+            placeholder={t('enter_middle_name')}
             fullWidth
             sx={{ paddingBottom:"25px" }}
             color="info"
@@ -151,9 +153,9 @@ const GuestSignup = () => {
         />
 
           <TextField 
-            label="Gradfather Name" 
+            label={t('last_name')+'*'}
             variant='outlined' 
-            placeholder='Enter your grandfather name'
+            placeholder={t('enter_last_name')}
             fullWidth
             sx={{ paddingBottom:"25px" }}
             color="info"
@@ -166,9 +168,9 @@ const GuestSignup = () => {
           />
 
           <TextField 
-              label="Email" 
+              label={t('email_address')+'*'}
               variant='outlined' 
-              placeholder='Enter email address'
+              placeholder={t('enter_email_address')}
               fullWidth
               sx={{ paddingBottom:"25px" }}
               color="info"
@@ -182,9 +184,9 @@ const GuestSignup = () => {
         </Grid>
         <Grid item xs={6}>
             <TextField 
-              label="Mobile number" 
+              label={t('mobile_number')+'*'}
               variant='outlined' 
-              placeholder='Enter your mobile number' 
+              placeholder={t('enter_mobile_number')}
               fullWidth 
               sx={{ paddingBottom:'25px' }}
               color="info"
@@ -197,10 +199,10 @@ const GuestSignup = () => {
             />
             
             <TextField 
-              label="Password" 
+              label={t('password')+'*'} 
               type="password"
               variant='outlined' 
-              placeholder='Enter new password' 
+              placeholder={t('enter_password')}
               fullWidth 
               sx={{ paddingBottom:'25px' }}
               color="info"
@@ -212,10 +214,10 @@ const GuestSignup = () => {
             />
 
             <TextField 
-              label="Confirm password" 
+              label={t('confirm_password')+'*'}
               type="password"
               variant='outlined' 
-              placeholder='Enter your password again'  
+              placeholder={t('confirm_password')}
               fullWidth 
               sx={{ paddingBottom:'25px' }}
               color="info"
@@ -243,7 +245,7 @@ const GuestSignup = () => {
               sx={{ backgroundColor:colors.brandColor[200], color:colors.grey[300] }}
               color='info'
             >
-              Create Account
+              {t('create_account')}
             </Button>
           </Box>
         </Grid>

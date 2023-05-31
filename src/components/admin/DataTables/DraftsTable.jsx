@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Grid, LinearProgress, Link, Paper, TextField, Typography, useTheme } from '@mui/material'
+import { Alert, Box, Button, CircularProgress, Grid, LinearProgress, Link, Paper, TextField, Typography, useTheme } from '@mui/material'
 import React, { useContext, useEffect, useState } from 'react'
 import axios from '../../../axios/AxiosGlobal'
 import DataTable from 'react-data-table-component'
@@ -160,7 +160,14 @@ const errorStyle={
                 </Typography> 
 
                 {
-                    loading ? (<LinearProgress size="small" color='info'/>):null
+                    loading ? (
+                        <Box>
+                            <Typography variant="h5" fontWeight="600" textAlign="left" sx={{ color:colors.warningColor[100] }}>
+                                This process may take longer. We are converting and extracting content from the document. Please wait...
+                            </Typography>
+                            <LinearProgress color='info' />
+                        </Box>
+                    ):null
                 }
             </motion.span>
         </Grid>
@@ -184,7 +191,7 @@ const errorStyle={
       )
     }
      
-            <Paper elevation={1} sx={{ marginTop:"10px", marginBottom:"350px", maxWidth:"1200px"}}>
+            <Paper elevation={1} sx={{ marginTop:"10px", marginBottom:"350px", width:"1200px"}}>
             <DataTable 
              columns={columns} 
              data={filteredDrafts}
@@ -193,6 +200,12 @@ const errorStyle={
              selectableRowsHighlight
              // highlightOnHover
              subHeader
+             progressPending={filteredDrafts.length<=0}
+             progressComponent={
+                <Box mb="20px">
+                    <CircularProgress color="info" />
+                </Box>
+             }
              subHeaderComponent={
                  <Box width="100%" sx={{ display:"flex", justifyContent:"space-between", direction:"row" }}>
                    <Box width="30%" >

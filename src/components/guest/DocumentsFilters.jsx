@@ -3,6 +3,7 @@ import { Autocomplete, Box, Checkbox, Chip, FormControl, FormControlLabel, Input
 import axios from '../../axios/AxiosGlobal'
 import React, { useEffect, useState } from 'react'
 import { tokens } from '../../theme';
+import { useTranslation } from 'react-i18next';
 
 const DocumentsFilters = (
   {drafts, 
@@ -16,6 +17,7 @@ const DocumentsFilters = (
   }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+    const {t}=useTranslation();
 
     const [lawCategoryID, setLawCategoryID]=useState(null);
     const [lawCategories, setLawCategories]=useState(null);
@@ -148,7 +150,7 @@ const DocumentsFilters = (
         {/* <form> */}
             <Box marginBottom="15px">
                 <Typography variant="h6" fontWeight={600}>
-                    Category
+                    {t('category')}
                 </Typography>
 
                 <RadioGroup
@@ -168,7 +170,7 @@ const DocumentsFilters = (
 
             <Box marginBottom="15px">
                 <Typography variant="h6" fontWeight={600}>
-                    Region
+                    {t('region_name')}
                 </Typography>
 
                 <div>
@@ -198,7 +200,7 @@ const DocumentsFilters = (
 
               <Box marginBottom="15px">
                 <Typography variant="h6" fontWeight={600}>
-                    Institution
+                    {t('institution_name')}
                 </Typography>
 
               <div>
@@ -226,7 +228,7 @@ const DocumentsFilters = (
 
             <Box marginBottom="15px">
                 <Typography variant="h6" fontWeight={600}>
-                    Status
+                    {t('document_status')}
                 </Typography>
 
                 <RadioGroup
@@ -265,7 +267,7 @@ const DocumentsFilters = (
 
             <Box marginBottom="15px">
                 <Typography variant="h6" fontWeight={600}>
-                    Economic Sector
+                    {t('economic_sector')}
                 </Typography>
 
                 <Autocomplete

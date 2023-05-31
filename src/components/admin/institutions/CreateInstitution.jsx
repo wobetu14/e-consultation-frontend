@@ -19,6 +19,8 @@ const CreateInstitution = () => {
     const [regions, setRegions]=useState(null);
     const [sectors, setSectors]=useState(null);
 
+    
+
    // User context
    const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
    const {
@@ -138,12 +140,10 @@ const fetchRegions =async() =>{
       institutionTypeId:"",
       institutionCategoryId:"",
       institutionLevelId:"",
-      regionId:"",
-      // authority:"",
+
       email:"",
       telephone:"",
       address:"",
-      // sectorID:"",
       canCreateDraft:"",
       institution_category_id:"",
       
@@ -153,8 +153,7 @@ const fetchRegions =async() =>{
 
 validationSchema:YUP.object({
     institutionName:YUP.string().required("This field is required. Please enter the institution name."),
-    institutionTypeId:YUP.number().required("This field is required. Please enter the institution type."),
-    // regionId:YUP.number().required("This field is required. Please enter the region name of the institution."),
+
     institutionCategoryId:YUP.number().required("This field is required. Please select institution category."),
     institutionLevelId:YUP.number().required("This field is required. Please select level of institution."),
 
@@ -162,22 +161,19 @@ validationSchema:YUP.object({
     email:YUP.string().required("This field is required. Please enter email address.").email("Invalid email address"),
 
     address:YUP.string().required("This field is required. Please enter the address of the institution."),
-    // sectorID:YUP.string().required("This field is required. Please select economic sector."),
     canCreateDraft:YUP.number().required("This field is required. Please choose an option."),
   }),
 
   onSubmit:(values)=>{
     const institutionData={
       name:values.institutionName,
-      institution_type_id:values.institutionTypeId,
       institution_category_id:values.institutionCategoryId,
       institution_level_id:values.institutionLevelId,
-      region_id:values.regionId,
-      // authority:values.authority,
+      institution_type_id:userInfo.user.region_id!==null ? 2:1,
+
       email:values.email,
       telephone:values.telephone,
       address:values.address,
-      // sector_id:values.sectorID,
       created_by:values.createdBy,
       can_create_draft:values.canCreateDraft,
       updated_by:values.updatedBy
@@ -187,16 +183,15 @@ validationSchema:YUP.object({
 }); 
     
 const createInstitution=async (institutionData) => {
-    //  console.log(companyData)
     setLoading(true)
     return await axios.post('institutions', institutionData)
     .then(res => {
-      console.log(res.data)
+      console.log(res)
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null);
-      setLoading(false)
       formik.resetForm();
       fetchInstitutions();
+      setLoading(false)
     })
     .catch(errors =>{
        setServerErrorMsg(errors.response.data.message);
@@ -229,29 +224,6 @@ const createInstitution=async (institutionData) => {
                   onChange={formik.handleChange}
                   helperText={formik.touched.institutionName && formik.errors.institutionName ? <span style={helperTextStyle}>{formik.errors.institutionName}</span>:null}
                 />
-
-              <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
-                <InputLabel>Select Institution Type</InputLabel>
-                <Select
-                  labelId="institution_type_id"
-                  id="institution_type_id"  
-                  size='small'
-                  label="Select Institution Type"
-                  placeholder='Select Institution Type'
-                  color="info"          
-                  name='institutionTypeId'
-                  value={formik.values.institutionTypeId}
-                  onChange={formik.handleChange}
-                  helperText={formik.touched.institutionTypeId && formik.errors.institutionTypeId ? <span style={helperTextStyle}>{formik.errors.institutionTypeId}</span>:null}
-                >
-                    {
-                      institutionsTypes ? institutionsTypes.map((institutionsType)=>(
-                        <MenuItem value={institutionsType.id} key={institutionsType.id}>{institutionsType.name}</MenuItem>
-                      )): null
-                    }
-                </Select>
-              <FormHelperText>{formik.touched.institutionTypeId && formik.errors.institutionTypeId ? <span style={helperTextStyle}>{formik.errors.institutionTypeId}</span>:null}</FormHelperText>
-            </FormControl>
 
             <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
                 <InputLabel>Select Institution Category</InputLabel>
@@ -300,52 +272,6 @@ const createInstitution=async (institutionData) => {
             </FormControl>
           </Grid>
           <Grid item xs={4}>
-          <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
-                <InputLabel>Select Region</InputLabel>
-                <Select
-                  labelId="region_id"
-                  id="region_id"  
-                  size='small'
-                  label="Select Region"
-                  placeholder='Select Region'
-                  color="info"          
-                  name='regionId'
-                  value={formik.values.regionId}
-                  onChange={formik.handleChange}
-                  helperText={formik.touched.regionId && formik.errors.regionId ? <span style={helperTextStyle}>{formik.errors.regionId}</span>:null}
-                >
-                    {
-                      regions ? regions.map((regions)=>(
-                        <MenuItem value={regions.id} key={regions.id}>{regions.name}</MenuItem>
-                      )): null
-                    }
-                </Select>
-              <FormHelperText>{formik.touched.regionId && formik.errors.regionId ? <span style={helperTextStyle}>{formik.errors.regionId}</span>:null}</FormHelperText>
-            </FormControl>
-            
-            {/* <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
-              <InputLabel>Select Economic Sector</InputLabel>
-              <Select
-                labelId="sector_id"
-                id="sector_id"  
-                size='small'
-                label="Select Economic Sector"
-                placeholder='Select Economic Sector'
-                color="info"          
-                name='sectorID'
-                value={formik.values.sectorID}
-                onChange={formik.handleChange}
-                helperText={formik.touched.sectorID && formik.errors.sectorID ? <span style={helperTextStyle}>{formik.errors.sectorID}</span>:null}
-              >
-                  {
-                    sectors ? sectors.map((sector)=>(
-                      <MenuItem value={sector.id} key={sector.id}>{sector.name}</MenuItem>
-                    )): null
-                  }
-              </Select>
-            <FormHelperText>{formik.touched.sectorID && formik.errors.sectorID ? <span style={helperTextStyle}>{formik.errors.sectorID}</span>:null}</FormHelperText>
-          </FormControl> */}
-          
               <TextField 
                 label="Email Address" 
                 variant='outlined' 
@@ -397,8 +323,8 @@ const createInstitution=async (institutionData) => {
                       value={formik.values.canCreateDraft}
                       onChange={formik.handleChange}
                     >
-                      <FormControlLabel value='1' control={<Radio />} label="Yes"  />
-                      <FormControlLabel value='2' control={<Radio />} label="No"  />
+                      <FormControlLabel value={1} control={<Radio />} label="Yes"  />
+                      <FormControlLabel value={0} control={<Radio />} label="No"  />
                 </RadioGroup>
 
           <Grid 
@@ -406,7 +332,8 @@ const createInstitution=async (institutionData) => {
                 align='right'
               >
             
-              <Button type='submit' variant='contained'
+              <Button type='submit' 
+              variant='contained'
                 size="small"
                 sx={{ align:'right', textTransform:'none' }}
                 color='secondary'

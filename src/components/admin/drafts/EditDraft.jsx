@@ -1,11 +1,11 @@
-import { Typography, Button, FormControlLabel, TextField, Grid, Alert, Paper, Stack, FormControl, InputLabel, Select, useTheme, FormHelperText, MenuItem, RadioGroup, Radio } from '@mui/material';
+import { Typography, Button, FormControlLabel, TextField, Grid, Alert, Paper, Stack, FormControl, InputLabel, Select, useTheme, FormHelperText, MenuItem, RadioGroup, Radio, Autocomplete } from '@mui/material';
 import { Box } from '@mui/system'
 import { useFormik } from 'formik';
 import * as YUP from 'yup';
 import { useState, useEffect, useContext } from 'react';
 import { tokens } from '../../../theme';
 import Header from '../AdminHeader';
-import axios from '../../../axios/AxiosGlobal'
+import axios, { rootURL } from '../../../axios/AxiosGlobal'
 import { motion } from 'framer-motion';
 import { UserContext } from '../../../contexts/UserContext';
 import { DraftsDataContext } from '../../../contexts/DraftsDataContext';
@@ -38,8 +38,13 @@ const EditDraft = () => {
     serverErrorMsg,
     setServerErrorMsg,
     serverSuccessMsg,
-    setServerSuccessMsg
+    setServerSuccessMsg,
+    loading,
+    setLoading
 }=useContext(DraftsDataContext);
+
+const [tagLists, setTagLists]=useState([]);
+const [selectedSectors, setSelectedSectors]=useState([]);
 
  const helperTextStyle={
   color:'red',
@@ -53,6 +58,8 @@ const EditDraft = () => {
 
  useEffect(()=>{
   fetchLawCategories();
+  console.log("Hello from edit draft form");
+  console.log(draft)
  }, [lawCategories])
 
  useEffect(()=>{
@@ -99,11 +106,11 @@ const EditDraft = () => {
         shortTitle:draft ? (draft.short_title):"",
         lawCategoryId:draft ? (draft.law_category_id):"",
         draftStatusId:draft ? (draft.draft_status_id):"",
-        sectorId:draft ? (draft.sector_id):"",
-
+        sectors:draft ? draft.sector:"hello",
+        // file:null,
         active:draft ? (draft.active):"",
         isPrivate: draft ? (draft.is_private):"",
-        tags:draft ? (draft.tags):"",
+        tags:draft ? draft.tags:[],
         baseLegalReference:draft ? (draft.base_legal_reference):"",
         definition:draft ? (draft.definition):"",
         scope:draft ? (draft.scope):"",
@@ -121,15 +128,15 @@ const EditDraft = () => {
       short_title:values.shortTitle,
       law_category_id:values.lawCategoryId,
       draft_status_id:values.draftStatusId,
-      sector_id:values.sectorId,
+      sectors:selectedSectors.length>0 ? selectedSectors.map((selectedSector)=>(selectedSector.name)):values.sectors,
       comment_opening_date:values.openingDate,
       comment_closing_date:values.closingDate,
-    //   file:values.file,
+      // file:values.file,
       slug:values.slug,
       // active:values.active,
       is_private:values.isPrivate,
       parent_id:values.parentId,
-      tags:values.tags,
+      tags:tagLists.length>0 ? tagLists.map((tagList)=>tagList):values.tags,
       note_id:values.noteId,
       base_legal_reference:values.baseLegalReference,
       definition:values.definition,
@@ -142,7 +149,7 @@ const EditDraft = () => {
       comment_request_description:values.summary,
       comment_summary:values.summary,
       updated_by:values.updatedBy,
-      _method:"put"
+      _method:'put'
     };
 
     updateDraftDocument(draftsData);
@@ -151,6 +158,7 @@ const EditDraft = () => {
     
 const updateDraftDocument=async (draftsData) => {
     //  console.log(companyData)
+    setLoading(true)
     return await axios.post(`drafts/${draft.id}`, draftsData)
     .then(res => {
       console.log(res.data)
@@ -159,16 +167,21 @@ const updateDraftDocument=async (draftsData) => {
       setShowDraftEditForm(false);
       formik.resetForm();
       fetchDrafts();
+      setLoading(false)
     })
     .catch(errors =>{
        setServerErrorMsg(errors.response.data.message);
-       setServerSuccessMsg(null) 
+       setServerSuccessMsg(null)
+       setLoading(false) 
     }) 
    }
    
   return (
     <Box width={'95%'}>
       <Header title="Edit Drfat Document Information" subtitle="" />
+      {
+        draft ? <>{draft.sector} {draft.id}</>:"No draft info"
+      }
       <motion.span
         initial={{ opacity: 0}}
         animate={{ opacity: 1}}
@@ -239,27 +252,25 @@ const updateDraftDocument=async (draftsData) => {
             </FormControl>
 
       <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Economic Sector</Typography>
-              <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
-                <InputLabel>Select Economic Sector</InputLabel>
-                <Select
-                  labelId="law_category_Id"
-                  id="law_category_Id"  
-                  size="small"
-                  placeholder='Select law category'
-                  color="info"          
-                  name='sectorId'
-                  value={formik.values.sectorId}
-                  onChange={formik.handleChange}
-                  helperText={formik.touched.sectorId && formik.errors.sectorId ? <span style={helperTextStyle}>{formik.errors.sectorId}</span>:null}
-                >
-                    {
-                      sectors ? sectors.map((sector)=>(
-                        <MenuItem value={sector.id} key={sector.id}>{sector.name}</MenuItem>
-                      )): null
-                    }
-                </Select>
-              <FormHelperText>{formik.touched.sectorId && formik.errors.sectorId ? <span style={helperTextStyle}>{formik.errors.sectorId}</span>:null}</FormHelperText>
-            </FormControl>
+        <Autocomplete
+                      multiple
+                      id="tags-standard"
+                      color="info"
+                      size="small"
+                      sx={{ paddingBottom:"10px" }}
+                      options={sectors ? sectors:[]}
+                      getOptionLabel={(option) => option.name}
+                      onChange={(e,value)=>setSelectedSectors(value)}
+                      renderInput={(params) => (
+                      <TextField
+                          {...params}
+                          label="Select sectors"
+                          placeholder="Sectors "
+                          name="sectors"
+                          value={selectedSectors.length>0 ? selectedSectors.map((selectedSector)=>(selectedSector.name)):[]}
+                      />
+                      )}
+                  />
 
           {/* <Typography variant='body1' sx={{ paddingBottom:'10px' }}> 
             Opening Date
@@ -307,19 +318,24 @@ const updateDraftDocument=async (draftsData) => {
                         <FormControlLabel value='1' control={<Radio />} label="Private"  />
                   </RadioGroup> 
 
-                  <TextField 
-                      label="Tags" 
-                      variant='outlined' 
-                      multiline
-                      rows={4} 
-                      fullWidth
-                      sx={{ paddingBottom:"30px" }}
+                  <Autocomplete
+                      multiple
+                      id="tags-standard"
+                      freeSolo
+                      autoSelect
                       color="info"
-                      name='tags'
-                      value={formik.values.tags}
-                      onBlur={formik.handleBlur}
-                      onChange={formik.handleChange}
-                      helperText={formik.touched.tags && formik.errors.tags ? <span style={helperTextStyle}>{formik.errors.tags}</span>:null}
+                      sx={{ paddingBottom:"10px" }}
+                      options={tagLists}
+                      getOptionLabel={(option) => option}
+                      onChange={(e,value)=>setTagLists(value)}
+                      renderInput={(params) => (
+                      <TextField
+                          {...params}
+                          label="List of tags"
+                          name="tags"
+                          value={draft ? draft.tags:""}
+                      />
+                      )}
                   />
           </Grid>
           <Grid item xs={4}>
@@ -489,6 +505,8 @@ const updateDraftDocument=async (draftsData) => {
                 onChange={(e)=>{formik.setFieldValue("file",e.target.files[0])}}
                 helperText={formik.touched.file && formik.errors.file ? <span style={helperTextStyle}>{formik.errors.file}</span>:null}
               /> */}
+
+              <Button color="secondary" size="small" href={draft ? draft.file:""} target="_blank" sx={{ textTransform:"none" }}>Download previous file</Button>
 
           <Grid 
                 sx={{ paddingBottom:"20px" }}

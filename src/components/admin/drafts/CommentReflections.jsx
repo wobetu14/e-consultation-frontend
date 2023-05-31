@@ -233,7 +233,7 @@ const CommentReflections = () => {
                     sx={{ textTransform:"none", color:"#fff", backgroundColor:"#3dac94", borderRadius:"10px 10px" }}
                     >
                       <Typography variant="body1">
-                          <FileDownload fontSize='small' /> Download
+                          <FileDownload fontSize='small' /> {t('download')}
                       </Typography>
                   </Button>
               </Grid>
@@ -262,7 +262,7 @@ const CommentReflections = () => {
                       sx={{ textTransform:"none", color:"#fff", backgroundColor:"#3dac94", borderRadius:"10px 10px" }}
                       >
                         <Typography variant="body1">
-                          Comment reports
+                          {t('comment_reports')}
                         </Typography>
                     </Button>
                 </Stack>
@@ -295,7 +295,7 @@ const CommentReflections = () => {
          <Grid container spacing={2} sx={{ paddingTop:"30px", display:"flex", justifyContent:"space-between" }}>
             <Grid item xs={12} md={12}>
               <Typography variant="h4" sx={{ fontWeight:"600", textAlign:"center", color:colors.primary[100] }}>
-                Document Content 
+                {t('document_content')} 
               </Typography>
             </Grid>
          </Grid>
@@ -305,7 +305,7 @@ const CommentReflections = () => {
 
               <ListItemButton onClick={handleArticlesCollapse}>
                 <ListItemText primary={
-                  <Typography variant='h5' fontWeight="600">Explore by article</Typography>
+                  <Typography variant='h5' fontWeight="600">{t('explore_by_article')}</Typography>
                 } />
                 {articlesOpen ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
@@ -477,7 +477,7 @@ const CommentReflections = () => {
 
             <ListItemButton onClick={handleCommentsCollapse}>
                 <ListItemText primary={
-                  <Typography variant='h5' fontWeight="600">General comments ({documentComments && userInfo && (documentComments.filter((comment)=>{
+                  <Typography variant='h5' fontWeight="600">{t('general_comments')} ({documentComments && userInfo && (documentComments.filter((comment)=>{
                     return (
                       parseInt(comment.commenter ? comment.commenter.id:"")===parseInt(userInfo.user.id)
                     )

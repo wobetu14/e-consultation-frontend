@@ -34,7 +34,7 @@ const DocumentDisplay = (
     <Box sx={{ margin:"0px 50px", display:"flex", justifyContent:"space-between", flexDirection:"row" }}>
           <Box sx={{ width:"70%", marginRight:"20px"}}>
             <Box width="100%" sx={{ marginBottom:"10px"}} >
-                <Typography variant='h4' sx={{ fontWeight:"500", color:colors.headerText[100] }}>Draft Documents</Typography>
+                <Typography variant='h4' sx={{ fontWeight:"500", color:colors.headerText[100] }}>{t('draft_documents')}</Typography>
             </Box>
             
             {
@@ -64,7 +64,7 @@ const DocumentDisplay = (
           </Box>
           <Box sx={{ width:"30%" }}>
             <Box width="100%" sx={{ marginBottom:"10px" }}>
-                <Typography variant='h4' sx={{ fontWeight:"500", color:colors.headerText[100] }}>Filter Documents</Typography>
+                <Typography variant='h4' sx={{ fontWeight:"500", color:colors.headerText[100] }}>{t('filter_documents')}</Typography>
             </Box>
             <DocumentsFilters 
             drafts={drafts} 

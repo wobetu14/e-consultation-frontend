@@ -111,10 +111,11 @@ fontSize:'15px'
         updated_by:values.updatedBy, 
         region_id:values.regionID,
         institution_id:values.institutionID,
-        _method:"put"
+        // _method:"put"
     };
 
     updateUser(userData);
+    fetchUsers();
   }
 }); 
     

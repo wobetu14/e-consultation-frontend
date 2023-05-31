@@ -116,12 +116,12 @@ const DocumentDetailView = () => {
                 {documentDetail.summary}
             </Typography>
             
-            <Typography variant="h4" sx={{ paddingBottom:"20px", textAlign:"justify", fontWeight:500, color:"white" }}>Document Details</Typography>
+            <Typography variant="h4" sx={{ paddingBottom:"20px", textAlign:"justify", fontWeight:500, color:"white" }}>{t('document_details')}</Typography>
 
             <Grid container spacing={1}>
               <Grid item xs={6} md={6}>
                 <Typography variant="h5" sx={{ color:"white" }}>
-                    <strong>Institution</strong> 
+                    <strong>{t('institution')}</strong> 
                 </Typography>
               </Grid>
               <Grid item xs={6} md={6} sx={{ color:"white" }}>
@@ -130,7 +130,7 @@ const DocumentDetailView = () => {
 
               <Grid item xs={6} md={6}>
                 <Typography variant="h5" sx={{ color:"white" }}>
-                  <strong>Law category</strong> 
+                  <strong>{t('law_category')}</strong> 
                 </Typography>
               </Grid>
               <Grid item xs={6} md={6} sx={{ color:"white" }}>
@@ -139,7 +139,7 @@ const DocumentDetailView = () => {
 
               <Grid item xs={6} md={6}>
                 <Typography variant="h5" sx={{ color:"white" }}>
-                  <strong>Draft status</strong> 
+                  <strong>{t('status')}</strong> 
                 </Typography>
               </Grid>
               <Grid item xs={6} md={6}>
@@ -170,7 +170,7 @@ const DocumentDetailView = () => {
 
               <Grid item xs={6} md={6}>
                 <Typography variant="h5" sx={{ color:"white" }}>
-                  <strong>Opening date for comment</strong> 
+                  <strong>{t('draft_opening_date')}</strong> 
                 </Typography>
               </Grid>
               <Grid item xs={6} md={6}>
@@ -186,7 +186,7 @@ const DocumentDetailView = () => {
 
               <Grid item xs={6} md={6}>
                 <Typography variant='h5' sx={{ color:"white" }}>
-                    <strong>Closing date for comment</strong> 
+                    <strong>{t('draft_closing_date')}</strong> 
                 </Typography>
               </Grid>
               <Grid item xs={6} md={6}>
@@ -199,7 +199,7 @@ const DocumentDetailView = () => {
 
               <Grid item xs={6} md={6}>
                 <Typography variant="h5" sx={{ color:"white" }}>
-                  <strong>Base Legal Reference</strong>
+                  <strong>{t('base_legal_reference')}</strong>
                 </Typography> 
               </Grid>
               <Grid item xs={6} md={6} sx={{ color:"white" }}>
@@ -208,7 +208,7 @@ const DocumentDetailView = () => {
 
               <Grid item xs={6} md={6}>
                 <Typography variant="h5" sx={{ color:"white" }}>
-                    <strong>Definition</strong> 
+                    <strong>{t('legal_definition')}</strong> 
                 </Typography>
               </Grid>
               <Grid item xs={6} md={6} sx={{ color:"white" }}>
@@ -217,7 +217,7 @@ const DocumentDetailView = () => {
 
               <Grid item xs={6} md={6}>
                 <Typography variant='h5' sx={{ color:"white" }}>
-                  <strong>Document File</strong>
+                  <strong>{t('document_file')}</strong>
                 </Typography>
 
               </Grid>
@@ -230,7 +230,7 @@ const DocumentDetailView = () => {
                     sx={{ textTransform:"none", color:"#fff", backgroundColor:"#3dac94", borderRadius:"10px 10px" }}
                     >
                       <Typography variant="body1">
-                          <FileDownload fontSize='small' /> Download
+                          <FileDownload fontSize='small' /> {t('download')}
                       </Typography>
                   </Button>
               </Grid>
@@ -242,11 +242,11 @@ const DocumentDetailView = () => {
                 documentDetail.draft_status.name==="Closed" ? (
                   <Paper elevation={1} sx={{ padding:"20px", backgroundColor:"#fff3eb", borderRadius:"0px 30px" }}>
                 <Typography variant="h4" sx={{ color:colors.primary[200] }}>
-                  <strong>Document Statistics</strong>
+                  <strong>{t('document_insight')}</strong>
                 </Typography>
                     <br />
                 <Stack spacing={1}> 
-                  <Typography variant="body1" sx={{ color:colors.primary[200] }}>Document level comments: 
+                  <Typography variant="body1" sx={{ color:colors.primary[200] }}>{t('general_comments')}: 
                       <strong>{documentComments ? documentComments.length:"Not available"}</strong>
                   </Typography>
                   <Button 
@@ -258,7 +258,7 @@ const DocumentDetailView = () => {
                       sx={{ textTransform:"none", color:"#fff", backgroundColor:"#3dac94", borderRadius:"10px 10px" }}
                       >
                         <Typography variant="body1">
-                          Comment reports
+                          {t('comment_reports')}
                         </Typography>
                     </Button>
                 </Stack>
@@ -290,7 +290,7 @@ const DocumentDetailView = () => {
          <Grid container spacing={2} sx={{ paddingTop:"30px", display:"flex", justifyContent:"space-between" }}>
             <Grid item xs={12} md={12}>
               <Typography variant="h4" sx={{ fontWeight:"600", textAlign:"center", color:colors.primary[100] }}>
-                Document Content 
+                {t('document_content')}
               </Typography>
             </Grid>
          </Grid>
@@ -300,7 +300,7 @@ const DocumentDetailView = () => {
 
               <ListItemButton onClick={handleArticlesCollapse}>
                 <ListItemText primary={
-                  <Typography variant='h5' fontWeight="600">Explore by article</Typography>
+                  <Typography variant='h5' fontWeight="600">{t('explore_by_article')}</Typography>
                 } />
                 {articlesOpen ? <ExpandLess /> : <ExpandMore />}
               </ListItemButton>
@@ -472,11 +472,16 @@ const DocumentDetailView = () => {
 
             <ListItemButton onClick={handleCommentsCollapse}>
                 <ListItemText primary={
-                  <Typography variant='h5' fontWeight="600">General comments ({documentComments && userInfo && (documentComments.filter((comment)=>{
-                    return (
-                      parseInt(comment.commenter ? comment.commenter.id:"")===parseInt(userInfo.user.id)
-                    )
-                  }).length)})</Typography>
+                  (userRole==="Commenter") && documentDetail && (documentDetail.draft_status.name==="Open") ? (
+                    <>
+                      <Typography variant='h5' fontWeight="600">{t('general_comments')} ({documentComments && userInfo && (documentComments.filter((comment)=>{
+                        return (
+                          parseInt(comment.commenter ? comment.commenter.id:"")===parseInt(userInfo.user.id)
+                        )
+                      }).length)})
+                  </Typography>
+                    </>
+                  ):""
                 } />
                 {commentsOpen ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>

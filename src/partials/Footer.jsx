@@ -23,7 +23,7 @@ const Footer = () => {
     const date=new Date();
     const year=date.getFullYear();
   return (
-     <Box sx={{backgroundColor:colors.grey[200], zIndex:0, position:"bottom", marginTop:"100px" }}>
+     <Box sx={{backgroundColor:colors.grey[100], zIndex:0, position:"bottom", marginTop:"100px" }}>
                     <Grid container>
                      <Grid item xs={5}>
                         <Box sx={{
@@ -81,7 +81,7 @@ const Footer = () => {
                     </Grid>
                     <Grid item xs={3}>
                     <Typography variant="h4" sx={{paddingTop:"30px", fontWeight:500, color:colors.headerText[100] }}>
-                            Social media
+                            {t('social_media')}
                         </Typography>
                             <br />
                         <Box sx={{
@@ -104,7 +104,7 @@ const Footer = () => {
                 {/* <Grid item={12}> */}
                     <Box sx={{ padding:"25px", backgroundColor:colors.primary[100], width:"100%" }}>
                       <Typography variant="h6" sx={{ fontWeight:600, color:"white" }}>
-                            &copy; {year} {t('ministry_of_justice')}. 
+                            &copy; {year} {t('ministry_of_justice')}
                       </Typography>
                     </Box>
                 {/* </Grid> */}

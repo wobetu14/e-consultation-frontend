@@ -110,7 +110,7 @@ const addComment=async (commentData) => {
          color:colors.primary[200]}}
          onClick={()=>setShowFeedbacks(!showFeedbacks)} 
          >
-            <ChatBubbleOutlineIcon fontSize="small"/> &nbsp; Comments ({userInfo &&  comments.filter((comment)=>{
+            <ChatBubbleOutlineIcon fontSize="small"/> &nbsp; {t('comments')} ({userInfo &&  comments.filter((comment)=>{
               return (
                 parseInt(comment.commented_by)===parseInt(userInfo.user.id)
               )
@@ -136,7 +136,7 @@ const addComment=async (commentData) => {
           
           <hr style={{ height:"2px", backgroundColor:colors.grey[600], opacity:"30%" }} />
             <Typography variant="h5" sx={{ paddingBottom:"5px", fontWeight:"600" }}>
-              Comments ({userInfo && comments.filter((comment)=>{
+              {t('comments')} ({userInfo && comments.filter((comment)=>{
                 return (
                   parseInt(comment.commented_by)===parseInt(userInfo.user.id)
                 )

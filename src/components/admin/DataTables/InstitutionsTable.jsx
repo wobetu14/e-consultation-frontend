@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Grid, LinearProgress, Link, Paper, TextField, Typography, useTheme } from '@mui/material'
+import { Alert, Box, Button, CircularProgress, Grid, LinearProgress, Link, Paper, TextField, Typography, useTheme } from '@mui/material'
 import React, { useContext, useEffect, useState } from 'react'
 import axios from '../../../axios/AxiosGlobal'
 import DataTable from 'react-data-table-component'
@@ -193,10 +193,18 @@ const errorStyle={
       )
     }
      
-            <Paper elevation={1} sx={{ marginTop:"10px", marginBottom:"350px"}}>
+            <Paper elevation={1} sx={{ marginTop:"10px", marginBottom:"350px", width:"1200px"}}>
             <DataTable 
              columns={columns} 
              data={filteredInstitutions}
+
+             progressPending={filteredInstitutions.length<=0}
+             progressComponent={
+                <Box mb="20px">
+                    <CircularProgress color="info" />
+                </Box>
+             }
+
              pagination
              // selectableRows
              selectableRowsHighlight

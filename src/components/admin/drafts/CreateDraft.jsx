@@ -184,6 +184,8 @@ const createDraftDocument=async (draftsData) => {
         setServerErrorMsg(null);
         setLoading(false)
         formik.resetForm();
+        setSelectedSectors([]);
+        setTagLists([]);
         fetchDrafts();
       })
       .catch(errors =>{
@@ -279,10 +281,9 @@ const createDraftDocument=async (draftsData) => {
                       renderInput={(params) => (
                       <TextField
                           {...params}
-                          // variant="standard"
                           label="Select sectors"
                           placeholder="Sectors "
-                          value={(option)=>option.name}
+                          value={(option) => option.name}
                       />
                       )}
                   />
@@ -370,7 +371,8 @@ const createDraftDocument=async (draftsData) => {
                       <TextField
                           {...params}
                           label="List of tags"
-                          value={(option)=>option}
+                          name="tags"
+                          value={tagLists.map((tag)=>tag)}
                       />
                       )}
                   />

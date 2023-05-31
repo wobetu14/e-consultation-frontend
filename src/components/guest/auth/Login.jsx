@@ -9,10 +9,12 @@ import axios from '../../../axios/AxiosGlobal';
 import { motion } from 'framer-motion';
 
 import { UserContext } from '../../../contexts/UserContext';
+import { useTranslation } from 'react-i18next';
 
 const Login = () => {
    const theme=useTheme();
    const colors=tokens(theme.palette.mode);
+   const {t}=useTranslation();
 
    const navigate=useNavigate()
    const {userInfo, setUserInfo, setUserRole, setUserToken}=useContext(UserContext);
@@ -102,7 +104,7 @@ const Login = () => {
             <LockOutlinedIcon sx={{ width:"20px", height:"20px" }} />
           </Avatar>
           <Typography variant='h5' sx={{ fontWeight:400, paddingBottom:'20px' }} >
-            Sign In
+            {t('sign_in')}
           </Typography>
         </Grid>
 
@@ -119,9 +121,9 @@ const Login = () => {
         <form onSubmit={formik.handleSubmit}>
             <Grid>
             <TextField 
-              label="Email address" 
+              label={t('email_address')} 
               variant='outlined' 
-              placeholder='Enter user name'
+              placeholder={t('enter_email_address')}
               required 
               fullWidth
               size='small'
@@ -133,10 +135,10 @@ const Login = () => {
               onChange={formik.handleChange}
             />
             <TextField 
-              label="Password" 
+              label={t('password')}
               type="password"
               variant='outlined' 
-              placeholder='Enter password' 
+              placeholder={t('enter_password')}
               required 
               fullWidth 
               size='small'
@@ -159,24 +161,25 @@ const Login = () => {
                   color='info'
                   />
               }
-              label="Remember me"
+              label={t('remember')}
             />
             
-            <Button type='submit' variant='outlined' fullWidth
-              sx={{ backgroundColor:colors.brandColor[200], color:colors.grey[900] }}
-              color='info'
+            <Button type='submit' variant='contained'
+              color="info"
+            fullWidth
+              sx={{ backgroundColor:colors.brandColor[200], color:colors.grey[300] }}
             >
-              Sign In</Button>
+              {t('sign_in')}</Button>
             </Grid>
               <Typography>
                 <Link href="#">
-                  Forgot password?
+                  {t('forgot_password')}?
                 </Link>
               </Typography>
               <Typography>
-                Don't you have an account? &nbsp;
+                {t('no_account')}? &nbsp;
                 <Link href="#">
-                  Sign up
+                  {t('sign_up')}
                 </Link>
               </Typography> 
         </form>
