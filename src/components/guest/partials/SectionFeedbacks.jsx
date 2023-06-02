@@ -9,7 +9,6 @@ import AddSectionComment from '../partials/AddSectionComment'
 
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
@@ -152,7 +151,7 @@ const addComment=async (commentData) => {
                     }).map((comment)=>(
                       
                       <>
-                        <ListItem alignItems="flex-center" key={comment.id} sx={{ height:"40px" }}>
+                        <ListItem alignItems="flex-center" key={comment.id} sx={{ height:"75px" }}>
                           <ListItemAvatar>
                             <Avatar alt="User" size="large" src="/static/images/avatar/1.jpg" />
                           </ListItemAvatar>

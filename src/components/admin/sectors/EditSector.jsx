@@ -127,13 +127,11 @@ const updateSector=async (sectorData) => {
                   sx={{ paddingBottom:"20px" }}
                   align='right'
                   >
-                  <Button type='submit' variant='contained'
-                    size="small"
-                    sx={{ align:'right', textTransform:'none' }}
-                    color='secondary'
-                  >
-                    Save Changes
-                </Button>
+                  <Button type='submit' variant='contained' size="small"
+                  sx={{ align:'right', textTransform:'none', backgroundColor:colors.successColor[200], color:colors.grey[300] }}
+                  color='info'
+                >
+                  Save Changes </Button>
               </Grid>
           </Grid>
         </Grid>

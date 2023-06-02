@@ -119,12 +119,12 @@ const CommentReflections = () => {
                 {documentDetail.summary}
             </Typography>
             
-            <Typography variant="h4" sx={{ paddingBottom:"20px", textAlign:"justify", fontWeight:500, color:"white" }}>Document Details</Typography>
+            <Typography variant="h4" sx={{ paddingBottom:"20px", textAlign:"justify", fontWeight:500, color:"white" }}>{t('document_details')}</Typography>
 
             <Grid container spacing={1}>
               <Grid item xs={6} md={6}>
                 <Typography variant="h5" sx={{ color:"white" }}>
-                    <strong>Institution</strong> 
+                    <strong>{t('institution')}</strong> 
                 </Typography>
               </Grid>
               <Grid item xs={6} md={6} sx={{ color:"white" }}>
@@ -133,7 +133,7 @@ const CommentReflections = () => {
 
               <Grid item xs={6} md={6}>
                 <Typography variant="h5" sx={{ color:"white" }}>
-                  <strong>Law category</strong> 
+                  <strong>{t('law_category')}</strong> 
                 </Typography>
               </Grid>
               <Grid item xs={6} md={6} sx={{ color:"white" }}>
@@ -142,7 +142,7 @@ const CommentReflections = () => {
 
               <Grid item xs={6} md={6}>
                 <Typography variant="h5" sx={{ color:"white" }}>
-                  <strong>Draft status</strong> 
+                  <strong>{t('status')}</strong> 
                 </Typography>
               </Grid>
               <Grid item xs={6} md={6}>
@@ -173,7 +173,7 @@ const CommentReflections = () => {
 
               <Grid item xs={6} md={6}>
                 <Typography variant="h5" sx={{ color:"white" }}>
-                  <strong>Opening date for comment</strong> 
+                  <strong>{t('draft_opening_date')}</strong> 
                 </Typography>
               </Grid>
               <Grid item xs={6} md={6}>
@@ -189,7 +189,7 @@ const CommentReflections = () => {
 
               <Grid item xs={6} md={6}>
                 <Typography variant='h5' sx={{ color:"white" }}>
-                    <strong>Closing date for comment</strong> 
+                    <strong>{t('draft_closing_date')}</strong> 
                 </Typography>
               </Grid>
               <Grid item xs={6} md={6}>
@@ -202,7 +202,7 @@ const CommentReflections = () => {
 
               <Grid item xs={6} md={6}>
                 <Typography variant="h5" sx={{ color:"white" }}>
-                  <strong>Base Legal Reference</strong>
+                  <strong>{t('base_legal_reference')}</strong>
                 </Typography> 
               </Grid>
               <Grid item xs={6} md={6} sx={{ color:"white" }}>
@@ -211,7 +211,7 @@ const CommentReflections = () => {
 
               <Grid item xs={6} md={6}>
                 <Typography variant="h5" sx={{ color:"white" }}>
-                    <strong>Definition</strong> 
+                    <strong>{t('legal_definition')}</strong> 
                 </Typography>
               </Grid>
               <Grid item xs={6} md={6} sx={{ color:"white" }}>
@@ -220,7 +220,7 @@ const CommentReflections = () => {
 
               <Grid item xs={6} md={6}>
                 <Typography variant='h5' sx={{ color:"white" }}>
-                  <strong>Document File</strong>
+                  <strong>{t('document_file')}</strong>
                 </Typography>
 
               </Grid>
@@ -242,15 +242,14 @@ const CommentReflections = () => {
           
           <Grid item xs={3}>
               {
-                documentDetail && documentDetail.draft_status.name==="Closed" ? (
-                  <>
-                    <Paper elevation={1} sx={{ padding:"20px", backgroundColor:"#fff3eb", borderRadius:"0px 30px" }}>
+                documentDetail.draft_status.name==="Closed" ? (
+                  <Paper elevation={1} sx={{ padding:"20px", backgroundColor:"#fff3eb", borderRadius:"0px 30px" }}>
                 <Typography variant="h4" sx={{ color:colors.primary[200] }}>
-                  <strong>Document Statistics</strong>
+                  <strong>{t('document_insight')}</strong>
                 </Typography>
                     <br />
                 <Stack spacing={1}> 
-                  <Typography variant="body1" sx={{ color:colors.primary[200] }}>Document level comments: 
+                  <Typography variant="body1" sx={{ color:colors.primary[200] }}>{t('general_comments')}: 
                       <strong>{documentComments ? documentComments.length:"Not available"}</strong>
                   </Typography>
                   <Button 
@@ -267,7 +266,6 @@ const CommentReflections = () => {
                     </Button>
                 </Stack>
               </Paper>
-                  </>
                 ):""
               }
           </Grid>

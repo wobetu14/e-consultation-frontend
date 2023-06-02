@@ -21,7 +21,7 @@ import { tokens } from '../../../../theme';
 import { UserContext } from '../../../../contexts/UserContext';
 
 const AssignCommenters = ({
-    documentDetail,
+    requestDetail,
     serverSuccessMsg,
     serverErrorMsg,
     setServerSuccessMsg,
@@ -68,11 +68,9 @@ const AssignCommenters = ({
         }
 
     React.useEffect(()=>{
-        fetchInstitutions();
-        getInstitutionsID();
         getMyUsersID();
         fetchMyUsers();
-     }, [selectedInstitutions, repliersEmail])
+     }, [repliersEmail])
 
       const getMyUsersID=()=>{
          if(repliersEmail.length>0){
@@ -82,22 +80,6 @@ const AssignCommenters = ({
          }
      } 
 
-     const getInstitutionsID=()=>{
-        if(selectedInstitutions.length>0){
-           selectedInstitutions.map((selectedInstitution)=>(
-               setInsIDs([...instIDs, selectedInstitution.id])
-           ))
-        }
-    } 
-
-     const fetchInstitutions = async() =>{
-        try{
-          const res = await  axios.get('public/institutions')
-          setInstitutions(res.data.data.data);
-        } catch(error){
-            console.log(error);
-         }
-      }
 
       const fetchMyUsers = async() =>{
         try{
@@ -110,27 +92,27 @@ const AssignCommenters = ({
          }
       }
 
-     const formikAcceptanceForm=useFormik({
+      const formikAssignCommenterForm=useFormik({
         initialValues:{
-            draft_id:params.id,
-            comment_repliers:[],
+            commentRequestID:requestDetail.id,
+            noticeMessage:"",
+            commenters:[]
         },
 
       onSubmit:(values)=>{
-        const requestData={
-            draft_id:params.id,
-            comment_repliers: repliersID.length>0 ? repliersID.map((replierID)=>(replierID)):[],
+        const commentersData={
+            comment_request_id:values.commentRequestID,
+            message: values.noticeMessage,
+            commenters:repliersID.length>0 ? repliersID.map((replierID)=>replierID):[]
         };
     
-        assignMoreRepliers(requestData);
+        assignMoreCommenters(commentersData);
       }
     }); 
 
-    const assignMoreRepliers=async (requestData) => {
-        console.log(requestData)
-        setLoading(true)
-        
-      return await axios.post(`additional-repliers`, requestData)
+    const assignMoreCommenters=async (commentersData) => {
+      setLoading(true)
+      return await axios.post(`assign-commenters`, commentersData)
         .then(res => {
           setServerSuccessMsg(res.data.message);
           setServerErrorMsg(null)
@@ -178,7 +160,7 @@ const AssignCommenters = ({
             </motion.span>
         </Grid>
 
-        <form style={{ marginBottom:"30px" }} onSubmit={formikAcceptanceForm.handleSubmit}>
+        <form style={{ marginBottom:"30px" }} onSubmit={formikAssignCommenterForm.handleSubmit}>
 
                 <Typography variant="subtitle1" fontWeight="600">
                         Assign more commenters
@@ -204,6 +186,21 @@ const AssignCommenters = ({
                         )}
                     />
 
+                <TextField 
+                    label="Write acceptance message (not mandatory)" 
+                    variant='outlined'
+                    size='small' 
+                    fullWidth
+                    multiline
+                    rows={4}
+                    sx={{ paddingBottom:"10px" }}
+                    color="info"
+                    name='noticeMessage'
+                    value={formikAssignCommenterForm.values.noticeMessage}
+                    onBlur={formikAssignCommenterForm.handleBlur}
+                    onChange={formikAssignCommenterForm.handleChange}
+                    /> 
+
                 <Box>
                     <Button 
                         size='small' 
@@ -211,7 +208,6 @@ const AssignCommenters = ({
                         color="secondary" 
                         type='submit'
                         sx={{ textTransform:"none", marginRight:"5px" }}
-                        onClick={assignMoreRepliers}
                         >  
                         <Typography variant='body2'>
                             Assign 

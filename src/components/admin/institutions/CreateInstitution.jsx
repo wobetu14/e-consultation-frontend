@@ -155,12 +155,12 @@ validationSchema:YUP.object({
     institutionName:YUP.string().required("This field is required. Please enter the institution name."),
 
     institutionCategoryId:YUP.number().required("This field is required. Please select institution category."),
-    institutionLevelId:YUP.number().required("This field is required. Please select level of institution."),
+    // institutionLevelId:YUP.number().required("This field is required. Please select level of institution."),
 
     telephone:YUP.string().required("This field is required. Please enter mobile number.").phone("ET",true, "Invalid phone number. Use +251, or 251 or 09... etc. Note: phone numbers starting with 07 are invalid for the time being."),
     email:YUP.string().required("This field is required. Please enter email address.").email("Invalid email address"),
 
-    address:YUP.string().required("This field is required. Please enter the address of the institution."),
+    // address:YUP.string().required("This field is required. Please enter the address of the institution."),
     canCreateDraft:YUP.number().required("This field is required. Please choose an option."),
   }),
 
@@ -212,7 +212,7 @@ const createInstitution=async (institutionData) => {
         <Grid container spacing={2}>
           <Grid item xs={4}>
               <TextField 
-                  label="Institution Name" 
+                  label="Institution Name *" 
                   variant='outlined' 
                   size="small"
                   fullWidth
@@ -226,7 +226,7 @@ const createInstitution=async (institutionData) => {
                 />
 
             <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
-                <InputLabel>Select Institution Category</InputLabel>
+                <InputLabel>Select Institution Category *</InputLabel>
                 <Select
                   labelId="institution_category_id"
                   id="institution_category"  
@@ -273,7 +273,7 @@ const createInstitution=async (institutionData) => {
           </Grid>
           <Grid item xs={4}>
               <TextField 
-                label="Email Address" 
+                label="Email Address *" 
                 variant='outlined' 
                 size="small"
                 type="email"
@@ -287,7 +287,7 @@ const createInstitution=async (institutionData) => {
                 helperText={formik.touched.email && formik.errors.email ? <span style={helperTextStyle}>{formik.errors.email}</span>:null}
               />
               <TextField 
-                label="Telephone Number" 
+                label="Telephone Number *" 
                 variant='outlined' 
                 size='small'
                 fullWidth
@@ -315,7 +315,7 @@ const createInstitution=async (institutionData) => {
                 helperText={formik.touched.address && formik.errors.address ? <span style={helperTextStyle}>{formik.errors.address}</span>:null}
               />
 
-          <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Can this institution create draft document?</Typography>
+          <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Can this institution create draft document? *</Typography>
               <RadioGroup
                       aria-labelledby="demo-controlled-radio-buttons-group"
                       name="canCreateDraft"

@@ -107,7 +107,7 @@ const [selectedSectors, setSelectedSectors]=useState([]);
         lawCategoryId:draft ? (draft.law_category_id):"",
         draftStatusId:draft ? (draft.draft_status_id):"",
         sectors:draft ? draft.sector:"hello",
-        // file:null,
+        file:null,
         active:draft ? (draft.active):"",
         isPrivate: draft ? (draft.is_private):"",
         tags:draft ? draft.tags:[],
@@ -131,7 +131,7 @@ const [selectedSectors, setSelectedSectors]=useState([]);
       sectors:selectedSectors.length>0 ? selectedSectors.map((selectedSector)=>(selectedSector.name)):values.sectors,
       comment_opening_date:values.openingDate,
       comment_closing_date:values.closingDate,
-      // file:values.file,
+      file:values.file,
       slug:values.slug,
       // active:values.active,
       is_private:values.isPrivate,
@@ -490,7 +490,7 @@ const updateDraftDocument=async (draftsData) => {
               helperText={formik.touched.transitoryProvision && formik.errors.transitoryProvision ? <span style={helperTextStyle}>{formik.errors.transitoryProvision}</span>:null}
             />
 
-  {/* <Typography variant='body1' sx={{ paddingBottom:'10px' }}> 
+  <Typography variant='body1' sx={{ paddingBottom:'10px' }}> 
         <strong>Attachement:</strong> 
         Please attach the draft document file. (Only .doc or .docx files are allowed.)
         </Typography>
@@ -504,7 +504,7 @@ const updateDraftDocument=async (draftsData) => {
                 onBlur={formik.handleBlur}
                 onChange={(e)=>{formik.setFieldValue("file",e.target.files[0])}}
                 helperText={formik.touched.file && formik.errors.file ? <span style={helperTextStyle}>{formik.errors.file}</span>:null}
-              /> */}
+              />
 
               <Button color="secondary" size="small" href={draft ? draft.file:""} target="_blank" sx={{ textTransform:"none" }}>Download previous file</Button>
 
@@ -513,13 +513,12 @@ const updateDraftDocument=async (draftsData) => {
                 align='right'
               >
             
-              <Button type='submit' variant='contained'
-                size="small"
-                sx={{ align:'right', textTransform:'none' }}
-                color='secondary' elevation={10}
-              >
-                Save Changes</Button>
-              </Grid>
+                <Button type='submit' variant='contained' size="small"
+                  sx={{ align:'right', textTransform:'none', backgroundColor:colors.successColor[200], color:colors.grey[300] }}
+                  color='info'
+                >
+                  Save Changes </Button>
+                </Grid>
           </Grid>
         </Grid>
     </form>

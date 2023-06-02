@@ -459,11 +459,12 @@ const OutgoingCommentRequestsDialog = ({
                     variant="contained" 
                     color="secondary" 
                     type='submit'
-                    sx={{ textTransform:"none", marginRight:"5px" }}
+                    sx={{ textTransform:"none", marginRight:"5px", 
+                    backgroundColor:colors.successColor[200], color:colors.grey[300] }}
                     onClick={acceptCommentOpening}
                     >  
                      <Typography variant='body2'>
-                        Finish and close
+                        Open Draft for Comment
                      </Typography>
                 </Button>
             </Box> 
@@ -476,10 +477,11 @@ const OutgoingCommentRequestsDialog = ({
             onClick={()=>setOpenDialog(false)}
             variant="outlined"
             size="small"
+            color="info"
             sx={{ textTransform:"none" }}
             >
                  <Typography variant='body2'>
-                        Close
+                        Cancel
                  </Typography>
             </Button>
     </DialogActions>

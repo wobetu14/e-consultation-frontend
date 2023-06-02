@@ -75,7 +75,7 @@ const Home = () => {
             setDrafts(response.data.data.data)
           })
           .catch(e=>{
-            console.log("Error: "+e.message);
+            console.log(e.message);
           })
     }
   }

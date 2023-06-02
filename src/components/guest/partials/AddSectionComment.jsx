@@ -100,7 +100,7 @@ const addComment=async (sectionCommentData) => {
                       primary={
                         <>
                           <TextField 
-                            label="Write a comment..." 
+                            label={t('write_comment')+"..."}
                             fullWidth
                             multiline
                             color="info"
@@ -136,7 +136,7 @@ const addComment=async (sectionCommentData) => {
                             primary={
                                 <>
                                     <Typography variant="body2">
-                                    {serverSuccessMsg ? <Alert severity='success' style={successStyle}>Thank you for your feedback. </Alert>:null}
+                                    {serverSuccessMsg ? <Alert severity='success' style={successStyle}>{t('Thank_you_for_feedback')} </Alert>:null}
                                     </Typography>
                                     
                                     <Typography variant="body2">

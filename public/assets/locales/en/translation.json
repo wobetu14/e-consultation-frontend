@@ -67,5 +67,10 @@
     "draft_opening_date":"Opening Date for Comment",
     "draft_closing_date":"Closing Date for Comment",
     "base_legal_reference":"Base Legal Reference",
-    "legal_definition":"Definition"
+    "legal_definition":"Definition",
+    "open_for_comment":"Open for comment",
+    "closed_for_comment":"Closed for comment",
+    "Thank_you_for_feedback":"Thank you for your feedback.",
+    "write_comment":"Write a comment",
+    "write_reply":"Write a reply"
 }

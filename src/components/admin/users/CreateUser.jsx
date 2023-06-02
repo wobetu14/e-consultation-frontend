@@ -181,7 +181,7 @@ const createUser=async (userData) => {
       <Grid container spacing={2}>
           <Grid item xs={4}>
               <TextField 
-                  label="First Name" 
+                  label="First Name *" 
                   variant='outlined' 
                   size="small"
                   fullWidth
@@ -193,94 +193,26 @@ const createUser=async (userData) => {
                   onChange={formik.handleChange}
                   helperText={formik.touched.firstName && formik.errors.firstName ? <span style={helperTextStyle}>{formik.errors.firstName}</span>:null}
                 />
-                <TextField 
-                  label="Middle Name" 
-                  variant='outlined' 
-                  size="small"
-                  fullWidth
-                  sx={{ paddingBottom:"30px" }}
-                  color="info"
-
-                  name='middleName'
-                  value={formik.values.middleName}
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  helperText={formik.touched.middleName && formik.errors.middleName ? <span style={helperTextStyle}>{formik.errors.middleName}</span>:null}
-                />
-                <TextField 
-                  label="Last Name" 
-                  variant='outlined' 
-                  size="small"
-                  fullWidth
-                  sx={{ paddingBottom:"30px" }}
-                  color="info"
-                  name='lastName'
-                  value={formik.values.lastName}
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  helperText={formik.touched.lastName && formik.errors.lastName ? <span style={helperTextStyle}>{formik.errors.lastName}</span>:null}
-                />
-          </Grid>
-          <Grid item xs={4}>
               <TextField 
-                  label="Mobile Number" 
-                  variant='outlined' 
-                  size="small"
-                  fullWidth
-                  sx={{ paddingBottom:"30px" }}
-                  color="info"
+                label="Mobile Number *" 
+                variant='outlined' 
+                size="small"
+                fullWidth
+                sx={{ paddingBottom:"30px" }}
+                color="info"
 
-                  name='mobileNumber'
-                  value={formik.values.mobileNumber}
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  helperText={formik.touched.mobileNumber && formik.errors.mobileNumber ? <span style={helperTextStyle}>{formik.errors.mobileNumber}</span>:null}
-                />
-                <TextField 
-                  label="Email Address" 
-                  variant='outlined' 
-                  size="small"
-                  fullWidth
-                  sx={{ paddingBottom:"30px" }}
-                  color="info"
-
-                  name='email'
-                  value={formik.values.email}
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  helperText={formik.touched.email && formik.errors.email ? <span style={helperTextStyle}>{formik.errors.email}</span>:null}
-                />
-
-    {/* <Typography variant='body1' sx={{ paddingBottom:'10px' }}>User Role</Typography> */}
-              <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
-                <InputLabel>Select User Role</InputLabel>
-                <Select
-                  labelId="user_role"
-                  size="small"
-                  id="user_role"  
-                  color="info"          
-                  name='roleID'
-                  value={formik.values.roleID}
-                  onChange={formik.handleChange}
-                  helperText={formik.touched.roleID && formik.errors.roleID ? <span style={helperTextStyle}>{formik.errors.roleID}</span>:null}
-                >
-                    {
-                      userRoles ? userRoles.map((userRole)=>(
-                        <MenuItem value={userRole.role.id} key={userRole.id}>{userRole.role.name} </MenuItem>
-                      )): null
-                    }
-                </Select>
-              <FormHelperText>{formik.touched.roleID && formik.errors.roleID ? <span style={helperTextStyle}>{formik.errors.roleID}</span>:null}</FormHelperText>
-            </FormControl>
-          </Grid>
-          <Grid item xs={4}>
-
-            {
+                name='mobileNumber'
+                value={formik.values.mobileNumber}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                helperText={formik.touched.mobileNumber && formik.errors.mobileNumber ? <span style={helperTextStyle}>{formik.errors.mobileNumber}</span>:null}
+              /> 
+              {
               userInfo ? (
                 userInfo.user.roles[0].name==="Super Admin" && formik.values.roleID===4 ? 
                 (
                   <FormControl sx={{minWidth: '100%', paddingBottom:'5px' }}>
-                      <InputLabel>Select Region</InputLabel>
+                      <InputLabel>Select Region *</InputLabel>
                       <Select
                         labelId="region_id"
                         id="region_id"  
@@ -335,6 +267,78 @@ const createUser=async (userData) => {
             </FormControl>
             )
           }
+          </Grid>
+          <Grid item xs={4}>
+          <TextField 
+                  label="Middle Name *" 
+                  variant='outlined' 
+                  size="small"
+                  fullWidth
+                  sx={{ paddingBottom:"30px" }}
+                  color="info"
+
+                  name='middleName'
+                  value={formik.values.middleName}
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  helperText={formik.touched.middleName && formik.errors.middleName ? <span style={helperTextStyle}>{formik.errors.middleName}</span>:null}
+              />
+          <TextField 
+                label="Email Address *" 
+                variant='outlined' 
+                size="small"
+                fullWidth
+                sx={{ paddingBottom:"30px" }}
+                color="info"
+
+                name='email'
+                value={formik.values.email}
+                onBlur={formik.handleBlur}
+                onChange={formik.handleChange}
+                helperText={formik.touched.email && formik.errors.email ? <span style={helperTextStyle}>{formik.errors.email}</span>:null}
+              />
+              
+
+    {/* <Typography variant='body1' sx={{ paddingBottom:'10px' }}>User Role</Typography> */}
+              
+          </Grid>
+          <Grid item xs={4}>
+          <TextField 
+                  label="Last Name *" 
+                  variant='outlined' 
+                  size="small"
+                  fullWidth
+                  sx={{ paddingBottom:"30px" }}
+                  color="info"
+                  name='lastName'
+                  value={formik.values.lastName}
+                  onBlur={formik.handleBlur}
+                  onChange={formik.handleChange}
+                  helperText={formik.touched.lastName && formik.errors.lastName ? <span style={helperTextStyle}>{formik.errors.lastName}</span>:null}
+                />
+
+        <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+                <InputLabel>Select User Role *</InputLabel>
+                <Select
+                  labelId="user_role"
+                  size="small"
+                  id="user_role"  
+                  color="info"          
+                  name='roleID'
+                  value={formik.values.roleID}
+                  onChange={formik.handleChange}
+                  helperText={formik.touched.roleID && formik.errors.roleID ? <span style={helperTextStyle}>{formik.errors.roleID}</span>:null}
+                >
+                    {
+                      userRoles ? userRoles.map((userRole)=>(
+                        <MenuItem value={userRole.role.id} key={userRole.id}>{userRole.role.name} </MenuItem>
+                      )): null
+                    }
+                </Select>
+              <FormHelperText>{formik.touched.roleID && formik.errors.roleID ? <span style={helperTextStyle}>{formik.errors.roleID}</span>:null}</FormHelperText>
+            </FormControl>                        
+
+            
             <Grid 
                   sx={{ paddingBottom:"20px" }}
                   align='right'

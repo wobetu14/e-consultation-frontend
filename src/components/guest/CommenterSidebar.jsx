@@ -164,7 +164,7 @@ const CommenterSidebar = () => {
                             <>
                                 <Item
                                 title="Dashboard"
-                                to="/admin"
+                                to="/commenter"
                                 icon={<HomeIcon />}
                                 selected={selected}
                                 setSelected={setSelected}
@@ -173,6 +173,30 @@ const CommenterSidebar = () => {
                                 <Item
                                 title="Assignments"
                                 to="assigned_drafts"
+                                icon={<ListIcon />}
+                                selected={selected}
+                                setSelected={setSelected}
+                                />
+
+                              <Item
+                                title="Invitations"
+                                to="commenting_invitations"
+                                icon={<ListIcon />}
+                                selected={selected}
+                                setSelected={setSelected}
+                                />
+
+                              <Item
+                                title="Edit Profile"
+                                to="user_profile"
+                                icon={<ListIcon />}
+                                selected={selected}
+                                setSelected={setSelected}
+                                />
+
+                              <Item
+                                title="Change Password"
+                                to="change_password"
                                 icon={<ListIcon />}
                                 selected={selected}
                                 setSelected={setSelected}

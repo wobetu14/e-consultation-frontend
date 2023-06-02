@@ -398,7 +398,7 @@ const Sidebar = () => {
                         /> */}
 
                         <Item
-                          title="Draft Approvals"
+                          title="Opening Request"
                           to="draft_approval_request"
                           icon={<FactCheckIcon />}
                           selected={selected}
@@ -435,16 +435,16 @@ const Sidebar = () => {
                         setSelected={setSelected}
                       />
 
-                    <Item
+                   {/*  <Item
                       title="Draft Documents"
                       to="drafts"
                       icon={<MenuBookIcon />}
                       selected={selected}
                       setSelected={setSelected}
-                    />
+                    /> */}
 
                     <Item
-                      title="Draft Approval"
+                      title="Opening Request"
                       to="draft_approval_request"
                       icon={<FactCheckIcon />}
                       selected={selected}

@@ -46,7 +46,7 @@ const CreateSector = () => {
 
 validationSchema:YUP.object({
   sectorName:YUP.string().required("This field is required. Please enter the sector name."),
-  sectorDescription:YUP.string().required("This field is required. Please enter description."),
+  // sectorDescription:YUP.string().required("This field is required. Please enter description."),
   }),
 
   onSubmit:(values)=>{
@@ -92,7 +92,7 @@ const createSector=async (sectorData) => {
         <Grid container spacing={1}>
           <Grid item xs={5}>
             <TextField 
-                label="Name of economic sector" 
+                label="Name of economic sector *" 
                 variant='outlined' 
                 size="small"
                 fullWidth

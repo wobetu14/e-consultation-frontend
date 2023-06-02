@@ -101,7 +101,7 @@ const addComment=async (documentCommentData) => {
                       primary={
                         <>
                           <TextField 
-                            label="Write a comment..." 
+                            label={t('write_comment')+"..."}
                             fullWidth
                             multiline
                             color="info"

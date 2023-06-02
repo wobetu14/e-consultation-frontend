@@ -21,7 +21,7 @@ import { tokens } from '../../../../theme';
 import { UserContext } from '../../../../contexts/UserContext';
 
 const RejectExternalRequest = ({
-    documentDetail,
+    requestDetail,
     serverSuccessMsg,
     serverErrorMsg,
     setServerSuccessMsg,
@@ -110,27 +110,26 @@ const RejectExternalRequest = ({
          }
       }
 
-     const formikAcceptanceForm=useFormik({
+      const formikRejectForm=useFormik({
         initialValues:{
-            draft_id:params.id,
-            comment_repliers:[],
+            commentRequestID:requestDetail.id,
+            rejectionMessage:"",
         },
 
       onSubmit:(values)=>{
-        const requestData={
-            draft_id:params.id,
-            comment_repliers: repliersID.length>0 ? repliersID.map((replierID)=>(replierID)):[],
+        const rejectionData={
+            comment_request_id:values.commentRequestID,
+            message: values.rejectionMessage,
         };
     
-        assignMoreRepliers(requestData);
+        rejectIncomingCommentRequest(rejectionData);
       }
     }); 
 
-    const assignMoreRepliers=async (requestData) => {
-        console.log(requestData)
-        setLoading(true)
-        
-      return await axios.post(`additional-repliers`, requestData)
+    const rejectIncomingCommentRequest=async (rejectionData) => {
+       
+        setLoading(true) 
+      return await axios.post(`reject-comment-request`, rejectionData)
         .then(res => {
           setServerSuccessMsg(res.data.message);
           setServerErrorMsg(null)
@@ -178,7 +177,7 @@ const RejectExternalRequest = ({
             </motion.span>
         </Grid>
 
-        <form style={{ marginBottom:"30px" }} onSubmit={formikAcceptanceForm.handleSubmit}>
+        <form style={{ marginBottom:"30px" }} onSubmit={formikRejectForm.handleSubmit}>
 
                 <TextField 
                     label="Write rejection message (not mandatory)" 
@@ -189,10 +188,10 @@ const RejectExternalRequest = ({
                     rows={4}
                     sx={{ paddingBottom:"10px" }}
                     color="info"
-                    name='acceptanceMessage'
-                    value={formikAcceptanceForm.values.acceptanceRemark}
-                    onBlur={formikAcceptanceForm.handleBlur}
-                    onChange={formikAcceptanceForm.handleChange}
+                    name='rejectionMessage'
+                    value={formikRejectForm.values.rejectionMessage}
+                    onBlur={formikRejectForm.handleBlur}
+                    onChange={formikRejectForm.handleChange}
                     />  
 
                 <Box>
@@ -202,10 +201,9 @@ const RejectExternalRequest = ({
                         type='submit'
                         sx={{ textTransform:"none", marginRight:"5px", 
                         backgroundColor:colors.dangerColor[200], color:colors.grey[300] }}
-                        onClick={assignMoreRepliers}
                         >  
                         <Typography variant='body2'>
-                            Reject request
+                            Reject this request
                         </Typography>
                     </Button>
                 </Box> 

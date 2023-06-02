@@ -124,21 +124,21 @@ const CreateDraft = () => {
 
 validationSchema:YUP.object({
     // institutionID:YUP.number().required("This field is required. Please enter the institution name."),
-    // shortTitle:YUP.string().required("This field is required. Please provide a short description about the document."),
+    shortTitle:YUP.string().required("This field is required. Please provide a short description about the document."),
     // lawCategoryId:YUP.number().required("This field is required. Please select law category this document belongs to."),
     // draftStatusId:YUP.number().required("This field is required. Please select the draft status."),
     // sectorId:YUP.number().required("This field is required. Please select sector."),
     // openingDate:YUP.date().required("This field is required. Please provide opening date."),
     // closingDate:YUP.date().required("This field is required. Please provide closing date."),
-    // file:YUP.mixed().required("This field is required. Please choose file to upload."),
-    // isPublic:YUP.number().required("This field is required. Please provide the status of this document."),
+    file:YUP.mixed().required("This field is required. Please choose file to upload."),
+    isPrivate:YUP.number().required("This field is required. Please provide the status of this document."),
     // parentId:YUP.number().required("This field is required. Please provide parent reference of this document."),
     // tags:YUP.string().required("This field is required. Please provide tag info for this document."),
     // baseLegalReference:YUP.string().required("This field is required. Please provide base legal reference of this document."),
     // definition:YUP.string().required("This field is required. Please provide definition for this document."),
     // scope:YUP.string().required("This field is required. Please provide a scope for this document."),
     // mainProvision:YUP.string().required("This field is required. Please provide main provision for this document."),
-    // summary:YUP.string().required("This field is required. Please provide summary."),
+    summary:YUP.string().required("This field is required. Please provide summary."),
     // amendedLaws:YUP.string().required("This field is required."),
     // repealedLaws:YUP.string().required("This field is required."),
     // transitoryProvision:YUP.string().required("This field is required."), 
@@ -229,7 +229,7 @@ const createDraftDocument=async (draftsData) => {
             </FormControl> */}
 
                 <TextField 
-                  label="Short title" 
+                  label="Short title *" 
                   variant='outlined'
                   size='small' 
                   fullWidth
@@ -344,7 +344,7 @@ const createDraftDocument=async (draftsData) => {
                   helperText={formik.touched.closingDate && formik.errors.closingDate ? <span style={helperTextStyle}>{formik.errors.closingDate}</span>:null}
                 /> */}
 
-            <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Document Access</Typography>
+            <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Document Access *</Typography>
                 <RadioGroup
                         aria-labelledby="demo-controlled-radio-buttons-group"
                         name="isPrivate"
@@ -354,6 +354,7 @@ const createDraftDocument=async (draftsData) => {
                       >
                         <FormControlLabel value='0' control={<Radio />} label="Public"  />
                         <FormControlLabel value='1' control={<Radio />} label="Private"  />
+                      {formik.touched.isPrivate && formik.errors.isPrivate ? <span style={helperTextStyle}>{formik.errors.isPrivate}</span>:null}
                   </RadioGroup> 
 
                   <Typography variant='body1' sx={{ paddingBottom:'10px' }}>Enter Draft Tags</Typography>
@@ -484,7 +485,7 @@ const createDraftDocument=async (draftsData) => {
           </Grid>
           <Grid item xs={4}>
           <TextField 
-              label="Summary" 
+              label="Summary *" 
               variant='outlined' 
               size="small"
               multiline
@@ -545,7 +546,7 @@ const createDraftDocument=async (draftsData) => {
             />
   <Typography variant='body1' sx={{ paddingBottom:'10px' }}> 
         <strong>Attachement:</strong> 
-        Please attach the draft document file. (Only .docx files are allowed.)
+        Please attach the draft document file *. (Only .doc or .docx files are allowed.)
         </Typography>
             <TextField 
                 variant='outlined' 

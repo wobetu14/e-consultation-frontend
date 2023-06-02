@@ -6,7 +6,8 @@ import { tokens } from '../../theme';
 import { useTranslation } from 'react-i18next';
 
 const DocumentsFilters = (
-  {drafts, 
+  { 
+    drafts, 
     setDrafts, 
     unfilteredDrafts, 
     setUnfilteredDrafts,
@@ -19,15 +20,15 @@ const DocumentsFilters = (
     const colors = tokens(theme.palette.mode);
     const {t}=useTranslation();
 
-    const [lawCategoryID, setLawCategoryID]=useState(null);
+    const [lawCategoryID, setLawCategoryID]=useState(0);
     const [lawCategories, setLawCategories]=useState(null);
 
-    const [regionID, setRegionID] = useState(null);
+    const [regionID, setRegionID] = useState(0);
     const [regions, setRegions]=useState(null);
 
-    const [institutionID, setInstitutionID]=useState(null);
+    const [institutionID, setInstitutionID]=useState(0);
     const [institutions, setInstitutions]=useState(null);
-    const [draftStatusName, setDraftStatusName]=useState(null);
+    const [draftStatusName, setDraftStatusName]=useState("");
 
     const [sectors, setSectors]=useState([]);
     const [selectedSectors, setSelectedSectors]=useState([]);
@@ -93,55 +94,57 @@ const DocumentsFilters = (
       })
     }
 
-    const handleRegionChange = (event) => {
-      event.preventDefault()
-      setRegionID(event.target.value);
+    const handleRegionChange = async (e) => {      
+      setRegionID(e.target.value);
+          
+      return await  axios.get(`drafts?region=${e.target.value}`)
+          .then(res=>res.data.data)
+          .then(res=>{
+            setDrafts(res.data)
+          }).catch(error=>{
+            console.log(error.response.message);
+          })
       
-      const filteredDrafts=unfilteredDrafts.filter((draft)=>{
-        return parseInt(draft.institution.region_id)===parseInt(regionID)
-      });
-      setDrafts(filteredDrafts)
-      setTotalDrafts(filteredDrafts.length);
-      // setUnfilteredDrafts(filteredDrafts)
+
     };
 
-    const handleInstitutionChange = (event) => {
+    const handleInstitutionChange = async (event) => {
       event.preventDefault();
       setInstitutionID(event.target.value);
-      setTotalDrafts(filteredDrafts.length);
-      const filteredDrafts=unfilteredDrafts.filter((draft)=>{
-        return parseInt(draft.institution_id)===parseInt(institutionID)
-      });
-      setDrafts(filteredDrafts)
-      setTotalDrafts(filteredDrafts.length);
-      // setUnfilteredDrafts(filteredDrafts)
+
+      return await  axios.get(`drafts?institution=${event.target.value}`)
+      .then(res=>res.data.data)
+      .then(res=>{
+        setDrafts(res.data)
+      }).catch(error=>{
+        console.log(error.response.message);
+      })
     };
 
-    const handleClick = () => {
-      console.info('You clicked the Chip.');
-    };
-
-    const handleCategoryChange= (e)=>{
+    const handleCategoryChange= async(e)=>{
       e.preventDefault();
       setLawCategoryID(e.target.value);
-      const filteredDrafts=unfilteredDrafts.filter((draft)=>{
-        return parseInt(draft.law_category_id)===parseInt(lawCategoryID)
-      });
-      setDrafts(filteredDrafts);
-      setTotalDrafts(filteredDrafts.length);
-      // setUnfilteredDrafts(filteredDrafts)
+
+      return await  axios.get(`drafts?law_category=${e.target.value}`)
+      .then(res=>res.data.data)
+      .then(res=>{
+        setDrafts(res.data)
+      }).catch(error=>{
+        console.log(error.response.message);
+      })
     }
     
-    const handleDraftStatusChange=(e)=>{
+    const handleDraftStatusChange= async(e)=>{
       e.preventDefault();
       setDraftStatusName(e.target.value);
       
-      const filteredDrafts=unfilteredDrafts.filter((draft)=>{
-        return (draft.draft_status.name===draftStatusName)
-      });
-      setDrafts(filteredDrafts);
-      setTotalDrafts(filteredDrafts.length);
-      // setUnfilteredDrafts(filteredDrafts)
+      return await  axios.get(`drafts?draft_status=${e.target.value}`)
+      .then(res=>res.data.data)
+      .then(res=>{
+        setDrafts(res.data)
+      }).catch(error=>{
+        console.log(error.response.message);
+      })
     }
 
 
@@ -174,6 +177,7 @@ const DocumentsFilters = (
                 </Typography>
 
                 <div>
+                  <form>
                   <FormControl sx={{ m: 1, minWidth: "80%" }}>
                     <Select
                       name="regionID"
@@ -194,6 +198,7 @@ const DocumentsFilters = (
 
                   </Select>
                 </FormControl>
+                  </form>
               </div>
               </Box> 
               
@@ -213,9 +218,6 @@ const DocumentsFilters = (
                       autoWidth='false'
                       size='small'
                     >
-                    <MenuItem value="">
-                      <em>All</em>
-                    </MenuItem>
                     {
                       institutions ? institutions.map((institution)=>(
                         <MenuItem key={institution.id} value={institution.id}>{institution.name}</MenuItem> 
@@ -237,8 +239,8 @@ const DocumentsFilters = (
                     value={draftStatusName}
                     onChange={handleDraftStatusChange}
                   >
-                    <FormControlLabel value="Open" control={<Radio />} label="Open"  />
-                    <FormControlLabel value="Closed" control={<Radio />} label="Closed"  />
+                    <FormControlLabel value={1} control={<Radio />} label="Open"  />
+                    <FormControlLabel value={0} control={<Radio />} label="Closed"  />
               </RadioGroup>            
             </Box>
 

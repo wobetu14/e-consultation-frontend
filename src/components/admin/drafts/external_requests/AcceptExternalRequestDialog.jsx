@@ -21,7 +21,7 @@ import { tokens } from '../../../../theme';
 import { UserContext } from '../../../../contexts/UserContext';
 
 const AcceptExternalRequestDialog = ({
-    documentDetail,
+    requestDetail,
     serverSuccessMsg,
     serverErrorMsg,
     setServerSuccessMsg,
@@ -68,11 +68,9 @@ const AcceptExternalRequestDialog = ({
         }
 
     React.useEffect(()=>{
-        fetchInstitutions();
-        getInstitutionsID();
         getMyUsersID();
         fetchMyUsers();
-     }, [selectedInstitutions, repliersEmail])
+     }, [repliersEmail])
 
       const getMyUsersID=()=>{
          if(repliersEmail.length>0){
@@ -82,22 +80,6 @@ const AcceptExternalRequestDialog = ({
          }
      } 
 
-     const getInstitutionsID=()=>{
-        if(selectedInstitutions.length>0){
-           selectedInstitutions.map((selectedInstitution)=>(
-               setInsIDs([...instIDs, selectedInstitution.id])
-           ))
-        }
-    } 
-
-     const fetchInstitutions = async() =>{
-        try{
-          const res = await  axios.get('public/institutions')
-          setInstitutions(res.data.data.data);
-        } catch(error){
-            console.log(error);
-         }
-      }
 
       const fetchMyUsers = async() =>{
         try{
@@ -112,25 +94,27 @@ const AcceptExternalRequestDialog = ({
 
      const formikAcceptanceForm=useFormik({
         initialValues:{
-            draft_id:params.id,
-            comment_repliers:[],
+            commentRequestID:requestDetail.id,
+            acceptanceMessage:"",
+            commenters:[]
         },
 
       onSubmit:(values)=>{
-        const requestData={
-            draft_id:params.id,
-            comment_repliers: repliersID.length>0 ? repliersID.map((replierID)=>(replierID)):[],
+        const acceptanceData={
+            comment_request_id:values.commentRequestID,
+            message: values.acceptanceMessage,
+            commenters:repliersID.length>0 ? repliersID.map((replierID)=>replierID):[]
         };
     
-        assignMoreRepliers(requestData);
+        assignRepliers(acceptanceData);
       }
     }); 
 
-    const assignMoreRepliers=async (requestData) => {
-        console.log(requestData)
-        setLoading(true)
+    const assignRepliers=async (acceptanceData) => {
+        console.log(acceptanceData)
+        // setLoading(true)
         
-      return await axios.post(`additional-repliers`, requestData)
+      return await axios.post(`assign-commenters`, acceptanceData)
         .then(res => {
           setServerSuccessMsg(res.data.message);
           setServerErrorMsg(null)
@@ -190,13 +174,13 @@ const AcceptExternalRequestDialog = ({
                     sx={{ paddingBottom:"10px" }}
                     color="info"
                     name='acceptanceMessage'
-                    value={formikAcceptanceForm.values.acceptanceRemark}
+                    value={formikAcceptanceForm.values.acceptanceMessage}
                     onBlur={formikAcceptanceForm.handleBlur}
                     onChange={formikAcceptanceForm.handleChange}
                     />  
 
                 <Typography variant="subtitle1" fontWeight="600">
-                        Assign Repliers
+                        Assign Commenters
                     </Typography>
                     <Autocomplete
                         multiple
@@ -212,7 +196,7 @@ const AcceptExternalRequestDialog = ({
                         <TextField
                             {...params}
                             variant="outlined"
-                            label="Enter email addresses"
+                            label="Select Commenters"
                             color='info'
                             value={(option)=>option}
                         />
@@ -226,7 +210,6 @@ const AcceptExternalRequestDialog = ({
                         color="secondary" 
                         type='submit'
                         sx={{ textTransform:"none", marginRight:"5px" }}
-                        onClick={assignMoreRepliers}
                         >  
                         <Typography variant='body2'>
                             Finish and close

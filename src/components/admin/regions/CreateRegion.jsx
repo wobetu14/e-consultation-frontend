@@ -109,7 +109,7 @@ const registerRegion=async (regionData) => {
           <Grid container spacing={2}>
            <Grid item xs={4}>
                   <TextField 
-                      label="Region Name" 
+                      label="Region Name *" 
                       variant='outlined' 
                       size="small"
                       fullWidth

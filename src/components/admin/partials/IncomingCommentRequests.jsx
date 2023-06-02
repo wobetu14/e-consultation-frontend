@@ -86,7 +86,7 @@ const IncomingCommentRequests = () => {
       
     useEffect(()=>{ 
       incomingCommentRequests();
-    },[incomingCommentData]);
+    },[]);
 
   return (
     <Box>  
@@ -151,7 +151,12 @@ const IncomingCommentRequests = () => {
                 <Typography variant="body1">{incommingData.draft_id}</Typography>
               </TableCell>
               <TableCell>
-                <Typography variant="body1">{incommingData.status === 0 ? "Pending":"Accepted"}</Typography>
+                <Typography variant="body1">
+                  {
+                    incommingData.status ===0 ? "Pending":(
+                    incommingData.status===1 ? "Accepted":"Rejected"
+                  )}
+                  </Typography>
               </TableCell>
               <TableCell>
 
@@ -207,7 +212,7 @@ const IncomingCommentRequests = () => {
                     {
                       openExternalAcceptanceDialog && (
                         <AcceptExternalRequestDialog 
-                        documentDetail={incommingData}
+                        requestDetail={incommingData}
                         serverSuccessMsg={serverSuccessMsg}
                         serverErrorMsg={serverErrorMsg}
                         setServerSuccessMsg={setServerSuccessMsg}
@@ -222,7 +227,7 @@ const IncomingCommentRequests = () => {
                     {
                       openExternalRejectionDialog && (
                         <RejectExternalRequest 
-                          documentDetail={incommingData}
+                        requestDetail={incommingData}
                           serverSuccessMsg={serverSuccessMsg}
                           serverErrorMsg={serverErrorMsg}
                           setServerSuccessMsg={setServerSuccessMsg}
@@ -236,7 +241,7 @@ const IncomingCommentRequests = () => {
                     {
                       openAssignCommenterDialog && (
                         <AssignCommenters
-                        documentDetail={incommingData}
+                        requestDetail={incommingData}
                         serverSuccessMsg={serverSuccessMsg}
                         serverErrorMsg={serverErrorMsg}
                         setServerSuccessMsg={setServerSuccessMsg}

@@ -149,6 +149,7 @@ function App() {
                       <Route index element={<CommenterDashboard />} />
                       <Route path='assigned_drafts' element={<DraftAssignments />} />
                       <Route path='comment_reflections' element={<DraftAssignments />} />
+                      <Route path='user_profile' element={<UserProfile />} />
                     </Route>
                     
                     <Route path='/admin' 

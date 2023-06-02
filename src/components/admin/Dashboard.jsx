@@ -164,9 +164,23 @@ const fetchDrafts =async() =>{
         )
       }
 
-      <Box sx={{ marginTop:"100px", marginBottom:"50px" }}>
-          <UserProfile />
-      </Box>
+      {
+        (userRole==="Uploader") ? (
+          <Box sx={{ marginTop:"100px", marginBottom:"50px" }}>
+            <Drafts />
+          </Box>
+        ):"" 
+      }
+
+      {
+        (userRole==="Approver") ? (
+          <Box sx={{ marginTop:"100px", marginBottom:"50px" }}>
+            <UserProfile />
+          </Box>
+        ):""
+      }
+
+      
     </Box>
   );
 };

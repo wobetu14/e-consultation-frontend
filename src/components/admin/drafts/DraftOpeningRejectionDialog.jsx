@@ -102,9 +102,6 @@ const DraftOpeningRejectionDialog = ({
                <Typography variant='h5' fontWeight="600">
                     Reason to reject this request?
                 </Typography>
-                {
-                    <h3>{documentDetail ? documentDetail.id:"Non"}</h3>
-                }
                 <TextField 
                     label="Please write your reason to reject this request..." 
                     variant='outlined'
@@ -129,8 +126,8 @@ const DraftOpeningRejectionDialog = ({
                             type='submit'
                             sx={{ textTransform:"none", marginRight:"5px", backgroundColor:colors.dangerColor[200], color:colors.grey[300] }}
                             >  
-                            <Typography variant='body1'>
-                                Finish and close
+                            <Typography variant='body2'>
+                                Reject this Request
                             </Typography>
                         </Button>
                     </Box> 
@@ -142,13 +139,13 @@ const DraftOpeningRejectionDialog = ({
          <DialogActions>
              <Button
               onClick={()=>setOpenRejectionDialog(false)}
-              variant="contained"
+              variant="outlined"
               size="small"
-              color="secondary"
-              sx={{ textTransform:"none", backgroundColor:colors.dangerColor[200], color:colors.grey[300]  }}
+              color="info"
+              sx={{ textTransform:"none" }}
               >
-                  <Typography variant="body1">
-                    Close
+                  <Typography variant="body2">
+                    Cancel
                   </Typography>
               </Button>
          </DialogActions>

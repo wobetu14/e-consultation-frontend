@@ -60,7 +60,7 @@ const AddNewDocumentReply = ({comment, reflections}) => {
 
   onSubmit:(values)=>{
     const replyData={
-        general_comment_id:values.commentID,
+      general_comment_id:values.commentID,
       message:values.commentMessage,
       file:values.file
     };
@@ -96,7 +96,7 @@ const replyDocComment=async (replyData) => {
                       primary={
                         <>
                           <TextField 
-                            label="Write a reply..." 
+                            label={t('write_reply')+"..."}
                             fullWidth
                             multiline
                             color="info"

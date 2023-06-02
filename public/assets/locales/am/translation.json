@@ -71,6 +71,10 @@
     "draft_closing_date":"የመዝጊያ ጊዜ",
     "base_legal_reference":"መሰረታዊ የህግ ማጣቀሻ",
     "legal_definition":"የህግ ትርጓሜ",
-    "document_file":"የሰንዱ ፋይል"
-
+    "document_file":"የሰንዱ ፋይል",
+    "open_for_comment":"ለአስተያየት ክፍት ነው",
+    "closed_for_comment":"የአስተያየት ጊዜ አልቋል",
+    "Thank_you_for_feedback":"ስለሰጡን አስተያየት እናመሰግናለን።",
+    "write_comment":"አስተያየት ይጻፉ",
+    "write_reply":"ግብረመልስ ይጻፉ"
 }

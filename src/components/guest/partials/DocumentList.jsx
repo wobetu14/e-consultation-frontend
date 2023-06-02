@@ -2,7 +2,8 @@
 import { useTheme } from '@emotion/react';
 import { PictureAsPdf } from '@mui/icons-material';
 import { Button, Chip, List, ListItem, ListItemText, Paper, Skeleton, Stack, Typography } from '@mui/material'
-import React from 'react'
+import React, { useTransition } from 'react'
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { tokens } from '../../../theme';
 import './DocumentDisplay.css'
@@ -12,11 +13,8 @@ const DocumentList = ({status, deadline, draft}) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [loading, setLoading]=React.useState(true)
+    const {t}=useTranslation();
 
-    React.useEffect(()=>{
-        const loader=setTimeout(()=>{setLoading(false)}, 3000);
-        return () => clearTimeout(loader);
-    }, [])
   return (
     <div>
         <Paper elevation={1} sx={{ backgroundColor:colors.grey[200], marginBottom:'20px' }} className="document_list_container">
@@ -73,7 +71,7 @@ const DocumentList = ({status, deadline, draft}) => {
                                    (draft.draft_status.name==="Open") 
                                    ? 
                                    (
-                                    <Chip label={"Open for comment"} 
+                                    <Chip label={t('open_for_comment')} 
                                     size="small"
                                     sx={{ 
                                         backgroundColor:colors.successColor[100], 
@@ -86,7 +84,7 @@ const DocumentList = ({status, deadline, draft}) => {
                                    (draft.draft_status.name==="Closed") 
                                    ?
                                    (
-                                   <Chip label={"Closed for comment"} 
+                                   <Chip label={t('closed_for_comment')} 
                                    size="small"
                                    sx={{
                                         backgroundColor:colors.secondary[100], 
@@ -101,7 +99,7 @@ const DocumentList = ({status, deadline, draft}) => {
                                          ? 
                                           (
                                           <label>
-                                              <strong> Closing Date: </strong> {draft.comment_closing_date} &nbsp;
+                                              <strong> {t('draft_closing_date')}: </strong> {draft.comment_closing_date} &nbsp;
                                           </label>
                                           )
                                           :
@@ -109,11 +107,11 @@ const DocumentList = ({status, deadline, draft}) => {
                                         } 
                                         
                                     <label>
-                                        <strong>Law category: </strong> {draft.law_category.name} &nbsp;
+                                        <strong>{t('law_category')}: </strong> {draft.law_category.name} &nbsp;
                                     </label>
 
                                     <label>
-                                        <strong>Institution: </strong> {draft.institution.name} &nbsp;
+                                        <strong>{t('institution')}: </strong> {draft.institution.name} &nbsp;
                                     </label>
                                 </div>
                             </Stack>
