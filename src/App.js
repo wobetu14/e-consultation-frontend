@@ -46,6 +46,8 @@ import CommenterDashboard from './components/guest/CommenterDashboard';
 import DraftAssignments from './components/admin/drafts/DraftAssignments';
 import CommentReflections from './components/admin/drafts/CommentReflections';
 import ExternalRequestDetails from './components/admin/drafts/external_requests/ExternalRequestDetails';
+import InvitedDrafts from './components/admin/drafts/InvitedDrafts';
+import RedirectCommentInvitation from './components/admin/drafts/RedirectCommentInvitation';
 
 
 function App() {
@@ -131,6 +133,7 @@ function App() {
                         <Route path="create-account" element={<GuestSignup />} />
                         <Route path='user_profile' element={<UserProfile />} />
                         <Route path='activation/:token' element={<AccountActivation />} />
+                        <Route path='draft/comment-invitation/:id' element={<RedirectCommentInvitation />} />
                         <Route path="*" element={<PageNotFound />} />
                       {/* </Route> */}
                     </Route>
@@ -148,6 +151,7 @@ function App() {
                     <Route path='/commenter' element={<CommenterLayout />}>
                       <Route index element={<CommenterDashboard />} />
                       <Route path='assigned_drafts' element={<DraftAssignments />} />
+                      <Route path='invited_drafts' element={<InvitedDrafts />} />
                       <Route path='comment_reflections' element={<DraftAssignments />} />
                       <Route path='user_profile' element={<UserProfile />} />
                     </Route>

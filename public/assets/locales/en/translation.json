@@ -72,5 +72,7 @@
     "closed_for_comment":"Closed for comment",
     "Thank_you_for_feedback":"Thank you for your feedback.",
     "write_comment":"Write a comment",
-    "write_reply":"Write a reply"
+    "write_reply":"Write a reply",
+    "region":"Region",
+    "sectors":"Sectors"
 }

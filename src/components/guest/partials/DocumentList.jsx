@@ -9,10 +9,9 @@ import { tokens } from '../../../theme';
 import './DocumentDisplay.css'
 import DraftPagination from './DraftPagination';
 
-const DocumentList = ({status, deadline, draft}) => {
+const DocumentList = ({status, deadline, draft, loading, setLoading}) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-    const [loading, setLoading]=React.useState(true)
     const {t}=useTranslation();
 
   return (

@@ -14,7 +14,9 @@ const DocumentsFilters = (
     totalDrafts,
     setTotalDrafts,
     pageCount,
-    setPageCount
+    setPageCount,
+    loading,
+    setLoading
   }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
@@ -96,13 +98,15 @@ const DocumentsFilters = (
 
     const handleRegionChange = async (e) => {      
       setRegionID(e.target.value);
-          
+      setLoading(true)
       return await  axios.get(`drafts?region=${e.target.value}`)
           .then(res=>res.data.data)
           .then(res=>{
             setDrafts(res.data)
+            setLoading(false)
           }).catch(error=>{
             console.log(error.response.message);
+            setLoading(false)
           })
       
 
@@ -111,39 +115,45 @@ const DocumentsFilters = (
     const handleInstitutionChange = async (event) => {
       event.preventDefault();
       setInstitutionID(event.target.value);
-
+      setLoading(true)
       return await  axios.get(`drafts?institution=${event.target.value}`)
       .then(res=>res.data.data)
       .then(res=>{
         setDrafts(res.data)
+        setLoading(false)
       }).catch(error=>{
         console.log(error.response.message);
+        setLoading(false)
       })
     };
 
     const handleCategoryChange= async(e)=>{
       e.preventDefault();
       setLawCategoryID(e.target.value);
-
+      setLoading(true)
       return await  axios.get(`drafts?law_category=${e.target.value}`)
       .then(res=>res.data.data)
       .then(res=>{
         setDrafts(res.data)
+        setLoading(false)
       }).catch(error=>{
         console.log(error.response.message);
+        setLoading(false)
       })
     }
     
     const handleDraftStatusChange= async(e)=>{
       e.preventDefault();
       setDraftStatusName(e.target.value);
-      
+      setLoading(true)
       return await  axios.get(`drafts?draft_status=${e.target.value}`)
       .then(res=>res.data.data)
       .then(res=>{
         setDrafts(res.data)
+        setLoading(false)
       }).catch(error=>{
         console.log(error.response.message);
+        setLoading(false)
       })
     }
 
@@ -181,15 +191,13 @@ const DocumentsFilters = (
                   <FormControl sx={{ m: 1, minWidth: "80%" }}>
                     <Select
                       name="regionID"
+                      placeholder="Region"
                       value={regionID}
                       onChange={handleRegionChange}
                       displayEmpty
                       autoWidth='false'
                       size='small'
                     >
-                    <MenuItem value="">
-                      <em>All</em>
-                    </MenuItem>
                     {
                       regions ? regions.map((region)=>(
                         <MenuItem key={region.id} value={region.id}>{region.name}</MenuItem>
@@ -207,11 +215,13 @@ const DocumentsFilters = (
                 <Typography variant="h6" fontWeight={600}>
                     {t('institution_name')}
                 </Typography>
+                
 
               <div>
                   <FormControl sx={{ m: 1, minWidth: "80%" }}>
                     <Select
                       name="institutionID"
+                      placeholder="Region"
                       value={institutionID}
                       onChange={handleInstitutionChange}
                       displayEmpty
@@ -239,8 +249,8 @@ const DocumentsFilters = (
                     value={draftStatusName}
                     onChange={handleDraftStatusChange}
                   >
-                    <FormControlLabel value={1} control={<Radio />} label="Open"  />
-                    <FormControlLabel value={0} control={<Radio />} label="Closed"  />
+                    <FormControlLabel value="Open" control={<Radio />} label="Open"  />
+                    <FormControlLabel value="Closed" control={<Radio />} label="Closed"  />
               </RadioGroup>            
             </Box>
 
@@ -286,8 +296,7 @@ const DocumentsFilters = (
                       <TextField
                           {...params}
                           // variant="standard"
-                          label="Select sectors"
-                          placeholder="Sectors "
+                          label={t('sectors')}
                           value={(option)=>option.name}
                       />
                       )}

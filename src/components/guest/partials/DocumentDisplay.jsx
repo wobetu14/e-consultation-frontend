@@ -1,5 +1,5 @@
 import { useTheme } from '@emotion/react'
-import { Box, Pagination, Skeleton, Tab, Typography } from '@mui/material'
+import { Box, CircularProgress, LinearProgress, Pagination, Skeleton, Tab, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
@@ -20,7 +20,9 @@ const DocumentDisplay = (
   totalDrafts,
   setTotalDrafts,
   pageCount,
-  setPageCount
+  setPageCount,
+  loading,
+  setLoading
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -36,6 +38,13 @@ const DocumentDisplay = (
             <Box width="100%" sx={{ marginBottom:"10px"}} >
                 <Typography variant='h4' sx={{ fontWeight:"500", color:colors.headerText[100] }}>{t('draft_documents')}</Typography>
             </Box>
+
+            {
+           loading && (
+             
+             <CircularProgress color="info" sx={{ marginBottom:"10px" }} />
+           )
+         }
             
             {
               drafts ? 
@@ -46,6 +55,8 @@ const DocumentDisplay = (
                     draft={draft} setDrafts={setDrafts} 
                     unfilteredDrafts={unfilteredDrafts} 
                     setUnfilteredDrafts={setUnfilteredDrafts}
+                    loading={loading}
+                    setLoading={setLoading}
                 />
                 </Link>
                  
@@ -76,6 +87,8 @@ const DocumentDisplay = (
             setTotalDrafts={setTotalDrafts}
             pageCount={setPageCount}
             setPageCount={setPageCount}
+            loading={loading}
+            setLoading={setLoading}
             />
           </Box>    
     </Box>

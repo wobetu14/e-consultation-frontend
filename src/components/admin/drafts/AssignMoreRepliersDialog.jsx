@@ -207,11 +207,11 @@ const AssignMoreRepliersDialog = ({
                         variant="contained" 
                         color="secondary" 
                         type='submit'
-                        sx={{ textTransform:"none", marginRight:"5px" }}
+                        sx={{ textTransform:"none", marginRight:"5px", backgroundColor:colors.successColor[200], color:colors.grey[300] }}
                         onClick={assignMoreRepliers}
                         >  
                         <Typography variant='body2'>
-                            Finish and close
+                            Assign and close
                         </Typography>
                     </Button>
                 </Box> 

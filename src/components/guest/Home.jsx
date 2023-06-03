@@ -1,4 +1,4 @@
-import { Box, Button, Grid, InputBase, Pagination, Paper, TextField, Typography, useTheme } from "@mui/material";
+import { Box, Button, CircularProgress, Grid, InputBase, Pagination, Paper, TextField, Typography, useTheme } from "@mui/material";
 import RecentDocs from "../../partials/recents/RecentDocs";
 import StatBox from "../../partials/StatBox";
 import { useMode, tokens } from "../../theme";
@@ -24,6 +24,7 @@ const Home = () => {
   // Retrieve document data
   const [drafts, setDrafts]=useState(null);
   const [unfilteredDrafts, setUnfilteredDrafts]=useState(null);
+  const [loading, setLoading]=useState(false);
 
   // searchbox name
   const [search, setSearch]=useState('');
@@ -134,6 +135,8 @@ const Home = () => {
           setTotalDrafts={setTotalDrafts}
           pageCount={setPageCount}
           setPageCount={setPageCount}
+          loading={loading}
+          setLoading={setLoading}
           />
        </Box>
 

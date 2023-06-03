@@ -137,7 +137,7 @@ const fetchRegions =async() =>{
  const formik=useFormik({
     initialValues:{
       institutionName:"",
-      institutionTypeId:"",
+      institutionTypeId:userInfo.user.region_id!==null ? 2:1,
       institutionCategoryId:"",
       institutionLevelId:"",
 

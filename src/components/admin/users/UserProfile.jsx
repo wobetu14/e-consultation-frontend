@@ -343,7 +343,7 @@ const UserProfile = () => {
               helperText={formik.touched.email && formik.errors.email ? <span style={helperTextStyle}>{formik.errors.email}</span>:null}
             />
 
-          <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
+          {/* <FormControl sx={{minWidth: '100%', paddingBottom:'30px' }}>
             <InputLabel>Select user role</InputLabel>
             <Select
               label="Select user role"
@@ -364,7 +364,7 @@ const UserProfile = () => {
                 }
             </Select>
           <FormHelperText>{formik.touched.roleID && formik.errors.roleID ? <span style={helperTextStyle}>{formik.errors.roleID}</span>:null}</FormHelperText>
-        </FormControl>
+        </FormControl> */}
 
           {/* <FormControl sx={{minWidth: '100%'}}>
             <InputLabel>Select Institution</InputLabel>

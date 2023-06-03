@@ -144,8 +144,8 @@ const DraftApprovalRequest = () => {
               <TableCell>
 
                 {
-                  draft.draft_status.name==="Pending" ? (
-                    <Chip label={draft.draft_status.name} size="small" sx={{ backgroundColor:colors.dangerColor[200], color:colors.grey[300] }} />
+                  draft.draft_status.name==="New" ? (
+                    <Chip label={draft.draft_status.name} size="small" sx={{ backgroundColor:colors.successColor[200], color:colors.grey[300] }} />
                   ):""
                 }
 
@@ -186,7 +186,7 @@ const DraftApprovalRequest = () => {
                 </Button>
               {
                 userRole==="Uploader" ? (
-                  draft.draft_status.name==="Pending" ? (
+                  draft.draft_status.name==="New" ? (
                     // <TableCell align="right">
                      <SendApprovalRequest draft={draft} setServerSuccessMsg={setServerSuccessMsg} setServerErrorMsg={setServerErrorMsg} />
                   ):""

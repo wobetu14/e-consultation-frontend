@@ -209,10 +209,10 @@ const AcceptExternalRequestDialog = ({
                         variant="contained" 
                         color="secondary" 
                         type='submit'
-                        sx={{ textTransform:"none", marginRight:"5px" }}
+                        sx={{ textTransform:"none", marginRight:"5px", backgroundColor:colors.successColor[200], color:colors[300] }}
                         >  
                         <Typography variant='body2'>
-                            Finish and close
+                            accept and close
                         </Typography>
                     </Button>
                 </Box> 

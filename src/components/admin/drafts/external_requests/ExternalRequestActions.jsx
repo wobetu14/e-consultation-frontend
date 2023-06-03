@@ -42,7 +42,7 @@ const ExternalRequestActions = ({
   return (
     <Box>
  
-      <Stack direction="row" spacing={1} justifyContent="end" sx={{ marginRight:"20px" }}>     
+      {/* <Stack direction="row" spacing={1} justifyContent="end" sx={{ marginRight:"20px" }}>     
             {
            userRole==="Approver" ? (
             (documentDetail && documentDetail.draft_status.name==="Requested") ? (
@@ -84,7 +84,7 @@ const ExternalRequestActions = ({
             ) :""
            ):"" 
          }
-      </Stack>
+      </Stack> */}
 
     </Box>
   )

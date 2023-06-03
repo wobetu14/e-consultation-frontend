@@ -180,7 +180,7 @@ const CommenterSidebar = () => {
 
                               <Item
                                 title="Invitations"
-                                to="commenting_invitations"
+                                to="invited_drafts"
                                 icon={<ListIcon />}
                                 selected={selected}
                                 setSelected={setSelected}

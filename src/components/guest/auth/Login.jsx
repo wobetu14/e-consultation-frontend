@@ -178,7 +178,7 @@ const Login = () => {
               </Typography>
               <Typography>
                 {t('no_account')}? &nbsp;
-                <Link href="#">
+                <Link variant="text" color="info" to="/create-account">
                   {t('sign_up')}
                 </Link>
               </Typography> 

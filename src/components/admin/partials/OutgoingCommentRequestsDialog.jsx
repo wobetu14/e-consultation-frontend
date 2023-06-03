@@ -13,7 +13,12 @@ import {
      Stack,
      TextField,
      Typography, 
-     useTheme, Box, DialogActions, Grid, Alert, LinearProgress
+     useTheme, 
+     Box, 
+     DialogActions, 
+     Grid, 
+     Alert, 
+     LinearProgress
     } from '@mui/material'
 import { tokens } from '../../../theme';
 import { useFormik } from 'formik';
@@ -250,9 +255,9 @@ const OutgoingCommentRequestsDialog = ({
                 {serverErrorMsg ? <Alert severity='error' style={errorStyle}>{serverErrorMsg}</Alert>:null}
                 </Typography> 
                 {
-                    loading ? (
+                    loading && (
                         <LinearProgress size="small" color='info' />
-                    ):""
+                    )
                 }
             </motion.span>
         </Grid>
