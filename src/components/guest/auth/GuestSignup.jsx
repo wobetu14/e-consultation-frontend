@@ -93,8 +93,6 @@ const GuestSignup = () => {
         transition={{ duration: 0.3 }}
       >
 
-
-
       <Paper
         elevation={0} 
         sx={{ padding:"15px", margin:"30px 100px", backgroundColor:colors.grey[200]}}

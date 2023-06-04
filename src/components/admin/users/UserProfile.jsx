@@ -1,9 +1,9 @@
-import { Typography, Button, Grid, Paper, TextField, FormControl, InputLabel, Select, MenuItem, FormHelperText, Alert } from '@mui/material';
+import { Typography, Button, Grid, Paper, TextField, FormControl, InputLabel, Select, MenuItem, FormHelperText, Alert, List, ListItemButton, ListItemIcon, ListItemText, Collapse } from '@mui/material';
 import { Box, Stack } from '@mui/system'
 import React, { useEffect, useState, useMemo, useLayoutEffect, useContext } from 'react'
 import axios from '../../../axios/AxiosGlobal'
 import Header from '../AdminHeader';
-import { SignalCellularNullOutlined } from '@mui/icons-material';
+import { SignalCellularNullOutlined, StarBorder } from '@mui/icons-material';
 import { useTheme } from '@emotion/react';
 import { tokens } from '../../../theme';
 import { useTable } from 'react-table';
@@ -18,6 +18,11 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useFormik } from 'formik';
 import * as YUP from 'yup';
 import { motion } from 'framer-motion';
+import ChangePassword from './ChangePassword';
+
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 
 
 const UserProfile = () => {
@@ -29,6 +34,13 @@ const UserProfile = () => {
 
     const [institutions, setInstitutions]=useState(null);
     const [userRoles, setUserRoles]=useState(null);
+
+    const [openListItem, setOpenListItem]=useState(false);
+
+    const handleOpenListItem=()=>{
+      setOpenListItem(!openListItem)
+    }
+
 
   const [serverErrorMsg, setServerErrorMsg]=useState(null);
   const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
@@ -153,7 +165,9 @@ const UserProfile = () => {
   return (
     <Box m='0 20px' width={'95%'}>
       <Header title="User Profile" subtitle="Manage Profile" />
-      <Grid align='center' sx={{ paddingBottom:"15px", paddingTop:'15px' }}>
+      <Grid 
+        align='center' 
+        sx={{ paddingBottom:"15px", paddingTop:'15px' }}>
         <motion.span
             initial={{ opacity: 0}}
             animate={{ opacity: 1}}
@@ -168,20 +182,10 @@ const UserProfile = () => {
             </Typography> 
             </motion.span>
         </Grid>
-      <Grid container>
-        <Grid item xs={4}>
-        <Box display="flex" justifyContent="center" alignItems="center">
-                {/* <img
-                  alt="profile-user"
-                  width="200px"
-                  height="200px"
-                  src={`../../assets/images/img_avatar.png`}
-                  style={{ cursor: "pointer", borderRadius:"10px 50px"}}
-                /> */}
-              </Box>
-        </Grid>
+      <Grid container spacing={2}>
         <Grid item xs={8}>
-            <Paper elevation={1} sx={{ padding:"20px" }}>
+        <Box display="flex" justifyContent="center" alignItems="center">
+        <Paper elevation={1} sx={{ padding:"20px" }}>
                 <Grid container spacing={2}>
                   <Grid item xs={4}>
                     <Typography variant='h5' sx={{ fontWeight:"600" }}>Full Name</Typography>
@@ -255,7 +259,36 @@ const UserProfile = () => {
                      </Button>
                   </Grid>
                 </Grid>
-            </Paper>
+            </Paper> 
+        </Box>
+        </Grid>
+        <Grid item xs={4}>
+        <List
+            sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+            component="nav"
+            aria-labelledby="nested-list-subheader"
+          >
+      <ListItemButton onClick={handleOpenListItem}>
+        <ListItemIcon>
+        </ListItemIcon>
+        <ListItemText primary={
+          <Typography
+            variant="h5"
+            color={colors.headerText[100]}
+            sx={{ mb:"5px", fontWeight:600 }}
+         >
+            Change Password
+        </Typography>
+        } />
+      </ListItemButton>
+      <Collapse in={openListItem} timeout="auto">
+        <List component="div"> 
+            <ListItemText primary={
+              <ChangePassword />
+            } />
+        </List>
+      </Collapse>
+    </List>
         </Grid>
       </Grid>
 
@@ -263,7 +296,7 @@ const UserProfile = () => {
         showProfileForm && 
 
     <Box m='0 20px' width={'95%'}>
-      <Typography variant="h4" sx={{ fontWeight:"500", marginBottom:"20px", marginTop:"20px" }}>Account Settings</Typography>
+      <Typography variant="h4" sx={{ fontWeight:"500", marginBottom:"20px", marginTop:"20px" }}>Update Profile </Typography>
       <motion.span
         initial={{ opacity: 0}}
         animate={{ opacity: 1}}
@@ -406,7 +439,7 @@ const UserProfile = () => {
 </Box> 
       }
 
-      </Box> 
+</Box> 
   )
 }
 

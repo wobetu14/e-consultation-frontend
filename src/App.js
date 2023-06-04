@@ -48,6 +48,8 @@ import CommentReflections from './components/admin/drafts/CommentReflections';
 import ExternalRequestDetails from './components/admin/drafts/external_requests/ExternalRequestDetails';
 import InvitedDrafts from './components/admin/drafts/InvitedDrafts';
 import RedirectCommentInvitation from './components/admin/drafts/RedirectCommentInvitation';
+import ResetPasswordProvideEmail from './components/guest/auth/ResetPasswordProvideEmail';
+import ResetPassword from './components/guest/auth/ResetPassword';
 
 
 function App() {
@@ -130,6 +132,8 @@ function App() {
                         <Route path="help" element={<HelpCenter />} />
                         <Route path="contacts" element={<Contacts />} />
                         <Route path="login" element={<Login />} />
+                        <Route path="reset_password/email_address" element={<ResetPasswordProvideEmail />} />
+                        <Route path="reset_password" element={<ResetPassword />} />
                         <Route path="create-account" element={<GuestSignup />} />
                         <Route path='user_profile' element={<UserProfile />} />
                         <Route path='activation/:token' element={<AccountActivation />} />

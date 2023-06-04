@@ -4,13 +4,6 @@ import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme"
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
-import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
-import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import Logout  from "../../Logout"
 import {Button} from '@mui/material';
@@ -189,14 +182,6 @@ const CommenterSidebar = () => {
                               <Item
                                 title="Edit Profile"
                                 to="user_profile"
-                                icon={<ListIcon />}
-                                selected={selected}
-                                setSelected={setSelected}
-                                />
-
-                              <Item
-                                title="Change Password"
-                                to="change_password"
                                 icon={<ListIcon />}
                                 selected={selected}
                                 setSelected={setSelected}

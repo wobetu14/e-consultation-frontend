@@ -154,7 +154,8 @@ const Login = () => {
             <Grid 
               sx={{ paddingBottom:"5px" }}
             >
-            <FormControlLabel
+           
+       {/*      <FormControlLabel
               control={
                 <Checkbox
                   name="checkeboxname"
@@ -162,7 +163,7 @@ const Login = () => {
                   />
               }
               label={t('remember')}
-            />
+            /> */}
             
             <Button type='submit' variant='contained'
               color="info"
@@ -172,7 +173,7 @@ const Login = () => {
               {t('sign_in')}</Button>
             </Grid>
               <Typography>
-                <Link href="#">
+                <Link to='/reset_password/email_address'>
                   {t('forgot_password')}?
                 </Link>
               </Typography>

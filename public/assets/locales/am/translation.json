@@ -41,7 +41,7 @@
     "enter_email_address":"የኢሜይል አድራሻ ያስገቡ",
     "password":"የይለፍ ቃል",
     "enter_password":"የይለፍ ቃል ያስገቡ",
-    "forgot_password":"መለያዎትን ረስተዋል",
+    "forgot_password":"የይለፍ ቃል ረስተዋል",
     "remember":"አስታውስ",
     "no_account":"መለያ የለዎትም",
     "explore_by_article":"አንቀጽ በአንቀጽ ያንብቡ",
@@ -78,5 +78,10 @@
     "write_comment":"አስተያየት ይጻፉ",
     "write_reply":"ግብረመልስ ይጻፉ",
     "region":"ክልል",
-    "sectors":"ሴክተሮች"
+    "sectors":"ሴክተሮች",
+    "send_code":"ኮድ ላክ",
+    "reset_password":"የይለፍ ቃል እድሳት",
+    "reset_password_message":"እባክዎ የኢሜይል አድራሻዎን ያስገቡ። የይለፍ ቃል የሚያድሱበትን ኮድ በኢሜልዎ እንልክልዎታለን።",
+    "password_reset_code":"የማደሻ ሚስጥር ቁጥር ያስገቡ",
+    "password_reset_message":"የማለፊያ ቃል ማደሻ ባለ 6 አሃዝ ኮድ በኢሜልዎ ልከንልዎታል። ይህን የሚስጥር ቁጥር በመጠቀም አዲስ የማለፊያ ቃል ይፍጠሩ።"
 }
