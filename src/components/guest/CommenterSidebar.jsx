@@ -22,6 +22,8 @@ import AssessmentIcon from '@mui/icons-material/Assessment';
 import { UserContext } from "../../contexts/UserContext";
 // import ChecklistIcon from '@mui/icons-material/Checklist';
 import ListIcon from '@mui/icons-material/List';
+import { useTranslation } from "react-i18next";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -46,6 +48,7 @@ const CommenterSidebar = () => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+  const {t}=useTranslation()
   const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
 
   const SuperAdminLinks=({children})=>{
@@ -94,7 +97,7 @@ const CommenterSidebar = () => {
                   margin: "10px 0 20px 0",
                   color: colors.headerText[100],
                  }} >
-                  ADMIN
+                  {t('dashboard')}
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)} style={{
               margin: "10px 0 20px 0",
@@ -127,7 +130,7 @@ const CommenterSidebar = () => {
                   {userInfo!==null && userInfo!==undefined ? userInfo.user.first_name+" "+userInfo.user.middle_name:null}
                 </Typography>
                 <Typography variant="h6">
-                  {userRole}
+                  {t('commenter')}
                 </Typography>
                {/*  <Typography variant="outlined">
                   <Button href='/admin/user_profile' variant="outlined" size="small" sx={{ textTransform:"none", color:"#000" }}>Go to Profile</Button>
@@ -155,24 +158,16 @@ const CommenterSidebar = () => {
                     {
                         userRole==="Commenter" ? (
                             <>
-                                <Item
-                                title="Dashboard"
-                                to="/commenter"
-                                icon={<HomeIcon />}
-                                selected={selected}
-                                setSelected={setSelected}
-                                />
-
-                                <Item
-                                title="Assignments"
-                                to="assigned_drafts"
-                                icon={<ListIcon />}
-                                selected={selected}
-                                setSelected={setSelected}
-                                />
+                              <Item
+                              title={t('assignments')}
+                              to="assigned_drafts"
+                              icon={<ListIcon />}
+                              selected={selected}
+                              setSelected={setSelected}
+                              />
 
                               <Item
-                                title="Invitations"
+                                title={t('invitations')}
                                 to="invited_drafts"
                                 icon={<ListIcon />}
                                 selected={selected}
@@ -180,9 +175,9 @@ const CommenterSidebar = () => {
                                 />
 
                               <Item
-                                title="Edit Profile"
+                                title={t('edit_profile')}
                                 to="user_profile"
-                                icon={<ListIcon />}
+                                icon={<ManageAccountsIcon />}
                                 selected={selected}
                                 setSelected={setSelected}
                                 />

@@ -72,7 +72,12 @@ const sendPasswordResetCode=async (userData) => {
       console.log(res.data)
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null);
-      navigate('/reset_password')
+      navigate('/reset_password', {
+        state:{
+          email:formikResetPasswordWithEmail.values.emailAddress,
+          name:"WobieMan"
+        }
+      })
       setLoading(false);
     })
     .catch(errors =>{

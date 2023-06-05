@@ -125,7 +125,7 @@ const DraftMetaInfo = ({
               </Grid>
               <Grid item xs={6} md={6}>
                     {
-                        (documentDetail && documentDetail.draft_status.name==="Pending") ? (
+                        (documentDetail && documentDetail.draft_status.name==="New") ? (
                             <Chip label={`${documentDetail.draft_status.name}`} size="small" sx={{ backgroundColor:colors.dangerColor[200], color:colors.grey[300] }} />
                         ):""
                     }
@@ -228,9 +228,6 @@ const DraftMetaInfo = ({
                 setServerSuccessMsg={setServerSuccessMsg}
                 />
           </Grid>
-            ):""
-          
-          
         </Grid>
           ):(
              <LinearProgress color='secondary' />

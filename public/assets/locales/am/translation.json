@@ -1,7 +1,7 @@
 {
     "greeting": "እንኳን ወደ የኢፌዴሪ መንግስት የኢ-ኮንሰልቴሽን አገልግሎት በደህና መጡ።",
     "gratitude_msg":"ዛሬ ቀኑ በጣም ደስ ይላል።",
-    "dashboard":"ዋና ገጽ - ዳሽቦርድ",
+    "dashboard":"ዳሽቦርድ",
     "dashboard_greeting":"እንኳን ወደ ዋና ገጽዎ በደህና መጡ።",
     "bar_chart":"ባር ግራፍ",
     "simple_bar_chart":"ቀላል የባር ግራፍ",
@@ -80,7 +80,12 @@
     "region":"ክልል",
     "sectors":"ሴክተሮች",
     "send_code":"ኮድ ላክ",
-    "reset_password":"የይለፍ ቃል እድሳት",
+    "password_reset":"የይለፍ ቃል እድሳት",
+    "reset_password":"የይለፍ ቃል አድስ",
+    "assignments":"አሳይንመንቶች",
+    "invitations":"ግብዣዎች",
+    "edit_profile":"ፕሮፋይል ያስተካክሉ",
+    "commenter":"የአስተያየት ሰጭ ፕሮፋይል",
     "reset_password_message":"እባክዎ የኢሜይል አድራሻዎን ያስገቡ። የይለፍ ቃል የሚያድሱበትን ኮድ በኢሜልዎ እንልክልዎታለን።",
     "password_reset_code":"የማደሻ ሚስጥር ቁጥር ያስገቡ",
     "password_reset_message":"የማለፊያ ቃል ማደሻ ባለ 6 አሃዝ ኮድ በኢሜልዎ ልከንልዎታል። ይህን የሚስጥር ቁጥር በመጠቀም አዲስ የማለፊያ ቃል ይፍጠሩ።"

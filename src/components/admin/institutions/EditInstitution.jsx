@@ -169,11 +169,9 @@ const fetchRegions =async() =>{
 }); 
     
 const createInstitution=async (institutionData) => {
-    //  console.log(companyData)
     setLoading(true)
     return await axios.post(`institutions/${institution.id}`, institutionData)
     .then(res => {
-      console.log(res.data)
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null);
       formik.resetForm();

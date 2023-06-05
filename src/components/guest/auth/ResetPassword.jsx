@@ -1,7 +1,7 @@
 import {Alert, Avatar, Box, Button, Checkbox, CircularProgress, FormControl, FormControlLabel, Grid, Paper, TextField, Typography, useTheme } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { tokens, useMode } from '../../../theme';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as YUP from 'yup';
 import {useContext, useState} from 'react';
@@ -15,6 +15,7 @@ const ResetPassword = () => {
    const theme=useTheme();
    const colors=tokens(theme.palette.mode);
    const {t}=useTranslation();
+   const location=useLocation();
 
    const navigate=useNavigate()
    const {userInfo, setUserInfo, setUserRole, setUserToken}=useContext(UserContext);
@@ -46,14 +47,13 @@ const ResetPassword = () => {
 
   const formikResetPassword=useFormik({
     initialValues:{
-        emailAddress:"",
+        emailAddress:location.state.email,
         password:"",
         confirmPassword:"",
         passwordResetCode:""
     },
 
 validationSchema:YUP.object({
-    emailAddress:YUP.string().required("This field is required. Please enter your email address."),
     password:YUP.string().required("This field is required. Please enter your new password."),
     passwordResetCode:YUP.string().required("This field is required. Please enter your reset code."),
     confirmPassword:YUP.string().required("This field is required. Please re-enter password to confirm.")
@@ -103,7 +103,7 @@ const resetPassword=async (userData) => {
       >
         <Grid align="center">
           <Typography variant='h5' sx={{ fontWeight:600, paddingBottom:'20px', color:colors.headerText[100] }}>
-            {t('reset_password')}
+            {t('password_reset')}
           </Typography>
           <Typography variant='body1'>
             {t('password_reset_message')}
@@ -145,16 +145,15 @@ const resetPassword=async (userData) => {
             <TextField 
               label={t('email_address')} 
               variant='outlined' 
-              placeholder={t('enter_email_address')}
               fullWidth
+              disabled={true}
               size='small'
               sx={{ paddingBottom:"10px" }}
               color="info"
 
               name='emailAddress'
-              value={formikResetPassword.emailAddress}
+              value={location.state.email}
               onChange={formikResetPassword.handleChange}
-              helperText={formikResetPassword.touched.emailAddress && formikResetPassword.errors.emailAddress ? <span style={helperTextStyle}>{formikResetPassword.errors.emailAddress}</span>:null}
             />
 
             <TextField 
@@ -212,7 +211,7 @@ const resetPassword=async (userData) => {
                 fullWidth
                     sx={{ backgroundColor:colors.brandColor[200], color:colors.grey[300] }}
                 >
-                    {t('send_code')}
+                    {t('reset_password')}
                 </Button>
             </Grid>
         </form>

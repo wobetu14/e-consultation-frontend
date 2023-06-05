@@ -151,7 +151,6 @@ const OutgoingCommentRequestsDialog = ({
     }); 
 
     const acceptCommentOpening=async (requestData) => {
-        console.log(requestData)
         setLoading(true)
         
       return await axios.post(`approve-comment-opening`, requestData)
@@ -167,66 +166,6 @@ const OutgoingCommentRequestsDialog = ({
         })  
 
        }
-
- /*     const formikInviteInstitutionForm=useFormik({
-        initialValues:{
-            draft_id:draftInfo ? draftInfo.id:"",
-            institutions: selectedInstitutions ? selectedInstitutions.map((selectedInstitution)=>(
-                selectedInstitution.id
-            )):[], 
-            invitationRemark:""
-        },
-
-      onSubmit:(values)=>{
-        const requestData={
-            draft_id:values.draft_id,
-            institutions:values.institutions,
-            invitation_remark:values.invitationRemark
-        };
-    
-        inviteInstitutions(requestData);
-      }
-    });  */
- 
- 
-  /*    const inviteInstitutions=async (requestData) => {
-         console.log(requestData)
-            return await axios.post('request-institution-for-comment', requestData)
-            .then(res => {
-                // console.log(res.data.message)
-                setServerSuccessMsg(res.data.message);
-                setServerErrorMsg(null);
-                // setOpenDialog(false);
-            })
-            .catch(errors =>{
-                setServerErrorMsg(errors.response.data.message);
-                setServerSuccessMsg(null) 
-            }) 
-       } */
-/* 
-       const formikInvitePeopleForm=useFormik({
-        initialValues:{
-            draft_id:draftInfo.id,
-            emailAddresses:peopleEmail,
-            invitationRemark:""
-        },
-
-      onSubmit:(values)=>{
-        const requestData={
-            draft_id:values.draft_id,
-            email:values.emailAddresses,
-            invitation_remark:values.invitationRemark
-        };
-    
-        invitePeople(requestData);
-      }
-    }); 
- */
-   /*  const invitePeople=async (requestData) => {
-        console.log(requestData)
-
-       
-      } */
     
   return (
     <Dialog 
@@ -395,19 +334,6 @@ const OutgoingCommentRequestsDialog = ({
                         onChange={formikAcceptanceForm.handleChange}
                         // helperText={formik.touched.shortTitle && formik.errors.shortTitle ? <span style={helperTextStyle}>{formik.errors.shortTitle}</span>:null}
                         />
-
-            {/* <Box>
-                <Button 
-                    size='small' 
-                    variant="contained" 
-                    color="secondary" 
-                    type='submit'
-                    sx={{ textTransform:"none", marginRight:"5px" }}
-                    onClick={inviteInstitutions}
-                    >  
-                    Send Invitation
-                </Button>
-            </Box>  */}
 
         {/* </Stack> */}
     {/* </form>

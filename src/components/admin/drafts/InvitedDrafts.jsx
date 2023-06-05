@@ -69,7 +69,7 @@ const InvitedDrafts = () => {
 
   return (
     <Box m='0 20px' width={'95%'}>
-      <Header title="List of Draft Documents I have been assigned for to reflect on public comments" />
+      <Header title="List of draft documents I have been invited to provide comments" />
         
       <TableContainer component={Paper} sx={{ marginTop:"50px", marginBottom:"350px" }}>
       <Table sx={{ minWidth: 550 }} size="small" aria-label="simple table">

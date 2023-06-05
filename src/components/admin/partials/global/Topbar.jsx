@@ -1,5 +1,5 @@
 import React, {useContext} from 'react'
-import { Box, IconButton, useTheme } from '@mui/material';
+import { Box, Button, IconButton, Typography, useTheme } from '@mui/material';
 import { ColorModeContext, tokens } from '../../../../theme';
 
 import  LightModeOutlinedIcon  from '@mui/icons-material/LightModeOutlined';
@@ -10,12 +10,15 @@ import  PersonOutlinedIcon  from '@mui/icons-material/PersonOutlined';
 import  SearchIcon  from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import Logout from '../../../../Logout';
+import { useTranslation } from 'react-i18next';
+import HomeIcon from '@mui/icons-material/Home';
 
 
 const Topbar = () => {
     const theme=useTheme();
     const colors=tokens(theme.palette.mode);
     const colorMode=useContext(ColorModeContext);
+    const {t}=useTranslation()
 
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
@@ -32,6 +35,16 @@ const Topbar = () => {
 
         {/* Icons */}
         <Box display="flex">
+                <Button variant="text" 
+                color="secondary" 
+                size="small" 
+                href='/'
+                sx={{ textTransform:"none" }}
+                >
+                    {/* <Typography variant="body2"> */}
+                      <HomeIcon fontSize='small' color="primary" /> &nbsp; {t('home')}
+                    {/* </Typography> */}
+                </Button>
             <Logout />
             <IconButton onClick={colorMode.toggleColorMode}>
                 {theme.palette.mode==="dark" ? (
@@ -40,9 +53,9 @@ const Topbar = () => {
                     <LightModeOutlinedIcon />
                 )}
             </IconButton>
-            <IconButton>
+            {/* <IconButton>
                 <NotificationsOutlinedIcon/>
-            </IconButton>
+            </IconButton> */}
           {/*   <IconButton>
                 <SettingsOutlinedIcon />
             </IconButton> */}

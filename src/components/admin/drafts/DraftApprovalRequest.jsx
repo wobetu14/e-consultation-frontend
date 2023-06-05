@@ -184,13 +184,15 @@ const DraftApprovalRequest = () => {
                    {/* <PreviewIcon size="small"/> */}
                    Detail
                 </Button>
-              {
+              
+              {/* {
                 userRole==="Uploader" ? (
                   draft.draft_status.name==="New" ? (
                     // <TableCell align="right">
                      <SendApprovalRequest draft={draft} setServerSuccessMsg={setServerSuccessMsg} setServerErrorMsg={setServerErrorMsg} />
                   ):""
                 ):
+                
                 (
                   draft.draft_status.name==="Requested" ? (
                     // <TableCell align="right">
@@ -212,7 +214,8 @@ const DraftApprovalRequest = () => {
                       ):""
                   )
                 )
-              }
+                
+              } */}
               </TableCell>
             </TableRow>
           )):

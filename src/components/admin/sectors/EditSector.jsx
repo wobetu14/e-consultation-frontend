@@ -24,7 +24,9 @@ const EditSector = () => {
         sector,
         setSector,
         setServerErrorMsg,
-        setServerSuccessMsg
+        setServerSuccessMsg,
+        loading,
+        setLoading
     }=useContext(SectorsDataContext); 
 
  const helperTextStyle={
@@ -47,7 +49,8 @@ const EditSector = () => {
       name:values.sectorName,
       description:values.sectorDescription,
       created_by:values.createdBy,
-      updated_by:values.updatedBy
+      updated_by:values.updatedBy,
+      _method:"put"
     };
 
     updateSector(sectorData);
@@ -56,14 +59,17 @@ const EditSector = () => {
 }); 
     
 const updateSector=async (sectorData) => {
-    return await axios.put(`sectors/${sector.id}`, sectorData)
+      setLoading(true)
+      return await axios.post(`sectors/${sector.id}`, sectorData)
         .then(res => {
           setServerSuccessMsg(res.data.message);
           setServerErrorMsg(null)
+          setLoading(false)
         })
         .catch(errors =>{
            setServerErrorMsg(errors.response.data.message);
            setServerSuccessMsg(null) 
+           setLoading(false)
         }) 
    }
 

@@ -193,7 +193,7 @@ const errorStyle={
       )
     }
      
-            <Paper elevation={1} sx={{ marginTop:"10px", marginBottom:"350px", width:"1200px"}}>
+            <Paper elevation={1} sx={{ marginTop:"10px", marginBottom:"350px", maxWidth:"1200px"}}>
             <DataTable 
              columns={columns} 
              data={filteredInstitutions}

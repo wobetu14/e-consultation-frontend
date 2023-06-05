@@ -35,7 +35,9 @@ const EditRegion = () => {
       serverErrorMsg,
       setServerErrorMsg,
       serverSuccessMsg,
-      setServerSuccessMsg
+      setServerSuccessMsg,
+      loading,
+      setLoading
   }=useContext(RegionsDataContext);
 
   const errorStyle={
@@ -66,7 +68,8 @@ const EditRegion = () => {
   onSubmit:(values)=>{
     const regionData={
       name:values.regionName,
-      updated_by:values.updatedBy
+      updated_by:values.updatedBy,
+      _method:"put"
     };
 
     registerRegion(regionData);
@@ -74,18 +77,18 @@ const EditRegion = () => {
 }); 
     
 const registerRegion=async (regionData) => {
-    //  console.log(companyData)
-    console.log(regionData)
-    
-    return await axios.put(`regions/${region.id}`, regionData)
+    setLoading(true)
+    return await axios.post(`regions/${region.id}`, regionData)
     .then(res => {
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null);
       formik.resetForm();
+      setLoading(false)
     })
     .catch(errors =>{
        setServerErrorMsg(errors.response.data.message);
        setServerSuccessMsg(null) 
+       setLoading(false)
     }) 
    }
    

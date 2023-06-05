@@ -94,7 +94,7 @@ fontSize:'15px'
         lastName:user.last_name ? user.last_name:"",
         mobileNumber:user.mobile_number ? user.mobile_number:"",
         email:user.email ? user.email:"",
-        roleName:user.roles.length>0 ? user.roles[0].name:"",
+        roleID:user.roles.length>0 ? user.roles[0].id:"",
         regionID:user.region_id ? user.region_id:"",
         institutionID:user.institution_id ? user.institution_id:"",
         updatedBy:userInfo.user.updated_by
@@ -107,7 +107,7 @@ fontSize:'15px'
         last_name:values.lastName,
         mobile_number:values.mobileNumber,
         email:values.email,
-        roles:values.roleName,
+        roles:values.roleID,
         updated_by:values.updatedBy, 
         region_id:values.regionID,
         institution_id:values.institutionID,

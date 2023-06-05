@@ -76,7 +76,12 @@
     "region":"Region",
     "sectors":"Sectors",
     "send_code":"Send Code",
+    "password_reset":"Password Reset",
     "reset_password":"Reset Password",
+    "assignments":"Assignments",
+    "invitations":"Invitations",
+    "edit_profile":"Edit Profile",
+    "commenter":"Commenter Profile",
     "reset_password_message":"Please enter you email address. A password reset code will be sent to your inbox.",
     "password_reset_code":"Enter Password Reset Code",
     "password_reset_message":"We have sent you a six digit password reset code to the provided email.Please use the code and create a new password."

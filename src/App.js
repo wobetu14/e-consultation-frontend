@@ -50,6 +50,7 @@ import InvitedDrafts from './components/admin/drafts/InvitedDrafts';
 import RedirectCommentInvitation from './components/admin/drafts/RedirectCommentInvitation';
 import ResetPasswordProvideEmail from './components/guest/auth/ResetPasswordProvideEmail';
 import ResetPassword from './components/guest/auth/ResetPassword';
+import DraftInvitationCheckpoint from './components/guest/auth/DraftInvitationCheckpoint';
 
 
 function App() {
@@ -156,6 +157,7 @@ function App() {
                       <Route index element={<CommenterDashboard />} />
                       <Route path='assigned_drafts' element={<DraftAssignments />} />
                       <Route path='invited_drafts' element={<InvitedDrafts />} />
+                      <Route path='draft_invitation_checkpoint' element={<DraftInvitationCheckpoint />} />
                       <Route path='comment_reflections' element={<DraftAssignments />} />
                       <Route path='user_profile' element={<UserProfile />} />
                     </Route>

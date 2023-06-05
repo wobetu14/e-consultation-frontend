@@ -171,8 +171,8 @@ const Topbar = ({menuItems}) => {
                                 <>
                                   <Typography variant='h5' sx={{ fontWeight:"600", color:colors.successColor[100] }}>
                                     {userInfo.user.first_name + " " + userInfo.user.middle_name} &nbsp;
-                                    <Link to='commenter'>{t('profile')}</Link>
-                                    <Logout />
+                                    <Link to='commenter'>{t('dashboard')}</Link>
+                                     <Logout />
                                   </Typography>
                                 </>
                                  

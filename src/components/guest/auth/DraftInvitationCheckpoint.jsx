@@ -11,7 +11,7 @@ import { motion } from 'framer-motion';
 import { UserContext } from '../../../contexts/UserContext';
 import { useTranslation } from 'react-i18next';
 
-const Login = () => {
+const DraftInvitationCheckpoint = ({draftID}) => {
    const theme=useTheme();
    const colors=tokens(theme.palette.mode);
    const {t}=useTranslation();
@@ -74,10 +74,7 @@ const Login = () => {
                       
 
                       if(localStorage.getItem('userRole')==="Commenter"){
-                        navigate('/')
-                      }
-                      else{
-                        navigate('/admin')
+                        navigate(`/draft/${draftID}`)
                       }
                     } 
                     
@@ -197,4 +194,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default DraftInvitationCheckpoint

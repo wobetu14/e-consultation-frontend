@@ -12,6 +12,7 @@ import { motion } from 'framer-motion';
 import Login from '../../guest/auth/Login';
 import { tokens } from '../../../theme';
 import { UserContext } from '../../../contexts/UserContext';
+import DraftInvitationCheckpoint from '../../guest/auth/DraftInvitationCheckpoint'
 
 const RedirectCommentInvitation = () => {
    const theme=useTheme();
@@ -58,10 +59,13 @@ const RedirectCommentInvitation = () => {
       >
      
         <Grid align='center'>
+          {
+            
+          }
            <Typography variant='h5' fontWeight='600'>
                 {
                     hasAccount===false && (
-                            <Login />
+                             <DraftInvitationCheckpoint draftID={params.id} />
                         )
                 }
            </Typography>
