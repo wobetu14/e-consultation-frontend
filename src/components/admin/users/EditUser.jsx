@@ -17,7 +17,6 @@ const EditUser = () => {
     const [institutions, setInstitutions]=useState(null);
     const [regions, setRegions]=useState(null);
     const [userRoles, setUserRoles]=useState(null);
-
  
 
   // User context
@@ -45,15 +44,15 @@ fontSize:'15px'
 
  useEffect(()=>{
   fetchInstitutions();
- },[institutions])
+ },[])
 
  useEffect(()=>{
   fetchUserRoles();
- },[userRoles])
+ },[])
 
  useEffect(()=>{
   fetchRegions();
- },[regions])
+ },[])
 
  const fetchRegions =async() =>{
   return await  axios.get('regions')
@@ -89,15 +88,16 @@ fontSize:'15px'
  
  const formik=useFormik({
     initialValues:{
-        firstName:user.first_name ? user.first_name:"",
-        middleName:user.middle_name ? user.middle_name:"",
-        lastName:user.last_name ? user.last_name:"",
-        mobileNumber:user.mobile_number ? user.mobile_number:"",
-        email:user.email ? user.email:"",
-        roleID:user.roles.length>0 ? user.roles[0].id:"",
-        regionID:user.region_id ? user.region_id:"",
-        institutionID:user.institution_id ? user.institution_id:"",
-        updatedBy:userInfo.user.updated_by
+        firstName:user.first_name,
+        middleName:user.middle_name,
+        lastName:user.last_name,
+        mobileNumber:user.mobile_number,
+        email:user.email,
+        roleID:user.roles[0].id,
+        regionID:user.region_id,
+        institutionID:user.institution_id,
+        updatedBy:userInfo.user.updated_by,
+       
     },
 
   onSubmit:(values)=>{
@@ -111,7 +111,7 @@ fontSize:'15px'
         updated_by:values.updatedBy, 
         region_id:values.regionID,
         institution_id:values.institutionID,
-        // _method:"put"
+        _method:'put'
     };
 
     updateUser(userData);
@@ -120,9 +120,9 @@ fontSize:'15px'
 }); 
     
 const updateUser=async (userData) => {
-    //  console.log(companyData)
-    try{
-      const res = await  axios.put(`users/${user.id}`, userData);
+    
+     try{
+      const res = await  axios.post(`users/${user.id}`, userData);
       // .post(`users/${user.id}`, userData)
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);

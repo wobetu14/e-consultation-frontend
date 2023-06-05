@@ -100,7 +100,7 @@ const AssignMoreRepliersDialog = ({
 
       const fetchMyUsers = async() =>{
         try{
-          const res = await  axios.get(`users?institution_id=${userInfo.user.institution_id}`)
+          const res = await  axios.get(`commenters-per-institution`)
           console.log("My users");
           console.log(res.data.data)
           setMyUsers(res.data.data);

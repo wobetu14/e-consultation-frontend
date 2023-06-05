@@ -36,7 +36,7 @@ const Topbar = () => {
         {/* Icons */}
         <Box display="flex">
                 <Button variant="text" 
-                color="secondary" 
+                color="primary" 
                 size="small" 
                 href='/'
                 sx={{ textTransform:"none" }}

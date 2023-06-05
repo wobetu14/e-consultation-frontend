@@ -55,9 +55,9 @@ const DraftApprovalRequest = () => {
 
     const fetchDrafts =async() =>{
       return await  axios.get('mydrafts')
-        .then(res=>res.data.data)
         .then(res=>{
-          setDraftsData(res.data)
+          console.log(res.data.data)
+          setDraftsData(res.data.data)
         }).catch(error=>{
           console.log(error.message);
         })
@@ -185,7 +185,7 @@ const DraftApprovalRequest = () => {
                    Detail
                 </Button>
               
-              {/* {
+              {
                 userRole==="Uploader" ? (
                   draft.draft_status.name==="New" ? (
                     // <TableCell align="right">
@@ -193,8 +193,8 @@ const DraftApprovalRequest = () => {
                   ):""
                 ):
                 
-                (
-                  draft.draft_status.name==="Requested" ? (
+                ( ""
+                  /* draft.draft_status.name==="Requested" ? (
                     // <TableCell align="right">
                         <>
                           <AcceptApprovalRequest draft={draft} setServerSuccessMsg={setServerSuccessMsg} setServerErrorMsg={setServerErrorMsg}/>
@@ -212,10 +212,10 @@ const DraftApprovalRequest = () => {
                           Close Commenting
                         </Button>
                       ):""
-                  )
+                  ) */
                 )
                 
-              } */}
+              }
               </TableCell>
             </TableRow>
           )):

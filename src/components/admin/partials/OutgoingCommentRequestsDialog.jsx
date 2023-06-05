@@ -106,7 +106,7 @@ const OutgoingCommentRequestsDialog = ({
 
       const fetchMyUsers = async() =>{
         try{
-          const res = await  axios.get(`users?institution_id=${userInfo.user.institution_id}`)
+          const res = await  axios.get(`commenters-per-institution`)
           console.log("My users");
           console.log(res.data.data)
           setMyUsers(res.data.data);
@@ -395,7 +395,7 @@ const OutgoingCommentRequestsDialog = ({
                     onClick={acceptCommentOpening}
                     >  
                      <Typography variant='body2'>
-                        Open Draft for Comment
+                        Publish Draft for Comment
                      </Typography>
                 </Button>
             </Box> 

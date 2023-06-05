@@ -106,7 +106,7 @@ const [selectedSectors, setSelectedSectors]=useState([]);
         shortTitle:draft ? (draft.short_title):"",
         lawCategoryId:draft ? (draft.law_category_id):"",
         draftStatusId:draft ? (draft.draft_status_id):"",
-        sectors:draft ? draft.sector:"hello",
+        sectors:draft.sector.length>0 ? draft.sector.map((sec)=>sec):[],
         file:null,
         active:draft ? (draft.active):"",
         isPrivate: draft ? (draft.is_private):"",
@@ -128,7 +128,7 @@ const [selectedSectors, setSelectedSectors]=useState([]);
       short_title:values.shortTitle,
       law_category_id:values.lawCategoryId,
       draft_status_id:values.draftStatusId,
-      sectors:selectedSectors.length>0 ? selectedSectors.map((selectedSector)=>(selectedSector.name)):values.sectors,
+      sectors:selectedSectors.length>0 ? selectedSectors.map((sector)=>sector):[],
       comment_opening_date:values.openingDate,
       comment_closing_date:values.closingDate,
       file:values.file,
@@ -179,9 +179,6 @@ const updateDraftDocument=async (draftsData) => {
   return (
     <Box width={'95%'}>
       <Header title="Edit Drfat Document Information" subtitle="" />
-      {
-        draft ? <>{draft.sector} {draft.id}</>:"No draft info"
-      }
       <motion.span
         initial={{ opacity: 0}}
         animate={{ opacity: 1}}
@@ -267,7 +264,7 @@ const updateDraftDocument=async (draftsData) => {
                           label="Select sectors"
                           placeholder="Sectors "
                           name="sectors"
-                          value={selectedSectors.length>0 ? selectedSectors.map((selectedSector)=>(selectedSector.name)):[]}
+                          value={formik.values.sectors.map((sec)=>sec)}
                       />
                       )}
                   />

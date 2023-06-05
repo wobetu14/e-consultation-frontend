@@ -166,6 +166,14 @@ const CommenterSidebar = () => {
                               setSelected={setSelected}
                               />
 
+                            <Item
+                              title="Assigned to Comment"
+                              to="assigned_to_comment"
+                              icon={<ListIcon />}
+                              selected={selected}
+                              setSelected={setSelected}
+                              />
+
                               <Item
                                 title={t('invitations')}
                                 to="invited_drafts"

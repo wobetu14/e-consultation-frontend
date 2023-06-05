@@ -148,7 +148,7 @@ const IncomingCommentRequests = () => {
                 <Typography variant="body1">{incommingData.requester_institution_name}</Typography>
                 </TableCell>
               <TableCell>
-                <Typography variant="body1">{incommingData.draft_id}</Typography>
+                <Typography variant="body1">{incommingData.draft_title}</Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="body1">
