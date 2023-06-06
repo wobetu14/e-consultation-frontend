@@ -49,9 +49,9 @@ const Login = () => {
       }
    });
 
-   const userLogin = async (userData)=>{
+   const userLogin = (userData)=>{
       setLoading(true)
-      return await axios.post('login', userData)
+      return axios.post('login', userData)
               
                 .then(res=>{
                   if(res.status!==200){
@@ -72,7 +72,6 @@ const Login = () => {
                       setUserToken(localStorage.getItem('token'));
                       setUserInfo(JSON.parse(localStorage.getItem('userInfo')));
                       
-
                       if(localStorage.getItem('userRole')==="Commenter"){
                         navigate('/')
                       }

@@ -119,7 +119,6 @@ function App() {
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
-        {/* <UserProvider> */}
             <CssBaseline />
             <div className="App">
               <main className='content' display="flex">
@@ -199,7 +198,6 @@ function App() {
                   </Routes>
               </main> 
             </div>  
-        {/* </UserProvider> */}
       </ThemeProvider>
     </ColorModeContext.Provider>
   );

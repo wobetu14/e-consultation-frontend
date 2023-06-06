@@ -19,8 +19,6 @@ const Home = () => {
   const colors = tokens(theme.palette.mode);
   const {t}=useTranslation()
 
-  const {userRole, setUserRole}=useContext(UserContext);
-
   // Retrieve document data
   const [drafts, setDrafts]=useState(null);
   const [unfilteredDrafts, setUnfilteredDrafts]=useState(null);

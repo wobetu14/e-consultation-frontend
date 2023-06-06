@@ -39,24 +39,24 @@ const AccountActivation = () => {
         activateUser();
    }, [])
 
-   const activateUser = async ()=>{
+   const activateUser = ()=>{
        
-      return await axios.get(`activation/${params.token}`)
+      return axios.get(`activation/${params.token}`)
                 .then(res=>{
-                    console.log(res.data.data)
+                    console.log(res.data)
 
                   if(res.status!==200){
                     setServerError(res.data.message)
                   }
                   else{
-                    if(res.status===200 && res.data.data.token){
+                    if(res.status===200 && res.data.token){
                       setActivation(true)
                       setLoggedIn(true)
                       setServerError(null)
                       // setUserInfo(res.data)
-                      localStorage.setItem('token', res.data.data.token);
-                      localStorage.setItem('userRole',res.data.data.user.roles[0].name);
-                      localStorage.setItem('userInfo', JSON.stringify(res.data.data));
+                      localStorage.setItem('token', res.data.token);
+                      localStorage.setItem('userRole',res.data.user.roles[0].name);
+                      localStorage.setItem('userInfo', JSON.stringify(res.data));
 
                       setUserRole(localStorage.getItem('userRole'));
                       setUserToken(localStorage.getItem('token'));
@@ -65,9 +65,6 @@ const AccountActivation = () => {
 
                       if(localStorage.getItem('userRole')==="Commenter"){
                         navigate('/')
-                      }
-                      else{
-                        navigate('/admin')
                       }
                     } 
                     

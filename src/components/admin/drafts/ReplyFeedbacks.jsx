@@ -116,11 +116,7 @@ const addComment=async (commentData) => {
          color:colors.primary[200]}}
          onClick={()=>setShowComments(!showComments)} 
          >
-            <ChatBubbleOutlineIcon fontSize="small"/> &nbsp; {t('comments')} ({userInfo &&  comments.filter((comment)=>{
-              return (
-                parseInt(comment.commented_by)===parseInt(userInfo.user.id)
-              )
-            }).length})
+            <ChatBubbleOutlineIcon fontSize="small"/> &nbsp; {t('comments')} ({comments.length})
         </Button>
       </Box>
       {
@@ -134,20 +130,12 @@ const addComment=async (commentData) => {
           
           <hr style={{ height:"2px", backgroundColor:colors.grey[600], opacity:"30%" }} />
             <Typography variant="h5" sx={{ paddingBottom:"5px", fontWeight:"600" }}>
-              {t('comments')} ({userInfo && comments.filter((comment)=>{
-                return (
-                  parseInt(comment.commented_by)===parseInt(userInfo.user.id)
-                )
-            }).length})</Typography>
+              {t('comments')} ({comments.length})</Typography>
 
             <List sx={{ width: '100%' }}>
                 {
                   comments.length>0 ? (
-                    userInfo && comments.filter((comment)=>{
-                      return (
-                        parseInt(comment.commented_by)===parseInt(userInfo.user.id)
-                      )
-                    }).map((comment)=>(
+                    comments.map((comment)=>(
                      <>
                       <ListItem alignItems="flex-center" key={comment.id} sx={{ height:"40px" }}>
                           <ListItemAvatar>
@@ -186,7 +174,7 @@ const addComment=async (commentData) => {
             {
               documentDetail.draft_status.name==="Open" ? (
                 <>
-                  <AddSectionComment section={section} />
+                  {/* <AddSectionComment section={section} /> */}
                 </>
               ):""
             }

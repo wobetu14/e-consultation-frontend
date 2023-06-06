@@ -119,14 +119,14 @@ const OutgoingCommentRequestsDialog = ({
         initialValues:{
             draft_id:params.id,
             institutions: [],
-            institutionMessage:"",
+            institutionMessage:"Dear Sir / Madam, We kindly invite your organization to review this draft documnet. You can assign experts among staff and let them review it. ",
             emails: [],
             comment_repliers:[],
-            personalMessage:"",
+            personalMessage:"Dear Sir / Madam, We kindly invite you to review this draft documnet. We are so happy if you can go through it and provide your comments as soon as possible.",
 
             draftOpeningDate:"",
             draftClosingDate:"",
-            acceptanceRemark:""
+            acceptanceRemark:"Draft opening request is accepted. The document is now open for commenting."
         },
 
       onSubmit:(values)=>{

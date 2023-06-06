@@ -143,9 +143,18 @@ const DraftMetaInfo = ({
                     }
 
 {
-                        (documentDetail && documentDetail.draft_status.name==="Closed") ? (
-                            <Chip label={documentDetail.draft_status.name} size="small" sx={{ backgroundColor:colors.dangerColor[200], color:colors.grey[300]}} />
-                        ):""
+
+              (documentDetail && documentDetail.draft_status.name==="Closed") ? (
+                <Chip label={documentDetail.draft_status.name} size="small" sx={{ backgroundColor:colors.dangerColor[200], color:colors.grey[300]}} />
+              ):"" 
+
+                       
+                    }
+
+                    {
+                       (documentDetail && documentDetail.draft_status.name==="Rejected") ? (
+                        <Chip label={documentDetail.draft_status.name} size="small" sx={{ backgroundColor:colors.dangerColor[200], color:colors.grey[300]}} />
+                    ):""
                     }
                   
               </Grid>

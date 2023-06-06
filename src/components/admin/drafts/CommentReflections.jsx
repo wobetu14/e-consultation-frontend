@@ -475,30 +475,22 @@ const CommentReflections = () => {
 
             <ListItemButton onClick={handleCommentsCollapse}>
                 <ListItemText primary={
-                  <Typography variant='h5' fontWeight="600">{t('general_comments')} ({documentComments && userInfo && (documentComments.filter((comment)=>{
-                    return (
-                      parseInt(comment.commenter ? comment.commenter.id:"")===parseInt(userInfo.user.id)
-                    )
-                  }).length)})</Typography>
+                  <Typography variant='h5' fontWeight="600">{t('general_comments')} ({documentComments && userInfo && (documentComments.length)})</Typography>
                 } />
                 {commentsOpen ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
             <Collapse in={commentsOpen} timeout="auto" unmountOnExit>
                 <Paper elevation={1} sx={{borderRadius:"3px", borderLeftStyle:"solid", borderLeftWidth:"3px", borderLeftColor:"#255B7E"}}>
                 {documentComments ? (
-                    userInfo && documentComments.filter((comment)=>{
-                      return (
-                        parseInt(comment.commenter ? comment.commenter.id:"")===parseInt(userInfo.user.id)
-                      )
-                    }).map((comment)=>(
+                    userInfo && documentComments.map((comment)=>(
                      
                       <ReplyDocumentLevelComments documentDetail={documentDetail} comment={comment} />
                     ))
                   ):(<Box>No comments</Box>)}
                   {
-                    (userRole==="Commenter") && documentDetail && documentDetail.draft_status.name==="Open" ? (
+                    /* (userRole==="Commenter") && documentDetail && documentDetail.draft_status.name==="Open" ? (
                       <AddDocumentLevelComments documentID={documentDetail ? documentDetail.id : params.id} />
-                    ):""
+                    ):"" */
                   }
                  </Paper>
               </Collapse>

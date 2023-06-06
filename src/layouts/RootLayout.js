@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 import Topbar from '../partials/main-menu/Topbar'
 
 // Transaltion
 import { useTranslation } from 'react-i18next';
 import Home from '../components/guest/Home';
+import { UserContext } from '../contexts/UserContext';
 
 
 function RootLayout() {
     const {t}=useTranslation()
+
     // Dynamic top menu items
   const menuItemsText=[
     {id:1, linkText:`${t('home')}`, to:"/"},

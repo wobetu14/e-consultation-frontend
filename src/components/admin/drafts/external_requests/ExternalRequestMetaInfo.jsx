@@ -118,7 +118,7 @@ const ExternalRequestMetaInfo = ({
               </Grid>
               <Grid item xs={6} md={6}>
                     {
-                        (documentDetail && documentDetail.draft_status.name==="Pending") ? (
+                        (documentDetail && documentDetail.draft_status.name==="New") ? (
                             <Chip label={`${documentDetail.draft_status.name}`} size="small" sx={{ backgroundColor:colors.dangerColor[200], color:colors.grey[300] }} />
                         ):""
                     }
@@ -133,12 +133,21 @@ const ExternalRequestMetaInfo = ({
                         (documentDetail && documentDetail.draft_status.name==="Open") ? (
                             <Chip label={documentDetail.draft_status.name} size="small" sx={{ backgroundColor:colors.successColor[100], color:colors.grey[300]}} />
                         ):""
+                        
                     }
 
 {
                         (documentDetail && documentDetail.draft_status.name==="Closed") ? (
                             <Chip label={documentDetail.draft_status.name} size="small" sx={{ backgroundColor:colors.dangerColor[200], color:colors.grey[300]}} />
                         ):""
+
+               
+                    }
+
+                    {
+                               (documentDetail && documentDetail.draft_status.name==="Rejected") ? (
+                                <Chip label={documentDetail.draft_status.name} size="small" sx={{ backgroundColor:colors.dangerColor[200], color:colors.grey[300]}} />
+                            ):""
                     }
                   
               </Grid>

@@ -1,11 +1,11 @@
 import React, { createContext, useEffect, useState } from 'react'
 
-export const UserContext=createContext(null);
+export const UserContext=createContext();
 
 export const UserProvider = (props) => {
-    const [userInfo, setUserInfo]=useState(JSON.parse(localStorage.getItem('userInfo')));
-    const [userRole, setUserRole]=useState(localStorage.getItem('userRole'));
-    const [userToken, setUserToken]=useState(localStorage.getItem('token'));
+    const [userInfo, setUserInfo]=useState(null);
+    const [userRole, setUserRole]=useState(null);
+    const [userToken, setUserToken]=useState(null);
 
     useEffect(()=>{
       setUserInfo(JSON.parse(localStorage.getItem('userInfo')));

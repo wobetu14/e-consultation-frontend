@@ -113,7 +113,7 @@ const RejectExternalRequest = ({
       const formikRejectForm=useFormik({
         initialValues:{
             commentRequestID:requestDetail.id,
-            rejectionMessage:"",
+            rejectionMessage:"We are sorry but we have rejected this document. Please review your request and re-send it again.",
         },
 
       onSubmit:(values)=>{

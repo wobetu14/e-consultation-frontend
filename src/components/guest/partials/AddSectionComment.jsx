@@ -66,7 +66,7 @@ const SectionFeedbacks = ({section}) => {
       section_comment:values.sectionComment,
       commented_by:values.commentedBy,
       commenting_team:values.commentingTeam,
-      created_by:values.createdBy
+      created_by:userInfo ? (userInfo.user.id):"",
     };
 
     addComment(sectionCommentData);

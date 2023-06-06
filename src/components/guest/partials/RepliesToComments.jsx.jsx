@@ -116,7 +116,11 @@ validationSchema:YUP.object({
                 >
                   <ReplyIcon color="secondary" fontSize='small' />
                 {t('replies')} ({
-                  reflections ? reflections.length:""
+                  reflections ? reflections.filter((reflection)=>{
+                    return (
+                      parseInt(reflection.commented_by)===parseInt(userInfo.user.id)
+                    )
+                }).length:""
                 })
               </Button>
           </Box>
@@ -132,7 +136,11 @@ validationSchema:YUP.object({
                   <List sx={{ width: '100%' }}>
                 {
                   reflections ? (
-                    reflections.map((reflection)=>(
+                    reflections.filter((reflection)=>{
+                      return (
+                        parseInt(reflection.commented_by)===parseInt(userInfo.user.id)
+                      )
+                  }).map((reflection)=>(
                      <>
                       <ListItem alignItems="flex-center" key={reflection.id}>
                           <ListItemAvatar>

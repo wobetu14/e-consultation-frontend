@@ -95,7 +95,7 @@ const AssignCommenters = ({
       const formikAssignCommenterForm=useFormik({
         initialValues:{
             commentRequestID:requestDetail.id,
-            noticeMessage:"",
+            noticeMessage:"Dear Sir / Madam, This it to inform you that we have assigned you to review and provide feedback on this document.",
             commenters:[]
         },
 

@@ -32,7 +32,8 @@ const SectionFeedbacks = ({comments, section, documentDetail}) => {
   const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
 
    // User context
-   const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
+   const {userInfo, setUserInfo, userRole, setUserRole, userToken, setUserToken}=useContext(UserContext);
+   
 
   const errorStyle={
     color:'red',
@@ -191,9 +192,10 @@ const addComment=async (commentData) => {
             </List>
             {
               documentDetail && documentDetail.draft_status.name==="Open" ? (
-                <>
-                  <AddSectionComment section={section} />
-                </>
+                  (
+                    userToken!==null && userToken!==undefined && userRole!=null && userRole!==undefined ) ? (
+                    <AddSectionComment section={section} />
+                  ):""
               ):""
             }
           </motion.span>

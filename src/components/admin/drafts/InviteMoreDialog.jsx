@@ -114,10 +114,10 @@ const InviteMoreDialog = ({
             draft_id:params.id,
 
             institutions: [],
-            institutionMessage:"",
+            institutionMessage:"Dear Sir / Madam, We kindly invite your organization to review this draft documnet. You can assign experts among staff and let them review it. ",
 
             emails: [],
-            personalMessage:"",
+            personalMessage:"Dear Sir / Madam, We kindly invite you to review this draft documnet. We are so happy if you can go through it and provide your comments as soon as possible.",
         },
 
       onSubmit:(values)=>{

@@ -95,7 +95,7 @@ const AcceptExternalRequestDialog = ({
      const formikAcceptanceForm=useFormik({
         initialValues:{
             commentRequestID:requestDetail.id,
-            acceptanceMessage:"",
+            acceptanceMessage:"Dear Sir / Madam, We have just accept these request.",
             commenters:[]
         },
 
