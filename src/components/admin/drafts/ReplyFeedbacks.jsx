@@ -103,7 +103,6 @@ const addComment=async (commentData) => {
        setServerSuccessMsg(null) 
     }) 
    }
-  
 
   return (
     <Box width="100%">
