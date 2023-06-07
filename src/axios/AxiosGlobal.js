@@ -12,5 +12,5 @@ const instance = axios.create(
     }
 );
 
-export const rootURL="http://196.188.107.43/api/v1/";
+export const rootURL="http://196.188.107.43:8080/api/v1/";
 export default instance
