@@ -1,5 +1,5 @@
 
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import axios from '../../../axios/AxiosGlobal'
 import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom'
@@ -10,14 +10,12 @@ import {
      DialogContent, 
      DialogContentText, 
      DialogTitle,
-     Stack,
      TextField,
      Typography, 
      useTheme, Box, DialogActions, Grid, Alert, LinearProgress
     } from '@mui/material'
 import { tokens } from '../../../theme';
 import { useFormik } from 'formik';
-import { UserContext } from '../../../contexts/UserContext';
 
 const InviteMoreDialog = ({
     documentDetail,
@@ -32,7 +30,6 @@ const InviteMoreDialog = ({
     const params=useParams()
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
-    const [formData, setFormData]=useState([]); 
 
     const [institutions, setInstitutions]=useState([]);
     const [selectedInstitutions, setSelectedInstitutions]=useState([]);
@@ -45,26 +42,17 @@ const InviteMoreDialog = ({
     const [repliersID, setRepliersID]=useState([]);
     const [loading, setLoading]=useState(false);
 
-     // User context
-     const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
+    const errorStyle={
+    color:'red',
+    fontWeight:'400',
+    fontSize:'18px'
+    }
 
-    const helperTextStyle={
-        color:'red',
-        fontWeight:'400',
-        fontSize:'15px'
-       }
-
-       const errorStyle={
-        color:'red',
-        fontWeight:'400',
-        fontSize:'18px'
-        }
-    
-        const successStyle={
-        color:'green',
-        fontWeight:'400',
-        fontSize:'18px'
-        }
+    const successStyle={
+    color:'green',
+    fontWeight:'400',
+    fontSize:'18px'
+    }
 
     React.useEffect(()=>{
         fetchInstitutions();

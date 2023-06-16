@@ -13,11 +13,11 @@ export const UserProvider = (props) => {
       setUserToken(localStorage.getItem('token'));
     },[])
 
-  /*   useEffect(()=>{
+    useEffect(()=>{
       setUserInfo(JSON.parse(localStorage.getItem('userInfo')));
       setUserRole(localStorage.getItem('userRole'));
       setUserToken(localStorage.getItem('token'));
-    },[]) */
+    },[])
 
   return (
     <UserContext.Provider value={{ 

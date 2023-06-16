@@ -3,27 +3,12 @@ import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
-import { tokens } from "../../theme"
+import { tokens } from "../../theme";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import Logout  from "../../Logout"
-import {Button} from '@mui/material';
-import ScheduleSendIcon from '@mui/icons-material/ScheduleSend';
-import SourceIcon from '@mui/icons-material/Source';
-import FactCheckIcon from '@mui/icons-material/FactCheck';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import PersonIcon from '@mui/icons-material/Person';
-import HomeIcon from '@mui/icons-material/Home';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import InstitutionIcon from '@mui/icons-material/AccountBalance';
-import SectorIcon from '@mui/icons-material/Category';
-import RegionIcon from '@mui/icons-material/Public';
-import IncomingCommentRequests from '@mui/icons-material/CallReceived';
-import AssessmentIcon from '@mui/icons-material/Assessment';
 import { UserContext } from "../../contexts/UserContext";
-// import ChecklistIcon from '@mui/icons-material/Checklist';
-import ListIcon from '@mui/icons-material/List';
+import ListIcon from "@mui/icons-material/List";
 import { useTranslation } from "react-i18next";
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -48,18 +33,8 @@ const CommenterSidebar = () => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
-  const {t}=useTranslation()
-  const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
-
-  const SuperAdminLinks=({children})=>{
-    if(userRole==="Super Admin"){
-      return (
-        <>
-          {children}
-        </>
-      )
-    }
-  }
+  const { t } = useTranslation();
+  const { userInfo, userRole } = useContext(UserContext);
 
   return (
     <Box
@@ -93,16 +68,22 @@ const CommenterSidebar = () => {
                 alignItems="center"
                 ml="15px"
               >
-                <Typography variant="h3" style={{
-                  margin: "10px 0 20px 0",
-                  color: colors.headerText[100],
-                 }} >
-                  {t('dashboard')}
+                <Typography
+                  variant="h3"
+                  style={{
+                    margin: "10px 0 20px 0",
+                    color: colors.headerText[100],
+                  }}
+                >
+                  {t("dashboard")}
                 </Typography>
-                <IconButton onClick={() => setIsCollapsed(!isCollapsed)} style={{
-              margin: "10px 0 20px 0",
-              color: colors.headerText[100],
-            }}>
+                <IconButton
+                  onClick={() => setIsCollapsed(!isCollapsed)}
+                  style={{
+                    margin: "10px 0 20px 0",
+                    color: colors.headerText[100],
+                  }}
+                >
                   <MenuOutlinedIcon />
                 </IconButton>
               </Box>
@@ -127,73 +108,67 @@ const CommenterSidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  {userInfo!==null && userInfo!==undefined ? userInfo.user.first_name+" "+userInfo.user.middle_name:null}
+                  {userInfo !== null && userInfo !== undefined
+                    ? userInfo.user.first_name + " " + userInfo.user.middle_name
+                    : null}
                 </Typography>
-                <Typography variant="h6">
-                  {t('commenter')}
-                </Typography>
-               {/*  <Typography variant="outlined">
-                  <Button href='/admin/user_profile' variant="outlined" size="small" sx={{ textTransform:"none", color:"#000" }}>Go to Profile</Button>
-                </Typography> */}
+                <Typography variant="h6">{t("commenter")}</Typography>
               </Box>
             </Box>
           )}
 
-          <Box 
-          paddingLeft={isCollapsed ? undefined : "5%"}
-          sx={{ 
-            "& .pro-inner-item:hover": {
-              backgroundColor: `${colors.grey[100]} !important`,
-              color: `${colors.headerText[100]} !important`,
-              borderRadius:"5px",
-            },
-            "& .pro-menu-item.active": {
-              backgroundColor: `${colors.grey[100]} !important`,
-              color:`${colors.headerText[100]} !important`,
-              borderRadius:"5px",
-            },
-           }}
+          <Box
+            paddingLeft={isCollapsed ? undefined : "5%"}
+            sx={{
+              "& .pro-inner-item:hover": {
+                backgroundColor: `${colors.grey[100]} !important`,
+                color: `${colors.headerText[100]} !important`,
+                borderRadius: "5px",
+              },
+              "& .pro-menu-item.active": {
+                backgroundColor: `${colors.grey[100]} !important`,
+                color: `${colors.headerText[100]} !important`,
+                borderRadius: "5px",
+              },
+            }}
           >
+            {userRole === "Commenter" ? (
+              <>
+                <Item
+                  title={t("assignments")}
+                  to="assigned_drafts"
+                  icon={<ListIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
 
-                    {
-                        userRole==="Commenter" ? (
-                            <>
-                              <Item
-                              title={t('assignments')}
-                              to="assigned_drafts"
-                              icon={<ListIcon />}
-                              selected={selected}
-                              setSelected={setSelected}
-                              />
+                <Item
+                  title="Assigned to Comment"
+                  to="assigned_to_comment"
+                  icon={<ListIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
 
-                            <Item
-                              title="Assigned to Comment"
-                              to="assigned_to_comment"
-                              icon={<ListIcon />}
-                              selected={selected}
-                              setSelected={setSelected}
-                              />
+                <Item
+                  title={t("invitations")}
+                  to="invited_drafts"
+                  icon={<ListIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
 
-                              <Item
-                                title={t('invitations')}
-                                to="invited_drafts"
-                                icon={<ListIcon />}
-                                selected={selected}
-                                setSelected={setSelected}
-                                />
-
-                              <Item
-                                title={t('edit_profile')}
-                                to="user_profile"
-                                icon={<ManageAccountsIcon />}
-                                selected={selected}
-                                setSelected={setSelected}
-                                />
-                            </>
-                        ):(
-                           " This menu is only for commenters"
-                        )
-                    }
+                <Item
+                  title={t("edit_profile")}
+                  to="user_profile"
+                  icon={<ManageAccountsIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+              </>
+            ) : (
+              " This menu is only for commenters"
+            )}
           </Box>
         </Menu>
       </ProSidebar>
