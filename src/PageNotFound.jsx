@@ -1,12 +1,8 @@
-import { Alert, AlertTitle, Box, Grid, Typography, useTheme } from '@mui/material'
+import { Alert, AlertTitle, Box, Grid, Typography } from '@mui/material'
 import {motion} from 'framer-motion'
-import React, { useContext } from 'react'
-import { ColorModeContext, tokens } from './theme'
+import React from 'react'
 
 export const PageNotFound = () => {
-  const theme=useTheme()
-    const colors=tokens(theme.palette.mode)
-    const colorMode=useContext(ColorModeContext);
   return (
     <Box margin="30px">
       <motion.span

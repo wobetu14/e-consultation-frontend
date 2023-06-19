@@ -1,7 +1,6 @@
 import { Box } from "@mui/system";
 import React from "react";
 import Header from "../AdminHeader";
-import "../../Table.css";
 import DraftsTable from "../DataTables/DraftsTable";
 import { DraftsDataProvider } from "../../../contexts/DraftsDataContext";
 

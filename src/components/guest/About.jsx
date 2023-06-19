@@ -1,7 +1,6 @@
 import { Box, Grid, Typography } from '@mui/material'
 import React from 'react'
 import {motion} from 'framer-motion'
-import WelcomePage from './WelcomePage';
 
 const About = () => {
   return (

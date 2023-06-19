@@ -17,7 +17,6 @@ import Header from "../AdminHeader";
 import { useTheme } from "@emotion/react";
 import { tokens } from "../../../theme";
 import { motion } from "framer-motion";
-import "../../Table.css";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";

@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
@@ -7,7 +7,7 @@ import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
-import { ArrowDropDown, ArrowDropDownOutlined, LanguageOutlined } from '@mui/icons-material';
+import { LanguageOutlined } from '@mui/icons-material';
 import i18next from 'i18next';
 import cookies from 'js-cookie';
 import { useTheme } from '@emotion/react';
@@ -39,7 +39,6 @@ const appLanguages=[
   },
 ]
 
-
 export default function LanguageButton() {
   const theme=useTheme()
   const colors=tokens(theme.palette.mode)
@@ -52,11 +51,9 @@ export default function LanguageButton() {
   const anchorRef = React.useRef(null);
 
   const handleMenuItemClick = (code) => {
-    // setSelectedLangName(name)
     i18next.changeLanguage(code)
     setOpen(false);
   };
-
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
@@ -68,8 +65,6 @@ export default function LanguageButton() {
 
     setOpen(false);
   };
-
-  // const classes=useStyles();
 
   return (
     <React.Fragment>
@@ -89,7 +84,6 @@ export default function LanguageButton() {
         >
           <LanguageOutlined />&nbsp;
           {currentLanguage.name} 
-          {/* <ArrowDropDownOutlined /> */}
         </Button>
       </ButtonGroup>
       <Popper
@@ -119,7 +113,6 @@ export default function LanguageButton() {
                       key={code}
                       disabled={code === currentLanguageCode}
                       selected={code === currentLanguageCode}
-                      // onClick={(event) => handleMenuItemClick(event)}
                       onClick={()=>handleMenuItemClick(code)}
                     >
                       {name}

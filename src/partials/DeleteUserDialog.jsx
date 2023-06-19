@@ -6,7 +6,6 @@ import {
      DialogContent, 
      DialogContentText, 
      DialogTitle,
-     Paper,
      Typography, 
      useTheme
     } from '@mui/material'
@@ -20,11 +19,6 @@ const DeleteUserDialog = ({title, text}) => {
     // UsersDataContext
     const {
         user, 
-        setUser,
-        serverErrorMsg,
-        setServerErrorMsg,
-        serverSuccessMsg,
-        setServerSuccessMsg,
         openDialog,
         setOpenDialog,
         deleteUser

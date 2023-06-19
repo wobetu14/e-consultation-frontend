@@ -1,196 +1,190 @@
-import { Box, Collapse, Card, CardActions, CardContent, CircularProgress, Grid, Paper, Stack, Typography, useTheme, ListItemButton, ListItemText, Button, TextField, List, ListItem, ListItemAvatar, Avatar, Chip, Alert } from '@mui/material';
-import React, { useContext, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom'
-import axios from '../../../../axios/AxiosGlobal'
-import {motion} from 'framer-motion'
+import {
+  Box,
+  Collapse,
+  Grid,
+  Typography,
+  useTheme,
+  ListItemButton,
+  ListItemText,
+  Alert,
+} from "@mui/material";
+import React, {useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "../../../../axios/AxiosGlobal";
+import { motion } from "framer-motion";
 
-import SendIcon from '@mui/icons-material/Send';
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
 
-import ExpandLess from '@mui/icons-material/ExpandLess';
-import ExpandMore from '@mui/icons-material/ExpandMore';
+import DocumentPreview from "../DocumentPreview";
 
-import { Drafts, FileDownload } from '@mui/icons-material';
-
-import { useFormik } from 'formik';
-import * as YUP from 'yup';
-
-import DocumentPreview from '../DocumentPreview';
-
-
-import PersonalInvitations from '../Personalnvitations';
-import InstitutionInvitations from '../InstitutionInvitations';
-import CommentRepliers from '../CommentRepliers';
-import ExternalRequestMetaInfo from './ExternalRequestMetaInfo';
-import { tokens } from '../../../../theme';
-import { UserContext } from '../../../../contexts/UserContext';
+import PersonalInvitations from "../Personalnvitations";
+import ExternalRequestMetaInfo from "./ExternalRequestMetaInfo";
+import { tokens } from "../../../../theme";
 
 const ExternalRequestDetails = () => {
-  const params=useParams();
-  const [documentDetail, setDocumentDetail]=useState(null);
-  const [documentSections, setDocumentSections]=useState(null);
-  const [documentComments, setDocumentComments]=useState(null);
-  const [openAcceptanceDialog, setOpenAcceptanceDialog]=useState(false);
-
-  const {userInfo, setUserInfo, userRole, setUserRole, setUserToken}=useContext(UserContext);
-
-  const [contentBgColor, setContentBgColor]=useState(null);
+  const params = useParams();
+  const [documentDetail, setDocumentDetail] = useState(null);
+  const [documentSections, setDocumentSections] = useState(null);
+  const [documentComments, setDocumentComments] = useState(null);
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const {t}=useTranslation();
 
-  const [serverErrorMsg, setServerErrorMsg]=useState(null);
-  const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
+  const [serverErrorMsg, setServerErrorMsg] = useState(null);
+  const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
 
-  const errorStyle={
-    color:'red',
-    fontWeight:'400',
-    fontSize:'18px'
-  }
+  const errorStyle = {
+    color: "red",
+    fontWeight: "400",
+    fontSize: "18px",
+  };
 
-  const successStyle={
-   color:'green',
-   fontWeight:'400',
-   fontSize:'18px'
- }
+  const successStyle = {
+    color: "green",
+    fontWeight: "400",
+    fontSize: "18px",
+  };
 
   // Menu collapse functionality
   const [previewOpen, setPreviewOpen] = React.useState(false);
-
-  // General comments collapse functionality
-  const [commentsOpen, setCommentsOpen] = React.useState(true);
 
   const handlePreviewCollapse = () => {
     setPreviewOpen(!previewOpen);
   };
 
-  const handleCommentsCollapse = () => {
-    setCommentsOpen(!commentsOpen);
+  useEffect(() => {
+    fetchDocumentDetails();
+  }, [documentDetail]);
+
+  useEffect(() => {
+    fetchDocumentSections();
+  }, [documentSections]);
+
+  useEffect(() => {
+    fetchDocumentComments();
+  }, [documentComments]);
+
+  const fetchDocumentDetails = async () => {
+    return await axios.get(`drafts/${params.id}`).then((response) => {
+      setDocumentDetail(response.data.data);
+    });
   };
 
-    useEffect(()=>{
-        fetchDocumentDetails();
-    }, [documentDetail])
-
-    useEffect(()=>{
-      fetchDocumentSections();
-    }, [documentSections])
-
-    useEffect(()=>{
-      fetchDocumentComments();
-    }, [documentComments])
-
-  const fetchDocumentDetails= async()=>{
-        return await axios.get(`drafts/${params.id}`)
-                .then(response=>{
-                    setDocumentDetail(response.data.data);
-                })
+  const fetchDocumentSections = async () => {
+    return await axios
+      .get(`draft/${params.id}/draft-sections`)
+      .then((response) => {
+        setDocumentSections(response.data.data);
+      })
+      .catch((error) => {
+        <p color="red">{error.response.message}</p>;
+      });
   };
 
-  const fetchDocumentSections = async()=>{
-    return await axios.get(`draft/${params.id}/draft-sections`)
-              .then(response =>{
-                setDocumentSections(response.data.data)
-              }).catch(error=>{
-                <p color='red'>{error.response.message}</p>
-              })
-  }
-
-  const fetchDocumentComments= async()=>{
-    return await axios.get(`draft/${params.id}/general-comments`)
-              .then(response =>{
-                setDocumentComments(response.data.data)
-              }).catch(error=>{
-                <p color='red'>{error.response.message}</p>
-              })
-  }
-
-  const handleAcceptanceDialog = ()=>{
-    setOpenAcceptanceDialog(true)
-  }
+  const fetchDocumentComments = async () => {
+    return await axios
+      .get(`draft/${params.id}/general-comments`)
+      .then((response) => {
+        setDocumentComments(response.data.data);
+      })
+      .catch((error) => {
+        <p color="red">{error.response.message}</p>;
+      });
+  };
 
   return (
     <Box>
+      <Grid align="center" sx={{ paddingBottom: "5px", paddingTop: "5px" }}>
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Typography variant="h1">
+            {serverSuccessMsg ? (
+              <Alert severity="success" style={successStyle}>
+                {serverSuccessMsg}
+              </Alert>
+            ) : null}
+          </Typography>
 
-        <Grid align='center' sx={{ paddingBottom:"5px", paddingTop:'5px' }}>
-            <motion.span
-                initial={{ opacity: 0}}
-                animate={{ opacity: 1}}
-                transition={{ duration: 0.3 }}
-                > 
-                <Typography variant='h1'>
-                    {serverSuccessMsg ? <Alert severity='success' style={successStyle}>{serverSuccessMsg}</Alert>:null}
-                </Typography>
-                
-                <Typography variant='h1'>
-                {serverErrorMsg ? <Alert severity='error' style={errorStyle}>{serverErrorMsg}</Alert>:null}
-                </Typography> 
-            </motion.span>
-        </Grid>
+          <Typography variant="h1">
+            {serverErrorMsg ? (
+              <Alert severity="error" style={errorStyle}>
+                {serverErrorMsg}
+              </Alert>
+            ) : null}
+          </Typography>
+        </motion.span>
+      </Grid>
 
-    {/* <Button variant="contained" color="success" size="small" onClick={handleAcceptanceDialog}>Accept</Button> */}
+      {/* <Button variant="contained" color="success" size="small" onClick={handleAcceptanceDialog}>Accept</Button> */}
 
-      <ExternalRequestMetaInfo 
-        documentDetail={documentDetail} 
-        setDocumentDetail={setDocumentDetail} 
+      <ExternalRequestMetaInfo
+        documentDetail={documentDetail}
+        setDocumentDetail={setDocumentDetail}
         serverErrorMsg={serverErrorMsg}
         serverSuccessMsg={serverSuccessMsg}
         setServerErrorMsg={setServerErrorMsg}
         setServerSuccessMsg={setServerSuccessMsg}
       />
 
-      
-
-      <ListItemButton 
-      onClick={handlePreviewCollapse} 
-      sx={{ 
-     marginLeft:"40px", 
-      marginRight:"40px", 
-      marginBottom:"100px", 
-      height:"40px",
-      backgroundColor:colors.brandColor[200],
-      width:"20%",
-      alignSelf:"right",
-      borderRadius:"20px 20px"
-     }}
-
+      <ListItemButton
+        onClick={handlePreviewCollapse}
+        sx={{
+          marginLeft: "40px",
+          marginRight: "40px",
+          marginBottom: "100px",
+          height: "40px",
+          backgroundColor: colors.brandColor[200],
+          width: "20%",
+          alignSelf: "right",
+          borderRadius: "20px 20px",
+        }}
       >
-            <ListItemText primary={
-                <Typography variant="body1" 
-                    sx={{ fontWeight:"500", textAlign:"center", color:colors.grey[300] }}
-                >
-                    Document Preview 
-                </Typography>
-            } />
-            {previewOpen ? <ExpandLess sx={{ color:colors.grey[300] }} /> : <ExpandMore sx={{ color:colors.grey[300] }} />}
-     </ListItemButton>
+        <ListItemText
+          primary={
+            <Typography
+              variant="body1"
+              sx={{
+                fontWeight: "500",
+                textAlign: "center",
+                color: colors.grey[300],
+              }}
+            >
+              Document Preview
+            </Typography>
+          }
+        />
+        {previewOpen ? (
+          <ExpandLess sx={{ color: colors.grey[300] }} />
+        ) : (
+          <ExpandMore sx={{ color: colors.grey[300] }} />
+        )}
+      </ListItemButton>
 
-        <Collapse 
-        in={previewOpen} 
-        timeout="auto" 
-        unmountOnExit 
-        sx={{ marginLeft:"30px", marginRight:"30px" }}
-        >
-            <DocumentPreview 
-              documentDetail={documentDetail} 
-              setDocumentDetail={setDocumentDetail} 
-              documentSections={documentSections}
-              setDocumentSections={setDocumentSections}
-              documentComments={documentComments}
-              setDocumentComments={setDocumentComments}
-            />
-     </Collapse>
+      <Collapse
+        in={previewOpen}
+        timeout="auto"
+        unmountOnExit
+        sx={{ marginLeft: "30px", marginRight: "30px" }}
+      >
+        <DocumentPreview
+          documentDetail={documentDetail}
+          setDocumentDetail={setDocumentDetail}
+          documentSections={documentSections}
+          setDocumentSections={setDocumentSections}
+          documentComments={documentComments}
+          setDocumentComments={setDocumentComments}
+        />
+      </Collapse>
 
-  
-        <>
-          <PersonalInvitations 
-            documentDetail={documentDetail}
-          />
-        </> 
+      <>
+        <PersonalInvitations documentDetail={documentDetail} />
+      </>
     </Box>
-  )
-}
+  );
+};
 
 export default ExternalRequestDetails;
-

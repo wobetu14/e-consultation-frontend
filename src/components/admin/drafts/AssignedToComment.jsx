@@ -3,7 +3,6 @@ import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import axios from "../../../axios/AxiosGlobal";
 import Header from "../AdminHeader";
-import "../../Table.css";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";

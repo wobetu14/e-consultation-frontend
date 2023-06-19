@@ -7,48 +7,18 @@ import DrawerComp from "./Drawer";
 
 import  LightModeOutlinedIcon  from '@mui/icons-material/LightModeOutlined';
 import  DarkModeOutlinedIcon  from '@mui/icons-material/DarkModeOutlined';
-import { LanguageOutlined } from "@mui/icons-material";
 import {Link, useNavigate } from "react-router-dom";
 import LanguageButton from "../LanguageButton";
 
 import { useTranslation } from 'react-i18next';
-import i18next from 'i18next';
-import cookies from 'js-cookie';
 import { UserContext } from "../../contexts/UserContext";
 import Logout from "../../Logout";
 
-const languages=[
-  {
-    code:'en',
-    name:'English',
-    country_code:'English'
-  },
-
-  {
-    code:'am',
-    name:'አማርኛ',
-    country_code:'Ethiopia'
-  },
-  {
-    code:'oro',
-    name:'Afan Oromo',
-    country_code:'Ethiopia'
-  },
-
-  {
-    code:'tg',
-    name:'ትግርኛ',
-    country_code:'Ethiopia'
-  },
-]
-
 const Topbar = ({menuItems}) => {
-  const currentLanguageCode=cookies.get('i18next') || 'en'
-  const currentLanguage=languages.find(l=>l.code===currentLanguageCode)
   const { t } = useTranslation()
 
   // User ContextData
-  const {userRole, setUserRole, userInfo, setUserInfo, userToken, setUserToken}=useContext(UserContext);
+  const {userRole, setUserRole, userInfo, userToken, setUserToken}=useContext(UserContext);
 
     const theme=useTheme()
     const colors=tokens(theme.palette.mode)
@@ -59,9 +29,6 @@ const Topbar = ({menuItems}) => {
 
     // Indicate which tab is selected
     const [tabValue, setTabValue]=useState(0);
-
-    // Hide / Show Menu
-    const [showMenu, setShowMenu]=useState(true)
 
     // Navigate to Sign In page
     const navigate=useNavigate()
@@ -76,13 +43,6 @@ const Topbar = ({menuItems}) => {
     setTabValue(null)
   }
 
-  const logout=()=>{
-    localStorage.clear();
-    setUserToken(null);
-    setUserRole(null);
-    navigate("/");
-  }
-
   return (
     <>
       <AppBar 
@@ -93,26 +53,9 @@ const Topbar = ({menuItems}) => {
        zIndex:2 }}>
           <Grid container>
             <Grid item xs={10}>
-            {/* <Box display="flex">
-                            {
-                              (userToken!==null && userToken!==undefined && userRole!=null && userRole!==undefined ) ?  (
-                                <>
-                                  <Typography 
-                                  variant="h5" 
-                                  fontWeight={600} 
-                                  sx={{ color:"#fff", marginLeft:"30px", paddingTop:"10px" }}
-                                  >{`Welcome! You are logged in as ${userRole}`}</Typography>
-                                </>
-                                 
-                                ):
-                                (
-                                  null
-                                )
-                            }
-                        </Box> */}
+            
             </Grid>
             <Grid item xs={2}>
-              {/* Icons */}
                 <Box display="flex">
                     <IconButton onClick={colorMode.toggleColorMode} sx={{ color:colors.grey[400] }}>
                         {theme.palette.mode==="dark" ? (
@@ -120,10 +63,6 @@ const Topbar = ({menuItems}) => {
                         ):(
                             <LightModeOutlinedIcon />
                         )} &nbsp;
-{/* 
-                        <Typography variant="body1" fontWeight={500}>
-                          Theme
-                        </Typography> */}
                     </IconButton>
                     
                     <IconButton>

@@ -1,7 +1,6 @@
 import { Box } from "@mui/system";
 import React from "react";
 import Header from "../AdminHeader";
-import "../../Table.css";
 import IncomingCommentRequests from "../partials/IncomingCommentRequests";
 
 const ExternalCommentRequests = () => {

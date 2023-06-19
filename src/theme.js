@@ -1,8 +1,5 @@
 import { createContext, useState, useMemo } from "react";
 import { createTheme } from "@mui/material/styles";
-import { color, palette } from "@mui/system";
-import { colors } from "@mui/material";
-import { light } from "@mui/material/styles/createPalette";
 
 import { useTranslation } from 'react-i18next';
 import i18next from 'i18next';
@@ -333,8 +330,6 @@ export const themeSettings=(mode)=>{
         }
     };
 };
-
-// App Langauges
 
 
 // create react Context for color mode

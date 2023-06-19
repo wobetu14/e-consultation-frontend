@@ -1,6 +1,5 @@
 import { Box } from "@mui/system";
 import React from "react";
-import "../../Table.css";
 import InstitutionsTable from "../DataTables/InstitutionsTable";
 import { InstitutionsDataProvider } from "../../../contexts/InstitutionsDataContext";
 

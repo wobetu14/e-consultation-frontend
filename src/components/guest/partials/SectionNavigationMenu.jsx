@@ -1,56 +1,51 @@
-import * as React from 'react';
+import * as React from "react";
 
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
-import { Collapse, Typography, useTheme } from '@mui/material';
-import { tokens } from '../../../theme';
-import { useTranslation } from 'react-i18next';
+import List from "@mui/material/List";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
+import { Typography, useTheme } from "@mui/material";
+import { tokens } from "../../../theme";
 
-const SectionNavigationMenu = ({section, paddingValue}) => {
-  
-    const theme = useTheme();
-    const colors = tokens(theme.palette.mode);
-    const {t}=useTranslation();
+const SectionNavigationMenu = ({ section, paddingValue }) => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
-  const changeSelectedColor=(elementID)=>{
-    document.getElementById(elementID).style.backgroundColor=colors.grey[500]
-  }
-
-  const [open, setOpen] = React.useState(true);
-
-  const handleClick = () => {
-    setOpen(!open);
+  const changeSelectedColor = (elementID) => {
+    document.getElementById(elementID).style.backgroundColor = colors.grey[500];
   };
 
   return (
-      <div>
-                <List
-                sx={{ width: '90%', maxWidth: 360, height:"35px"}}
-                component="nav"   
+    <div>
+      <List
+        sx={{ width: "90%", maxWidth: 360, height: "35px" }}
+        component="nav"
+      >
+        <ListItemButton sx={{ height: "35px", pl: paddingValue }}>
+          <ListItemIcon>
+            <LocalLibraryIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary={
+              <>
+                <a
+                  key={section.id}
+                  href={`#${section.id}`}
+                  style={{ textDecoration: "none", color: colors.primary[300] }}
+                  onClick={() => changeSelectedColor(section.id)}
                 >
-                <ListItemButton sx={{ height:"35px", pl:paddingValue }}>
-                    <ListItemIcon>
-                     <LocalLibraryIcon />
-                    </ListItemIcon>
-                    <ListItemText primary={
-                        <>
-                            <a 
-                            key={section.id} 
-                            href={`#${section.id}`} 
-                            style={{ textDecoration:"none", color:colors.primary[300] }}
-                            onClick={()=>changeSelectedColor(section.id)}
-                            >
-                                <Typography variant="subtitle1">{section.section_title}</Typography>
-                                </a>
-                        </>
-                    } />
-                </ListItemButton> 
-                </List>
+                  <Typography variant="subtitle1">
+                    {section.section_title}
+                  </Typography>
+                </a>
+              </>
+            }
+          />
+        </ListItemButton>
+      </List>
     </div>
   );
-}
+};
 
 export default SectionNavigationMenu;

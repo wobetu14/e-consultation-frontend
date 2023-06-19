@@ -17,7 +17,6 @@ import axios from "../../../axios/AxiosGlobal";
 import Header from "../AdminHeader";
 import { useTheme } from "@emotion/react";
 import { tokens } from "../../../theme";
-import "../../Table.css";
 import { UserContext } from "../../../contexts/UserContext";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";

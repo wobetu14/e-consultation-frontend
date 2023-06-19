@@ -5,7 +5,6 @@ import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import Home from "./components/guest/Home";
 import About from "./components/guest/About";
-import Contacts from "./components/guest/Contacts";
 import Login from "./components/guest/auth/Login";
 import GuestSignup from "./components/guest/auth/GuestSignup";
 import { UserContext } from "./contexts/UserContext";
@@ -52,11 +51,7 @@ function App() {
   const { t } = useTranslation();
   const [theme, colorMode] = useMode();
 
-  const { userInfo, setUserInfo, userRole, setUserRole, setUserToken } =
-    useContext(UserContext);
-
-  // Setup dynamic font-size changer
-  const [fontSize, setFontSize] = useState(20);
+  const { userRole } = useContext(UserContext);
 
   const PublicElement = ({ children }) => {
     return <>{children}</>;
@@ -112,7 +107,6 @@ function App() {
                 <Route index element={<Home />} />
                 <Route path="about" element={<About />} />
                 <Route path="help" element={<HelpCenter />} />
-                <Route path="contacts" element={<Contacts />} />
                 <Route path="login" element={<Login />} />
                 <Route
                   path="reset_password/email_address"
@@ -179,7 +173,6 @@ function App() {
                 <Route path="users" element={<Users />} />
                 <Route path="create_user" element={<CreateUser />} />
                 <Route path="user_profile" element={<UserProfile />} />
-                <Route path="contacts" element={<Contacts />} />
                 <Route path="institutions" element={<Institutions />} />
                 <Route
                   path="create_institution"

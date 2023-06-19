@@ -5,7 +5,6 @@ const Reports = () => {
   return (
     <Box m="0 20px" width={"95%"}>
       <Header title="Audit activities and other reports " subtitle="" />
-
       <Typography variant="h5" sx={{ fontWeight: "600" }}>
         Audit Activities
       </Typography>
