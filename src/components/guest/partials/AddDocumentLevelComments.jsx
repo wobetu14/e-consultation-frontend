@@ -20,16 +20,30 @@ import { useFormik } from "formik";
 import axios from "../../../axios/AxiosGlobal";
 import { UserContext } from "../../../contexts/UserContext";
 
+/**
+ * Create a coponent to allow user add new document level comments / general comments
+ */
 const AddDocumentLevelComments = ({ documentID }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();
 
+  /**
+   * Create variables to handle response messages coming from the server. 
+   * serverSuccessMsg is to handle success message if the API successfully handle the request
+   * while serverErrorMsg is to handle error messages if the API couldn't not be successfull
+   */
   const [serverErrorMsg, setServerErrorMsg] = useState(null);
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
 
-  // User context
+  // Destructure userInfo from UserContext
   const { userInfo } = useContext(UserContext);
+
+  /**
+   * Inline CSS contants to format server response message.
+   * This style constants are created to format values of either serverErrorMsg or serverSuccessMsg.
+   * Note that, this constant definitions are available on almost every component of this application.
+   */ 
 
   const errorStyle = {
     color: "red",
@@ -44,7 +58,20 @@ const AddDocumentLevelComments = ({ documentID }) => {
     fontSize: "18px",
   };
 
+  /**
+   * Here we have built a formik object. What is formik? It is a group react components to easily handle form data.
+   * In this project, we have used formik package to handle most of our form processing tasks. 
+   * Read more about formik at: https://formik.org/docs/tutorial 
+   */
+
+  /**
+   * Create formik object and setup initial values as key:value pairs. 
+   */
   const formik = useFormik({
+    /**
+     * Setup initial values. with key:value pairs where key is related to the name of form elemeents
+     * and values are initial values avaialable for the form elements
+     */
     initialValues: {
       draftID: documentID,
       generalComment: "",
@@ -53,6 +80,11 @@ const AddDocumentLevelComments = ({ documentID }) => {
       createdBy: userInfo ? userInfo.user.id : "",
     },
 
+    /**
+     * Aggregate form data to be passed to the API call on form submit call the functions that defines the API request. 
+     * This form data are updates from the initial values. 
+     * Here we have aggregated form data, make a function call (AddComment) that defines API calls to add general comments
+     */
     onSubmit: (values) => {
       const documentCommentData = {
         draft_id: values.draftID,
@@ -62,10 +94,12 @@ const AddDocumentLevelComments = ({ documentID }) => {
         created_by: values.createdBy,
       };
 
+      // Function call 
       addComment(documentCommentData);
     },
   });
 
+  // Function definition to define API calls to add new general comment.
   const addComment = async (documentCommentData) => {
     return await axios
       .post("general-comments", documentCommentData)

@@ -1,5 +1,13 @@
 import axios from "axios";
 
+/**
+ * Custom configuration for Axios http client package. 
+ * Learn more about axios at https://axios-http.com/docs/intro 
+ * 
+ * Here we have customized the axios API by providing custom values for
+ * baseURL, header (authorization, Accept data type) etc
+ */
+
 const instance = axios.create({
   baseURL: "http://196.188.107.43:8080/api/v1/",
   headers: {
@@ -9,5 +17,8 @@ const instance = axios.create({
   },
 });
 
+/**
+ * Define root URL for accessing resources from the server side such as files, images and server-side generated reports
+ */
 export const rootURL = "http://196.188.107.43:8080/api/v1/";
 export default instance;

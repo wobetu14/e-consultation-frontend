@@ -43,6 +43,12 @@ i18n
   
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+  /**
+   * The index file the entry point for any react application.
+   * Here we have rendered the App.js file to start the application. The App.js file is also 
+   * enveloped with <BrowserRouter> used for routing the components, 
+   * and <UserProvider>, used to access the logged in user information from UserContext.jsx Contextfile
+   */
     <Suspense fallback={loadingMarkup}>
       <React.StrictMode>
         <BrowserRouter>

@@ -19,7 +19,7 @@ import { useFormik } from "formik";
 import axios from "../../../axios/AxiosGlobal";
 import { UserContext } from "../../../contexts/UserContext";
 
-const SectionFeedbacks = ({ section }) => {
+const SectionFeedbacks = ({ section, documentDetail, comments }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();

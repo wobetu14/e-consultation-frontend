@@ -27,9 +27,22 @@ import EditDraft from "../drafts/EditDraft";
 import DeleteDraftDialog from "../drafts/DeleteDraftDialog";
 import { rootURL } from "../../../axios/AxiosGlobal";
 
+/**
+ * This component is used to create drafts data table along with search and pagination functionalities.
+ * This component is child of DraftsDataContext drafts data is extracted from the context.
+ */
+
+/**
+ * Create DraftsTable component
+ */
 const DraftsTable = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  
+  /**
+   * Destructure important data from the Drafts Data Context. Note that we are going to destructure only 
+   * the variables we are going to use in this child component
+   */
   const {
     filteredDrafts,
     searchDraft,
@@ -59,7 +72,12 @@ const DraftsTable = () => {
     fontSize: "18px",
   };
 
-  // Show / Hide Add User Form
+  /**
+   * Show / Hide Add User Form
+   * These two methods are used to show and hide forms to add and edit drafts data.
+   * The hide / show functionalies are triggered upon click event of buttons available on the top right corner 
+   * of the drafts data table
+   */
   const showAddDraftForm = (msg) => {
     setShowDraftAddForm(!showDraftAddForm);
     setShowDraftEditForm(false);
@@ -77,11 +95,22 @@ const DraftsTable = () => {
     setShowDraftAddForm(false);
   };
 
+  /**
+   * Show / hide dialog to delete single draft
+   */
   const deleteDraftDialog = (draftRow) => {
     setDraft(draftRow);
+    // Set openDialog variable to true to show the delete dialog 
     setOpenDialog(true);
   };
 
+  /**
+   * Create columns and row selectors to create data table. 
+   * We have used 'react-data-table-component' to build the data table.
+   * Follow the documentation of 'react-data-table-component' to understand more how we have created
+   * the data table for this draft data. Read more at: https://www.npmjs.com/package/react-data-table-component 
+   * and https://youtu.be/3oHUtG0cjfY 
+   */
   const columns = [
     {
       name: (
@@ -193,6 +222,13 @@ const DraftsTable = () => {
   ];
 
   return (
+    /**
+     * Create the data table UI and render data based on the column definition and filteredDrafts data 
+     * which is available from the drafts context data
+     */
+    /**
+     * First create Box as a parent object, then create Grid inside
+     */
     <Box width={"95%"}>
       <Grid align="center" sx={{ paddingBottom: "5px", paddingTop: "5px" }}>
         <motion.span
@@ -200,6 +236,10 @@ const DraftsTable = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
+
+          {/* 
+            Display response message resulted from the API call. Sucess or error messages
+           */}
           <Typography variant="h1">
             {serverSuccessMsg ? (
               <Alert severity="success" style={successStyle}>
@@ -216,6 +256,10 @@ const DraftsTable = () => {
             ) : null}
           </Typography>
 
+          {/* 
+             Display loading indicator information to indicate CRUD operation is 
+             under progress or not. Display this information only when loading variable value is true
+           */}
           {loading ? (
             <Box>
               <Typography
@@ -227,7 +271,7 @@ const DraftsTable = () => {
                 This process may take longer. We are converting and extracting
                 content from the document. Please wait...
               </Typography>
-              <LinearProgress color="info" />
+              <LinearProgress color="info" /> {/* Line progress bar indicator imported from Material UI */}
             </Box>
           ) : null}
         </motion.span>
@@ -241,25 +285,31 @@ const DraftsTable = () => {
           }". Are you sure?`}
         />
       )}
-      {showDraftAddForm && <CreateDraft />}
-      {showDraftEditForm && <EditDraft />}
+      {showDraftAddForm && <CreateDraft />} {/* Show <CreateDraft /> component if showDraftAddForm value is true */}
+      {showDraftEditForm && <EditDraft />}  {/* Show <EditDraft /> component if the showDraftEditForm value is true */}
 
       <Paper
         elevation={1}
         sx={{ marginTop: "10px", marginBottom: "350px", maxWidth: "1200px" }}
       >
+        {/* 
+          Render the data table. <DataTable /> component is a built in data table from react-data-table-component.
+          We have used predefined props from the coponents
+        */}
         <DataTable
-          columns={columns}
-          data={filteredDrafts}
-          pagination
+          columns={columns} /* Define columns from columns object definition */
+          data={filteredDrafts} /* define the data props value from filteredDrafts*/
+          pagination /* Use table pagination */
           selectableRowsHighlight
-          subHeader
-          progressPending={filteredDrafts.length <= 0}
+          subHeader /* Create sub header to add other table components such as filter TextField and Add / Edit drafts button */
+          progressPending={filteredDrafts.length <= 0} /* Display pending progress bar if the length of filteredDrafts array is less or equals to 0 */
           progressComponent={
             <Box mb="20px">
+              {/* Display progress bar if the data prop value is empty */}
               <CircularProgress color="info" />
             </Box>
           }
+          /* Add subheader components such as search TextField and Add form Button */
           subHeaderComponent={
             <Box
               width="100%"
@@ -281,6 +331,7 @@ const DraftsTable = () => {
                 />
               </Box>
               <Box>
+                {/* Show add drafts form and a button to show and hide the draft form */}
                 {showDraftAddForm ? (
                   <Button
                     variant="contained"
@@ -291,7 +342,10 @@ const DraftsTable = () => {
                   >
                     <VisibilityOffIcon /> Hide Form
                   </Button>
-                ) : showDraftEditForm ? (
+                ) : 
+                /* Show edit drafts form and a button to hide and show the edit draft form */
+                /* Note that toggling between add form and edit form is vice versa. */
+                showDraftEditForm ? (
                   <Button
                     variant="contained"
                     size="small"

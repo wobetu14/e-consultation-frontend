@@ -22,13 +22,46 @@ import axios from "../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
 import { DraftsDataContext } from "../../../contexts/DraftsDataContext";
 
+/**
+ * Create a functional component named CreateDraft
+ */
 const CreateDraft = () => {
+  /**
+   * Create institutions variable to store list of institutions 
+   * and allow the user select the name of the institution creating the draft.
+   * Actually this data may not be necessary since the institution can be automatically taken 
+   * from the logged user information
+   */
   const [institutions, setInstitutions] = useState(null);
+
+  /**
+   * Create lawCategories variable to store list of law categories and allow
+   * the user select the law category the draft belongs to while creating
+   */
   const [lawCategories, setLawCategories] = useState(null);
+
+  /**
+   * Create sectors variable to store list of sectors and allow the user to specify 
+   * the name of sectors the draft deals with
+   */
   const [sectors, setSectors] = useState([]);
+
+  /**
+   * Create tagLists variable and allow the user enter list of tags the draft document 
+   * mainly talks about. Specifiying tags related to topics in the draft content is 
+   * important for the document filtering and searching purposes
+   */
   const [tagLists, setTagLists] = useState([]);
+
+  /**
+   * Create variable to store list of selcted sector values from the Autocomplete TextField 
+   * value
+   */
   const [selectedSectors, setSelectedSectors] = useState([]);
 
+  /**
+   * Destructure and access variable from the DraftsDataContext context 
+   */
   const {
     drafts,
     fetchDrafts,
@@ -47,14 +80,23 @@ const CreateDraft = () => {
     fetchInstitutions();
   }, [institutions]);
 
+  /**
+   * Fetch list of law categories on component load using the useEffect hook
+   */
   useEffect(() => {
     fetchLawCategories();
   }, [lawCategories]);
 
+  /**
+   * Fetch list of sectors on component load using the useEffect hook
+   */
   useEffect(() => {
     fetchSectors();
   }, [sectors]);
 
+  /**
+   * Initiate / update the fetchDrafts method call from the context
+   */
   useEffect(() => {
     fetchDrafts();
   }, [drafts]);
@@ -95,7 +137,13 @@ const CreateDraft = () => {
       });
   };
 
+  /**
+   * Use formik object and collect form data
+   */
   const formik = useFormik({
+    /** 
+     * Set the forms intial values
+     */
     initialValues: {
       shortTitle: "",
       lawCategoryId: "",
@@ -119,6 +167,10 @@ const CreateDraft = () => {
       transitoryProvision: "",
     },
 
+    /**
+     * Validate form fields using formik and YUP validation packages
+     */
+
     validationSchema: YUP.object({
       shortTitle: YUP.string().required(
         "This field is required. Please provide a short description about the document."
@@ -134,6 +186,11 @@ const CreateDraft = () => {
       ),
     }),
 
+    /**
+     * Update form data using onChanges methods of form fields and 
+     * collect the updated values for submission and then call a function definition to initiate API call 
+     * creating the document record
+     */
     onSubmit: (values) => {
       const draftsData = {
         short_title: values.shortTitle,
@@ -163,10 +220,16 @@ const CreateDraft = () => {
         comment_summary: values.summary,
       };
 
+      /**
+       * Create method call and intitiate to create new draft document record in the database
+       */
       createDraftDocument(draftsData);
     },
   });
 
+  /**
+   * The createDraftDocument method definition to make API calls and create a new document record.
+   */
   const createDraftDocument = async (draftsData) => {
     setLoading(true);
     return await axios
@@ -189,6 +252,9 @@ const CreateDraft = () => {
   };
 
   return (
+    /**
+     * Define form and fields to input draft detail information
+     */
     <Box width={"95%"}>
       <Header title="Upload new draft document" subtitle="" />
       <motion.span
@@ -196,7 +262,7 @@ const CreateDraft = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
       >
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={formik.handleSubmit}> {/* Create form and call the formik object upon form submit */}
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <TextField

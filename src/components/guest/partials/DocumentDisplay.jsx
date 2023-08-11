@@ -12,6 +12,10 @@ import { tokens } from "../../../theme";
 import DocumentsFilters from "../DocumentsFilters";
 import DocumentList from "./DocumentList";
 
+/**
+ * DocumentDisplay definition. This component renders draft documents as list of drafts displayed on the homepage. 
+ * This component is the child of Home.js component and accepts variable as props from Home.js
+ */
 const DocumentDisplay = ({
   drafts,
   setDrafts,
@@ -53,10 +57,18 @@ const DocumentDisplay = ({
           </Typography>
         </Box>
 
+{/* 
+  Trigger loading view based the value of loading variable value. It is true the loading... 
+  components will be displayed. waiting for drafts data value to be non-empty. 
+  If draft value is empty the loading value is true and vice versa. 
+  The loading variable is used to track results from search and filter document features.  
+*/}
         {loading && (
           <CircularProgress color="info" sx={{ marginBottom: "10px" }} />
         )}
 
+  {/* Create a DocumentList component by spliting the draft array with the .map() array method so that we can create list of
+  draft info so that user can navigate through and read and comment on the document he / she is interested in. */}
         {drafts ? (
           drafts.map((draft) => (
             <Link to={`/draft/${draft.id}`} style={{ textDecoration: "none" }}>
@@ -73,6 +85,7 @@ const DocumentDisplay = ({
           ))
         ) : (
           <>
+          {/* Render <Loading /> component if drafts value is empty */}
             <Loading />
             <Loading />
             <Loading />
@@ -89,6 +102,8 @@ const DocumentDisplay = ({
             {t("filter_documents")}
           </Typography>
         </Box>
+
+        {/* Render DocumentFilters compnent and pass drafts and related data as props */}
         <DocumentsFilters
           drafts={drafts}
           setDrafts={(d) => setDrafts(d)}

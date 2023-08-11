@@ -16,7 +16,10 @@ import axios from "../../axios/AxiosGlobal";
 import React, { useEffect, useState } from "react";
 import { tokens } from "../../theme";
 import { useTranslation } from "react-i18next";
-
+/**
+ * Create a DocumentsFilter functional component 
+ * and pass props from parent component called DocumentDisplay
+ */
 const DocumentsFilters = ({
   drafts,
   setDrafts,
@@ -33,16 +36,33 @@ const DocumentsFilters = ({
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();
 
+/**
+ * Declare variables to handle data related to 
+ * law categories. The lawCategoryID variable is used to handle ID of a selcted law category value by a user 
+ * as a filtering criteria.
+ * The lawCategories variable is used to store list of law category values coming from API request result. 
+ * so that these values will be rendered with a dropdown box and allow user to select one as a filtering criterion.
+ * 
+ */
   const [lawCategoryID, setLawCategoryID] = useState(0);
   const [lawCategories, setLawCategories] = useState(null);
 
+  /**
+   * As described above the regionID, regions, institutionID, institutions are also used 
+   * for the same purpose. i.e. to filter drafts based on region and institution
+   */
   const [regionID, setRegionID] = useState(0);
   const [regions, setRegions] = useState(null);
 
   const [institutionID, setInstitutionID] = useState(0);
   const [institutions, setInstitutions] = useState(null);
+
   const [draftStatusName, setDraftStatusName] = useState("");
 
+  /**
+   * The sectors and selectedSectors variable is also used to handel data related to sectors 
+   * for the purpose of filtering draft based on list of sectors information.
+   */
   const [sectors, setSectors] = useState([]);
   const [selectedSectors, setSelectedSectors] = useState([]);
 
@@ -51,10 +71,19 @@ const DocumentsFilters = ({
     setPageCount(Math.ceil(parseInt(totalDrafts) / 10));
   }, [drafts]);
 
+  /**
+   * Create useEffect hook to fetch list of law categories from the database upon page load,
+   * and used for rendering
+   * as Dropdown box labeling. 
+   */
   useEffect(() => {
     fetchLawCategories();
   }, [lawCategories]);
 
+ /**
+   * Function definition for fetchLawCategories() call inside the useEffect hook created above.
+   * This function basically sends API request to fetch list of law categories.
+   */
   const fetchLawCategories = async () => {
     return await axios
       .get("public/law-categories")
@@ -66,9 +95,18 @@ const DocumentsFilters = ({
       });
   };
 
+  /**
+   * Create useEffect hook to fetch list of regions upon page load
+   * and use it for rendering list of regions with a dropdown box
+   */
   useEffect(() => {
     fetchRegions();
   }, [regions]);
+
+  /**
+   * Function definition for fetchRegions() call inside the useEffect hook created above.
+   * This function basically sends API request to fetch list of regions.
+   */
 
   const fetchRegions = async () => {
     return await axios
@@ -80,6 +118,12 @@ const DocumentsFilters = ({
         console.log(error.response.message);
       });
   };
+
+  /**
+   * Create useEffect hook to fetch list of institutions upon page load and use it to render 
+   * list of institutions with a dropdown box. This code style works for sectors as well as 
+   * written below followed by this institutions snippet as well.
+   */
 
   useEffect(() => {
     fetchInstitutions();
@@ -111,6 +155,13 @@ const DocumentsFilters = ({
         console.log(error.response.message);
       });
   };
+
+  /**
+   * Handle the value changes and send API requests based on the user triggering the onChnage event.
+   * Here we have implemented to filter drafts based on the selected values by the user.
+   * We have implemented this filtering mechanism for all criterias including regionChange,
+   * institutionChange, lawCategoryChange, draft status change, sector name change etc.
+   */
 
   const handleRegionChange = async (e) => {
     setRegionID(e.target.value);
@@ -180,6 +231,9 @@ const DocumentsFilters = ({
   };
 
   return (
+    /**
+     * Create UI form elements to allow user filter data basd on the given criterion.
+     */
     <Paper
       elevation={1}
       sx={{ backgroundColor: colors.grey[200], padding: "15px" }}

@@ -31,49 +31,68 @@ import { FileDownload } from "@mui/icons-material";
 import { UserContext } from "../../contexts/UserContext";
 
 const DocumentDetailView = () => {
+  // Create variable to retrieve data from the page url using useParams() hook
   const params = useParams();
+
+  /**
+   * Create documentDetail, documentSections, and documentComments to handle document information 
+   * and its sections requested from the API and use it for rendering and explore the document 
+   * section by section.
+   */
   const [documentDetail, setDocumentDetail] = useState(null);
   const [documentSections, setDocumentSections] = useState(null);
   const [documentComments, setDocumentComments] = useState(null);
 
+  /**
+   * Create variable contentBgColor and use it to highlight the active document section while user is navigating 
+   * the document sections for reading.
+   */
   const [contentBgColor, setContentBgColor] = useState(null);
 
   // Show commenting box and comments on mouse enter
   const [commentsVisible, setCommentsVisible] = useState(false);
   const [sectionID, setSectionID] = useState(0);
 
-  // User context
+  // access the logged in user information from the UserContext definition
   const { userInfo, userRole } = useContext(UserContext);
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();
 
-  // Menu collapse functionality
+  // Menu collapse functionality to collapse and release the table of contents use to navigate the document
   const [articlesOpen, setArticlesOpen] = React.useState(true);
 
-  // General comments collapse functionality
+  // General comments collapse functionality to collapse and release the general commments component
   const [commentsOpen, setCommentsOpen] = React.useState(true);
 
+  // Handle the collapse functionality in response to user's onChnage event to collapse the table of contents 
   const handleArticlesCollapse = () => {
     setArticlesOpen(!articlesOpen);
   };
 
+  // Handle the collapse functionality in rseponse to user's onChnage event to collapse 
+  // and release the general comments components
   const handleCommentsCollapse = () => {
     setCommentsOpen(!commentsOpen);
   };
 
+  /**
+   * Create useEffect hook and call a function the implements 
+   * an API call to fetch documentDetails, documentSections and documentComments data
+   */
+
   useEffect(() => {
     fetchDocumentDetails();
-  }, [documentDetail]);
+  }, [documentDetail, documentSections, documentComments]);
 
   useEffect(() => {
     fetchDocumentSections();
-  }, [documentSections]);
+  }, [documentDetail, documentSections, documentComments]);
 
   useEffect(() => {
     fetchDocumentComments();
-  }, [documentComments]);
+  }, [documentDetail, documentSections, documentComments]);
 
   const fetchDocumentDetails = async () => {
     return await axios.get(`drafts/${params.id}`).then((response) => {
@@ -104,7 +123,10 @@ const DocumentDetailView = () => {
   };
 
   return (
-    <Box sx={{ backgroundColor: colors.grey[200] }}>
+    /**
+     * Create UI to render the document meta information, document content and comments and replies
+     */
+    <Box sx={{ backgroundColor: colors.grey[200] }}> {/* Box to to render the documents meta info */}
       <Box
         sx={{
           backgroundColor: "#255B7E",
@@ -376,11 +398,12 @@ const DocumentDetailView = () => {
             </Grid>
           </Grid>
         ) : (
+          /* Create Progress Bar to indicate loading sign if the documentDetails variable is empty */
           <CircularProgress color="secondary" />
         )}
       </Box>
 
-      <Box sx={{ backgroundColor: colors.grey[200] }}>
+      <Box sx={{ backgroundColor: colors.grey[200] }}> {/* Create Box to render document content */}
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -425,8 +448,8 @@ const DocumentDetailView = () => {
               }}
             >
               <Grid item xs={3}>
-                {/* <Typography variant="h4">Articles</Typography> */}
-
+                {/* Create a a collapsable list to render the table of contents 
+                based on the documents section tile  */}
                 <ListItemButton onClick={handleArticlesCollapse}>
                   <ListItemText
                     primary={
@@ -469,7 +492,7 @@ const DocumentDetailView = () => {
                                                 <SectionNavigationMenu
                                                   section={child111}
                                                   setContentBgColor={
-                                                    setContentBgColor
+                                                  setContentBgColor
                                                   }
                                                   paddingValue={12}
                                                 />
@@ -523,6 +546,7 @@ const DocumentDetailView = () => {
                     ))
                   ) : (
                     <Box>
+                      {/* Create a progress bar to indicate the loading if the documentSections variable is empty  */}
                       <CircularProgress color="secondary" />
                     </Box>
                   )}
@@ -542,7 +566,7 @@ const DocumentDetailView = () => {
                           id={section.id}
                           sx={{
                             padding: "20px",
-                          }} /* onMouseOver={()=>showComments(section.id)} onMouseOut={()=>hideComments(section.id)} */
+                          }} 
                         >
                           <Typography
                             variant="h4"
@@ -569,6 +593,9 @@ const DocumentDetailView = () => {
                             />
                           )}
                         </Box>
+                        {/* 
+                          Check if the document section has also a sub child section and render / display it, if it has 
+                        */}
                         {section.children.length > 0
                           ? section.children.map((sectionChild1) => (
                               <>
@@ -576,7 +603,7 @@ const DocumentDetailView = () => {
                                   id={sectionChild1.id}
                                   sx={{
                                     padding: "20px",
-                                  }} /* onMouseOver={()=>showComments(sectionChild1.id)} onMouseOut={()=>hideComments(sectionChild1.id)} */
+                                  }} 
                                 >
                                   <Typography
                                     variant="h4"
@@ -599,7 +626,7 @@ const DocumentDetailView = () => {
                                   </Typography>
 
                                   {
-                                    /* commentsVisible && sectionID===sectionChild1.id &&  */ userRole ===
+                                    userRole ===
                                       "Commenter" && (
                                       <SectionFeedbacks
                                         documentDetail={documentDetail}
@@ -892,11 +919,18 @@ const DocumentDetailView = () => {
                           );
                         })
                         .map((comment) => (
+                          /* Render the generel comments component if there is documentComments has value */
                           <DocumentLevelComments comment={comment} />
                         ))
                     ) : (
+                      /* Otherwise, display 'No comments' message */
                       <Box>No comments</Box>
                     )}
+                    {/* 
+                      Render AddDocumentLevelComment component and allow user to provide comment 
+                      if he his user role is 'commenter, and documentDetail value is not emprty 
+                      and draft status name is 'Open' 
+                    */}
                     {userRole === "Commenter" &&
                     documentDetail &&
                     documentDetail.draft_status.name === "Open" ? (

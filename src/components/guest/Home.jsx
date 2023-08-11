@@ -16,22 +16,36 @@ import DocumentDisplay from "./partials/DocumentDisplay";
 import axios from "../../axios/AxiosGlobal";
 import { useEffect, useState } from "react";
 
+// Define home component
 const Home = () => {
+  /**
+   * Access global colors and theme information from theme.js file
+   */
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  /**
+   * Access language translation variable from i18next react internationalization package
+   * Destructure the {t} object variable from useTranslation() hook
+   */
   const { t } = useTranslation();
 
-  // Retrieve document data
+  // Define variable for retwrieving and setting document data
   const [drafts, setDrafts] = useState(null);
+
+  // Define variables for filtering drafts data
   const [unfilteredDrafts, setUnfilteredDrafts] = useState(null);
+
+  // define variable for setting 'loading' state while app is in progress requesting API data
   const [loading, setLoading] = useState(false);
 
-  // searchbox name
+  // Define variable for setting search results when a user input items 
+  // in the 'Search documents...' TextField to search draft documents
   const [search, setSearch] = useState("");
 
-  // Make pagination
+  // Setup pagination for fetched drafts data
   const [pageCount, setPageCount] = useState(0);
 
+  // Method for managing page to page navigation for drafts pagination
   const handlePageChange = async (e, page) => {
     return await axios
       .get(`drafts?page=${page}`)
@@ -43,8 +57,16 @@ const Home = () => {
       });
   };
 
+  // Define variables to 
   const [totalDrafts, setTotalDrafts] = useState(0);
 
+  /**
+   * Fetch drafts data from the API. Here the partial API endpoint is 'drafts'.
+   * The baseURL for all API endpoints is defined under AxiosGlobal.js file. So, 
+   * when we say axios.get('endpoint'), the axios refers to the custom axios definitions under
+   * AxiosGlobal.js file. Note that we have used Axios package, the most popular http client
+   * to communicate with APi data and the custom definition is available at AxiosGlobal.js file
+   */
   const fetchDrafts = async () => {
     return await axios
       .get(`drafts`)
@@ -58,14 +80,26 @@ const Home = () => {
       });
   };
 
+  /**
+   * Call to the fetchDrafts() function defintion on useEffect hook to enable the app 
+   * start requesting API on page loading event.
+   * The useEffect hook is the most important hook in react and used to trigger code execution
+   * on page launch
+   */
   useEffect(() => {
     fetchDrafts();
-  }, []);
+  }, [drafts]);
 
+  // Count no of pages dynamically created for the fetched draft data
   useEffect(() => {
     setPageCount(Math.ceil(parseInt(totalDrafts) / 10));
   }, []);
 
+  /**
+   * Implementation for searchin drafts docs using the 'searchBox' Textfield. 
+   * Searching request is triggered on the onChange event of the TextField so that 
+   * We can perform live search for the draft docs
+   */
   const searchDocs = async (e) => {
     e.preventDefault();
     const searchValue = e.target.value;
@@ -105,6 +139,15 @@ const Home = () => {
               justifyContent: "space-between",
             }}
           >
+            {/* 
+              Define app header text or logo and app description.
+              We have used translation feature to render the text on the webpage. 
+              We used {t} object from i18next internatiinalization feature. 
+              The translation library is defined for each language on public/locales directory where 
+              each language dictionary is defined for using separate translation JSON file.
+              The translation can be accessed using {t('key')}. 
+              For example {t('fdre)} will be translated into 'Federal Democratic Republic of Ethiopia' 
+             */}
             <Grid>
               <Typography variant="h4" sx={{ fontWeight: "600" }}>
                 {t("fdre")}
@@ -134,6 +177,7 @@ const Home = () => {
                     opacity: "90%",
                   }}
                 >
+                  {/* Define TextField for 'Search documents' implemenation */}
                   <InputBase
                     variant="outlined"
                     placeholder={`${t("search_documents")}...`}
@@ -160,7 +204,14 @@ const Home = () => {
           </Grid>
         </Box>
 
+      {/* 
+        Pass the fetched draft data into the next child component as props for easily rendering. 
+      */}
         <Box sx={{ marginTop: "50px" }}>
+          {/*
+            The drafts, setDrafts, unfilteredDrafts, setUnfilteredDrafts and 
+            other data into the next child component 'DocumentDisplay' for a better code management and data rendering  
+          */}
           <DocumentDisplay
             drafts={drafts}
             setDrafts={setDrafts}
@@ -176,6 +227,7 @@ const Home = () => {
         </Box>
 
         <Box>
+          {/* Pagination UI component from Material UI library */}
           <Pagination
             count={pageCount}
             onChange={handlePageChange}
@@ -192,7 +244,7 @@ const Home = () => {
         </Box>
 
         <Box>
-          <Footer />
+          <Footer /> {/* Render the App footer component */}
         </Box>
       </motion.span>
     </Box>

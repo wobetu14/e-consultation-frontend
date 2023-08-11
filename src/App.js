@@ -1,5 +1,4 @@
-import React, { useContext, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -48,14 +47,32 @@ import DraftInvitationCheckpoint from "./components/guest/auth/DraftInvitationCh
 import AssignedToComment from "./components/admin/drafts/AssignedToComment";
 
 function App() {
-  const { t } = useTranslation();
+  /**
+   * Theme and colorMode variables are used to define app theme and color and their definitions
+   * is available at theme.js file
+   */
   const [theme, colorMode] = useMode();
 
+  /**
+   * Access user's role from users context which has been defined on UserContext.jsx file
+   */
   const { userRole } = useContext(UserContext);
 
+  /**
+   * Define access to components visible to all public users whether they are registered or not.
+   * Everyone can access components defined as children of <PublicElement /> component
+   */
   const PublicElement = ({ children }) => {
     return <>{children}</>;
   };
+
+  /**
+   * Define components accessible only for admin level users. The type of users defined as 
+   * 'Super Admin, Federal Admin, Federal Institutions Admin, Regional Admin,
+   * Regional Institutions Admin, Approver and Uploader' can access the components defined as
+   * as children of <AdminElement /> component. Other user such as unregistered users and commenters 
+   * can not have access to this elememnt
+   */
 
   const AdminElement = ({ children }) => {
     if (
@@ -77,6 +94,10 @@ function App() {
     }
   };
 
+  /**
+   * Define components accessible only for 'Uploader' user roles
+   */
+
   const Uploaders = ({ children }) => {
     if (userRole === "Uploaders") {
       return <>{children}</>;
@@ -90,8 +111,8 @@ function App() {
   };
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
+    <ColorModeContext.Provider value={colorMode}> {/* Accessing context data for color definitions */}
+      <ThemeProvider theme={theme}> {/* Accessing app theme context data definitions */}
         <CssBaseline />
         <div className="App">
           <main className="content" display="flex">
@@ -99,11 +120,15 @@ function App() {
               <Route
                 path="/"
                 element={
+                  /**
+                   * Render publicly accessible elements / components
+                   */
                   <PublicElement>
-                    <RootLayout />
+                    <RootLayout /> {/* A layout component to render base and public app components */}
                   </PublicElement>
                 }
               >
+                {/* Routing definitions for elements under <PublicElement /> parent component */}
                 <Route index element={<Home />} />
                 <Route path="about" element={<About />} />
                 <Route path="help" element={<HelpCenter />} />
@@ -161,6 +186,9 @@ function App() {
                 <Route path="user_profile" element={<UserProfile />} />
               </Route>
 
+             {/* 
+               Route definitions for components under <AdminElement /> 
+             */}
               <Route
                 path="/admin"
                 element={
@@ -169,6 +197,10 @@ function App() {
                   </AdminElement>
                 }
               >
+                {/* 
+                  Route definitions for components under <AdminElement /> components
+                  i.e. Route definitions for childrens of <AdminElement /> component
+                 */}
                 <Route index element={<Dashboard />} />
                 <Route path="users" element={<Users />} />
                 <Route path="create_user" element={<CreateUser />} />
