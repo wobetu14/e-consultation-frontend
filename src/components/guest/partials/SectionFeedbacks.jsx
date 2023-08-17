@@ -13,6 +13,9 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import { UserContext } from "../../../contexts/UserContext";
 import PublicCommentReplies from "./PublicCommentReplies";
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import ManageComment from "./ManageComment";
+import DeleteCommentDialog from "./Manage_Comments/DeleteCommentDialog";
 
 const SectionFeedbacks = ({ comments, section, documentDetail }) => {
   const theme = useTheme();
@@ -20,6 +23,9 @@ const SectionFeedbacks = ({ comments, section, documentDetail }) => {
   const { t } = useTranslation();
 
   const [showFeedbacks, setShowFeedbacks] = useState(false);
+
+  const [openEditDialog, setOpenEditDialog]=useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog]=useState(false);
 
   // User context
   const { userInfo, userRole, userToken } = useContext(UserContext);
@@ -108,17 +114,29 @@ const SectionFeedbacks = ({ comments, section, documentDetail }) => {
                               padding: "10px",
                             }}
                             primary={
-                              <>
-                                <Typography variant="h5" fontWeight="600">
-                                  {comment.commenter
-                                    ? `${
-                                        comment.commenter.first_name +
-                                        " " +
-                                        comment.commenter.middle_name
-                                      }`
-                                    : "Anonymous"}
-                                </Typography>
-                              </>
+                              <div style={{ display:"flex", justifyContent:"space-between" }}>
+                                <div>
+                                  <Typography variant="h5" fontWeight="600">
+                                    {comment.commenter
+                                      ? `${
+                                          comment.commenter.first_name +
+                                          " " +
+                                          comment.commenter.middle_name
+                                        }`
+                                      : "Anonymous"}
+                                  </Typography>
+                                </div>
+                                <div>
+                                  <ManageComment 
+                                    openDeleteDialog={openDeleteDialog} 
+                                    setOpenDeleteDialog={setOpenDeleteDialog}
+                                    openEditDialog={openEditDialog}
+                                    setOpenEditDialog={setOpenEditDialog}
+                                    commentID={comment.id}
+                                    commentText={comment.section_comment}
+                                   />
+                                </div>
+                              </div>
                             }
                             secondary={
                               <>
@@ -161,6 +179,12 @@ const SectionFeedbacks = ({ comments, section, documentDetail }) => {
             ) : (
               ""
             )}
+
+            {
+              openDeleteDialog && (
+                <DeleteCommentDialog title="Deleting comment" text="You are about to delete this comment. Are you sure?" />
+              )
+            }
           </motion.span>
         </Box>
       )}

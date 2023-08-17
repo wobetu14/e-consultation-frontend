@@ -14,7 +14,8 @@ import { motion } from "framer-motion";
 import Footer from "../../partials/Footer";
 import DocumentDisplay from "./partials/DocumentDisplay";
 import axios from "../../axios/AxiosGlobal";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../contexts/UserContext";
 
 // Define home component
 const Home = () => {
@@ -28,6 +29,8 @@ const Home = () => {
    * Destructure the {t} object variable from useTranslation() hook
    */
   const { t } = useTranslation();
+  // User context
+  const {userRole, setUserRole, userInfo, userToken, setUserToken}=useContext(UserContext);
 
   // Define variable for retwrieving and setting document data
   const [drafts, setDrafts] = useState(null);

@@ -11,7 +11,6 @@ import RootLayout from "./layouts/RootLayout";
 import AdminLayout from "./layouts/AdminLayout";
 import Dashboard from "./components/admin/Dashboard";
 import Users from "./components/admin/users/Users";
-import HelpCenter from "./components/guest/HelpCenter";
 import { PageNotFound } from "./PageNotFound";
 import Regions from "./components/admin/regions/Regions";
 import Sectors from "./components/admin/sectors/Sectors";
@@ -45,6 +44,8 @@ import ResetPasswordProvideEmail from "./components/guest/auth/ResetPasswordProv
 import ResetPassword from "./components/guest/auth/ResetPassword";
 import DraftInvitationCheckpoint from "./components/guest/auth/DraftInvitationCheckpoint";
 import AssignedToComment from "./components/admin/drafts/AssignedToComment";
+import HelpCenter from "./components/documentation/HelpCenter";
+import ResourceCenter from "./components/documentation/admin_documentation/ResourceCenter";
 
 function App() {
   /**
@@ -131,6 +132,7 @@ function App() {
                 {/* Routing definitions for elements under <PublicElement /> parent component */}
                 <Route index element={<Home />} />
                 <Route path="about" element={<About />} />
+                {/* <Route path="help" element={<HelpCenter />} /> */}
                 <Route path="help" element={<HelpCenter />} />
                 <Route path="login" element={<Login />} />
                 <Route
@@ -244,6 +246,10 @@ function App() {
                 <Route
                   path="external_requests_preview/:id"
                   element={<ExternalRequestsPreview />}
+                />
+                <Route
+                  path="resource_center" 
+                  element={<ResourceCenter />}
                 />
                 <Route path="*" element={<PageNotFound />} />
               </Route>

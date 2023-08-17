@@ -193,7 +193,7 @@ const Sidebar = () => {
 
                 <Item
                   title="Resource Center"
-                  to="form"
+                  to="resource_center"
                   icon={<SourceIcon />}
                   selected={selected}
                   setSelected={setSelected}
@@ -239,7 +239,7 @@ const Sidebar = () => {
 
                 <Item
                   title="Resource Center"
-                  to="form"
+                  to="resource_center"
                   icon={<SourceIcon />}
                   selected={selected}
                   setSelected={setSelected}
@@ -269,7 +269,7 @@ const Sidebar = () => {
 
                 <Item
                   title="Resource Center"
-                  to="form"
+                  to="resource_center"
                   icon={<SourceIcon />}
                   selected={selected}
                   setSelected={setSelected}
@@ -315,7 +315,7 @@ const Sidebar = () => {
 
                 <Item
                   title="Resource Center"
-                  to="form"
+                  to="resource_center"
                   icon={<SourceIcon />}
                   selected={selected}
                   setSelected={setSelected}
@@ -353,7 +353,7 @@ const Sidebar = () => {
 
                 <Item
                   title="Resource Center"
-                  to="form"
+                  to="resource_center"
                   icon={<SourceIcon />}
                   selected={selected}
                   setSelected={setSelected}
@@ -406,7 +406,7 @@ const Sidebar = () => {
 
                 <Item
                   title="Resource Center"
-                  to="form"
+                  to="resource_center"
                   icon={<SourceIcon />}
                   selected={selected}
                   setSelected={setSelected}
@@ -444,7 +444,7 @@ const Sidebar = () => {
 
                 <Item
                   title="Resource Center"
-                  to="form"
+                  to="resource_center"
                   icon={<SourceIcon />}
                   selected={selected}
                   setSelected={setSelected}

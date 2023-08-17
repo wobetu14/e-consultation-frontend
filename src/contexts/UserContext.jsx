@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react'
+import React, { createContext, useEffect, useLayoutEffect, useState } from 'react'
 
 export const UserContext=createContext();
 
@@ -7,17 +7,19 @@ export const UserProvider = (props) => {
     const [userRole, setUserRole]=useState(localStorage.getItem('userRole'));
     const [userToken, setUserToken]=useState(localStorage.getItem('token'));
 
-    useEffect(()=>{
+    useLayoutEffect(()=>{
       setUserInfo(JSON.parse(localStorage.getItem('userInfo')));
       setUserRole(localStorage.getItem('userRole'));
       setUserToken(localStorage.getItem('token'));
     },[])
 
-    useEffect(()=>{
+
+
+  /*   useEffect(()=>{
       setUserInfo(JSON.parse(localStorage.getItem('userInfo')));
       setUserRole(localStorage.getItem('userRole'));
       setUserToken(localStorage.getItem('token'));
-    },[])
+    },[userInfo, userRole, userToken]) */
 
   return (
     <UserContext.Provider value={{ 
