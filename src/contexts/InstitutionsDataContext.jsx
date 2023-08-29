@@ -24,7 +24,7 @@ export const InstitutionsDataProvider = (props) => {
 
   const fetchInstitutions = async () => {
     try {
-      const res = await axios.get("institutions");
+      const res = await axios.get("public/institutions");
       setInstitutions(res.data.data.data);
       setFilteredInstitutions(res.data.data.data);
     } catch (error) {

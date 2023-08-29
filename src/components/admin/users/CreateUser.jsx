@@ -63,7 +63,7 @@ const CreateUser = () => {
 
   const fetchInstitutions = async () => {
     return await axios
-      .get("institutions")
+      .get("public/institutions")
       .then((res) => res.data.data)
       .then((res) => {
         setInstitutions(res.data);
