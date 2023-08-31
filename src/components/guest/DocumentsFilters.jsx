@@ -146,7 +146,7 @@ const DocumentsFilters = ({
 
   const fetchSectors = async () => {
     return await axios
-      .get("sectors")
+      .get("public/sectors")
       .then((res) => res.data.data)
       .then((res) => {
         setSectors(res.data);

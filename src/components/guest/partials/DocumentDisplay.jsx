@@ -71,7 +71,7 @@ const DocumentDisplay = ({
   draft info so that user can navigate through and read and comment on the document he / she is interested in. */}
         {drafts ? (
           drafts.map((draft) => (
-            <Link to={`/draft/${draft.id}`} style={{ textDecoration: "none" }}>
+            <Link to={`/draft/${draft.id}`} style={{ textDecoration: "none" }} reloadDocument={true}>
               <DocumentList
                 deadline={"May 02, 2023"}
                 draft={draft}

@@ -169,10 +169,11 @@ function App() {
                 />
               </Route>
 
-              <Route path="/commenter" element={<CommenterLayout />}>
+                <Route path="/commenter" element={<CommenterLayout />}>
                 <Route index element={<CommenterDashboard />} />
                 <Route path="assigned_drafts" element={<DraftAssignments />} />
                 <Route path="invited_drafts" element={<InvitedDrafts />} />
+                
                 <Route
                   path="draft_invitation_checkpoint"
                   element={<DraftInvitationCheckpoint />}

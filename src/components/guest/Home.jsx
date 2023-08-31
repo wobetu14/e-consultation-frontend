@@ -91,7 +91,7 @@ const Home = () => {
    */
   useEffect(() => {
     fetchDrafts();
-  }, [drafts]);
+  }, []);
 
   // Count no of pages dynamically created for the fetched draft data
   useEffect(() => {

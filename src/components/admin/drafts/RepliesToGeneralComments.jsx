@@ -1,7 +1,7 @@
 import { Box, Button, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../../theme";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { motion } from "framer-motion";
 
 import List from "@mui/material/List";
@@ -11,6 +11,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ReplyIcon from "@mui/icons-material/Reply";
 import AddNewDocumentReply from "./AddNewDocumentReply";
+import { UserContext } from "../../../contexts/UserContext";
 
 const RepliesToGeneralComments = ({ reflections, comment, documentDetail }) => {
   const theme = useTheme();
@@ -18,6 +19,9 @@ const RepliesToGeneralComments = ({ reflections, comment, documentDetail }) => {
   const { t } = useTranslation();
 
   const [showReplies, setShowReplies] = useState(false);
+
+  // User context
+  const { userInfo } = useContext(UserContext);
 
   return (
     <Box sx={{ padding: "10px", borderRadius: "15px", width: "100%" }}>
@@ -34,7 +38,12 @@ const RepliesToGeneralComments = ({ reflections, comment, documentDetail }) => {
           onClick={() => setShowReplies(!showReplies)}
         >
           <ReplyIcon color="secondary" fontSize="small" />
-          {t("replies")} ({reflections ? reflections.length : ""})
+          {t("replies")} ({reflections ? reflections.filter((reflection) => {
+                  return (
+                    parseInt(reflection.commented_by) ===
+                    parseInt(userInfo.user.id)
+                  );
+                }).length : ""})
         </Button>
       </Box>
 
@@ -47,7 +56,12 @@ const RepliesToGeneralComments = ({ reflections, comment, documentDetail }) => {
           >
             <List sx={{ width: "100%" }}>
               {reflections
-                ? reflections.map((reflection) => (
+                ? reflections.filter((reflection) => {
+                  return (
+                    parseInt(reflection.commented_by) ===
+                    parseInt(userInfo.user.id)
+                  );
+                }).map((reflection) => (
                     <>
                       <ListItem alignItems="flex-center" key={reflection.id}>
                         <ListItemAvatar>

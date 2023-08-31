@@ -30,7 +30,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
       icon={icon}
     >
       <Typography variant="h5">{title}</Typography>
-      <Link to={to} />
+      <Link to={to} reloadDocument={true} />
     </MenuItem>
   );
 };
