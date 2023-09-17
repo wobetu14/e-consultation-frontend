@@ -9,6 +9,7 @@ export const RegionsDataProvider = (props) => {
   const [searchRegion, setSearchRegion] = useState("");
   const [region, setRegion] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [requestCompleted, setRequestCompleted]=useState(0);
 
   const [showRegionAddForm, setShowRegionAddForm] = useState(false);
   const [showRegionEditForm, setShowRegionEditForm] = useState(false);
@@ -19,12 +20,17 @@ export const RegionsDataProvider = (props) => {
   const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
-    fetchRegions();
-  }, []);
+    fetchRegions()
+  }, [regions]);
 
   const fetchRegions = async () => {
     try {
-      const res = await axios.get("regions");
+      const res = await axios.get("regions", 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }});
       setRegions(res.data.data.data);
       setFilteredRegions(res.data.data.data);
     } catch (error) {
@@ -34,7 +40,12 @@ export const RegionsDataProvider = (props) => {
 
   const deleteRegion = async (regionID) => {
     return await axios
-      .delete(`regions/${regionID}`)
+      .delete(`regions/${regionID}`, 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
@@ -78,6 +89,8 @@ export const RegionsDataProvider = (props) => {
         deleteRegion: deleteRegion,
         loading: loading,
         setLoading: setLoading,
+        requestCompleted:requestCompleted,
+        setRequestCompleted:setRequestCompleted
       }}
     >
       {props.children}

@@ -50,7 +50,12 @@ const CreateSector = () => {
   const createSector = async (sectorData) => {
     setLoading(true);
     return await axios
-      .post("sectors", sectorData)
+      .post("sectors", sectorData, 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);

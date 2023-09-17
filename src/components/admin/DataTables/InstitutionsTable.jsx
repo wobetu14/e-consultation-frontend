@@ -2,7 +2,6 @@ import {
   Alert,
   Box,
   Button,
-  CircularProgress,
   Grid,
   LinearProgress,
   Paper,
@@ -34,6 +33,7 @@ const InstitutionsTable = () => {
     setSearchInstitution,
     institution,
     setInstitution,
+    institutions,
     showInstitutionAddForm,
     setShowInstitutionAddForm,
     showInstitutionEditForm,
@@ -43,6 +43,8 @@ const InstitutionsTable = () => {
     openDialog,
     setOpenDialog,
     loading,
+    requestCompleted,
+    setRequestCompleted
   } = useContext(InstitutionsDataContext);
 
   const errorStyle = {
@@ -88,7 +90,7 @@ const InstitutionsTable = () => {
         </Typography>
       ),
       selector: (row) => (
-        <Typography variant="body1">{`${row.name}`}</Typography>
+        <Typography variant="body1">{`${row.name ? row.name:""}`}</Typography>
       ),
       sortable: true,
     },
@@ -142,11 +144,11 @@ const InstitutionsTable = () => {
         </Typography>
       ),
       selector: (row) => (
-        <Typography variant="body1">{row.region.name}</Typography>
+        <Typography variant="body1">{row.region ? row.region.name:""}</Typography>
       ),
       sortable: true,
     },
-    {
+    /* {
       name: (
         <Typography variant="h5" fontWeight="600">
           Created By
@@ -156,7 +158,7 @@ const InstitutionsTable = () => {
         <Typography variant="body1">{row.creator.name}</Typography>
       ),
       sortable: true,
-    },
+    }, */
 
     {
       name: (
@@ -195,7 +197,9 @@ const InstitutionsTable = () => {
   ];
 
   return (
-    <Box width={"95%"}>
+    <Box sx={{ width:{
+      xs:300, sm:500, md:700, lg:900, xl:1200
+    } }}>
       <Header title="Institutions" subtitle="Manage Institutions" />
       <Grid align="center" sx={{ paddingBottom: "5px", paddingTop: "5px" }}>
         <motion.span
@@ -243,9 +247,12 @@ const InstitutionsTable = () => {
           progressPending={filteredInstitutions.length <= 0}
           progressComponent={
             <Box mb="20px">
-              <CircularProgress color="info" />
+              {
+                requestCompleted===1 && filteredInstitutions.length<=0 ? "No records found...":"Please wait..."
+              }
             </Box>
           }
+
           pagination
           selectableRowsHighlight
           subHeader

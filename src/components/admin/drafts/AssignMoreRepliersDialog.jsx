@@ -56,12 +56,21 @@ const AssignMoreRepliersDialog = ({
     fontSize: "18px",
   };
 
-  React.useEffect(() => {
+  React.useEffect(()=>{
     fetchInstitutions();
+  },[selectedInstitutions])
+
+  React.useEffect(()=>{
     getInstitutionsID();
+  },[selectedInstitutions])
+
+  React.useEffect(()=>{
     getMyUsersID();
+  }, [repliersEmail])
+
+  React.useEffect(() => {
     fetchMyUsers();
-  }, [selectedInstitutions, repliersEmail]);
+  }, [repliersEmail]);
 
   const getMyUsersID = () => {
     if (repliersEmail.length > 0) {
@@ -81,7 +90,12 @@ const AssignMoreRepliersDialog = ({
 
   const fetchInstitutions = async () => {
     try {
-      const res = await axios.get("public/institutions");
+      const res = await axios.get("public/institutions",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }});
       setInstitutions(res.data.data.data);
     } catch (error) {
       console.log(error);
@@ -90,7 +104,12 @@ const AssignMoreRepliersDialog = ({
 
   const fetchMyUsers = async () => {
     try {
-      const res = await axios.get(`commenters-per-institution`);
+      const res = await axios.get(`commenters-per-institution`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }});
       console.log("My users");
       console.log(res.data.data);
       setMyUsers(res.data.data);
@@ -121,7 +140,12 @@ const AssignMoreRepliersDialog = ({
     setLoading(true);
 
     return await axios
-      .post(`additional-repliers`, requestData)
+      .post(`additional-repliers`, requestData,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);

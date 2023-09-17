@@ -29,6 +29,9 @@ const Footer = () => {
         zIndex: 0,
         position: "bottom",
         marginTop: "100px",
+        width:'100%',
+        left:0,
+        bottom:0,
       }}
     >
       <Grid container>

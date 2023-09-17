@@ -102,7 +102,12 @@ const AddDocumentLevelComments = ({ documentID }) => {
   // Function definition to define API calls to add new general comment.
   const addComment = async (documentCommentData) => {
     return await axios
-      .post("general-comments", documentCommentData)
+      .post("general-comments", documentCommentData,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         console.log(res.data.message);
         setServerSuccessMsg(res.data.success);

@@ -56,26 +56,36 @@ const DocumentDetails = () => {
   };
 
   useEffect(() => {
-    fetchDocumentDetails();
-  }, [documentDetail]);
+    fetchDocumentDetails()
+  }, [documentDetail, documentSections, documentComments]);
 
   useEffect(() => {
-    fetchDocumentSections();
-  }, [documentSections]);
+    fetchDocumentSections()
+  }, [documentDetail, documentSections, documentComments]);
 
   useEffect(() => {
-    fetchDocumentComments();
-  }, [documentComments]);
+    fetchDocumentComments()
+  }, [documentDetail, documentSections, documentComments]);
 
   const fetchDocumentDetails = async () => {
-    return await axios.get(`drafts/${params.id}`).then((response) => {
+    return await axios.get(`drafts/${params.id}`, 
+    {headers:{
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Accept: "application/json;",
+      "Content-Type": "multipart/form-data"
+    }}).then((response) => {
       setDocumentDetail(response.data.data);
     });
   };
 
   const fetchDocumentSections = async () => {
     return await axios
-      .get(`draft/${params.id}/draft-sections`)
+      .get(`draft/${params.id}/draft-sections`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((response) => {
         setDocumentSections(response.data.data);
       })
@@ -86,7 +96,12 @@ const DocumentDetails = () => {
 
   const fetchDocumentComments = async () => {
     return await axios
-      .get(`draft/${params.id}/general-comments`)
+      .get(`draft/${params.id}/general-comments`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((response) => {
         setDocumentComments(response.data.data);
       })
@@ -134,6 +149,7 @@ const DocumentDetails = () => {
 
       <ListItemButton
         onClick={handlePreviewCollapse}
+        color='secondary'
         sx={{
           marginLeft: "40px",
           marginRight: "40px",
@@ -146,13 +162,14 @@ const DocumentDetails = () => {
         }}
       >
         <ListItemText
+          variant="button"
           primary={
             <Typography
               variant="body1"
               sx={{
                 fontWeight: "500",
                 textAlign: "center",
-                color: colors.grey[300],
+                color: colors.grey[600]
               }}
             >
               Document Preview

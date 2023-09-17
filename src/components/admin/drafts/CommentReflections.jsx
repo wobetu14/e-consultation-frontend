@@ -73,14 +73,24 @@ const CommentReflections = () => {
   }, [documentDetail, documentSections, documentComments]);
 
   const fetchDocumentDetails = async () => {
-    return await axios.get(`drafts/${params.id}`).then((response) => {
+    return await axios.get(`drafts/${params.id}`,
+    {headers:{
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Accept: "application/json;",
+      "Content-Type": "multipart/form-data"
+    }}).then((response) => {
       setDocumentDetail(response.data.data);
     });
   };
 
   const fetchDocumentSections = async () => {
     return await axios
-      .get(`draft/${params.id}/draft-sections`)
+      .get(`draft/${params.id}/draft-sections`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((response) => {
         setDocumentSections(response.data.data);
       })
@@ -91,7 +101,12 @@ const CommentReflections = () => {
 
   const fetchDocumentComments = async () => {
     return await axios
-      .get(`draft/${params.id}/general-comments`)
+      .get(`draft/${params.id}/general-comments`, 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((response) => {
         setDocumentComments(response.data.data);
       })
@@ -209,7 +224,7 @@ const CommentReflections = () => {
                   {documentDetail &&
                   documentDetail.draft_status.name === "Open" ? (
                     <Chip
-                      label={documentDetail.draft_status.name}
+                      label="Open for Comment"
                       size="small"
                       sx={{
                         backgroundColor: colors.successColor[100],
@@ -223,7 +238,7 @@ const CommentReflections = () => {
                   {documentDetail &&
                   documentDetail.draft_status.name === "Closed" ? (
                     <Chip
-                      label={documentDetail.draft_status.name}
+                      label="Closed for Comment"
                       size="small"
                       sx={{
                         backgroundColor: colors.dangerColor[200],
@@ -233,6 +248,30 @@ const CommentReflections = () => {
                   ) : (
                     ""
                   )}
+
+                    <span style={{ color:"white" }}>&nbsp; and &nbsp;</span>
+
+                  {
+                    documentDetail && parseInt(documentDetail.comment_closed)===0 ? (
+                      <Chip
+                       label="Consultation in progress"
+                        size="small"
+                        sx={{
+                        backgroundColor: colors.successColor[100],
+                        color: colors.grey[300],
+                      }}
+                    />
+                    ):(
+                      <Chip
+                       label="Consultation ended"
+                        size="small"
+                        sx={{
+                        backgroundColor: colors.dangerColor[100],
+                        color: colors.grey[300],
+                      }}
+                    />
+                    )
+                  }
                 </Grid>
 
                 <Grid item xs={6} md={6}>

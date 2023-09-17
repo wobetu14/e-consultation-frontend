@@ -1,4 +1,4 @@
-import { Typography, Button, LinearProgress } from "@mui/material";
+import { Typography, Button, LinearProgress, CircularProgress } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState, useContext } from "react";
 import axios from "../../../axios/AxiosGlobal";
@@ -20,7 +20,12 @@ const DraftAssignments = () => {
 
   const fetchCommentAssignments = async () => {
     return await axios
-      .get(`comment-repliers?replier=${userInfo.user.id}`)
+      .get(`comment-repliers?replier=${userInfo.user.id}`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setCommentAssignments(res);
@@ -83,7 +88,7 @@ const DraftAssignments = () => {
             ) : (
               <TableRow>
                 <TableCell colsPan={5}>
-                  <LinearProgress color="secondary" />
+                  <CircularProgress color="secondary" />
                 </TableCell>
               </TableRow>
             )}

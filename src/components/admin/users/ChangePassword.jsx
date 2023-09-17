@@ -77,7 +77,12 @@ const ChangePassword = () => {
     console.log(userData);
     setLoading(true);
     return await axios
-      .post("change-password", userData)
+      .post("change-password", userData, 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         console.log(res.data);
         setServerSuccessMsg(res.data.message);

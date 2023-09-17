@@ -27,6 +27,7 @@ export const DraftsDataProvider = (props) => {
   const [searchDraft, setSearchDraft] = useState("");
   const [draft, setDraft] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [requestCompleted, setRequestCompleted]=useState(0);
 
   const [showDraftAddForm, setShowDraftAddForm] = useState(false);
   const [showDraftEditForm, setShowDraftEditForm] = useState(false);
@@ -41,16 +42,21 @@ export const DraftsDataProvider = (props) => {
    */
   useEffect(() => {
     fetchDrafts();
-  }, []);
+  }, [drafts]);
 
   const fetchDrafts = async () => {
     try {
-      const res = await axios.get("mydrafts");
-      console.log(res.data.data);
+      const res = await axios.get("mydrafts", 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }});
       setDrafts(res.data.data);
       setFilteredDrafts(res.data.data);
+      setRequestCompleted(1)
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 
@@ -60,7 +66,12 @@ export const DraftsDataProvider = (props) => {
    */
   const deleteDraft = async (draftID) => {
     return await axios
-      .delete(`drafts/${draftID}`)
+      .delete(`drafts/${draftID}`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
@@ -133,6 +144,8 @@ export const DraftsDataProvider = (props) => {
         deleteDraft: deleteDraft,
         loading: loading,
         setLoading: setLoading,
+        requestCompleted:requestCompleted,
+        setRequestCompleted:setRequestCompleted
       }}
     >
       {props.children}

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from '../../../axios/AxiosGlobal'
 import { motion } from 'framer-motion';
 import { useParams } from 'react-router-dom'
@@ -54,12 +54,21 @@ const InviteMoreDialog = ({
     fontSize:'18px'
     }
 
-    React.useEffect(()=>{
+    useEffect(()=>{
         fetchInstitutions();
+    }, [])
+
+    useEffect(()=>{
         getInstitutionsID();
+    },[selectedInstitutions])
+
+    useEffect(()=>{
         getMyUsersID();
+    }, [repliersID])
+
+    useEffect(()=>{
         fetchMyUsers();
-     }, [selectedInstitutions, repliersEmail])
+    }, [repliersEmail])
 
       const getMyUsersID=()=>{
          if(repliersEmail.length>0){
@@ -79,7 +88,12 @@ const InviteMoreDialog = ({
 
      const fetchInstitutions = async() =>{
         try{
-          const res = await  axios.get('public/institutions')
+          const res = await  axios.get('public/institutions',
+          {headers:{
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json;",
+            "Content-Type": "multipart/form-data"
+          }})
           setInstitutions(res.data.data.data);
         } catch(error){
             console.log(error);
@@ -88,7 +102,12 @@ const InviteMoreDialog = ({
 
       const fetchMyUsers = async() =>{
         try{
-          const res = await  axios.get(`commenters-per-institution`)
+          const res = await  axios.get(`commenters-per-institution`,
+          {headers:{
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json;",
+            "Content-Type": "multipart/form-data"
+          }})
           console.log("My users");
           console.log(res.data.data)
           setMyUsers(res.data.data);
@@ -127,7 +146,12 @@ const InviteMoreDialog = ({
         console.log(requestData)
         setLoading(true)
         
-      return await axios.post(`additional-commenter-request`, requestData)
+      return await axios.post(`additional-commenter-request`, requestData,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
         .then(res => {
           setServerSuccessMsg(res.data.message);
           setServerErrorMsg(null)

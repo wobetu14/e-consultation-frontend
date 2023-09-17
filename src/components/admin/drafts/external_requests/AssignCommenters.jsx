@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "../../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
 import {
@@ -47,10 +47,14 @@ const AssignCommenters = ({
     fontSize: "18px",
   };
 
-  React.useEffect(() => {
+  useEffect(()=>{
     getMyUsersID();
+  }, [])
+
+  useEffect(()=>{
     fetchMyUsers();
-  }, [repliersEmail]);
+  }, [repliersEmail])
+
 
   const getMyUsersID = () => {
     if (repliersEmail.length > 0) {
@@ -62,7 +66,12 @@ const AssignCommenters = ({
 
   const fetchMyUsers = async () => {
     try {
-      const res = await axios.get(`commenters-per-institution`);
+      const res = await axios.get(`commenters-per-institution`, 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }});
       console.log("My users");
       console.log(res.data.data);
       setMyUsers(res.data.data);
@@ -94,7 +103,12 @@ const AssignCommenters = ({
   const assignMoreCommenters = async (commentersData) => {
     setLoading(true);
     return await axios
-      .post(`assign-commenters`, commentersData)
+      .post(`assign-commenters`, commentersData,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);

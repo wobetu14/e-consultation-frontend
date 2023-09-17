@@ -9,6 +9,7 @@ export const SectorsDataProvider = (props) => {
   const [searchSector, setSearchSector] = useState("");
   const [sector, setSector] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [requestCompleted, setRequestCompleted]=useState(0);
 
   const [showSectorAddForm, setShowSectorAddForm] = useState(false);
   const [showSectorEditForm, setShowSectorEditForm] = useState(false);
@@ -20,11 +21,16 @@ export const SectorsDataProvider = (props) => {
 
   useEffect(() => {
     fetchSectors();
-  }, []);
+  }, [sectors]);
 
   const fetchSectors = async () => {
     try {
-      const res = await axios.get("sectors");
+      const res = await axios.get("sectors", 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }});
       setSectors(res.data.data.data);
       setFilteredSectors(res.data.data.data);
     } catch (error) {
@@ -34,7 +40,12 @@ export const SectorsDataProvider = (props) => {
 
   const deleteSector = async (sectorID) => {
     return await axios
-      .delete(`sectors/${sectorID}`)
+      .delete(`sectors/${sectorID}`, 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
@@ -82,6 +93,8 @@ export const SectorsDataProvider = (props) => {
         fetchSectors: fetchSectors,
         loading: loading,
         setLoading: setLoading,
+        requestCompleted:requestCompleted,
+        setRequestCompleted:setRequestCompleted
       }}
     >
       {props.children}

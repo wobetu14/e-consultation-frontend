@@ -40,19 +40,24 @@ const CreateInstitution = () => {
 
   useEffect(() => {
     fetchInstitutionTypes();
-  }, []);
+  }, [institutionsTypes]);
 
   useEffect(() => {
     fetchRegions();
-  }, []);
+  }, [regions]);
 
   useEffect(() => {
     fetchEconomicSectors();
-  }, []);
+  }, [sectors]);
 
   const fetchInstitutionTypes = async () => {
     return await axios
-      .get("institution-types")
+      .get("institution-types",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setInstitutionTypes(res.data);
@@ -64,11 +69,16 @@ const CreateInstitution = () => {
 
   useEffect(() => {
     fetchInstitutionCategories();
-  }, []);
+  }, [institutionsCategories]);
 
   const fetchInstitutionCategories = async () => {
     return await axios
-      .get("institution-categories")
+      .get("institution-categories",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setInstitutionCategories(res.data);
@@ -80,11 +90,16 @@ const CreateInstitution = () => {
 
   useEffect(() => {
     fetchInstitutionLevels();
-  }, []);
+  }, [institutionsLevels]);
 
   const fetchInstitutionLevels = async () => {
     return await axios
-      .get("institution-levels")
+      .get("institution-levels",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setInstitutionLevels(res.data);
@@ -96,7 +111,12 @@ const CreateInstitution = () => {
 
   const fetchRegions = async () => {
     return await axios
-      .get("regions")
+      .get("regions",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setRegions(res.data);
@@ -108,7 +128,12 @@ const CreateInstitution = () => {
 
   const fetchEconomicSectors = async () => {
     return await axios
-      .get("sectors")
+      .get("sectors",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setSectors(res.data);
@@ -154,7 +179,12 @@ const CreateInstitution = () => {
   const createInstitution = async (institutionData) => {
     setLoading(true);
     return await axios
-      .post(`institutions/${institution.id}`, institutionData)
+      .post(`institutions/${institution.id}`, institutionData,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);

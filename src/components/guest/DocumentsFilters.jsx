@@ -68,7 +68,7 @@ const DocumentsFilters = ({
 
   // useEffect to calculate dynamic page size for pagination
   useEffect(() => {
-    setPageCount(Math.ceil(parseInt(totalDrafts) / 10));
+    setPageCount(Math.ceil(parseInt(totalDrafts) / 10))
   }, [drafts]);
 
   /**
@@ -77,7 +77,7 @@ const DocumentsFilters = ({
    * as Dropdown box labeling. 
    */
   useEffect(() => {
-    fetchLawCategories();
+    fetchLawCategories()
   }, [lawCategories]);
 
  /**
@@ -86,7 +86,12 @@ const DocumentsFilters = ({
    */
   const fetchLawCategories = async () => {
     return await axios
-      .get("public/law-categories")
+      .get("public/law-categories",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setLawCategories(res.data.data.data);
       })
@@ -110,7 +115,12 @@ const DocumentsFilters = ({
 
   const fetchRegions = async () => {
     return await axios
-      .get("public/regions")
+      .get("public/regions",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setRegions(res.data.data.data);
       })
@@ -131,7 +141,12 @@ const DocumentsFilters = ({
 
   const fetchInstitutions = async () => {
     return await axios
-      .get("public/institutions")
+      .get("public/institutions",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setInstitutions(res.data.data.data);
       })
@@ -146,7 +161,12 @@ const DocumentsFilters = ({
 
   const fetchSectors = async () => {
     return await axios
-      .get("public/sectors")
+      .get("public/sectors",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setSectors(res.data);
@@ -167,7 +187,12 @@ const DocumentsFilters = ({
     setRegionID(e.target.value);
     setLoading(true);
     return await axios
-      .get(`drafts?region=${e.target.value}`)
+      .get(`drafts?region=${e.target.value}`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setDrafts(res.data);
@@ -184,7 +209,12 @@ const DocumentsFilters = ({
     setInstitutionID(event.target.value);
     setLoading(true);
     return await axios
-      .get(`drafts?institution=${event.target.value}`)
+      .get(`drafts?institution=${event.target.value}`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setDrafts(res.data);
@@ -201,7 +231,12 @@ const DocumentsFilters = ({
     setLawCategoryID(e.target.value);
     setLoading(true);
     return await axios
-      .get(`drafts?law_category=${e.target.value}`)
+      .get(`drafts?law_category=${e.target.value}`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setDrafts(res.data);
@@ -218,7 +253,12 @@ const DocumentsFilters = ({
     setDraftStatusName(e.target.value);
     setLoading(true);
     return await axios
-      .get(`drafts?draft_status=${e.target.value}`)
+      .get(`drafts?draft_status=${e.target.value}`, 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setDrafts(res.data);

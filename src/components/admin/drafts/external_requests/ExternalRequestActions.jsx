@@ -69,7 +69,12 @@ const AcceptCommentInvitation = ({
 
   const acceptInvitation = async () => {
     return await axios
-      .post(`approve-comment-opening/draft/${documentDetail.id}`)
+      .post(`approve-comment-opening/draft/${documentDetail.id}`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
@@ -125,7 +130,12 @@ const RejectCommentInvitation = ({
 
   const rejectCommentOpening = async () => {
     return await axios
-      .post(`request-rejection/draft/${documentDetail.id}`)
+      .post(`request-rejection/draft/${documentDetail.id}`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);

@@ -25,36 +25,42 @@ const AccountActivation = () => {
     activateUser();
   }, []);
 
-  const activateUser = () => {
-    return axios
-      .get(`activation/${params.token}`)
+  const activateUser = async () => {
+    return await axios
+      .get(`activation/${params.token}`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data.data.user.roles[0].name);
 
-        if (res.status !== 200) {
-          setServerError(res.data.message);
-        } else {
-          if (res.status === 200 && res.data.token) {
+
+        // if (res.status !== 200) {
+        //   setServerError(res.data.message);
+        // } else {
+        //   if (res.status === 200 && res.data.token) {
             setActivation(true);
             setLoggedIn(true);
             setServerError(null);
-            localStorage.setItem("token", res.data.token);
-            localStorage.setItem("userRole", res.data.user.roles[0].name);
-            localStorage.setItem("userInfo", JSON.stringify(res.data));
+            localStorage.setItem("token", res.data.data.token);
+            localStorage.setItem("userRole", res.data.data.user.roles[0].name);
+            localStorage.setItem("userInfo", JSON.stringify(res.data.data));
 
             setUserRole(localStorage.getItem("userRole"));
             setUserToken(localStorage.getItem("token"));
             setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
 
-            if (localStorage.getItem("userRole") === "Commenter") {
+            // if (localStorage.getItem("userRole") === "Commenter") {
               navigate("/");
-            }
+            /* }
           } else {
             setServerError(
               "Ooops! Something went wrong. We couldn't activate this account."
-            );
-          }
-        }
+            ); */
+          // }
+        // }
       })
       .catch((errors) => {
         setServerError(errors.message);

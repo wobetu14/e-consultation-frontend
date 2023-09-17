@@ -45,6 +45,8 @@ const RegionsTable = () => {
     openDialog,
     setOpenDialog,
     loading,
+    requestCompleted,
+    setRequestCompleted
   } = useContext(RegionsDataContext);
 
   const errorStyle = {
@@ -143,7 +145,9 @@ const RegionsTable = () => {
   ];
 
   return (
-    <Box width={"95%"}>
+    <Box sx={{ width:{
+      xs:300, sm:500, md:700, lg:900, xl:1200
+    } }}>
       <Grid align="center" sx={{ paddingBottom: "5px", paddingTop: "5px" }}>
         <motion.span
           initial={{ opacity: 0 }}
@@ -181,7 +185,7 @@ const RegionsTable = () => {
       {showRegionAddForm && <CreateRegion />}
       {showRegionEditForm && <EditRegion />}
 
-      {regions.length > 0 || filteredRegions.length > 0 ? (
+      
         <Paper elevation={1} sx={{ marginTop: "10px", marginBottom: "350px" }}>
           <DataTable
             columns={columns}
@@ -189,7 +193,9 @@ const RegionsTable = () => {
             progressPending={filteredRegions.length <= 0}
             progressComponent={
               <Box mb="20px">
-                <CircularProgress color="info" />
+                {
+                  requestCompleted===1 && filteredRegions.length<=0 ? "No records found":"Please wait..."
+                }
               </Box>
             }
             pagination
@@ -252,9 +258,6 @@ const RegionsTable = () => {
             }
           />
         </Paper>
-      ) : (
-        <LinearProgress size="small" color="info" />
-      )}
     </Box>
   );
 };

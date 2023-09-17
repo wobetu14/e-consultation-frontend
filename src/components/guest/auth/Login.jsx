@@ -15,7 +15,7 @@ import { tokens } from "../../../theme";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useContext, useState } from "react";
-import axios from "../../../axios/AxiosGlobal";
+import axios from "axios";
 import { motion } from "framer-motion";
 
 import { UserContext } from "../../../contexts/UserContext";
@@ -30,7 +30,7 @@ const Login = () => {
   const {setUserInfo, setUserRole, setUserToken } =
     useContext(UserContext);
 
-  const [loggedIn, setLoggedIn] = useState(false);
+  // const [loggedIn, setLoggedIn] = useState(false);
   const [serverError, setServerError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -54,18 +54,19 @@ const Login = () => {
     },
   });
 
-  const userLogin = (userData) => {
+  const userLogin = async (userData) => {
     setLoading(true);
-    return axios
-      .post("login", userData)
-
+    return await axios
+      .post("http://196.188.107.43:8080/api/v1/login", userData)
       .then((res) => {
+        // console.log(res.data);
         if (res.status !== 200) {
           setServerError(res.data.message);
           setLoading(false);
         } else {
-          if (res.status === 200 && res.data.token) {
-            setLoggedIn(true);
+          
+        if (res.status === 200 && res.data.token) {
+            // setLoggedIn(true);
             setServerError(null);
             
             localStorage.setItem("token", res.data.token);
@@ -76,16 +77,21 @@ const Login = () => {
             setUserToken(localStorage.getItem("token"));
             setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
 
+
+           /*  setUserInfo(JSON.stringify(res.data))
+            setUserToken(res.data.token);
+            setUserRole(res.data.user.roles[0].name) */
+
             if (localStorage.getItem("userRole") === "Commenter") {
-              navigate("/");
+              navigate("/", {force:true});
             } else {
-              navigate("/admin");
+              navigate("/admin", {force:true});
             }
-          } else {
+           } else {
             setServerError("Invalid email or password. Please try again.");
             setLoading(false);
           }
-        }
+        } 
       })
       .catch((errors) => {
         setServerError(errors.message);

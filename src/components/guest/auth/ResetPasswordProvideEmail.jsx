@@ -68,7 +68,12 @@ const ResetPasswordProvideEmail = () => {
     console.log(userData);
     setLoading(true);
     return await axios
-      .post("forgot-password", userData)
+      .post("forgot-password", userData,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         console.log(res.data);
         setServerSuccessMsg(res.data.message);

@@ -12,7 +12,7 @@ import { Box } from "@mui/system";
 import { useFormik } from "formik";
 import * as YUP from "yup";
 import "yup-phone";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import Header from "../AdminHeader";
 import axios from "../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
@@ -38,20 +38,31 @@ const CreateUser = () => {
   };
 
   useEffect(() => {
+    /* const id = setInterval(fetchInstitutions(), 1000);
+    return () => clearInterval(id); */
     fetchInstitutions();
   }, []);
 
   useEffect(() => {
+    /* const id = setInterval(fetchUserRoles(), 1000);
+    return () => clearInterval(id); */
     fetchUserRoles();
   }, []);
 
   useEffect(() => {
+    /* const id = setInterval(fetchRegions(), 1000);
+    return () => clearInterval(id); */
     fetchRegions();
   }, []);
 
   const fetchRegions = async () => {
     return await axios
-      .get("public/regions")
+      .get("public/regions", 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setRegions(res.data);
@@ -63,7 +74,12 @@ const CreateUser = () => {
 
   const fetchInstitutions = async () => {
     return await axios
-      .get("public/institutions")
+      .get("institutions",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setInstitutions(res.data);
@@ -75,7 +91,12 @@ const CreateUser = () => {
 
   const fetchUserRoles = async () => {
     return await axios
-      .get("roles")
+      .get("roles", 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         console.log(res);
@@ -95,7 +116,7 @@ const CreateUser = () => {
       email: "",
       password: "",
       confirmPassword: "",
-      roleID: "",
+      roleName: "",
       regionID: userInfo ? userInfo.user.region_id : "",
       institutionID: "",
       createdBy: userInfo ? userInfo.user.id : "",
@@ -122,7 +143,7 @@ const CreateUser = () => {
       email: YUP.string()
         .required("This field is required. Please enter email address.")
         .email("Invalid email address"),
-      roleID: YUP.string().required(
+        roleName: YUP.string().required(
         "This field is required. Please select user role."
       ),
       // institutionID:YUP.string().required("This field is required. Please select Institution.")
@@ -145,7 +166,7 @@ const CreateUser = () => {
           values.lastName
         ).toLocaleLowerCase(),
         email: values.email,
-        roles: values.roleID,
+        roles: values.roleName,
         created_by: values.createdBy,
         updated_by: values.updatedBy,
         region_id: values.regionID,
@@ -158,10 +179,17 @@ const CreateUser = () => {
   });
 
   const createUser = async (userData) => {
-    //  console.log(companyData)
+    console.log(userData)
+
     setLoading(true);
     return await axios
-      .post("users", userData)
+      .post("register", userData,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }} 
+      )
       .then((res) => {
         console.log(res);
         setServerSuccessMsg(res.data.message);
@@ -173,6 +201,7 @@ const CreateUser = () => {
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
+        setLoading(false);
       });
   };
 
@@ -384,28 +413,28 @@ const CreateUser = () => {
                   size="small"
                   id="user_role"
                   color="info"
-                  name="roleID"
-                  value={formik.values.roleID}
+                  name="roleName"
+                  value={formik.values.roleName}
                   onChange={formik.handleChange}
                   helperText={
-                    formik.touched.roleID && formik.errors.roleID ? (
+                    formik.touched.roleName && formik.errors.roleName ? (
                       <span style={helperTextStyle}>
-                        {formik.errors.roleID}
+                        {formik.errors.roleName}
                       </span>
                     ) : null
                   }
                 >
                   {userRoles
                     ? userRoles.map((userRole) => (
-                        <MenuItem value={userRole.role.id} key={userRole.id}>
+                        <MenuItem value={userRole.role.name} key={userRole.name}>
                           {userRole.role.name}{" "}
                         </MenuItem>
                       ))
                     : null}
                 </Select>
                 <FormHelperText>
-                  {formik.touched.roleID && formik.errors.roleID ? (
-                    <span style={helperTextStyle}>{formik.errors.roleID}</span>
+                  {formik.touched.roleName && formik.errors.roleName ? (
+                    <span style={helperTextStyle}>{formik.errors.roleName}</span>
                   ) : null}
                 </FormHelperText>
               </FormControl>

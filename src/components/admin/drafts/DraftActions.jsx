@@ -30,7 +30,12 @@ const DraftActions = ({
 
   const closeCommenting = async (draftID) => {
     return await axios
-      .post(`close-comment/draft/${draftID}`)
+      .post(`close-comment/draft/${draftID}`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
@@ -71,7 +76,7 @@ const DraftActions = ({
                 setOpenRejectionDialog={setOpenRejectionDialog}
               />
             </>
-          ) : documentDetail && documentDetail.draft_status.name === "Open" ? (
+          ) : documentDetail.draft_status.name === "Open" || documentDetail.draft_status.name === "Closed" ? (
             <>
               <InviteCommenters
                 documentDetail={documentDetail}
@@ -104,7 +109,7 @@ const DraftActions = ({
                 }}
                 onClick={() => closeCommenting(documentDetail.id)}
               >
-                <Typography variant="body2">Close Commenting</Typography>
+                <Typography variant="body2">End Consultation</Typography>
               </Button>
             </>
           ) : (
@@ -140,7 +145,12 @@ const SendApprovalRequest = ({
 }) => {
   const sendOpeningRequest = async () => {
     return await axios
-      .post(`request-for-comment/draft/${documentDetail.id}`)
+      .post(`request-for-comment/draft/${documentDetail.id}`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);

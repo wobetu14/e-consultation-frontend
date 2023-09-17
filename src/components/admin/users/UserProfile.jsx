@@ -67,12 +67,17 @@ const UserProfile = () => {
   }, [institutions]);
 
   useEffect(() => {
-    fetchUserRoles();
+    fetchUserRoles()
   }, [userRoles]);
 
   const fetchInstitutions = async () => {
     return await axios
-      .get("institutions")
+      .get("institutions",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setInstitutions(res.data);
@@ -84,7 +89,12 @@ const UserProfile = () => {
 
   const fetchUserRoles = async () => {
     return await axios
-      .get("roles")
+      .get("roles", 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         console.log(res);
@@ -151,7 +161,12 @@ const UserProfile = () => {
   const registerUser = async (userData) => {
     //  console.log(companyData)
     return await axios
-      .patch(`users/${userInfo.user.id}`, userData)
+      .patch(`users/${userInfo.user.id}`, userData,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
@@ -164,7 +179,12 @@ const UserProfile = () => {
 
   const fetchUser = async () => {
     return await axios
-      .get(`users/${userInfo.user.id}`)
+      .get(`users/${userInfo.user.id}`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data)
       .then((res) => {
         console.log(res.data);

@@ -45,6 +45,8 @@ const SectorsTable = () => {
     openDialog,
     setOpenDialog,
     loading,
+    requestCompleted,
+    setRequestCompleted
   } = useContext(SectorsDataContext);
 
   const errorStyle = {
@@ -166,7 +168,9 @@ const SectorsTable = () => {
   ];
 
   return (
-    <Box width={"95%"}>
+    <Box sx={{ width:{
+      xs:300, sm:500, md:700, lg:900, xl:1200
+    } }}>
       <Grid align="center" sx={{ paddingBottom: "5px", paddingTop: "5px" }}>
         <motion.span
           initial={{ opacity: 0 }}
@@ -202,7 +206,6 @@ const SectorsTable = () => {
       )}
       {showSectorAddForm && <CreateSector />}
       {showSectorEditForm && <EditSector />}
-      {sectors.length > 0 || filteredSectors.length > 0 ? (
         <Paper elevation={1} sx={{ marginTop: "10px", marginBottom: "350px" }}>
           <DataTable
             columns={columns}
@@ -210,7 +213,9 @@ const SectorsTable = () => {
             progressPending={filteredSectors.length <= 0}
             progressComponent={
               <Box mb="20px">
-                <CircularProgress color="info" />
+                {
+                  requestCompleted===1 && filteredSectors.length<=0 ? "No records found.":"Please wait..."
+                }
               </Box>
             }
             pagination
@@ -273,9 +278,6 @@ const SectorsTable = () => {
             }
           />
         </Paper>
-      ) : (
-        <LinearProgress size="small" color="info" />
-      )}
     </Box>
   );
 };

@@ -11,7 +11,7 @@ import { DraftsDataProvider } from "../../../contexts/DraftsDataContext";
  */
 const Drafts = () => {
   return (
-    <Box m="0 20px" width={"95%"}>
+    <Box>
       <Header
         title="Draft Documents / Consultations"
         subtitle="Manage draft documents / consultations"

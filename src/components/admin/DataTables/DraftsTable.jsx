@@ -44,6 +44,8 @@ const DraftsTable = () => {
    * the variables we are going to use in this child component
    */
   const {
+    drafts, 
+    setDrafts,
     filteredDrafts,
     searchDraft,
     setSearchDraft,
@@ -58,6 +60,8 @@ const DraftsTable = () => {
     openDialog,
     setOpenDialog,
     loading,
+    requestCompleted,
+    setRequestCompleted
   } = useContext(DraftsDataContext);
 
   const errorStyle = {
@@ -229,7 +233,9 @@ const DraftsTable = () => {
     /**
      * First create Box as a parent object, then create Grid inside
      */
-    <Box width={"95%"}>
+    <Box sx={{ width:{
+      xs:300, sm:500, md:700, lg:900, xl:1200
+    } }}>
       <Grid align="center" sx={{ paddingBottom: "5px", paddingTop: "5px" }}>
         <motion.span
           initial={{ opacity: 0 }}
@@ -290,7 +296,7 @@ const DraftsTable = () => {
 
       <Paper
         elevation={1}
-        sx={{ marginTop: "10px", marginBottom: "350px", maxWidth: "1200px" }}
+        sx={{ marginTop: "10px", marginBottom: "350px" }}
       >
         {/* 
           Render the data table. <DataTable /> component is a built in data table from react-data-table-component.
@@ -306,9 +312,12 @@ const DraftsTable = () => {
           progressComponent={
             <Box mb="20px">
               {/* Display progress bar if the data prop value is empty */}
-              <CircularProgress color="info" />
+              {
+                requestCompleted===1 && filteredDrafts.length<=0 ? "No records found":"Please wait..."
+              }
             </Box>
           }
+          
           /* Add subheader components such as search TextField and Add form Button */
           subHeaderComponent={
             <Box

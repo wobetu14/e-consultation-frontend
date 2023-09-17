@@ -1,4 +1,4 @@
-import { Box, useTheme } from "@mui/material";
+import { Box, useTheme, Alert, Typography } from "@mui/material";
 import { tokens } from "../../theme";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Header from "../../components/admin/AdminHeader";
@@ -11,26 +11,56 @@ import { UserContext } from "../../contexts/UserContext";
 import Drafts from "./drafts/Drafts";
 import axios from "../../axios/AxiosGlobal";
 import UserProfile from "./users/UserProfile";
+import './Dashboard.css'
 
 const Dashboard = () => {
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { userInfo, userRole } = useContext(UserContext);
+  const { userInfo, userRole, userToken, setUserInfo, setUserRole, setUserToken } = useContext(UserContext);
   const [drafts, setDrafts] = useState(null);
   const [comments, setComments] = useState(0);
   const [users, setUsers] = useState(null);
   const [openDrafts, setOpenDrafts] = useState(0);
 
+  /* useEffect(()=>{
+    window.location.reload(true);
+  }, []) */
+
+
+  /* useEffect(()=>{
+    setUserInfo(JSON.parse(localStorage.getItem('userInfo')));
+    setUserRole(localStorage.getItem('userRole'));
+    setUserToken(localStorage.getItem('token'));
+  },[]) */
+
+
   useEffect(() => {
     fetchDrafts();
+  }, [drafts]);
+
+  useEffect(()=>{
     fetchUsers();
+  }, [users])
+
+  useEffect(()=>{
     fetchComments();
+  }, [comments])
+
+  useEffect(()=>{
     fetchOpenDrafts();
-  }, [drafts, users, comments, openDrafts]);
+  }, [openDrafts])
+
+  // drafts, users, comments, openDrafts
 
   const fetchDrafts = async () => {
     try {
-      const res = await axios.get("mydrafts");
+      const res = await axios.get("mydrafts", 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }});
       console.log(res.data.data);
       setDrafts(res.data.data);
     } catch (error) {
@@ -41,7 +71,12 @@ const Dashboard = () => {
   const fetchUsers = async () => {
     try {
       const res = await axios.get(
-        `users?institution_id=${userInfo.user.institution_id}`
+        `users?institution_id=${userInfo.user.institution_id}`,
+        {headers:{
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data"
+        }}
       );
       setUsers(res.data.data);
     } catch (error) {
@@ -51,7 +86,12 @@ const Dashboard = () => {
 
   const fetchComments = async () => {
     try {
-      const res = await axios.get("count-comments");
+      const res = await axios.get("count-comments", 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }});
       console.log(res.data);
       setComments(res.data);
     } catch (error) {
@@ -61,7 +101,12 @@ const Dashboard = () => {
 
   const fetchOpenDrafts = async () => {
     try {
-      const res = await axios.get("count-opened-drafts");
+      const res = await axios.get("count-opened-drafts", 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }});
       console.log(res.data);
       setOpenDrafts(res.data);
     } catch (error) {
@@ -70,7 +115,10 @@ const Dashboard = () => {
   };
 
   return (
-    <Box m="20px">
+    <Box m="20px" sx={{ width:{
+      xs:300, sm:500, md:700, lg:900, xl:1200
+    } }} 
+    >
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
       </Box>
@@ -79,10 +127,12 @@ const Dashboard = () => {
         ""
       ) : (
         <Box
-          display="grid"
+          display="flex"
           gridTemplateColumns="repeat(12, 1fr)"
-          gridAutoRows="140px"
-          gap="20px"
+          // gridAutoRows="140px"
+          gap="10px"
+          sx={{ height:'200px' }}
+          className="box__container"
         >
           <Box
             gridColumn="span 3"
@@ -92,9 +142,10 @@ const Dashboard = () => {
             justifyContent="center"
             sx={{
               borderRadius: "5px",
-              border: "2px solid",
-              borderColor: colors.primary[400],
+              /* border: "2px solid",
+              borderColor: colors.primary[400], */
               boxShadow: "5px, 10px",
+              width:'300px'
             }}
           >
             <StatBox
@@ -115,9 +166,10 @@ const Dashboard = () => {
             justifyContent="center"
             sx={{
               borderRadius: "5px",
-              border: "2px solid",
-              borderColor: colors.brandColor[300],
+              /* border: "2px solid",
+              borderColor: colors.brandColor[300], */
               boxShadow: "5px, 10px",
+              width:'300px'
             }}
           >
             <StatBox
@@ -138,9 +190,10 @@ const Dashboard = () => {
             justifyContent="center"
             sx={{
               borderRadius: "5px",
-              border: "2px solid",
-              borderColor: colors.dangerColor[300],
+              /* border: "2px solid",
+              borderColor: colors.dangerColor[300], */
               boxShadow: "5px, 10px",
+              width:'300px'
             }}
           >
             <StatBox
@@ -161,9 +214,10 @@ const Dashboard = () => {
             justifyContent="center"
             sx={{
               borderRadius: "5px",
-              border: "2px solid",
-              borderColor: colors.yellowColor[300],
+              /* border: "2px solid",
+              borderColor: colors.yellowColor[300], */
               boxShadow: "5px, 10px",
+              width:'300px'
             }}
           >
             <StatBox
@@ -181,7 +235,21 @@ const Dashboard = () => {
 
       {userRole === "Uploader" ? (
         <Box sx={{ marginTop: "100px", marginBottom: "50px" }}>
-          <Drafts />
+          {
+            parseInt(userInfo.user.institutionModel[0].can_create_draft)===1 ? (
+              <Drafts />
+            )
+            :
+            (
+            <Alert severity="warning" variant="outlined">
+              <Typography variant="body1">
+                The institution belongs to this user have no the previlege to upload a document on this system!
+              </Typography>
+            </Alert>
+            )
+          }
+          {/* <Drafts /> */}
+          
         </Box>
       ) : (
         ""

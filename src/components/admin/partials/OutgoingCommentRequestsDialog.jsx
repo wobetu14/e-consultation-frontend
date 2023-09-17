@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
 import { useParams } from "react-router-dom";
@@ -93,7 +93,12 @@ const OutgoingCommentRequestsDialog = ({
 
   const fetchInstitutions = async () => {
     try {
-      const res = await axios.get("public/institutions");
+      const res = await axios.get("public/institutions",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }});
       setInstitutions(res.data.data.data);
     } catch (error) {
       console.log(error);
@@ -102,7 +107,12 @@ const OutgoingCommentRequestsDialog = ({
 
   const fetchMyUsers = async () => {
     try {
-      const res = await axios.get(`commenters-per-institution`);
+      const res = await axios.get(`commenters-per-institution`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }});
       console.log("My users");
       console.log(res.data.data);
       setMyUsers(res.data.data);
@@ -155,11 +165,17 @@ const OutgoingCommentRequestsDialog = ({
     setLoading(true);
 
     return await axios
-      .post(`approve-comment-opening`, requestData)
+      .post(`approve-comment-opening`, requestData,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
-        setLoading(false);
+        setLoading(false)
+        setOpenDialog(false);
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);

@@ -28,7 +28,12 @@ const CommentRepliers = () => {
 
   const fetchInvitedInstitutions = async () => {
     return await axios
-      .get(`comment-repliers?draft_id=${params.id}`)
+      .get(`comment-repliers?draft_id=${params.id}`, 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setAssignedPeople(res.data.data);
       })
@@ -75,11 +80,7 @@ const CommentRepliers = () => {
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell colsPan={5}>
-                  <LinearProgress color="info" />
-                </TableCell>
-              </TableRow>
+              ""
             )}
           </TableBody>
         </Table>

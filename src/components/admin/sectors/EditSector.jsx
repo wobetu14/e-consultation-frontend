@@ -54,7 +54,12 @@ const EditSector = () => {
   const updateSector = async (sectorData) => {
     setLoading(true);
     return await axios
-      .post(`sectors/${sector.id}`, sectorData)
+      .post(`sectors/${sector.id}`, sectorData,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);

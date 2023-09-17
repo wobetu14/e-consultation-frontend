@@ -13,16 +13,31 @@ const CommenterDashboard = () => {
   const [users, setUsers] = useState(null);
   const [openDrafts, setOpenDrafts] = useState(0);
 
-  useEffect(() => {
+  useEffect(()=>{
     fetchDrafts();
+  }, [drafts])
+
+  useEffect(()=>{
     fetchUsers();
+  }, [users])
+
+  useEffect(()=>{
     fetchComments();
-    fetchOpenDrafts();
-  }, [drafts, users, comments, openDrafts]);
+  }, [comments])
+
+  useEffect(()=>{
+   fetchOpenDrafts();
+  },[openDrafts])
+
 
   const fetchDrafts = async () => {
     try {
-      const res = await axios.get("mydrafts");
+      const res = await axios.get("mydrafts",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }});
       setDrafts(res.data.data);
     } catch (error) {
       console.log(error);
@@ -32,7 +47,12 @@ const CommenterDashboard = () => {
   const fetchUsers = async () => {
     try {
       const res = await axios.get(
-        `users?institution_id=${userInfo.user.institution_id}`
+        `users?institution_id=${userInfo.user.institution_id}`,
+        {headers:{
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data"
+        }}
       );
       setUsers(res.data.data);
     } catch (error) {
@@ -42,7 +62,12 @@ const CommenterDashboard = () => {
 
   const fetchComments = async () => {
     try {
-      const res = await axios.get("count-comments");
+      const res = await axios.get("count-comments",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }});
       setComments(res.data);
     } catch (error) {
       console.log(error);
@@ -51,7 +76,12 @@ const CommenterDashboard = () => {
 
   const fetchOpenDrafts = async () => {
     try {
-      const res = await axios.get("count-opened-drafts");
+      const res = await axios.get("count-opened-drafts",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }});
       setOpenDrafts(res.data);
     } catch (error) {
       console.log(error);

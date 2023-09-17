@@ -25,12 +25,17 @@ const InstitutionInvitations = ({ documentDetail }) => {
 
   useEffect(() => {
     fetchInvitedInstitutions();
-  }, []);
+  }, [invitedInstitutions]);
 
   const fetchInvitedInstitutions = async () => {
     return await axios
       .get(
-        `comment-request?draft_id=${params.id}&requester_institution_id=${userInfo.user.institution_id}`
+        `comment-request?draft_id=${params.id}&requester_institution_id=${userInfo.user.institution_id}`,
+        {headers:{
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data"
+        }}
       )
       .then((res) => {
         setInvitedInstitutions(res.data.data);
@@ -116,11 +121,7 @@ const InstitutionInvitations = ({ documentDetail }) => {
                   </TableRow>
                 ))
             ) : (
-              <TableRow>
-                <TableCell colsPan={5}>
-                  <LinearProgress color="secondary" />
-                </TableCell>
-              </TableRow>
+              ""
             )}
           </TableBody>
         </Table>

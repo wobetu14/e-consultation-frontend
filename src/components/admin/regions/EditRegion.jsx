@@ -45,7 +45,12 @@ const EditRegion = () => {
   const registerRegion = async (regionData) => {
     setLoading(true);
     return await axios
-      .post(`regions/${region.id}`, regionData)
+      .post(`regions/${region.id}`, regionData,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);

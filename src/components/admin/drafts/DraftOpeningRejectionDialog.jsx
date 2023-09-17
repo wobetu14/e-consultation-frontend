@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "../../../axios/AxiosGlobal";
 import {
   Box,
@@ -8,6 +8,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  LinearProgress,
   Stack,
   TextField,
   Typography,
@@ -20,6 +21,7 @@ import { useFormik } from "formik";
 const DraftOpeningRejectionDialog = ({
   title,
   documentDetail,
+  setDocumentDetail,
   serverSuccessMsg,
   serverErrorMsg,
   setServerSuccessMsg,
@@ -30,6 +32,7 @@ const DraftOpeningRejectionDialog = ({
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [loading, setLoading]=useState(false);
 
   const formikRejectionForm = useFormik({
     initialValues: {
@@ -47,17 +50,25 @@ const DraftOpeningRejectionDialog = ({
   });
 
   const rejectCommentOpening = async (requestData) => {
-    console.log(requestData);
-
+    setLoading(true)
     return await axios
-      .post(`request-rejection`, requestData)
+      .post(`request-rejection`, requestData, 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+        setLoading(false)
+        setOpenRejectionDialog(false)
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
+        setLoading(false)
+        setOpenRejectionDialog(false)
       });
   };
 
@@ -71,6 +82,7 @@ const DraftOpeningRejectionDialog = ({
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
+            {loading ? <LinearProgress size="small" color="info" /> : ""}
             <form
               style={{ marginBottom: "30px" }}
               onSubmit={formikRejectionForm.handleSubmit}

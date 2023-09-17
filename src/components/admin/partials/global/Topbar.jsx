@@ -7,12 +7,19 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import Logout from "../../../../Logout";
 import { useTranslation } from "react-i18next";
 import HomeIcon from "@mui/icons-material/Home";
+import CachedIcon from '@mui/icons-material/Cached';
+import { useNavigate } from "react-router-dom";
 
 const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
   const { t } = useTranslation();
+  const navigate=useNavigate();
+
+  const reloadPage=()=>{
+    navigate(0)
+  }
 
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
@@ -23,6 +30,9 @@ const Topbar = () => {
       ></Box>
 
       <Box display="flex">
+        <Button variant="text" onClick={reloadPage}>
+          <CachedIcon />
+        </Button>
         <Button
           variant="text"
           color="primary"

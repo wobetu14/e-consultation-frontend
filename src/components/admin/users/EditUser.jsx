@@ -46,20 +46,28 @@ const EditUser = () => {
   };
 
   useEffect(() => {
-    fetchInstitutions();
-  }, []);
+    const id = setInterval(fetchInstitutions(), 1000);
+    return () => clearInterval(id);
+  }, [institutions]);
 
   useEffect(() => {
-    fetchUserRoles();
-  }, []);
+    const id = setInterval(fetchUserRoles(), 1000);
+    return () => clearInterval(id);
+  }, [userRoles]);
 
   useEffect(() => {
-    fetchRegions();
-  }, []);
+    const id = setInterval(fetchRegions(), 1000);
+    return () => clearInterval(id);
+  }, [regions]);
 
   const fetchRegions = async () => {
     return await axios
-      .get("regions")
+      .get("regions", 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setRegions(res.data);
@@ -71,7 +79,12 @@ const EditUser = () => {
 
   const fetchInstitutions = async () => {
     return await axios
-      .get("institutions")
+      .get("institutions",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setInstitutions(res.data);
@@ -83,7 +96,12 @@ const EditUser = () => {
 
   const fetchUserRoles = async () => {
     return await axios
-      .get("roles")
+      .get("roles",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setUserRoles(res);

@@ -1,0 +1,31 @@
+@media (max-width:550px) {
+    .home__container{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+@media (max-width:768px) {
+    .home__container{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+
+@media (max-width:1024px) {
+    .home__container{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+}
+
+@media (max-width:1200) {
+    .home__container{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+}

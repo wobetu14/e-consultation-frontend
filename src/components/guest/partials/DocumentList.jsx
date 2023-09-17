@@ -31,7 +31,6 @@ const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
       <Paper
         elevation={1}
         sx={{ backgroundColor: colors.grey[200], marginBottom: "20px" }}
-        className="document_list_container"
       >
         <List elevation={1} sx={{ width: "100%" }}>
           <ListItem alignItems="flex-start">
@@ -85,7 +84,7 @@ const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
                           label={t("closed_for_comment")}
                           size="small"
                           sx={{
-                            backgroundColor: colors.secondary[100],
+                            backgroundColor: colors.grey[600],
                             color: colors.grey[500],
                             marginRight: "5px",
                           }}
@@ -93,6 +92,20 @@ const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
                       ) : (
                         ""
                       )}
+
+                      {
+                        parseInt(draft.comment_closed)===1 ? (
+                          <Chip
+                          label="Consultation ended"
+                          size="small"
+                          sx={{
+                            backgroundColor: colors.secondary[100],
+                            color: colors.grey[500],
+                            marginRight: "5px",
+                          }}
+                        />
+                        ):""
+                      }
 
                         {/* Display draft closing date if the draft status is "Open" */}
                       {draft.draft_status.name === "Open" ? (

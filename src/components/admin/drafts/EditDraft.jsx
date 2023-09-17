@@ -61,12 +61,10 @@ const EditDraft = () => {
 
   useEffect(() => {
     fetchLawCategories();
-    console.log("Hello from edit draft form");
-    console.log(draft);
   }, [lawCategories]);
 
   useEffect(() => {
-    fetchSectors();
+    fetchSectors()
   }, [sectors]);
 
   useEffect(() => {
@@ -75,7 +73,12 @@ const EditDraft = () => {
 
   const fetchInstitutions = async () => {
     return await axios
-      .get("institutions")
+      .get("institutions",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setInstitutions(res.data);
@@ -87,7 +90,12 @@ const EditDraft = () => {
 
   const fetchLawCategories = async () => {
     return await axios
-      .get("law-categories")
+      .get("law-categories",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setLawCategories(res.data);
@@ -99,7 +107,12 @@ const EditDraft = () => {
 
   const fetchSectors = async () => {
     return await axios
-      .get("sectors")
+      .get("sectors",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setSectors(res.data);
@@ -175,7 +188,12 @@ const EditDraft = () => {
     //  console.log(companyData)
     setLoading(true);
     return await axios
-      .post(`drafts/${draft.id}`, draftsData)
+      .post(`drafts/${draft.id}`, draftsData,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         console.log(res.data);
         setServerSuccessMsg(res.data.message);

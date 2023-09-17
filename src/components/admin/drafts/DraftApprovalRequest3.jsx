@@ -4,6 +4,7 @@ import {
   Chip,
   Grid,
   Alert,
+  LinearProgress,
   CircularProgress,
 } from "@mui/material";
 import { Box } from "@mui/system";
@@ -12,7 +13,7 @@ import React, {
   useState,
   useContext,
 } from "react";
-import axios from '../../../axios/AxiosGlobal'
+import axios from "../../../axios/AxiosGlobal";
 import Header from "../AdminHeader";
 import { useTheme } from "@emotion/react";
 import { tokens } from "../../../theme";
@@ -62,7 +63,6 @@ const DraftApprovalRequest = () => {
       .then((res) => {
         console.log(res.data.data);
         setDraftsData(res.data.data);
-        fetchDrafts();
       })
       .catch((error) => {
         console.log(error.message);
@@ -74,9 +74,7 @@ const DraftApprovalRequest = () => {
   }, [draftsData]);
 
   return (
-    <Box m="0 20px" sx={{ width:{
-      xs:300, sm:500, md:700, lg:1000, xl:1200
-    } }}>
+    <Box m="0 20px" width={"95%"}>
       <Header title="Draft Approval Request" />
       <Grid align="center" sx={{ paddingBottom: "15px", paddingTop: "15px" }}>
         <motion.span
@@ -230,33 +228,8 @@ const DraftApprovalRequest = () => {
                       />
                     ) : (
                       ""
-                    )}  
-
-                    <span>&nbsp;</span>
-                    
-                    {
-                    draft && parseInt(draft.comment_closed)===0 ? (
-                      <Chip
-                       label="Consultation in progress"
-                        size="small"
-                        sx={{
-                        backgroundColor: colors.successColor[300],
-                        color: colors.grey[300],
-                      }}
-                    />
-                    ):(
-                      <Chip
-                       label="Consultation ended"
-                        size="small"
-                        sx={{
-                        backgroundColor: colors.grey[600],
-                        color: colors.grey[300],
-                      }}
-                    />
-                    )
-                  } 
+                    )}
                   </TableCell>
-
                   <TableCell>
                     <Button
                       size="small"
@@ -270,7 +243,7 @@ const DraftApprovalRequest = () => {
                     </Button>
 
                     {userRole === "Uploader" ? (
-                      draft.draft_status.name === "New" || draft.draft_status.name === "Rejected" ? (
+                      draft.draft_status.name === "New" ? (
                         // <TableCell align="right">
                         <SendApprovalRequest
                           draft={draft}
@@ -308,14 +281,14 @@ const SendApprovalRequest = ({
   setServerErrorMsg,
 }) => {
   const sendRequestForApproval = async () => {
-    return await axios.post(`request-for-comment/draft/${draft.id}`,
-      {
-        headers:{
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          Accept: "application/json;",
-          "Content-Type": "multipart/form-data"
-        }
-    })
+    return await axios
+      .post(`request-for-comment/draft/${draft.id}`, 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }}
+      )
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);

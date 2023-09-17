@@ -7,7 +7,7 @@ import DrawerComp from "./Drawer";
 
 import  LightModeOutlinedIcon  from '@mui/icons-material/LightModeOutlined';
 import  DarkModeOutlinedIcon  from '@mui/icons-material/DarkModeOutlined';
-import {Link, useNavigate } from "react-router-dom";
+import {Link, NavLink, useNavigate } from "react-router-dom";
 import LanguageButton from "../LanguageButton";
 
 import { useTranslation } from 'react-i18next';
@@ -110,7 +110,16 @@ const Topbar = ({menuItems}) => {
                                 <>
                                   <Typography variant='h5' sx={{ fontWeight:"600", color:colors.successColor[100] }}>
                                     {userInfo.user.first_name + " " + userInfo.user.middle_name} &nbsp;
-                                    <Link to='commenter'>{t('dashboard')}</Link>
+                                    {
+                                      userRole==='Commenter' ? 
+                                      (
+                                        <Link to='/commenter' >{t('dashboard')}</Link>
+                                      ):
+                                      (
+                                        <Link to='admin'>{t('dashboard')}</Link>
+                                      )
+                                    }
+                                    
                                      <Logout />
                                   </Typography>
                                 </>

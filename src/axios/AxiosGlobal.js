@@ -1,4 +1,6 @@
 import axios from "axios";
+import { useContext } from "react";
+import { UserContext } from "../contexts/UserContext";
 
 /**
  * Custom configuration for Axios http client package. 
@@ -8,13 +10,14 @@ import axios from "axios";
  * baseURL, header (authorization, Accept data type) etc
  */
 
+
 const instance = axios.create({
   baseURL: "http://196.188.107.43:8080/api/v1/",
-  headers: {
+  headers:{
     Authorization: `Bearer ${localStorage.getItem("token")}`,
     Accept: "application/json",
-    "Content-Type": "multipart/form-data",
-  },
+    "Content-Type": "multipart/form-data"
+  }
 });
 
 /**

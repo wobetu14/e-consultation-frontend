@@ -29,7 +29,7 @@ const ExternalRequestMetaInfo = ({
   const colors = tokens(theme.palette.mode);
 
   useEffect(() => {
-    fetchDocumentSections();
+    fetchDocumentSections()
   }, [documentSections]);
 
   useEffect(() => {
@@ -38,7 +38,12 @@ const ExternalRequestMetaInfo = ({
 
   const fetchDocumentSections = async () => {
     return await axios
-      .get(`draft/${params.id}/draft-sections`)
+      .get(`draft/${params.id}/draft-sections`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((response) => {
         setDocumentSections(response.data.data);
       })
@@ -49,7 +54,12 @@ const ExternalRequestMetaInfo = ({
 
   const fetchDocumentComments = async () => {
     return await axios
-      .get(`draft/${params.id}/general-comments`)
+      .get(`draft/${params.id}/general-comments`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((response) => {
         setDocumentComments(response.data.data);
       })

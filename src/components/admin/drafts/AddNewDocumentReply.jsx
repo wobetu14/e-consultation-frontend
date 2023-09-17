@@ -59,7 +59,12 @@ const AddNewDocumentReply = ({ comment, reflections }) => {
 
   const replyDocComment = async (replyData) => {
     return await axios
-      .post("reply-general-comment", replyData)
+      .post("reply-general-comment", replyData, 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         console.log(res);
         setServerSuccessMsg(res.data.message);

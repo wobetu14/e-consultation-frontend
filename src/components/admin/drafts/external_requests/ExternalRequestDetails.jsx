@@ -66,14 +66,24 @@ const ExternalRequestDetails = () => {
   }, [documentComments]);
 
   const fetchDocumentDetails = async () => {
-    return await axios.get(`drafts/${params.id}`).then((response) => {
+    return await axios.get(`drafts/${params.id}`,
+    {headers:{
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Accept: "application/json;",
+      "Content-Type": "multipart/form-data"
+    }}).then((response) => {
       setDocumentDetail(response.data.data);
     });
   };
 
   const fetchDocumentSections = async () => {
     return await axios
-      .get(`draft/${params.id}/draft-sections`)
+      .get(`draft/${params.id}/draft-sections`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((response) => {
         setDocumentSections(response.data.data);
       })
@@ -84,7 +94,12 @@ const ExternalRequestDetails = () => {
 
   const fetchDocumentComments = async () => {
     return await axios
-      .get(`draft/${params.id}/general-comments`)
+      .get(`draft/${params.id}/general-comments`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((response) => {
         setDocumentComments(response.data.data);
       })

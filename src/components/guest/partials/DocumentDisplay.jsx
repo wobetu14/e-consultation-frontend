@@ -2,6 +2,7 @@ import { useTheme } from "@emotion/react";
 import {
   Box,
   CircularProgress,
+  Hidden,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -11,6 +12,7 @@ import Loading from "../../../Loading";
 import { tokens } from "../../../theme";
 import DocumentsFilters from "../DocumentsFilters";
 import DocumentList from "./DocumentList";
+import './DocumentDisplay.css'
 
 /**
  * DocumentDisplay definition. This component renders draft documents as list of drafts displayed on the homepage. 
@@ -45,9 +47,10 @@ const DocumentDisplay = ({
         display: "flex",
         justifyContent: "space-between",
         flexDirection: "row",
+        
       }}
     >
-      <Box sx={{ width: "70%", marginRight: "20px" }}>
+      <Box sx={{ width: "70%", marginRight: "20px" }} >
         <Box width="100%" sx={{ marginBottom: "10px" }}>
           <Typography
             variant="h4"
@@ -71,7 +74,7 @@ const DocumentDisplay = ({
   draft info so that user can navigate through and read and comment on the document he / she is interested in. */}
         {drafts ? (
           drafts.map((draft) => (
-            <Link to={`/draft/${draft.id}`} style={{ textDecoration: "none" }} reloadDocument={true}>
+            <Link to={`/draft/${draft.id}`} style={{ textDecoration: "none" }} >
               <DocumentList
                 deadline={"May 02, 2023"}
                 draft={draft}
@@ -93,8 +96,11 @@ const DocumentDisplay = ({
         )}
 
       </Box>
+
+      
       <Box sx={{ width: "30%" }}>
-        <Box width="100%" sx={{ marginBottom: "10px" }}>
+      <Hidden mdDown implementation="css">
+      <Box width="100%" sx={{ marginBottom: "10px" }}>
           <Typography
             variant="h4"
             sx={{ fontWeight: "500", color: colors.headerText[100] }}
@@ -104,6 +110,7 @@ const DocumentDisplay = ({
         </Box>
 
         {/* Render DocumentFilters compnent and pass drafts and related data as props */}
+        
         <DocumentsFilters
           drafts={drafts}
           setDrafts={(d) => setDrafts(d)}
@@ -116,6 +123,7 @@ const DocumentDisplay = ({
           loading={loading}
           setLoading={setLoading}
         />
+      </Hidden>
       </Box>
     </Box>
   );

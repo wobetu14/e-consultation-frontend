@@ -10,7 +10,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import DataTable from "react-data-table-component";
 import { Stack } from "@mui/system";
 import { tokens } from "../../../theme";
@@ -24,13 +24,17 @@ import EditUser from "../users/EditUser";
 import { UsersDataContext } from "../../../contexts/UsersDataContext";
 import { motion } from "framer-motion";
 import DeleteUserDialog from "../../../partials/DeleteUserDialog";
+import { UserContext } from "../../../contexts/UserContext";
 
 const UsersTable = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const { userInfo, userRole, userToken, setUserInfo, setUserRole, setUserToken } = useContext(UserContext);
   const {
     user,
     setUser,
+    users,
+    setUsers,
     filteredUsers,
     searchUser,
     setSearchUser,
@@ -43,7 +47,11 @@ const UsersTable = () => {
     openDialog,
     setOpenDialog,
     loading,
+    requestCompleted,
+    setRequestCompleted,
   } = useContext(UsersDataContext);
+
+
 
   const errorStyle = {
     color: "red",
@@ -110,7 +118,7 @@ const UsersTable = () => {
         </Typography>
       ),
       selector: (row) => (
-        <Typography variant="body1">{row.institution}</Typography>
+        <Typography variant="body1">{row.institution ? row.institution:""}</Typography>
       ),
       sortable: true,
     },
@@ -120,7 +128,7 @@ const UsersTable = () => {
           Region
         </Typography>
       ),
-      selector: (row) => <Typography variant="body1">{row.region}</Typography>,
+      selector: (row) => <Typography variant="body1">{row.region ? row.region:""}</Typography>,
       sortable: true,
     },
     {
@@ -185,7 +193,9 @@ const UsersTable = () => {
   ];
 
   return (
-    <Box m="0 20px" width={"95%"}>
+    <Box m="0 20px" sx={{ width:{
+      xs:300, sm:500, md:700, lg:900, xl:1200
+    } }}>
       <Header title="Users" subtitle="Manage Users" />
 
       <Grid align="center" sx={{ paddingBottom: "5px", paddingTop: "5px" }}>
@@ -229,10 +239,13 @@ const UsersTable = () => {
         <DataTable
           columns={columns}
           data={filteredUsers}
-          progressPending={filteredUsers.length <= 0}
+          progressPending={users.length <= 0}
           progressComponent={
             <Box mb="20px">
-              <CircularProgress color="info" />
+              {/* Display progress bar if the data prop value is empty */}
+              {
+                requestCompleted===1 && filteredUsers.length<=0 ? "No records found":"Please wait..."
+              }
             </Box>
           }
           pagination

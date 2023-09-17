@@ -19,10 +19,10 @@ const SectionNavigationMenu = ({ section, paddingValue }) => {
   return (
     <div>
       <List
-        sx={{ width: "90%", maxWidth: 360, height: "35px" }}
+        sx={{ maxWidth: 360, height:"50px" }}
         component="nav"
       >
-        <ListItemButton sx={{ height: "35px", pl: paddingValue }}>
+        <ListItemButton sx={{ pl: paddingValue }}>
           <ListItemIcon>
             <LocalLibraryIcon />
           </ListItemIcon>

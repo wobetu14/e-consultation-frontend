@@ -8,6 +8,7 @@ export const UsersDataProvider = (props) => {
     const [filteredUsers, setFilteredUsers]=useState([]);
     const [searchUser, setSearchUser]=useState("");
     const [user, setUser]=useState(null);
+    const [requestCompleted, setRequestCompleted]=useState(0)
 
     const [showUserAddForm, setShowUserAddForm]=useState(false);
     const [showUserEditForm, setShowUserEditForm]=useState(false);
@@ -20,21 +21,32 @@ export const UsersDataProvider = (props) => {
     const [openDialog, setOpenDialog]=useState(false);
 
     useEffect(()=>{
-       fetchUsers();
-    }, [])
+      fetchUsers()
+    }, [users])
 
     const fetchUsers =async() =>{
         try{
-          const res = await  axios.get('users')
+          const res = await  axios.get('users', 
+          {headers:{
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json;",
+            "Content-Type": "multipart/form-data"
+          }})
             setUsers(res.data.data);
             setFilteredUsers(res.data.data);
+            setRequestCompleted(1)
         } catch(error){
             console.log(error);
          }
       }
 
       const deleteUser=async (userID) => {
-        return await axios.delete(`users/${userID}`)
+        return await axios.delete(`users/${userID}`, 
+        {headers:{
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data"
+        }})
         .then(res => {
           setServerSuccessMsg(res.data.message);
           setServerErrorMsg(null);
@@ -49,7 +61,12 @@ export const UsersDataProvider = (props) => {
 
        const getUserInfo = async(userRow) =>{
         try{
-          const res = await axios.get(`users/${userRow}`)
+          const res = await axios.get(`users/${userRow}`, 
+          {headers:{
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json;",
+            "Content-Type": "multipart/form-data"
+          }})
             setUser(res.data.data);
             setOpenDialog(true);
         } catch(error){
@@ -93,7 +110,9 @@ export const UsersDataProvider = (props) => {
         deleteUser:deleteUser,
         getUserInfo:getUserInfo,
         loading:loading,
-        setLoading:setLoading
+        setLoading:setLoading,
+        requestCompleted:requestCompleted,
+        setRequestCompleted:setRequestCompleted,
       }}>
         {props.children}
     </UsersDataContext.Provider>

@@ -16,6 +16,7 @@ import DocumentDisplay from "./partials/DocumentDisplay";
 import axios from "../../axios/AxiosGlobal";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
+// import './Home.css'
 
 // Define home component
 const Home = () => {
@@ -51,7 +52,12 @@ const Home = () => {
   // Method for managing page to page navigation for drafts pagination
   const handlePageChange = async (e, page) => {
     return await axios
-      .get(`drafts?page=${page}`)
+      .get(`drafts?page=${page}`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setDrafts(res.data.data.data);
       })
@@ -72,7 +78,12 @@ const Home = () => {
    */
   const fetchDrafts = async () => {
     return await axios
-      .get(`drafts`)
+      .get(`drafts`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setDrafts(res.data.data.data);
         setUnfilteredDrafts(res.data.data.data);
@@ -95,7 +106,7 @@ const Home = () => {
 
   // Count no of pages dynamically created for the fetched draft data
   useEffect(() => {
-    setPageCount(Math.ceil(parseInt(totalDrafts) / 10));
+    setPageCount(Math.ceil(parseInt(totalDrafts) / 10))
   }, []);
 
   /**
@@ -109,7 +120,12 @@ const Home = () => {
     setSearch(searchValue);
     if (searchValue) {
       await axios
-        .get(`drafts?short_title=${searchValue}`)
+        .get(`drafts?short_title=${searchValue}`,
+        {headers:{
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data"
+        }})
         .then((response) => {
           setDrafts(response.data.data.data);
         })

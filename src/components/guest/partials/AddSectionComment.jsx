@@ -67,7 +67,12 @@ const SectionFeedbacks = ({ section, documentDetail, comments }) => {
 
   const addComment = async (sectionCommentData) => {
     return await axios
-      .post("comments", sectionCommentData)
+      .post("comments", sectionCommentData,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         console.log(res.data.message);
         setServerSuccessMsg(res.data.success);

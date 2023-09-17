@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "../../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
 import {
@@ -66,7 +66,12 @@ const AcceptExternalRequestDialog = ({
 
   const fetchMyUsers = async () => {
     try {
-      const res = await axios.get(`commenters-per-institution`);
+      const res = await axios.get(`commenters-per-institution`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }});
       console.log("My users");
       console.log(res.data.data);
       setMyUsers(res.data.data);
@@ -95,18 +100,24 @@ const AcceptExternalRequestDialog = ({
   });
 
   const assignRepliers = async (acceptanceData) => {
+    setLoading(true);
     return await axios
-      .post(`assign-commenters`, acceptanceData)
+      .post(`assign-commenters`, acceptanceData, 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
-        setLoading(false);
         setOpenExternalAcceptanceDialog(false);
+        setLoading(false);
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
-        setLoading(false);
+        setOpenExternalAcceptanceDialog(false)
       });
   };
 
@@ -114,7 +125,7 @@ const AcceptExternalRequestDialog = ({
     <Dialog open={openExternalAcceptanceDialog} fullWidth>
       <DialogTitle>
         <Typography variant="h5" fontWeight="600">
-          {title}
+          {title} {requestDetail.id}
         </Typography>
       </DialogTitle>
       <DialogContent>
@@ -202,7 +213,7 @@ const AcceptExternalRequestDialog = ({
                   color: colors[300],
                 }}
               >
-                <Typography variant="body2">accept and close</Typography>
+                <Typography variant="body2">Accept and close</Typography>
               </Button>
             </Box>
           </form>

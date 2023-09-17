@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "../../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
 import {
@@ -60,12 +60,22 @@ const RejectExternalRequest = ({
     fontSize: "18px",
   };
 
-  React.useEffect(() => {
+  useEffect(()=>{
     fetchInstitutions();
+  },[])
+
+  useEffect(()=>{
     getInstitutionsID();
+  },[selectedInstitutions])
+
+  useEffect(()=>{
     getMyUsersID();
+  }, [])
+
+  useEffect(()=>{
     fetchMyUsers();
-  }, [selectedInstitutions, repliersEmail]);
+  }, [repliersEmail])
+
 
   const getMyUsersID = () => {
     if (repliersEmail.length > 0) {
@@ -85,7 +95,12 @@ const RejectExternalRequest = ({
 
   const fetchInstitutions = async () => {
     try {
-      const res = await axios.get("public/institutions");
+      const res = await axios.get("public/institutions",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }});
       setInstitutions(res.data.data.data);
     } catch (error) {
       console.log(error);
@@ -95,7 +110,12 @@ const RejectExternalRequest = ({
   const fetchMyUsers = async () => {
     try {
       const res = await axios.get(
-        `users?institution_id=${userInfo.user.institution_id}`
+        `users?institution_id=${userInfo.user.institution_id}`,
+        {headers:{
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data"
+        }}
       );
       console.log("My users");
       console.log(res.data.data);
@@ -125,7 +145,12 @@ const RejectExternalRequest = ({
   const rejectIncomingCommentRequest = async (rejectionData) => {
     setLoading(true);
     return await axios
-      .post(`reject-comment-request`, rejectionData)
+      .post(`reject-comment-request`, rejectionData,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);

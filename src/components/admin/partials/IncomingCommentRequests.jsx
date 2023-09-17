@@ -1,4 +1,4 @@
-import { Typography, Button, Grid, Alert } from "@mui/material";
+import { Typography, Button, Grid, Alert, CircularProgress, LinearProgress } from "@mui/material";
 import { Box } from "@mui/system";
 import React, {
   useEffect,
@@ -22,7 +22,7 @@ import AcceptExternalRequestDialog from "../drafts/external_requests/AcceptExter
 import RejectExternalRequest from "../drafts/external_requests/RejectExternalRequest";
 import AssignCommenters from "../drafts/external_requests/AssignCommenters";
 
-const IncomingCommentRequests = () => {
+const IncomingCommentRequests = ({loading, setLoading}) => {
   const theme = useTheme();
 
   const colors = tokens(theme.palette.mode);
@@ -69,21 +69,28 @@ const IncomingCommentRequests = () => {
   const incomingCommentRequests = async () => {
     return await axios
       .get(
-        `comment-request?commenter_institution_id=${userInfo.user.institution_id}`
+        `comment-request?commenter_institution_id=${userInfo.user.institution_id}`,
+        {headers:{
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data"
+        }}
       )
       .then((res) => res.data.data)
       .then((res) => {
         console.log("Incoming requests");
         setIncomingCommentData(res);
+        setLoading(true)
       })
       .catch((error) => {
         console.log(error.message);
+        setLoading(false)
       });
   };
 
   useEffect(() => {
     incomingCommentRequests();
-  }, []);
+  }, [incomingCommentData]);
 
   return (
     <Box>
@@ -160,7 +167,7 @@ const IncomingCommentRequests = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {incomingCommentData
+            {incomingCommentData!==null
               ? incomingCommentData.map((incommingData) => (
                   <TableRow
                     key={incommingData.id}
@@ -292,7 +299,10 @@ const IncomingCommentRequests = () => {
                     </TableCell>
                   </TableRow>
                 ))
-              : ""}
+              : 
+              
+              <CircularProgress color="secondary" />
+              }
           </TableBody>
         </Table>
       </TableContainer>

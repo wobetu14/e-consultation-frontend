@@ -24,11 +24,16 @@ const PersonalInvitations = () => {
 
   useEffect(() => {
     fetchInvitedInstitutions();
-  }, []);
+  }, [invitedPeople]);
 
   const fetchInvitedInstitutions = async () => {
     return await axios
-      .get(`comment-request?is_personal=${1}&draft_id=${params.id}`)
+      .get(`comment-request?is_personal=${1}&draft_id=${params.id}`,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         setInvitedPeople(res.data.data);
       })
@@ -86,11 +91,7 @@ const PersonalInvitations = () => {
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell colsPan={5}>
-                  <LinearProgress color="info" />
-                </TableCell>
-              </TableRow>
+              ""
             )}
           </TableBody>
         </Table>

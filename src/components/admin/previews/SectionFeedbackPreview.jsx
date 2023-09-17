@@ -4,7 +4,9 @@ import { tokens } from "../../../theme";
 import { useTranslation } from "react-i18next";
 import { useContext, useState } from "react";
 import { motion } from "framer-motion";
-import AddSectionComment from "../partials/AddSectionComment";
+
+import PublicCommentReplies from "../../guest/partials/PublicCommentReplies";
+// import AddSectionComment from "../partials/AddSectionComment";
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -12,12 +14,12 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import { UserContext } from "../../../contexts/UserContext";
-import PublicCommentReplies from "./PublicCommentReplies";
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import ManageComment from "./ManageComment";
-import DeleteCommentDialog from "./Manage_Comments/DeleteCommentDialog";
+import ManageComment from "../../guest/partials/ManageComment";
+import DeleteCommentDialog from "../../guest/partials/Manage_Comments/DeleteCommentDialog";
 
-const SectionFeedbacks = ({ comments, section, documentDetail }) => {
+// import DeleteCommentDialog from "./Manage_Comments/DeleteCommentDialog";
+
+const SectionFeedbackPreview = ({ comments, section, documentDetail }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();
@@ -46,11 +48,7 @@ const SectionFeedbacks = ({ comments, section, documentDetail }) => {
         >
           <ChatBubbleOutlineIcon fontSize="small" /> &nbsp; {t("comments")} (
           {userInfo &&
-            comments.filter((comment) => {
-              return (
-                parseInt(comment.commented_by) === parseInt(userInfo.user.id)
-              );
-            }).length}
+            comments.length}
           )
         </Button>
       </Box>
@@ -74,12 +72,7 @@ const SectionFeedbacks = ({ comments, section, documentDetail }) => {
             >
               {t("comments")} (
               {userInfo &&
-                comments.filter((comment) => {
-                  return (
-                    parseInt(comment.commented_by) ===
-                    parseInt(userInfo.user.id)
-                  );
-                }).length}
+                comments.length}
               )
             </Typography>
 
@@ -87,12 +80,6 @@ const SectionFeedbacks = ({ comments, section, documentDetail }) => {
               {comments.length > 0
                 ? userInfo &&
                   comments
-                    .filter((comment) => {
-                      return (
-                        parseInt(comment.commented_by) ===
-                        parseInt(userInfo.user.id)
-                      );
-                    })
                     .map((comment) => (
                       <>
                         <ListItem
@@ -121,7 +108,11 @@ const SectionFeedbacks = ({ comments, section, documentDetail }) => {
                                       ? `${
                                           comment.commenter.first_name +
                                           " " +
-                                          comment.commenter.middle_name
+                                          comment.commenter.middle_name + " "+
+
+                                          "("+comment.commenter.institution_name+")"
+
+                                          
                                         }`
                                       : "Anonymous"}
                                   </Typography>
@@ -154,7 +145,7 @@ const SectionFeedbacks = ({ comments, section, documentDetail }) => {
                         </ListItem>
                         <ListItem>
                           {documentDetail &&
-                          documentDetail.draft_status.name === "Open" ? (
+                          documentDetail.draft_status.name === "Open" || documentDetail.draft_status.name === "Closed" ? (
                             <PublicCommentReplies
                               comment={comment}
                               reflections={comment.reflection_on_comments}
@@ -167,19 +158,6 @@ const SectionFeedbacks = ({ comments, section, documentDetail }) => {
                     ))
                 : "No comments"}
             </List>
-            {documentDetail && documentDetail.draft_status.name === "Open" ? (
-              userToken !== null &&
-              userToken !== undefined &&
-              userRole != null &&
-              userRole !== undefined &&
-              parseInt(documentDetail.comment_closed)===0 ? (
-                <AddSectionComment section={section} />
-              ) : (
-                ""
-              )
-            ) : (
-              ""
-            )}
 
             {
               openDeleteDialog && (
@@ -193,4 +171,4 @@ const SectionFeedbacks = ({ comments, section, documentDetail }) => {
   );
 };
 
-export default SectionFeedbacks;
+export default SectionFeedbackPreview;

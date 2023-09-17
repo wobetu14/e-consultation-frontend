@@ -3,11 +3,11 @@ import React, { createContext, useEffect, useLayoutEffect, useState } from 'reac
 export const UserContext=createContext();
 
 export const UserProvider = (props) => {
-    const [userInfo, setUserInfo]=useState(JSON.parse(localStorage.getItem('userInfo')));
-    const [userRole, setUserRole]=useState(localStorage.getItem('userRole'));
-    const [userToken, setUserToken]=useState(localStorage.getItem('token'));
+    const [userInfo, setUserInfo]=useState(JSON.parse(localStorage.getItem('userInfo')) ? JSON.parse(localStorage.getItem('userInfo')):null);
+    const [userRole, setUserRole]=useState(localStorage.getItem('userRole') ? localStorage.getItem('userRole'):null);
+    const [userToken, setUserToken]=useState(localStorage.getItem('token') ? localStorage.getItem('token'):null);
 
-    useLayoutEffect(()=>{
+    useEffect(()=>{
       setUserInfo(JSON.parse(localStorage.getItem('userInfo')));
       setUserRole(localStorage.getItem('userRole'));
       setUserToken(localStorage.getItem('token'));

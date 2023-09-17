@@ -56,7 +56,12 @@ const DraftInvitationCheckpoint = ({ draftID }) => {
   const userLogin = async (userData) => {
     setLoading(true);
     return await axios
-      .post("login", userData)
+      .post("login", userData,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         if (res.status !== 200) {
           setServerError(res.data.message);

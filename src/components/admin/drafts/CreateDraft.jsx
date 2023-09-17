@@ -84,14 +84,14 @@ const CreateDraft = () => {
    * Fetch list of law categories on component load using the useEffect hook
    */
   useEffect(() => {
-    fetchLawCategories();
+   fetchLawCategories()
   }, [lawCategories]);
 
   /**
    * Fetch list of sectors on component load using the useEffect hook
    */
   useEffect(() => {
-    fetchSectors();
+    fetchSectors()
   }, [sectors]);
 
   /**
@@ -103,7 +103,12 @@ const CreateDraft = () => {
 
   const fetchInstitutions = async () => {
     return await axios
-      .get("institutions")
+      .get("institutions", 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setInstitutions(res.data);
@@ -115,7 +120,12 @@ const CreateDraft = () => {
 
   const fetchLawCategories = async () => {
     return await axios
-      .get("law-categories")
+      .get("law-categories",
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setLawCategories(res.data);
@@ -127,7 +137,12 @@ const CreateDraft = () => {
 
   const fetchSectors = async () => {
     return await axios
-      .get("sectors")
+      .get("sectors", 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => res.data.data)
       .then((res) => {
         setSectors(res.data);
@@ -175,6 +190,11 @@ const CreateDraft = () => {
       shortTitle: YUP.string().required(
         "This field is required. Please provide a short description about the document."
       ),
+
+      definition: YUP.string().required(
+        "This field is required. Please provide a definition for the document."
+      ),
+
       file: YUP.mixed().required(
         "This field is required. Please choose file to upload."
       ),
@@ -233,16 +253,21 @@ const CreateDraft = () => {
   const createDraftDocument = async (draftsData) => {
     setLoading(true);
     return await axios
-      .post("drafts", draftsData)
+      .post("drafts", draftsData, 
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }})
       .then((res) => {
         console.log(res.data);
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
-        setLoading(false);
         formik.resetForm();
         setSelectedSectors([]);
         setTagLists([]);
         fetchDrafts();
+        setLoading(false);
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
@@ -422,7 +447,7 @@ const CreateDraft = () => {
               />
 
               <TextField
-                label="Definition"
+                label="Definition *"
                 variant="outlined"
                 size="small"
                 multiline
