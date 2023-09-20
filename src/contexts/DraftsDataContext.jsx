@@ -35,6 +35,9 @@ export const DraftsDataProvider = (props) => {
   const [serverErrorMsg, setServerErrorMsg] = useState(null);
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
 
+  const [networkErrorMessage, setNetworkErrorMessage]=useState(null);
+  const [networkError, setNetworkError]=useState(null);
+
   const [openDialog, setOpenDialog] = useState(false);
 
   /**
@@ -45,9 +48,12 @@ export const DraftsDataProvider = (props) => {
   }, [drafts]);
 
   const fetchDrafts = async () => {
+    setNetworkErrorMessage(null)
     try {
       const res = await axios.get("mydrafts", 
-      {headers:{
+      {
+        timeout:"5000",
+        headers:{
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         Accept: "application/json;",
         "Content-Type": "multipart/form-data"
@@ -55,8 +61,9 @@ export const DraftsDataProvider = (props) => {
       setDrafts(res.data.data);
       setFilteredDrafts(res.data.data);
       setRequestCompleted(1)
+      setNetworkErrorMessage(null)
     } catch (error) {
-      console.log(error.message);
+      setNetworkErrorMessage(error.name);
     }
   };
 
@@ -80,7 +87,7 @@ export const DraftsDataProvider = (props) => {
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
-        setServerSuccessMsg(null);
+        setServerSuccessMsg(null); 
       });
   };
 
@@ -145,7 +152,10 @@ export const DraftsDataProvider = (props) => {
         loading: loading,
         setLoading: setLoading,
         requestCompleted:requestCompleted,
-        setRequestCompleted:setRequestCompleted
+        setRequestCompleted:setRequestCompleted,
+        networkErrorMessage:networkErrorMessage,
+        networkError:networkError,
+        setNetworkError:setNetworkError
       }}
     >
       {props.children}

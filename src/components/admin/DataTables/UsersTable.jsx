@@ -25,6 +25,8 @@ import { UsersDataContext } from "../../../contexts/UsersDataContext";
 import { motion } from "framer-motion";
 import DeleteUserDialog from "../../../partials/DeleteUserDialog";
 import { UserContext } from "../../../contexts/UserContext";
+import RefreshIcon from '@mui/icons-material/Refresh';
+import CheckIcon from '@mui/icons-material/Check';
 
 const UsersTable = () => {
   const theme = useTheme();
@@ -35,6 +37,7 @@ const UsersTable = () => {
     setUser,
     users,
     setUsers,
+    fetchUsers,
     filteredUsers,
     searchUser,
     setSearchUser,
@@ -49,6 +52,7 @@ const UsersTable = () => {
     loading,
     requestCompleted,
     setRequestCompleted,
+    networkErrorMessage,
   } = useContext(UsersDataContext);
 
 
@@ -86,6 +90,10 @@ const UsersTable = () => {
     setUser(userRow);
     setOpenDialog(true);
   };
+
+  const handleNetworkStatus=()=>{
+    fetchUsers();
+  }
 
   const columns = [
     {
@@ -204,9 +212,9 @@ const UsersTable = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <Typography variant="h1">
+          <Typography variant="body1">
             {serverSuccessMsg ? (
-              <Alert severity="success" style={successStyle}>
+              <Alert icon={<CheckIcon fontSize="inherit" />} severity="success" style={successStyle} >
                 {serverSuccessMsg}
               </Alert>
             ) : null}
@@ -244,7 +252,26 @@ const UsersTable = () => {
             <Box mb="20px">
               {/* Display progress bar if the data prop value is empty */}
               {
-                requestCompleted===1 && filteredUsers.length<=0 ? "No records found":"Please wait..."
+                requestCompleted===1 && filteredUsers.length<=0 && networkErrorMessage!=="AxiosError" ? "No records found": (
+                  networkErrorMessage==="AxiosError" ? (
+                    <>
+                    <Typography
+                      variant="body1"
+                    >
+                      Your internet connection may be unstable. You can &nbsp;
+                      <Button 
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        sx={{ textTransform:'none' }}
+                        onClick={handleNetworkStatus}
+                      >
+                        Try again <RefreshIcon />
+                      </Button>
+                    </Typography>
+                    </>
+                  ): "Please wait..."
+                )
               }
             </Box>
           }

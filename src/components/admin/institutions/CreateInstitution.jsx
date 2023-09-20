@@ -278,6 +278,7 @@ const CreateInstitution = () => {
                   color="info"
                   name="institutionCategoryId"
                   value={formik.values.institutionCategoryId}
+                  onClick={fetchInstitutionCategories}
                   onChange={formik.handleChange}
                   helperText={
                     formik.touched.institutionCategoryId &&
@@ -320,6 +321,7 @@ const CreateInstitution = () => {
                   color="info"
                   name="institutionLevelId"
                   value={formik.values.institutionLevelId}
+                  onClick={fetchInstitutionLevels}
                   onChange={formik.handleChange}
                   helperText={
                     formik.touched.institutionLevelId &&

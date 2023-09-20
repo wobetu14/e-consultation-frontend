@@ -48,7 +48,7 @@ const ExternalRequestMetaInfo = ({
         setDocumentSections(response.data.data);
       })
       .catch((error) => {
-        <p color="red">{error.response.message}</p>;
+        <p color="red">{error.response.data.message}</p>;
       });
   };
 
@@ -64,7 +64,8 @@ const ExternalRequestMetaInfo = ({
         setDocumentComments(response.data.data);
       })
       .catch((error) => {
-        <p color="red">{error.response.message}</p>;
+        console.log(error.response.message)
+        // <p color="red">{error.response.data.message}</p>;
       });
   };
 

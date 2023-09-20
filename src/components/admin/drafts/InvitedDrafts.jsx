@@ -11,14 +11,18 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 const InvitedDrafts = () => {
   const [invitedDrafts, setInvitedDrafts] = useState(null);
+  const [networkErrorMessage, setNetworkErrorMessage]=useState(null)
 
   const fetchInvitedDrafts = async () => {
+    setNetworkErrorMessage(null)
     return await axios
       .get(`drafts-am-invited-personally`,
-      {headers:{
+      { timeout:"5000",
+        headers:{
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         Accept: "application/json;",
         "Content-Type": "multipart/form-data"
@@ -26,15 +30,21 @@ const InvitedDrafts = () => {
       .then((res) => res.data.data)
       .then((res) => {
         setInvitedDrafts(res);
+        setNetworkErrorMessage(null);
       })
       .catch((error) => {
-        console.log(error.message);
+        console.log(error);
+        setNetworkErrorMessage(error.name)
       });
   };
 
   useEffect(() => {
     fetchInvitedDrafts();
   }, [invitedDrafts]);
+
+  const handleNetworkStatus=()=>{
+    fetchInvitedDrafts();
+  }
 
   return (
     <Box m="0 20px" width={"95%"}>
@@ -104,12 +114,25 @@ const InvitedDrafts = () => {
                   </TableCell>
                 </TableRow>
               ))
-            ) : (
-              <TableRow>
-                <TableCell colsPan={5}>
+            ) : networkErrorMessage!==null ? (
+              <Typography
+              variant="body1"
+              >
+              Your internet connection may be unstable. You can &nbsp;
+                <Button 
+                  variant="outlined"
+                  color="primary"
+                  size="small"
+                  sx={{ textTransform:'none' }}
+                  onClick={handleNetworkStatus}
+                >
+                  Try again <RefreshIcon />
+                </Button>
+            </Typography> 
+             ):
+            (
                   <CircularProgress color="secondary" />
-                </TableCell>
-              </TableRow>
+
             )}
           </TableBody>
         </Table>

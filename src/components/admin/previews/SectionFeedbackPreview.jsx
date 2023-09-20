@@ -16,6 +16,7 @@ import Avatar from "@mui/material/Avatar";
 import { UserContext } from "../../../contexts/UserContext";
 import ManageComment from "../../guest/partials/ManageComment";
 import DeleteCommentDialog from "../../guest/partials/Manage_Comments/DeleteCommentDialog";
+import { SignalWifiStatusbarNullRounded } from "@mui/icons-material";
 
 // import DeleteCommentDialog from "./Manage_Comments/DeleteCommentDialog";
 
@@ -108,13 +109,14 @@ const SectionFeedbackPreview = ({ comments, section, documentDetail }) => {
                                       ? `${
                                           comment.commenter.first_name +
                                           " " +
-                                          comment.commenter.middle_name + " "+
-
-                                          "("+comment.commenter.institution_name+")"
-
-                                          
+                                          comment.commenter.middle_name + " "  
                                         }`
-                                      : "Anonymous"}
+                                      : "Anonymous"
+                                    }
+
+                                      {
+                                       comment.commenter ? "( "+comment.commenter.institution_name+" )":""
+                                      } 
                                   </Typography>
                                 </div>
                                 <div>

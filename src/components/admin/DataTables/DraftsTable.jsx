@@ -26,6 +26,7 @@ import CreateDraft from "../drafts/CreateDraft";
 import EditDraft from "../drafts/EditDraft";
 import DeleteDraftDialog from "../drafts/DeleteDraftDialog";
 import { rootURL } from "../../../axios/AxiosGlobal";
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 /**
  * This component is used to create drafts data table along with search and pagination functionalities.
@@ -46,6 +47,7 @@ const DraftsTable = () => {
   const {
     drafts, 
     setDrafts,
+    fetchDrafts,
     filteredDrafts,
     searchDraft,
     setSearchDraft,
@@ -61,7 +63,10 @@ const DraftsTable = () => {
     setOpenDialog,
     loading,
     requestCompleted,
-    setRequestCompleted
+    setRequestCompleted,
+    networkErrorMessage,
+    networkError,
+    setNetworkerror
   } = useContext(DraftsDataContext);
 
   const errorStyle = {
@@ -107,6 +112,10 @@ const DraftsTable = () => {
     // Set openDialog variable to true to show the delete dialog 
     setOpenDialog(true);
   };
+
+  const handleNetworkStatus=()=>{
+    fetchDrafts();
+  }
 
   /**
    * Create columns and row selectors to create data table. 
@@ -262,6 +271,14 @@ const DraftsTable = () => {
             ) : null}
           </Typography>
 
+          <Typography variant="h1">
+            {networkError==="AxiosError" ? (
+              <Alert severity="error" variant="outlined">
+                Your internet connection may be unstable. Please try again 
+              </Alert>
+            ) : null}
+          </Typography>
+
           {/* 
              Display loading indicator information to indicate CRUD operation is 
              under progress or not. Display this information only when loading variable value is true
@@ -313,7 +330,26 @@ const DraftsTable = () => {
             <Box mb="20px">
               {/* Display progress bar if the data prop value is empty */}
               {
-                requestCompleted===1 && filteredDrafts.length<=0 ? "No records found":"Please wait..."
+                requestCompleted===1 && filteredDrafts.length<=0 && networkErrorMessage!=="AxiosError" ? "No records found": (
+                  networkErrorMessage==="AxiosError" ? (
+                    <>
+                    <Typography
+                      variant="body1"
+                    >
+                      Your internet connection may be unstable. You can &nbsp;
+                      <Button 
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        sx={{ textTransform:'none' }}
+                        onClick={handleNetworkStatus}
+                      >
+                        Try again <RefreshIcon />
+                      </Button>
+                    </Typography>
+                    </>
+                  ): "Please wait..."
+                )
               }
             </Box>
           }

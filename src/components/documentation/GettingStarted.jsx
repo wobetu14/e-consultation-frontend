@@ -8,7 +8,7 @@ function GettingStarted() {
         Accessing the portal
       </Typography>
       <Typography sx={{ paddingLeft:"15px", paddingTop:"15px" }}>
-        The FDRE Public Consultation Portal is available at <a href="http://econsultation.gov.et" target="_blank" rel='noreferrer'>http://www.e-consultation.gov.et</a>
+        The FDRE Public Consultation Portal is available at <a href="http://www.e-consultation.gov.et" target="_blank" rel='noreferrer'>http://www.e-consultation.gov.et</a>
       </Typography>
     </>
   )

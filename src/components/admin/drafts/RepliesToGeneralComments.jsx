@@ -104,7 +104,7 @@ const RepliesToGeneralComments = ({ reflections, comment, documentDetail }) => {
                   ))
                 : ""}
             </List>
-            {documentDetail && documentDetail.draft_status.name === "Open" || documentDetail.draft_status.name === "Closed" ? (
+            {documentDetail && (documentDetail.draft_status.name === "Open") ? (
               <>
                 <AddNewDocumentReply comment={comment} />
               </>

@@ -20,7 +20,10 @@ import {
 import { useFormik } from "formik";
 
 const AssignCommenters = ({
-  requestDetail,
+  requestID,
+  requestTitle,
+  incomingCommentRequests,
+
   serverSuccessMsg,
   serverErrorMsg,
   setServerSuccessMsg,
@@ -82,7 +85,7 @@ const AssignCommenters = ({
 
   const formikAssignCommenterForm = useFormik({
     initialValues: {
-      commentRequestID: requestDetail.id,
+      commentRequestID: requestID,
       noticeMessage:
         "Dear Sir / Madam, This it to inform you that we have assigned you to review and provide feedback on this document.",
       commenters: [],
@@ -112,6 +115,7 @@ const AssignCommenters = ({
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+        incomingCommentRequests();
         setLoading(false);
         setOpenAssignCommenterDialog(false);
       })
@@ -126,7 +130,7 @@ const AssignCommenters = ({
     <Dialog open={openAssignCommenterDialog} fullWidth>
       <DialogTitle>
         <Typography variant="h5" fontWeight="600">
-          {title}
+          {title} {requestID} {requestTitle}
         </Typography>
       </DialogTitle>
       <DialogContent>

@@ -18,11 +18,14 @@ import {
   LinearProgress,
 } from "@mui/material";
 
-import { useFormik } from "formik";
+import { Formik, useFormik } from "formik";
 import { tokens } from "../../../../theme";
 
 const AcceptExternalRequestDialog = ({
-  requestDetail,
+  requestID,
+  requestTitle,
+  incomingCommentRequests,
+  // requestDetail,
   serverSuccessMsg,
   serverErrorMsg,
   setServerSuccessMsg,
@@ -50,6 +53,11 @@ const AcceptExternalRequestDialog = ({
     fontWeight: "400",
     fontSize: "18px",
   };
+
+
+  const closeDialog=()=>{
+    setOpenExternalAcceptanceDialog(false);
+  }
 
   React.useEffect(() => {
     getMyUsersID();
@@ -82,7 +90,7 @@ const AcceptExternalRequestDialog = ({
 
   const formikAcceptanceForm = useFormik({
     initialValues: {
-      commentRequestID: requestDetail.id,
+      commentRequestID: requestID,
       acceptanceMessage: "Dear Sir / Madam, We have just accept these request.",
       commenters: [],
     },
@@ -110,22 +118,26 @@ const AcceptExternalRequestDialog = ({
       }})
       .then((res) => {
         setServerSuccessMsg(res.data.message);
+        incomingCommentRequests();
         setServerErrorMsg(null);
+
         setOpenExternalAcceptanceDialog(false);
+        formikAcceptanceForm.resetForm();
         setLoading(false);
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
-        setOpenExternalAcceptanceDialog(false)
+        // setOpenExternalAcceptanceDialog(false)
       });
   };
 
+
   return (
-    <Dialog open={openExternalAcceptanceDialog} fullWidth>
+    <Dialog key={requestID} open={openExternalAcceptanceDialog} fullWidth>
       <DialogTitle>
         <Typography variant="h5" fontWeight="600">
-          {title} {requestDetail.id}
+          {title} ( {requestTitle} )
         </Typography>
       </DialogTitle>
       <DialogContent>
@@ -220,7 +232,7 @@ const AcceptExternalRequestDialog = ({
         </DialogContentText>
         <DialogActions>
           <Button
-            onClick={() => setOpenExternalAcceptanceDialog(false)}
+            onClick={closeDialog}
             variant="outlined"
             size="small"
             color="secondary"

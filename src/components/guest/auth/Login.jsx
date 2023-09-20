@@ -27,7 +27,7 @@ const Login = () => {
   const { t } = useTranslation();
 
   const navigate = useNavigate();
-  const {setUserInfo, setUserRole, setUserToken } =
+  const {setUserInfo, setUserRole, setUserToken, userInfo } =
     useContext(UserContext);
 
   // const [loggedIn, setLoggedIn] = useState(false);
@@ -82,11 +82,17 @@ const Login = () => {
             setUserToken(res.data.token);
             setUserRole(res.data.user.roles[0].name) */
 
-            if (localStorage.getItem("userRole") === "Commenter") {
-              navigate("/", {force:true});
-            } else {
-              navigate("/admin", {force:true});
+            if(res.data.user.password_changed===null || res.data.user.password_changed===0){
+              navigate('/password_change_request')
             }
+            else {
+              if (localStorage.getItem("userRole") === "Commenter") {
+                navigate("/");
+              } else {
+                navigate("/admin");
+              }
+            }
+ 
            } else {
             setServerError("Invalid email or password. Please try again.");
             setLoading(false);
@@ -143,7 +149,7 @@ const Login = () => {
               ) : null}
             </p>
 
-            {loading && <LinearProgress color="info" size="small" />}
+            {loading && <LinearProgress color="info" size="small" sx={{ marginBottom:"15px" }} />}
           </Grid>
 
           <form onSubmit={formik.handleSubmit}>

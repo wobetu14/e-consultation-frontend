@@ -22,7 +22,9 @@ import { tokens } from "../../../../theme";
 import { UserContext } from "../../../../contexts/UserContext";
 
 const RejectExternalRequest = ({
-  requestDetail,
+  requestID,
+  requestTitle,
+  incomingCommentRequests,
   serverSuccessMsg,
   serverErrorMsg,
   setServerSuccessMsg,
@@ -127,7 +129,7 @@ const RejectExternalRequest = ({
 
   const formikRejectForm = useFormik({
     initialValues: {
-      commentRequestID: requestDetail.id,
+      commentRequestID: requestID,
       rejectionMessage:
         "We are sorry but we have rejected this document. Please review your request and re-send it again.",
     },
@@ -154,6 +156,7 @@ const RejectExternalRequest = ({
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+        incomingCommentRequests();
         setLoading(false);
         setOpenExternalRejectionDialog(false);
       })
@@ -164,11 +167,12 @@ const RejectExternalRequest = ({
       });
   };
 
+
   return (
     <Dialog open={openExternalRejectionDialog} fullWidth>
       <DialogTitle>
         <Typography variant="h5" fontWeight="600">
-          {title}
+          {title} {requestID} {requestTitle}
         </Typography>
       </DialogTitle>
       <DialogContent>

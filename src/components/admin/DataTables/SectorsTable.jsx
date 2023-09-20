@@ -24,6 +24,7 @@ import CreateSector from "../sectors/CreateSector";
 import EditSector from "../sectors/EditSector";
 import { SectorsDataContext } from "../../../contexts/SectorsDataContext";
 import DeleteSectorDialog from "../sectors/DeleteSectorDialog";
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 const SectorsTable = () => {
   const theme = useTheme();
@@ -46,7 +47,10 @@ const SectorsTable = () => {
     setOpenDialog,
     loading,
     requestCompleted,
-    setRequestCompleted
+    setRequestCompleted,
+    networkErrorMessage,
+    setNetworkErrorMessage,
+    fetchSectors:fetchSectors
   } = useContext(SectorsDataContext);
 
   const errorStyle = {
@@ -82,6 +86,10 @@ const SectorsTable = () => {
     setSector(sectorRow);
     setOpenDialog(true);
   };
+
+  const handleNetworkStatus=()=>{
+    fetchSectors();
+  }
 
   const columns = [
     {
@@ -213,10 +221,30 @@ const SectorsTable = () => {
             progressPending={filteredSectors.length <= 0}
             progressComponent={
               <Box mb="20px">
-                {
-                  requestCompleted===1 && filteredSectors.length<=0 ? "No records found.":"Please wait..."
-                }
-              </Box>
+              {/* Display progress bar if the data prop value is empty */}
+              {
+                requestCompleted===1 && filteredSectors.length<=0 && networkErrorMessage!=="AxiosError" ? "No records found": (
+                  networkErrorMessage==="AxiosError" ? (
+                    <>
+                    <Typography
+                      variant="body1"
+                    >
+                      Your internet connection may be unstable. You can &nbsp;
+                      <Button 
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        sx={{ textTransform:'none' }}
+                        onClick={handleNetworkStatus}
+                      >
+                        Try again <RefreshIcon />
+                      </Button>
+                    </Typography>
+                    </>
+                  ): "Please wait..."
+                )
+              }
+            </Box>
             }
             pagination
             selectableRowsHighlight

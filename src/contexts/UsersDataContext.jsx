@@ -19,24 +19,28 @@ export const UsersDataProvider = (props) => {
     const [loading, setLoading]=useState(false);
 
     const [openDialog, setOpenDialog]=useState(false);
+    const [networkErrorMessage, setNetworkErrorMessage]=useState(null)
 
     useEffect(()=>{
       fetchUsers()
     }, [users])
 
     const fetchUsers =async() =>{
+      setNetworkErrorMessage(null);
         try{
           const res = await  axios.get('users', 
-          {headers:{
+          { timeout:"5000",
+            headers:{
             Authorization: `Bearer ${localStorage.getItem("token")}`,
             Accept: "application/json;",
             "Content-Type": "multipart/form-data"
           }})
             setUsers(res.data.data);
             setFilteredUsers(res.data.data);
-            setRequestCompleted(1)
+            setRequestCompleted(1);
+            setNetworkErrorMessage(null)
         } catch(error){
-            console.log(error);
+            setNetworkErrorMessage(error.name);
          }
       }
 
@@ -113,6 +117,9 @@ export const UsersDataProvider = (props) => {
         setLoading:setLoading,
         requestCompleted:requestCompleted,
         setRequestCompleted:setRequestCompleted,
+        networkErrorMessage:networkErrorMessage,
+        setNetworkErrorMessage:setNetworkErrorMessage,
+        fetchUsers:fetchUsers,
       }}>
         {props.children}
     </UsersDataContext.Provider>

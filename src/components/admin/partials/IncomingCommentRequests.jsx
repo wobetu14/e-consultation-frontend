@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useState,
   useContext,
+  useRef,
 } from "react";
 import axios from "../../../axios/AxiosGlobal";
 import { useTheme } from "@emotion/react";
@@ -21,6 +22,7 @@ import { UserContext } from "../../../contexts/UserContext";
 import AcceptExternalRequestDialog from "../drafts/external_requests/AcceptExternalRequestDialog";
 import RejectExternalRequest from "../drafts/external_requests/RejectExternalRequest";
 import AssignCommenters from "../drafts/external_requests/AssignCommenters";
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 const IncomingCommentRequests = ({loading, setLoading}) => {
   const theme = useTheme();
@@ -39,6 +41,13 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
   const [serverErrorMsg, setServerErrorMsg] = useState(null);
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
 
+  const [requestID, setRequestID]=useState(null);
+  const [requestDocumentTitle, setRequestDocumentTitle]=useState(null);
+
+  const [networkErrorMessage, setNetworkErrorMessage]=useState(null);
+
+  const ref = useRef(null);
+
   const errorStyle = {
     color: "red",
     fontWeight: "400",
@@ -54,23 +63,31 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
   const { userInfo, userRole} =
     useContext(UserContext);
 
-  const showExternalAcceptanceDialog = () => {
+  const showExternalAcceptanceDialog = (reqID, reqTitle) => {
+    setRequestID(reqID);
+    setRequestDocumentTitle(reqTitle);
     setOpenExternalAcceptanceDialog(true);
   };
 
-  const showExternalRejectionDialog = () => {
+  const showExternalRejectionDialog = (reqID, reqTitle) => {
+    setRequestID(reqID);
+    setRequestDocumentTitle(reqTitle);
     setOpenExternalRejectionDialog(true);
   };
 
-  const showAssignCommenterDialog = () => {
+  const showAssignCommenterDialog = (reqID, reqTitle) => {
+    setRequestID(reqID);
+    setRequestDocumentTitle(reqTitle);
     setOpenAssignCommenterDialog(true);
   };
 
   const incomingCommentRequests = async () => {
+    setNetworkErrorMessage(null)
     return await axios
       .get(
         `comment-request?commenter_institution_id=${userInfo.user.institution_id}`,
-        {headers:{
+        { timeout:"5000",
+          headers:{
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           Accept: "application/json;",
           "Content-Type": "multipart/form-data"
@@ -80,17 +97,22 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
       .then((res) => {
         console.log("Incoming requests");
         setIncomingCommentData(res);
+        setNetworkErrorMessage(null)
         setLoading(true)
       })
       .catch((error) => {
-        console.log(error.message);
+        setNetworkErrorMessage(error.name);
         setLoading(false)
       });
   };
 
   useEffect(() => {
     incomingCommentRequests();
-  }, [incomingCommentData]);
+  }, []);
+
+  const handleNetworkStatus=()=>{
+    incomingCommentRequests();
+  }
 
   return (
     <Box>
@@ -192,7 +214,6 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
                           : "Rejected"}
                       </Typography>
                     </TableCell>
-                    <TableCell></TableCell>
                     <TableCell>
                       <Button
                         size="small"
@@ -209,7 +230,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
                           <Button
                             size="small"
                             variant="contained"
-                            onClick={showExternalAcceptanceDialog}
+                            onClick={()=>showExternalAcceptanceDialog(incommingData.id, incommingData.draft_title)}
                             sx={{
                               textTransform: "none",
                               marginRight: "5px",
@@ -223,7 +244,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
                           <Button
                             size="small"
                             variant="contained"
-                            onClick={showExternalRejectionDialog}
+                            onClick={()=>showExternalRejectionDialog(incommingData.id, incommingData.draft_title)}
                             sx={{
                               textTransform: "none",
                               marginRight: "5px",
@@ -240,7 +261,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
                             size="small"
                             variant="contained"
                             color="info"
-                            onClick={showAssignCommenterDialog}
+                            onClick={()=>showAssignCommenterDialog(incommingData.id, incommingData.draft_title)}
                             sx={{ textTransform: "none", marginRight: "5px" }}
                           >
                             Assign Commenters
@@ -251,7 +272,11 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
                       )}
                       {openExternalAcceptanceDialog && (
                         <AcceptExternalRequestDialog
-                          requestDetail={incommingData}
+                          key={incommingData.id}
+                          requestID={requestID}
+                          requestTitle={requestDocumentTitle}
+                          incomingCommentRequests={incomingCommentRequests}
+
                           serverSuccessMsg={serverSuccessMsg}
                           serverErrorMsg={serverErrorMsg}
                           setServerSuccessMsg={setServerSuccessMsg}
@@ -268,7 +293,11 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
 
                       {openExternalRejectionDialog && (
                         <RejectExternalRequest
-                          requestDetail={incommingData}
+                          key={incommingData.id}
+                          requestID={requestID}
+                          requestTitle={requestDocumentTitle}
+                          incomingCommentRequests={incomingCommentRequests}
+
                           serverSuccessMsg={serverSuccessMsg}
                           serverErrorMsg={serverErrorMsg}
                           setServerSuccessMsg={setServerSuccessMsg}
@@ -284,7 +313,11 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
                       )}
                       {openAssignCommenterDialog && (
                         <AssignCommenters
-                          requestDetail={incommingData}
+                          key={incommingData.id}
+                          requestID={requestID}
+                          requestTitle={requestDocumentTitle}
+                          incomingCommentRequests={incomingCommentRequests}
+
                           serverSuccessMsg={serverSuccessMsg}
                           serverErrorMsg={serverErrorMsg}
                           setServerSuccessMsg={setServerSuccessMsg}
@@ -299,10 +332,26 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
                     </TableCell>
                   </TableRow>
                 ))
-              : 
-              
-              <CircularProgress color="secondary" />
-              }
+              : networkErrorMessage!==null ? (
+                <Typography
+                variant="body1"
+                >
+                Your internet connection may be unstable. You can &nbsp;
+                  <Button 
+                    variant="outlined"
+                    color="primary"
+                    size="small"
+                    sx={{ textTransform:'none' }}
+                    onClick={handleNetworkStatus}
+                  >
+                    Try again <RefreshIcon />
+                  </Button>
+              </Typography> 
+               ):
+              (
+                    <CircularProgress color="secondary" />
+  
+              )}
           </TableBody>
         </Table>
       </TableContainer>

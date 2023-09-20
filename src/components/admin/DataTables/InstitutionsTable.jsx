@@ -23,6 +23,7 @@ import { InstitutionsDataContext } from "../../../contexts/InstitutionsDataConte
 import CreateInstitution from "../institutions/CreateInstitution";
 import EditInstitution from "../institutions/EditInstitution";
 import DeleteInstitutionDialog from "../institutions/DeleteInstitutionDialog";
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 const InstitutionsTable = () => {
   const theme = useTheme();
@@ -44,7 +45,10 @@ const InstitutionsTable = () => {
     setOpenDialog,
     loading,
     requestCompleted,
-    setRequestCompleted
+    setRequestCompleted,
+    networkErrorMessage,
+    setNetworkErrorMessage,
+    fetchInstitutions,
   } = useContext(InstitutionsDataContext);
 
   const errorStyle = {
@@ -81,6 +85,10 @@ const InstitutionsTable = () => {
     setInstitution(institutionRow);
     setOpenDialog(true);
   };
+
+  const handleNetworkStatus=()=>{
+    fetchInstitutions();
+  }
 
   const columns = [
     {
@@ -247,8 +255,28 @@ const InstitutionsTable = () => {
           progressPending={filteredInstitutions.length <= 0}
           progressComponent={
             <Box mb="20px">
+              {/* Display progress bar if the data prop value is empty */}
               {
-                requestCompleted===1 && filteredInstitutions.length<=0 ? "No records found...":"Please wait..."
+                requestCompleted===1 && filteredInstitutions.length<=0 && networkErrorMessage!=="AxiosError" ? "No records found": (
+                  networkErrorMessage==="AxiosError" ? (
+                    <>
+                    <Typography
+                      variant="body1"
+                    >
+                      Your internet connection may be unstable. You can &nbsp;
+                      <Button 
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        sx={{ textTransform:'none' }}
+                        onClick={handleNetworkStatus}
+                      >
+                        Try again <RefreshIcon />
+                      </Button>
+                    </Typography>
+                    </>
+                  ): "Please wait..."
+                )
               }
             </Box>
           }

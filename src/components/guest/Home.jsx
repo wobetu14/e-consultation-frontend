@@ -49,6 +49,7 @@ const Home = () => {
   // Setup pagination for fetched drafts data
   const [pageCount, setPageCount] = useState(0);
 
+
   // Method for managing page to page navigation for drafts pagination
   const handlePageChange = async (e, page) => {
     return await axios

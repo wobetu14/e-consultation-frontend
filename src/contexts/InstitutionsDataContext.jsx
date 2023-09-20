@@ -18,15 +18,18 @@ export const InstitutionsDataProvider = (props) => {
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
 
   const [openDialog, setOpenDialog] = useState(false);
+  const [networkErrorMessage, setNetworkErrorMessage]=useState(null)
 
   useEffect(() => {
     fetchInstitutions();
   }, [institutions]);
 
   const fetchInstitutions = async () => {
+    setNetworkErrorMessage(null);
     try {
       const res = await axios.get("public/institutions", 
-      {headers:{
+      { timeout:"5000",
+        headers:{
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         Accept: "application/json;",
         "Content-Type": "multipart/form-data"
@@ -34,8 +37,9 @@ export const InstitutionsDataProvider = (props) => {
       setInstitutions(res.data.data.data);
       setFilteredInstitutions(res.data.data.data);
       setRequestCompleted(1)
+      setNetworkErrorMessage(null);
     } catch (error) {
-      console.log(error);
+      setNetworkErrorMessage(error.name)
     }
   };
 
@@ -103,7 +107,10 @@ export const InstitutionsDataProvider = (props) => {
         loading: loading,
         setLoading: setLoading,
         requestCompleted:requestCompleted,
-        setRequestCompleted:setRequestCompleted
+        setRequestCompleted:setRequestCompleted,
+        networkErrorMessage:networkErrorMessage,
+        setNetworkErrorMessage:setNetworkErrorMessage,
+        fetchInstitutions:fetchInstitutions
       }}
     >
       {props.children}

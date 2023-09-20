@@ -112,7 +112,7 @@ const RepliesToComments = ({ reflections, comment, documentDetail }) => {
                 : ""}
             </List>
             <>
-              {documentDetail.draft_status.name === "Open" || documentDetail.draft_status.name === "Closed" ? (
+              {documentDetail && (documentDetail.draft_status.name === "Open") ? (
                 <AddNewReflection comment={comment} />
               ) : (
                 ""

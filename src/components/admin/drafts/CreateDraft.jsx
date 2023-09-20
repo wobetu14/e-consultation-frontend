@@ -59,6 +59,7 @@ const CreateDraft = () => {
    */
   const [selectedSectors, setSelectedSectors] = useState([]);
 
+
   /**
    * Destructure and access variable from the DraftsDataContext context 
    */
@@ -68,6 +69,8 @@ const CreateDraft = () => {
     setServerErrorMsg,
     setServerSuccessMsg,
     setLoading,
+    networkError,
+    setNetworkError
   } = useContext(DraftsDataContext);
 
   const helperTextStyle = {
@@ -251,10 +254,14 @@ const CreateDraft = () => {
    * The createDraftDocument method definition to make API calls and create a new document record.
    */
   const createDraftDocument = async (draftsData) => {
+    setNetworkError(null);
+    setServerErrorMsg(null);
+    setServerSuccessMsg(null);
     setLoading(true);
     return await axios
       .post("drafts", draftsData, 
-      {headers:{
+      { 
+        headers:{
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         Accept: "application/json;",
         "Content-Type": "multipart/form-data"
@@ -263,16 +270,17 @@ const CreateDraft = () => {
         console.log(res.data);
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+        setNetworkError(null);
         formik.resetForm();
-        setSelectedSectors([]);
-        setTagLists([]);
         fetchDrafts();
         setLoading(false);
       })
       .catch((errors) => {
-        setServerErrorMsg(errors.response.data.message);
-        setServerSuccessMsg(null);
         setLoading(false);
+        setServerErrorMsg(errors.message);
+        setNetworkError(errors.name);
+        setServerSuccessMsg(null);
+        console.log("Errors"+errors)
       });
   };
 
@@ -323,6 +331,7 @@ const CreateDraft = () => {
                   placeholder="Select law category"
                   color="info"
                   name="lawCategoryId"
+                  onClick={fetchLawCategories}
                   value={formik.values.lawCategoryId}
                   onChange={formik.handleChange}
                   helperText={
@@ -364,6 +373,7 @@ const CreateDraft = () => {
                 sx={{ paddingBottom: "10px" }}
                 options={sectors}
                 getOptionLabel={(option) => option.name}
+                onClick={fetchSectors}
                 onChange={(e, value) => setSelectedSectors(value)}
                 renderInput={(params) => (
                   <TextField

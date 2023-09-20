@@ -13,7 +13,6 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import { UserContext } from "../../../contexts/UserContext";
 import PublicCommentReplies from "./PublicCommentReplies";
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import ManageComment from "./ManageComment";
 import DeleteCommentDialog from "./Manage_Comments/DeleteCommentDialog";
 
@@ -153,8 +152,8 @@ const SectionFeedbacks = ({ comments, section, documentDetail }) => {
                           />
                         </ListItem>
                         <ListItem>
-                          {documentDetail &&
-                          documentDetail.draft_status.name === "Open" ? (
+                          {documentDetail
+                           ? (
                             <PublicCommentReplies
                               comment={comment}
                               reflections={comment.reflection_on_comments}

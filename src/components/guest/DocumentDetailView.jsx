@@ -247,7 +247,7 @@ const DocumentDetailView = () => {
                   )}
 
                   {documentDetail &&
-                  documentDetail.draft_status.name === "Open" ? (
+                  documentDetail.draft_status.name === "Open" && parseInt(documentDetail.comment_closed)===0 ? (
                     <Chip
                       label="Open for comment"
                       size="small"
@@ -261,7 +261,7 @@ const DocumentDetailView = () => {
                   )}
 
                   {documentDetail &&
-                  documentDetail.draft_status.name === "Closed" ? (
+                  documentDetail.draft_status.name === "Open" && parseInt(documentDetail.comment_closed)===1 ? (
                     <Chip
                       label="Closed for comment"
                       size="small"
@@ -274,28 +274,19 @@ const DocumentDetailView = () => {
                     ""
                   )}
                   
-                    <span style={{ color:"white" }}>&nbsp; and &nbsp;</span>
-                  {
-                    documentDetail && parseInt(documentDetail.comment_closed)===0 ? (
-                      <Chip
-                       label="Consultation in progress"
-                        size="small"
-                        sx={{
-                        backgroundColor: colors.successColor[100],
-                        color: colors.grey[300],
-                      }}
-                    />
-                    ):(
-                      <Chip
-                       label="Consultation ended"
-                        size="small"
-                        sx={{
-                        backgroundColor: colors.dangerColor[100],
-                        color: colors.grey[300],
-                      }}
-                    />
-                    )
-                  }
+                    {
+                        documentDetail && documentDetail.draft_status.name==="Closed" ? (
+                          <Chip
+                          label="Consultation ended"
+                          size="small"
+                          sx={{
+                            backgroundColor: colors.secondary[100],
+                            color: colors.grey[500],
+                            marginRight: "5px",
+                          }}
+                        />
+                        ):""
+                      }
                 </Grid>
 
                 <Grid item xs={6} md={6}>
@@ -386,7 +377,7 @@ const DocumentDetailView = () => {
             </Grid>
 
             <Grid item xs={3}>
-              {parseInt(documentDetail.comment_closed) === 1  ? (
+              {documentDetail.draft_status.name === "Closed"  ? (
                 <Paper
                   elevation={1}
                   sx={{
@@ -585,7 +576,7 @@ const DocumentDetailView = () => {
                   ) : (
                     <Box>
                       {/* Create a progress bar to indicate the loading if the documentSections variable is empty  */}
-                      <CircularProgress color="secondary" />
+                      {/* <CircularProgress color="secondary" /> */}
                     </Box>
                   )}
                 </Collapse>
@@ -901,7 +892,7 @@ const DocumentDetailView = () => {
                   ))
                 ) : (
                   <Box>
-                    <CircularProgress color="secondary" />
+                    {/* <CircularProgress color="secondary" /> */}
                   </Box>
                 )}
               </Grid>
@@ -971,7 +962,9 @@ const DocumentDetailView = () => {
                     */}
                     {userRole === "Commenter" &&
                     documentDetail &&
-                    documentDetail.draft_status.name === "Open" ? (
+                    documentDetail.draft_status.name === "Open" &&
+                    parseInt(documentDetail.comment_closed)===0
+                     ? (
                       <AddDocumentLevelComments
                         documentID={
                           documentDetail ? documentDetail.id : params.id

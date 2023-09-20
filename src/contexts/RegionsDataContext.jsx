@@ -18,23 +18,28 @@ export const RegionsDataProvider = (props) => {
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
 
   const [openDialog, setOpenDialog] = useState(false);
+  const [networkErrorMessage, setNetworkErrorMessage]=useState(null)
 
   useEffect(() => {
     fetchRegions()
   }, [regions]);
 
   const fetchRegions = async () => {
+    setFilteredRegions(null)
     try {
       const res = await axios.get("regions", 
-      {headers:{
+      { timeout:"5000",
+        headers:{
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         Accept: "application/json;",
         "Content-Type": "multipart/form-data"
       }});
       setRegions(res.data.data.data);
       setFilteredRegions(res.data.data.data);
+      setRequestCompleted(1);
+      setNetworkErrorMessage(null)
     } catch (error) {
-      console.log(error);
+      setNetworkErrorMessage(error.name)
     }
   };
 
@@ -90,7 +95,10 @@ export const RegionsDataProvider = (props) => {
         loading: loading,
         setLoading: setLoading,
         requestCompleted:requestCompleted,
-        setRequestCompleted:setRequestCompleted
+        setRequestCompleted:setRequestCompleted,
+        networkErrorMessage:networkErrorMessage,
+        setNetworkErrorMessage:setNetworkErrorMessage,
+        fetchRegions:fetchRegions,
       }}
     >
       {props.children}

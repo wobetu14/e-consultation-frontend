@@ -23,6 +23,7 @@ const CreateUser = () => {
   const [institutions, setInstitutions] = useState(null);
   const [regions, setRegions] = useState(null);
   const [userRoles, setUserRoles] = useState(null);
+  const [newRoleID, setNewRoleID]=useState(null);
 
   // User context
   const { userInfo, userRole } = useContext(UserContext);
@@ -255,8 +256,8 @@ const CreateUser = () => {
                 }
               />
               {userInfo ? (
-                userInfo.user.roles[0].name === "Super Admin" &&
-                formik.values.roleID === 4 ? (
+                userInfo.user.roles[0].name === "Super Admin" &&  
+                formik.values.roleName === "Regional Admin" ? (
                   <FormControl sx={{ minWidth: "100%", paddingBottom: "5px" }}>
                     <InputLabel>Select Region *</InputLabel>
                     <Select
@@ -315,6 +316,7 @@ const CreateUser = () => {
                     size="small"
                     color="info"
                     name="institutionID"
+                    onClick={fetchInstitutions}
                     value={formik.values.institutionID}
                     onChange={formik.handleChange}
                     helperText={
@@ -414,6 +416,7 @@ const CreateUser = () => {
                   id="user_role"
                   color="info"
                   name="roleName"
+                  onClick={fetchUserRoles}
                   value={formik.values.roleName}
                   onChange={formik.handleChange}
                   helperText={

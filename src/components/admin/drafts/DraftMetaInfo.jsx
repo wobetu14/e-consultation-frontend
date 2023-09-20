@@ -155,34 +155,6 @@ const DraftMetaInfo = ({
                   )}
 
                   {documentDetail &&
-                  documentDetail.draft_status.name === "Open" ? (
-                    <Chip
-                      label="Open for comment"
-                      size="small"
-                      sx={{
-                        backgroundColor: colors.successColor[100],
-                        color: colors.grey[300],
-                      }}
-                    />
-                  ) : (
-                    ""
-                  )}
-
-                  {documentDetail &&
-                  documentDetail.draft_status.name === "Closed" ? (
-                    <Chip
-                      label="Closed for comment"
-                      size="small"
-                      sx={{
-                        backgroundColor: colors.grey[600],
-                        color: colors.grey[300],
-                      }}
-                    />
-                  ) : (
-                    ""
-                  )}
-
-                  {documentDetail &&
                   documentDetail.draft_status.name === "Rejected" ? (
                     <Chip
                       label={documentDetail.draft_status.name}
@@ -196,32 +168,47 @@ const DraftMetaInfo = ({
                     ""
                   )}
 
-                <span>&nbsp; and &nbsp;</span>
-                  
-                  {
-                    documentDetail && parseInt(documentDetail.comment_closed)===0 ? (
-                      <Chip
-                       label="Consultation in progress"
-                        size="small"
-                        sx={{
+{documentDetail &&
+                  documentDetail.draft_status.name === "Open" && parseInt(documentDetail.comment_closed)===0 ? (
+                    <Chip
+                      label="Open for comment"
+                      size="small"
+                      sx={{
                         backgroundColor: colors.successColor[100],
                         color: colors.grey[300],
                       }}
                     />
-                    ):
+                  ) : (
+                    ""
+                  )}
 
-                    documentDetail && parseInt(documentDetail.comment_closed)===1 ?
-                    (
-                      <Chip
-                       label="Consultation ended"
-                        size="small"
-                        sx={{
-                        backgroundColor: colors.dangerColor[100],
+                  {documentDetail &&
+                  documentDetail.draft_status.name === "Open" && parseInt(documentDetail.comment_closed)===1 ? (
+                    <Chip
+                      label="Closed for comment"
+                      size="small"
+                      sx={{
+                        backgroundColor: colors.grey[600],
                         color: colors.grey[300],
                       }}
                     />
-                    ):""
-                  }
+                  ) : (
+                    ""
+                  )}
+                  
+                    {
+                        documentDetail && documentDetail.draft_status.name==="Closed" ? (
+                          <Chip
+                          label="Consultation ended"
+                          size="small"
+                          sx={{
+                            backgroundColor: colors.secondary[100],
+                            color: colors.grey[500],
+                            marginRight: "5px",
+                          }}
+                        />
+                        ):""
+                      }
                 </Grid>
 
                 <Grid item xs={6} md={6}>

@@ -18,23 +18,28 @@ export const SectorsDataProvider = (props) => {
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
 
   const [openDialog, setOpenDialog] = useState(false);
+  const [networkErrorMessage, setNetworkErrorMessage]=useState(null)
 
   useEffect(() => {
     fetchSectors();
   }, [sectors]);
 
   const fetchSectors = async () => {
+    setNetworkErrorMessage(null)
     try {
       const res = await axios.get("sectors", 
-      {headers:{
+      { timeout:"5000",
+        headers:{
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         Accept: "application/json;",
         "Content-Type": "multipart/form-data"
       }});
       setSectors(res.data.data.data);
       setFilteredSectors(res.data.data.data);
+      setNetworkErrorMessage(null)
+      setRequestCompleted(1);
     } catch (error) {
-      console.log(error);
+      setNetworkErrorMessage(error.name)
     }
   };
 
@@ -94,7 +99,10 @@ export const SectorsDataProvider = (props) => {
         loading: loading,
         setLoading: setLoading,
         requestCompleted:requestCompleted,
-        setRequestCompleted:setRequestCompleted
+        setRequestCompleted:setRequestCompleted,
+        networkErrorMessage:networkErrorMessage,
+        setNetworkErrorMessage:setNetworkErrorMessage,
+        fetchSectors:fetchSectors
       }}
     >
       {props.children}

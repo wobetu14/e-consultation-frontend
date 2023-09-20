@@ -163,7 +163,6 @@ const OutgoingCommentRequestsDialog = ({
 
   const acceptCommentOpening = async (requestData) => {
     setLoading(true);
-
     return await axios
       .post(`approve-comment-opening`, requestData,
       {headers:{

@@ -5,6 +5,7 @@ import {
   Grid,
   Alert,
   CircularProgress,
+  Tooltip,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, {
@@ -26,6 +27,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { UserContext } from "../../../contexts/UserContext";
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 const DraftApprovalRequest = () => {
   const theme = useTheme();
@@ -35,6 +37,8 @@ const DraftApprovalRequest = () => {
 
   const [serverErrorMsg, setServerErrorMsg] = useState(null);
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
+
+  const [networkErrorMessage, setNetworkErrorMessage]=useState(null);
 
   const errorStyle = {
     color: "red",
@@ -52,26 +56,31 @@ const DraftApprovalRequest = () => {
     useContext(UserContext);
 
   const fetchDrafts = async () => {
+    setNetworkErrorMessage(null);
     return await axios
       .get("mydrafts", 
-      {headers:{
+      { timeout:"5000",
+        headers:{
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         Accept: "application/json;",
         "Content-Type": "multipart/form-data"
       }})
       .then((res) => {
-        console.log(res.data.data);
         setDraftsData(res.data.data);
-        fetchDrafts();
+        setNetworkErrorMessage(null)
       })
       .catch((error) => {
-        console.log(error.message);
+        setNetworkErrorMessage(error.name)
       });
   };
 
   useEffect(() => {
     fetchDrafts();
-  }, [draftsData]);
+  }, []);
+
+  const handleNetworkStatus=()=>{
+    fetchDrafts();
+  }
 
   return (
     <Box m="0 20px" sx={{ width:{
@@ -132,6 +141,7 @@ const DraftApprovalRequest = () => {
                   Draft Status
                 </Typography>
               </TableCell>
+
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
                   Actions
@@ -194,14 +204,17 @@ const DraftApprovalRequest = () => {
                       ""
                     )}
                     {draft.draft_status.name === "Rejected" ? (
-                      <Chip
-                        label={draft.draft_status.name}
-                        size="small"
-                        sx={{
-                          backgroundColor: "orangered",
-                          color: colors.grey[300],
-                        }}
-                      />
+                      <Tooltip title={draft.request_rejection_message} arrow>
+                          <Chip
+                          label={draft.draft_status.name}
+                          size="small"
+                          sx={{
+                            backgroundColor: "orangered",
+                            color: colors.grey[300],
+                            cursor:"pointer"
+                          }}
+                        />
+                      </Tooltip>
                     ) : (
                       ""
                     )}
@@ -235,21 +248,21 @@ const DraftApprovalRequest = () => {
                     <span>&nbsp;</span>
                     
                     {
-                    draft && parseInt(draft.comment_closed)===0 ? (
+                    draft && draft.draft_status.name==="Closed" ? (
                       <Chip
-                       label="Consultation in progress"
+                       label="Consultation ended"
                         size="small"
                         sx={{
-                        backgroundColor: colors.successColor[300],
+                        backgroundColor: colors.dangerColor[500],
                         color: colors.grey[300],
                       }}
                     />
                     ):(
                       <Chip
-                       label="Consultation ended"
+                       label="Consultation in Progress"
                         size="small"
                         sx={{
-                        backgroundColor: colors.grey[600],
+                        backgroundColor: colors.successColor[500],
                         color: colors.grey[300],
                       }}
                     />
@@ -274,6 +287,7 @@ const DraftApprovalRequest = () => {
                         // <TableCell align="right">
                         <SendApprovalRequest
                           draft={draft}
+                          fetchDrafts={fetchDrafts}
                           setServerSuccessMsg={setServerSuccessMsg}
                           setServerErrorMsg={setServerErrorMsg}
                         />
@@ -286,12 +300,26 @@ const DraftApprovalRequest = () => {
                   </TableCell>
                 </TableRow>
               ))
-            ) : (
-              <TableRow>
-                <TableCell colsPan={5}>
+            ) : 
+             networkErrorMessage!==null ? (
+              <Typography
+              variant="body1"
+              >
+              Your internet connection may be unstable. You can &nbsp;
+                <Button 
+                  variant="outlined"
+                  color="primary"
+                  size="small"
+                  sx={{ textTransform:'none' }}
+                  onClick={handleNetworkStatus}
+                >
+                  Try again <RefreshIcon />
+                </Button>
+            </Typography> 
+             ):
+            (
                   <CircularProgress color="secondary" />
-                </TableCell>
-              </TableRow>
+
             )}
           </TableBody>
         </Table>
@@ -304,6 +332,7 @@ export default DraftApprovalRequest;
 
 const SendApprovalRequest = ({
   draft,
+  fetchDrafts,
   setServerSuccessMsg,
   setServerErrorMsg,
 }) => {
@@ -319,6 +348,7 @@ const SendApprovalRequest = ({
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+        fetchDrafts();
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);

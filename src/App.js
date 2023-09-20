@@ -46,6 +46,7 @@ import DraftInvitationCheckpoint from "./components/guest/auth/DraftInvitationCh
 import AssignedToComment from "./components/admin/drafts/AssignedToComment";
 import HelpCenter from "./components/documentation/HelpCenter";
 import ResourceCenter from "./components/documentation/admin_documentation/ResourceCenter";
+import PasswordChangeRequest from "./components/guest/PasswordChangeRequest";
 
 function App() {
   /**
@@ -142,6 +143,7 @@ function App() {
                 <Route path="reset_password" element={<ResetPassword />} />
                 <Route path="create-account" element={<GuestSignup />} />
                 <Route path="user_profile" element={<UserProfile />} />
+                <Route path="password_change_request" element={<PasswordChangeRequest />} />
                 <Route
                   path="activation/:token"
                   element={<AccountActivation />}

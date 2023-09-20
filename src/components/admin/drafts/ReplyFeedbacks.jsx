@@ -10,7 +10,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 
-import RepliesToComments from "../../guest/partials/RepliesToComments.jsx";
+import RepliesToComments from "../../guest/partials/RepliesToComments";
 
 const ReplyFeedbacks = ({ comments, documentDetail }) => {
   const theme = useTheme();
