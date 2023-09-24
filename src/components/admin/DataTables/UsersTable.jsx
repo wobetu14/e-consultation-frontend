@@ -53,6 +53,8 @@ const UsersTable = () => {
     requestCompleted,
     setRequestCompleted,
     networkErrorMessage,
+    networkError,
+    setNetworkError
   } = useContext(UsersDataContext);
 
 
@@ -216,6 +218,14 @@ const UsersTable = () => {
             {serverSuccessMsg ? (
               <Alert icon={<CheckIcon fontSize="inherit" />} severity="success" style={successStyle} >
                 {serverSuccessMsg}
+              </Alert>
+            ) : null}
+          </Typography>
+
+          <Typography variant="h1">
+            {networkError==="AxiosError" ? (
+              <Alert severity="error" variant="outlined">
+                Your internet connection may be unstable. Please try again 
               </Alert>
             ) : null}
           </Typography>

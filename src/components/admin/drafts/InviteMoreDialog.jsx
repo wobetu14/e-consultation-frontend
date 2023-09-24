@@ -18,6 +18,7 @@ import { tokens } from '../../../theme';
 import { useFormik } from 'formik';
 
 const InviteMoreDialog = ({
+    draftID,
     documentDetail,
     serverSuccessMsg,
     serverErrorMsg,
@@ -41,6 +42,8 @@ const InviteMoreDialog = ({
     const [myUsers, setMyUsers]=useState([]);
     const [repliersID, setRepliersID]=useState([]);
     const [loading, setLoading]=useState(false);
+
+    const [networkError, setNetworkError]=useState(null);
 
     const errorStyle={
     color:'red',
@@ -144,6 +147,9 @@ const InviteMoreDialog = ({
 
     const inviteMorePeopleAndInstitutions=async (requestData) => {
         console.log(requestData)
+        setServerErrorMsg(null);
+        setServerSuccessMsg(null);
+        setNetworkError(null);
         setLoading(true)
         
       return await axios.post(`additional-commenter-request`, requestData,
@@ -155,19 +161,18 @@ const InviteMoreDialog = ({
         .then(res => {
           setServerSuccessMsg(res.data.message);
           setServerErrorMsg(null)
+          setNetworkError(null);
           setLoading(false)
           setOpenInviteDialog(false)
         })
         .catch(errors =>{
            setServerErrorMsg(errors.response.data.message);
+           setNetworkError(errors.name);
            setServerSuccessMsg(null) 
            setLoading(false)
         })  
-
        }
 
-
-    
   return (
     <Dialog 
       open={openInviteDialog}
@@ -192,6 +197,12 @@ const InviteMoreDialog = ({
                 
                 <Typography variant='h1'>
                 {serverErrorMsg ? <Alert severity='error' style={errorStyle}>{serverErrorMsg}</Alert>:null}
+                </Typography> 
+
+                <Typography variant='h1'>
+                {networkError ? <Alert severity='error' style={errorStyle}>
+                    Your internet connection may be unstable. Please try again.
+                </Alert>:null}
                 </Typography> 
                 {
                     loading ? (

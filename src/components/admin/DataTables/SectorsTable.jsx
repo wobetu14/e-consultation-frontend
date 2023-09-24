@@ -50,7 +50,8 @@ const SectorsTable = () => {
     setRequestCompleted,
     networkErrorMessage,
     setNetworkErrorMessage,
-    fetchSectors:fetchSectors
+    fetchSectors:fetchSectors, 
+    networkError
   } = useContext(SectorsDataContext);
 
   const errorStyle = {
@@ -200,6 +201,15 @@ const SectorsTable = () => {
               </Alert>
             ) : null}
           </Typography>
+
+          <Typography variant="h1">
+            {networkError==="AxiosError" ? (
+              <Alert severity="error" variant="outlined">
+                Your internet connection may be unstable. Please try again 
+              </Alert>
+            ) : null}
+          </Typography>
+
           {loading ? <LinearProgress size="small" color="info" /> : null}
         </motion.span>
       </Grid>

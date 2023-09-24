@@ -1,6 +1,7 @@
 import { useTheme } from "@emotion/react";
 import {
   Box,
+  Button,
   CircularProgress,
   Hidden,
   Typography,
@@ -13,12 +14,14 @@ import { tokens } from "../../../theme";
 import DocumentsFilters from "../DocumentsFilters";
 import DocumentList from "./DocumentList";
 import './DocumentDisplay.css'
+import RefreshIcon from '@mui/icons-material/Refresh';
 
 /**
  * DocumentDisplay definition. This component renders draft documents as list of drafts displayed on the homepage. 
  * This component is the child of Home.js component and accepts variable as props from Home.js
  */
 const DocumentDisplay = ({
+  fetchDrafts,
   drafts,
   setDrafts,
   unfilteredDrafts,
@@ -31,6 +34,8 @@ const DocumentDisplay = ({
   setPageCount,
   loading,
   setLoading,
+  networkError, 
+  setNetworkError
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -40,6 +45,11 @@ const DocumentDisplay = ({
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const handleNetworkStatus=()=>{
+    fetchDrafts();
+  }
+
   return (
     <Box
       sx={{
@@ -86,14 +96,30 @@ const DocumentDisplay = ({
               />
             </Link>
           ))
-        ) : (
-          <>
+        ) : networkError==="AxiosError" ? (
+          <Typography
+                  variant="body1"
+                >
+                  Your internet connection may be unstable. You can &nbsp;
+                  <Button 
+                    variant="outlined"
+                    color="primary"
+                    size="small"
+                    sx={{ textTransform:'none' }}
+                    onClick={handleNetworkStatus}
+                  >
+                    Try again <RefreshIcon />
+                  </Button>
+                </Typography>
+        ): (
+              <>
           {/* Render <Loading /> component if drafts value is empty */}
             <Loading />
             <Loading />
             <Loading />
           </>
-        )}
+            )
+        }
 
       </Box>
 

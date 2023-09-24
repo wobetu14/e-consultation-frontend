@@ -121,7 +121,7 @@ const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
                         {/* Display law category of the draft document. */}
                       <label>
                         <strong>{t("law_category")}: </strong>{" "}
-                        {draft.law_category.name} &nbsp;
+                        {draft.law_category ? draft.law_category.name:""} &nbsp;
                       </label>
 
                          {/* Display institutions name which the draft is initiated by */}

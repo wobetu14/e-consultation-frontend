@@ -22,6 +22,7 @@ import { tokens } from "../../../theme";
 import { useFormik } from "formik";
 
 const OutgoingCommentRequestsDialog = ({
+  draftID,
   draftInfo,
   title,
   setServerSuccessMsg,
@@ -49,7 +50,8 @@ const OutgoingCommentRequestsDialog = ({
   const [myUsers, setMyUsers] = useState([]);
   const [repliersID, setRepliersID] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const [networkError, setnetworkError]=useState(null);
+  
   const helperTextStyle = {
     color: "red",
     fontWeight: "400",
@@ -123,7 +125,7 @@ const OutgoingCommentRequestsDialog = ({
 
   const formikAcceptanceForm = useFormik({
     initialValues: {
-      draft_id: params.id,
+      draft_id: draftID,
       institutions: [],
       institutionMessage:
         "Dear Sir / Madam, We kindly invite your organization to review this draft documnet. You can assign experts among staff and let them review it. ",
@@ -140,7 +142,7 @@ const OutgoingCommentRequestsDialog = ({
 
     onSubmit: (values) => {
       const requestData = {
-        draft_id: params.id,
+        draft_id: draftID,
 
         comment_opening_date: values.draftOpeningDate,
         comment_closing_date: values.draftClosingDate,
@@ -162,6 +164,9 @@ const OutgoingCommentRequestsDialog = ({
   });
 
   const acceptCommentOpening = async (requestData) => {
+    setnetworkError(null);
+    setServerErrorMsg(null);
+    setServerSuccessMsg(null);
     setLoading(true);
     return await axios
       .post(`approve-comment-opening`, requestData,
@@ -173,12 +178,14 @@ const OutgoingCommentRequestsDialog = ({
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+        setnetworkError(null)
         setLoading(false)
         setOpenDialog(false);
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
+        setnetworkError(errors.name);
         setLoading(false);
       });
   };
@@ -216,6 +223,15 @@ const OutgoingCommentRequestsDialog = ({
                   </Alert>
                 ) : null}
               </Typography>
+
+              <Typography variant="h1">
+                {networkError ? (
+                  <Alert severity="error" style={errorStyle}>
+                    Your internet connection may be unstable. Please try again.
+                  </Alert>
+                ) : null}
+              </Typography>
+
               {loading && <LinearProgress size="small" color="info" />}
             </motion.span>
           </Grid>

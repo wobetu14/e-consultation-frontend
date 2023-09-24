@@ -15,6 +15,7 @@ export const UsersDataProvider = (props) => {
 
     const [serverErrorMsg, setServerErrorMsg]=useState(null);
     const [serverSuccessMsg, setServerSuccessMsg]=useState(null);
+    const [networkError, setNetworkError]=useState(null);
 
     const [loading, setLoading]=useState(false);
 
@@ -120,6 +121,8 @@ export const UsersDataProvider = (props) => {
         networkErrorMessage:networkErrorMessage,
         setNetworkErrorMessage:setNetworkErrorMessage,
         fetchUsers:fetchUsers,
+        networkError:networkError,
+        setNetworkError:setNetworkError
       }}>
         {props.children}
     </UsersDataContext.Provider>

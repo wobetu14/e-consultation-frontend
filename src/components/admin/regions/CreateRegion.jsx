@@ -9,7 +9,13 @@ import { motion } from "framer-motion";
 import { RegionsDataContext } from "../../../contexts/RegionsDataContext";
 
 const CreateRegion = () => {
-  const { setServerErrorMsg, setServerSuccessMsg, setLoading } =
+  const { 
+    setServerErrorMsg, 
+    setServerSuccessMsg, 
+    setLoading,
+    networkError,
+    setNetworkError
+  } =
     useContext(RegionsDataContext);
 
   const helperTextStyle = {
@@ -41,6 +47,9 @@ const CreateRegion = () => {
   });
 
   const registerRegion = async (regionData) => {
+    setNetworkError(null);
+    setServerErrorMsg(null);
+    setServerSuccessMsg(null);
     setLoading(true);
     return await axios
       .post("regions", regionData, 
@@ -52,12 +61,14 @@ const CreateRegion = () => {
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+        setNetworkError(null)
         setLoading(false);
         formik.resetForm();
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
+        setNetworkError(errors.name)
         setLoading(false);
       });
   };

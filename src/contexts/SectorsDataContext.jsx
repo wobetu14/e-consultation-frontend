@@ -18,7 +18,8 @@ export const SectorsDataProvider = (props) => {
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
 
   const [openDialog, setOpenDialog] = useState(false);
-  const [networkErrorMessage, setNetworkErrorMessage]=useState(null)
+  const [networkErrorMessage, setNetworkErrorMessage]=useState(null);
+  const [networkError, setNetworkError]=useState(null);
 
   useEffect(() => {
     fetchSectors();
@@ -102,7 +103,9 @@ export const SectorsDataProvider = (props) => {
         setRequestCompleted:setRequestCompleted,
         networkErrorMessage:networkErrorMessage,
         setNetworkErrorMessage:setNetworkErrorMessage,
-        fetchSectors:fetchSectors
+        fetchSectors:fetchSectors, 
+        networkError:networkError,
+        setNetworkError:setNetworkError
       }}
     >
       {props.children}

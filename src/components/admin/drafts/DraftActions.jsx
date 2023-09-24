@@ -10,6 +10,7 @@ import InviteMoreDialog from "../../admin/drafts/InviteMoreDialog";
 import AssignMoreRepliersDialog from "./AssignMoreRepliersDialog";
 
 const DraftActions = ({
+  draftID,
   documentDetail,
   serverErrorMsg,
   serverSuccessMsg,
@@ -58,6 +59,7 @@ const DraftActions = ({
           documentDetail && documentDetail.draft_status.name === "Requested" ? (
             <>
               <AcceptApprovalRequest
+                draftID={draftID}
                 documentDetail={documentDetail}
                 serverSuccessMsg={serverSuccessMsg}
                 serverErrorMsg={serverErrorMsg}
@@ -67,6 +69,7 @@ const DraftActions = ({
                 setOpenDialog={setOpenDialog}
               />
               <RejectApprovalRequest
+                draftID={draftID}
                 documentDetail={documentDetail}
                 serverSuccessMsg={serverSuccessMsg}
                 serverErrorMsg={serverErrorMsg}
@@ -79,6 +82,7 @@ const DraftActions = ({
           ) : documentDetail.draft_status.name === "Open" || documentDetail.draft_status.name === "Closed" ? (
             <>
               <InviteCommenters
+                draftID={draftID}
                 documentDetail={documentDetail}
                 serverSuccessMsg={serverSuccessMsg}
                 serverErrorMsg={serverErrorMsg}
@@ -88,6 +92,7 @@ const DraftActions = ({
                 setOpenInviteDialog={setOpenInviteDialog}
               />
               <AssignRepliers
+                draftID={draftID}
                 documentDetail={documentDetail}
                 serverSuccessMsg={serverSuccessMsg}
                 serverErrorMsg={serverErrorMsg}
@@ -177,6 +182,7 @@ const SendApprovalRequest = ({
 };
 
 const AcceptApprovalRequest = ({
+  draftID,
   documentDetail,
   serverSuccessMsg,
   serverErrorMsg,
@@ -203,6 +209,7 @@ const AcceptApprovalRequest = ({
 
       {openDialog && (
         <OutgoingCommentRequestsDialog
+          draftID={draftID}
           key={documentDetail.id}
           draftInfo={documentDetail}
           serverSuccessMsg={serverSuccessMsg}
@@ -220,6 +227,7 @@ const AcceptApprovalRequest = ({
 };
 
 const RejectApprovalRequest = ({
+  draftID,
   documentDetail,
   serverSuccessMsg,
   serverErrorMsg,
@@ -246,6 +254,7 @@ const RejectApprovalRequest = ({
 
       {openRejectionDialog && (
         <DraftOpeningRejectionDialog
+          draftID={draftID}
           key={documentDetail.id}
           documentDetail={documentDetail}
           serverSuccessMsg={serverSuccessMsg}
@@ -263,6 +272,7 @@ const RejectApprovalRequest = ({
 };
 
 const InviteCommenters = ({
+  draftID,
   documentDetail,
   serverSuccessMsg,
   serverErrorMsg,
@@ -290,6 +300,7 @@ const InviteCommenters = ({
       {openInviteDialog && (
         <>
           <InviteMoreDialog
+            draftID={draftID}
             key={documentDetail.id}
             documentDetail={documentDetail}
             serverSuccessMsg={serverSuccessMsg}
@@ -307,6 +318,7 @@ const InviteCommenters = ({
 };
 
 const AssignRepliers = ({
+  draftID,
   documentDetail,
   serverSuccessMsg,
   serverErrorMsg,
@@ -333,6 +345,7 @@ const AssignRepliers = ({
 
       {openAssignRepliersDialog && (
         <AssignMoreRepliersDialog
+          draftID={draftID}
           key={documentDetail.id}
           documentDetail={documentDetail}
           serverSuccessMsg={serverSuccessMsg}

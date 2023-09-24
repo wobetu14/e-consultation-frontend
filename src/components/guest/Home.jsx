@@ -49,6 +49,8 @@ const Home = () => {
   // Setup pagination for fetched drafts data
   const [pageCount, setPageCount] = useState(0);
 
+  const [networkError, setNetworkError]=useState(null);
+
 
   // Method for managing page to page navigation for drafts pagination
   const handlePageChange = async (e, page) => {
@@ -78,9 +80,11 @@ const Home = () => {
    * to communicate with APi data and the custom definition is available at AxiosGlobal.js file
    */
   const fetchDrafts = async () => {
+    setNetworkError(null);
     return await axios
       .get(`drafts`,
-      {headers:{
+      { timeout:"10000",
+        headers:{
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         Accept: "application/json;",
         "Content-Type": "multipart/form-data"
@@ -89,9 +93,12 @@ const Home = () => {
         setDrafts(res.data.data.data);
         setUnfilteredDrafts(res.data.data.data);
         setTotalDrafts(res.data.data.total);
+        setNetworkError(null);
       })
       .catch((error) => {
-        console.log(error.message);
+        setNetworkError(error.name);
+        console.log(error.response.data.message);
+        console.log(error.name);
       });
   };
 
@@ -233,6 +240,7 @@ const Home = () => {
             other data into the next child component 'DocumentDisplay' for a better code management and data rendering  
           */}
           <DocumentDisplay
+            fetchDrafts={fetchDrafts}
             drafts={drafts}
             setDrafts={setDrafts}
             unfilteredDrafts={unfilteredDrafts}
@@ -243,6 +251,8 @@ const Home = () => {
             setPageCount={setPageCount}
             loading={loading}
             setLoading={setLoading}
+            networkError={networkError}
+            setNetworkError={setNetworkError}
           />
         </Box>
 

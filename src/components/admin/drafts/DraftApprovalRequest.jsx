@@ -6,6 +6,7 @@ import {
   Alert,
   CircularProgress,
   Tooltip,
+  LinearProgress,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import React, {
@@ -28,6 +29,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { UserContext } from "../../../contexts/UserContext";
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { use } from "i18next";
 
 const DraftApprovalRequest = () => {
   const theme = useTheme();
@@ -39,6 +41,7 @@ const DraftApprovalRequest = () => {
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
 
   const [networkErrorMessage, setNetworkErrorMessage]=useState(null);
+  const [loading, setLoading]=useState(false);
 
   const errorStyle = {
     color: "red",
@@ -108,6 +111,13 @@ const DraftApprovalRequest = () => {
               </Alert>
             ) : null}
           </Typography>
+
+          {
+            loading && (
+              <LinearProgress size="small" />
+            )
+          }
+
         </motion.span>
       </Grid>
       <TableContainer
@@ -286,6 +296,8 @@ const DraftApprovalRequest = () => {
                       draft.draft_status.name === "New" || draft.draft_status.name === "Rejected" ? (
                         // <TableCell align="right">
                         <SendApprovalRequest
+                          loading={loading}
+                          setLoading={setLoading}
                           draft={draft}
                           fetchDrafts={fetchDrafts}
                           setServerSuccessMsg={setServerSuccessMsg}
@@ -331,12 +343,17 @@ const DraftApprovalRequest = () => {
 export default DraftApprovalRequest;
 
 const SendApprovalRequest = ({
+  loading,
+  setLoading,
   draft,
   fetchDrafts,
   setServerSuccessMsg,
   setServerErrorMsg,
 }) => {
   const sendRequestForApproval = async () => {
+    setServerErrorMsg(null);
+    setServerSuccessMsg(null);
+    setLoading(true);
     return await axios.post(`request-for-comment/draft/${draft.id}`,
       {
         headers:{
@@ -349,10 +366,12 @@ const SendApprovalRequest = ({
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
         fetchDrafts();
+        setLoading(false);
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
+        setLoading(false);
       });
   };
 

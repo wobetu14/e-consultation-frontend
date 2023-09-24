@@ -44,9 +44,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
   const [requestID, setRequestID]=useState(null);
   const [requestDocumentTitle, setRequestDocumentTitle]=useState(null);
 
-  const [networkErrorMessage, setNetworkErrorMessage]=useState(null);
-
-  const ref = useRef(null);
+  const [networkError, setNetworkError]=useState(null);
 
   const errorStyle = {
     color: "red",
@@ -82,7 +80,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
   };
 
   const incomingCommentRequests = async () => {
-    setNetworkErrorMessage(null)
+    setNetworkError(null);
     return await axios
       .get(
         `comment-request?commenter_institution_id=${userInfo.user.institution_id}`,
@@ -97,11 +95,11 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
       .then((res) => {
         console.log("Incoming requests");
         setIncomingCommentData(res);
-        setNetworkErrorMessage(null)
+        setNetworkError(null)
         setLoading(true)
       })
       .catch((error) => {
-        setNetworkErrorMessage(error.name);
+        setNetworkError(error.name);
         setLoading(false)
       });
   };
@@ -332,7 +330,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
                     </TableCell>
                   </TableRow>
                 ))
-              : networkErrorMessage!==null ? (
+              : networkError!==null ? (
                 <Typography
                 variant="body1"
                 >

@@ -13,7 +13,14 @@ const CreateSector = () => {
   
   // User context
   const { userInfo } = useContext(UserContext);
-  const { setServerErrorMsg, setServerSuccessMsg, fetchSectors, setLoading } =
+  const { 
+    setServerErrorMsg, 
+    setServerSuccessMsg, 
+    fetchSectors, 
+    setLoading,
+    networkError,
+    setNetworkError
+  } =
     useContext(SectorsDataContext);
 
   const helperTextStyle = {
@@ -48,6 +55,9 @@ const CreateSector = () => {
   });
 
   const createSector = async (sectorData) => {
+    setNetworkError(null);
+    setServerErrorMsg(null);
+    setServerSuccessMsg(null);
     setLoading(true);
     return await axios
       .post("sectors", sectorData, 
@@ -59,6 +69,7 @@ const CreateSector = () => {
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+        setNetworkError(null);
         setLoading(false);
         formik.resetForm();
         fetchSectors();
@@ -66,6 +77,7 @@ const CreateSector = () => {
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
+        setNetworkError(errors.name)
         setLoading(false);
       });
   };

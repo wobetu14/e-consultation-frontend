@@ -195,6 +195,10 @@ const CreateDraft = () => {
       ),
 
       definition: YUP.string().required(
+        "This field is required. Please provide law category information for this document."
+      ),
+
+      lawCategoryId: YUP.string().required(
         "This field is required. Please provide a definition for the document."
       ),
 
@@ -277,7 +281,7 @@ const CreateDraft = () => {
       })
       .catch((errors) => {
         setLoading(false);
-        setServerErrorMsg(errors.message);
+        setServerErrorMsg(errors.response.data.message);
         setNetworkError(errors.name);
         setServerSuccessMsg(null);
         console.log("Errors"+errors)

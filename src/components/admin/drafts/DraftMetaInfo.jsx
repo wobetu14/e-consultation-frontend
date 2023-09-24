@@ -283,6 +283,7 @@ const DraftMetaInfo = ({
 
             <Grid item xs={4}>
               <DraftActions
+                draftID={params.id}
                 documentDetail={documentDetail}
                 setDocumentDetail={setDocumentDetail}
                 serverErrorMsg={serverErrorMsg}

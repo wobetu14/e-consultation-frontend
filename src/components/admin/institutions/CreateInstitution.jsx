@@ -37,6 +37,8 @@ const CreateInstitution = () => {
     setServerSuccessMsg,
     fetchInstitutions,
     setLoading,
+    networkError,
+    setNetworkError
   } = useContext(InstitutionsDataContext);
 
   const helperTextStyle = {
@@ -211,7 +213,9 @@ const CreateInstitution = () => {
   });
 
   const createInstitution = async (institutionData) => {
-    console.log(institutionData)
+    setNetworkError(null);
+    setServerErrorMsg(null);
+    setServerSuccessMsg(null);
     setLoading(true);
     return await axios
       .post("institutions", institutionData, {headers:{
@@ -227,9 +231,11 @@ const CreateInstitution = () => {
         formik.resetForm();
         fetchInstitutions();
         setLoading(false);
+        networkError(null);
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
+        setNetworkError(errors.name)
         setServerSuccessMsg(null);
         setLoading(false);
       });

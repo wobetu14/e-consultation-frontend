@@ -50,7 +50,9 @@ const RegionsTable = () => {
     setRequestCompleted,
     networkErrorMessage,
     setNetworkErrorMessage,
-    fetchRegions
+    fetchRegions,
+    networkError, 
+    setNetworkError,
   } = useContext(RegionsDataContext);
 
   const errorStyle = {
@@ -174,6 +176,14 @@ const RegionsTable = () => {
             {serverErrorMsg ? (
               <Alert severity="error" style={errorStyle}>
                 {serverErrorMsg}
+              </Alert>
+            ) : null}
+          </Typography>
+
+          <Typography variant="h1">
+            {networkError==="AxiosError" ? (
+              <Alert severity="error" variant="outlined">
+                Your internet connection may be unstable. Please try again 
               </Alert>
             ) : null}
           </Typography>

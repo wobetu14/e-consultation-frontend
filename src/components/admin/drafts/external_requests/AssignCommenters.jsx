@@ -37,6 +37,7 @@ const AssignCommenters = ({
   const [myUsers, setMyUsers] = useState([]);
   const [repliersID, setRepliersID] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [networkError, setNetworkError]=useState(null);
 
   const errorStyle = {
     color: "red",
@@ -104,6 +105,9 @@ const AssignCommenters = ({
   });
 
   const assignMoreCommenters = async (commentersData) => {
+    setServerSuccessMsg(null);
+    setServerErrorMsg(null);
+    setNetworkError(null);
     setLoading(true);
     return await axios
       .post(`assign-commenters`, commentersData,
@@ -115,6 +119,7 @@ const AssignCommenters = ({
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+        setNetworkError(null);
         incomingCommentRequests();
         setLoading(false);
         setOpenAssignCommenterDialog(false);
@@ -122,6 +127,7 @@ const AssignCommenters = ({
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
+        setNetworkError(errors.name);
         setLoading(false);
       });
   };
@@ -130,7 +136,7 @@ const AssignCommenters = ({
     <Dialog open={openAssignCommenterDialog} fullWidth>
       <DialogTitle>
         <Typography variant="h5" fontWeight="600">
-          {title} {requestID} {requestTitle}
+          {title} {requestTitle}
         </Typography>
       </DialogTitle>
       <DialogContent>
@@ -156,6 +162,15 @@ const AssignCommenters = ({
                   </Alert>
                 ) : null}
               </Typography>
+
+              <Typography variant="h1">
+                {networkError ? (
+                  <Alert severity="error" style={errorStyle}>
+                    Your internet connection may be unstable. Please try again.
+                  </Alert>
+                ) : null}
+              </Typography>
+
               {loading ? <LinearProgress size="small" color="info" /> : ""}
             </motion.span>
           </Grid>

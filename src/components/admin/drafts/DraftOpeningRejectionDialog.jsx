@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "../../../axios/AxiosGlobal";
 import {
+  Alert,
   Box,
   Button,
   Dialog,
@@ -19,6 +20,7 @@ import { tokens } from "../../../theme";
 import { useFormik } from "formik";
 
 const DraftOpeningRejectionDialog = ({
+  draftID,
   title,
   documentDetail,
   setDocumentDetail,
@@ -33,6 +35,25 @@ const DraftOpeningRejectionDialog = ({
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [loading, setLoading]=useState(false);
+  const [networkError, setNetworkError]=useState(null);
+
+  const helperTextStyle = {
+    color: "red",
+    fontWeight: "400",
+    fontSize: "15px",
+  };
+
+  const errorStyle = {
+    color: "red",
+    fontWeight: "400",
+    fontSize: "18px",
+  };
+
+  const successStyle = {
+    color: "green",
+    fontWeight: "400",
+    fontSize: "18px",
+  };
 
   const formikRejectionForm = useFormik({
     initialValues: {
@@ -42,7 +63,7 @@ const DraftOpeningRejectionDialog = ({
 
     onSubmit: (values) => {
       const requestData = {
-        draft_id: values.draft_id,
+        draft_id: draftID,
         request_rejection_message: values.requestRejectionMessage,
       };
       rejectCommentOpening(requestData);
@@ -50,6 +71,9 @@ const DraftOpeningRejectionDialog = ({
   });
 
   const rejectCommentOpening = async (requestData) => {
+    setServerErrorMsg(null);
+    setServerSuccessMsg(null);
+    setNetworkError(null);
     setLoading(true)
     return await axios
       .post(`request-rejection`, requestData, 
@@ -61,12 +85,14 @@ const DraftOpeningRejectionDialog = ({
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+        setNetworkError(null);
         setLoading(false)
         setOpenRejectionDialog(false)
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
+        setNetworkError(errors.name);
         setLoading(false)
         setOpenRejectionDialog(false)
       });
@@ -82,6 +108,23 @@ const DraftOpeningRejectionDialog = ({
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
+
+              <Typography variant="h1">
+                {serverErrorMsg ? (
+                  <Alert severity="error" style={errorStyle}>
+                    {serverErrorMsg}
+                  </Alert>
+                ) : null}
+              </Typography>
+
+              <Typography variant="h1">
+                {networkError ? (
+                  <Alert severity="error" style={errorStyle}>
+                    Your internet connection may be unstable. Please try again.
+                  </Alert>
+                ) : null}
+              </Typography>
+
             {loading ? <LinearProgress size="small" color="info" /> : ""}
             <form
               style={{ marginBottom: "30px" }}

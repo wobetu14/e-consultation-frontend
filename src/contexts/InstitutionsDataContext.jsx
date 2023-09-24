@@ -18,7 +18,9 @@ export const InstitutionsDataProvider = (props) => {
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
 
   const [openDialog, setOpenDialog] = useState(false);
-  const [networkErrorMessage, setNetworkErrorMessage]=useState(null)
+  const [networkErrorMessage, setNetworkErrorMessage]=useState(null);
+
+  const [networkError, setNetworkError]=useState(null);
 
   useEffect(() => {
     fetchInstitutions();
@@ -110,7 +112,9 @@ export const InstitutionsDataProvider = (props) => {
         setRequestCompleted:setRequestCompleted,
         networkErrorMessage:networkErrorMessage,
         setNetworkErrorMessage:setNetworkErrorMessage,
-        fetchInstitutions:fetchInstitutions
+        fetchInstitutions:fetchInstitutions,
+        networkError:networkError,
+        setNetworkError:setNetworkError
       }}
     >
       {props.children}

@@ -24,8 +24,7 @@ const DraftAssignments = () => {
     setNetworkErrorMessage(null)
     return await axios
       .get(`comment-repliers?replier=${userInfo.user.id}`,
-      { timeout:"5000",
-        headers:{
+      { headers:{
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         Accept: "application/json;",
         "Content-Type": "multipart/form-data"

@@ -571,7 +571,7 @@ const CommentReflections = () => {
                     ))
                   ) : (
                     <Box>
-                      <CircularProgress color="secondary" />
+                      {""}
                     </Box>
                   )}
                 </Collapse>
@@ -884,7 +884,7 @@ const CommentReflections = () => {
                   ))
                 ) : (
                   <Box>
-                    <CircularProgress color="secondary" />
+                    {""}
                   </Box>
                 )}
               </Grid>

@@ -29,7 +29,14 @@ const CreateUser = () => {
   const { userInfo, userRole } = useContext(UserContext);
 
   // UsersDataContext
-  const { fetchUsers, setServerErrorMsg, setServerSuccessMsg, setLoading } =
+  const { 
+    fetchUsers, 
+    setServerErrorMsg, 
+    setServerSuccessMsg, 
+    setLoading,
+    networkError, 
+    setNetworkError
+   } =
     useContext(UsersDataContext);
 
   const helperTextStyle = {
@@ -180,8 +187,9 @@ const CreateUser = () => {
   });
 
   const createUser = async (userData) => {
-    console.log(userData)
-
+    setNetworkError(null);
+    setServerErrorMsg(null);
+    setServerSuccessMsg(null);
     setLoading(true);
     return await axios
       .post("register", userData,
@@ -195,6 +203,7 @@ const CreateUser = () => {
         console.log(res);
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+        setNetworkError(null);
         formik.resetForm();
         fetchUsers();
         setLoading(false);
@@ -202,6 +211,8 @@ const CreateUser = () => {
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
+        setNetworkError(errors.name);
+        console.log(errors.message)
         setLoading(false);
       });
   };
@@ -268,6 +279,7 @@ const CreateUser = () => {
                       name="regionID"
                       value={formik.values.regionID}
                       onChange={formik.handleChange}
+                      onClick={fetchRegions}
                       helperText={
                         formik.touched.regionID && formik.errors.regionID ? (
                           <span style={helperTextStyle}>

@@ -46,6 +46,8 @@ const RejectExternalRequest = ({
   const [repliersID, setRepliersID] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const [networkError, setNetworkError]=useState(null);
+
   // User Context info
   const { userInfo } =
     useContext(UserContext);
@@ -145,6 +147,9 @@ const RejectExternalRequest = ({
   });
 
   const rejectIncomingCommentRequest = async (rejectionData) => {
+    setServerErrorMsg(null);
+    setServerSuccessMsg(null);
+    setNetworkError(null);
     setLoading(true);
     return await axios
       .post(`reject-comment-request`, rejectionData,
@@ -156,6 +161,7 @@ const RejectExternalRequest = ({
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+        setNetworkError(null);
         incomingCommentRequests();
         setLoading(false);
         setOpenExternalRejectionDialog(false);
@@ -163,6 +169,7 @@ const RejectExternalRequest = ({
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
+        setNetworkError(errors.name);
         setLoading(false);
       });
   };
@@ -198,6 +205,15 @@ const RejectExternalRequest = ({
                   </Alert>
                 ) : null}
               </Typography>
+
+              <Typography variant="h1">
+                {networkError ? (
+                  <Alert severity="error" style={errorStyle}>
+                    Your internet connection may be unstable. Please try.
+                  </Alert>
+                ) : null}
+              </Typography>
+
               {loading ? <LinearProgress size="small" color="info" /> : ""}
             </motion.span>
           </Grid>

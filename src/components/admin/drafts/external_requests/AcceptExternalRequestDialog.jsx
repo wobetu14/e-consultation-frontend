@@ -41,6 +41,7 @@ const AcceptExternalRequestDialog = ({
   const [myUsers, setMyUsers] = useState([]);
   const [repliersID, setRepliersID] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [networkError, setNetworkError]=useState(null);
 
   const errorStyle = {
     color: "red",
@@ -108,6 +109,9 @@ const AcceptExternalRequestDialog = ({
   });
 
   const assignRepliers = async (acceptanceData) => {
+    setServerSuccessMsg(null);
+    setServerErrorMsg(null);
+    setNetworkError(null);
     setLoading(true);
     return await axios
       .post(`assign-commenters`, acceptanceData, 
@@ -120,7 +124,7 @@ const AcceptExternalRequestDialog = ({
         setServerSuccessMsg(res.data.message);
         incomingCommentRequests();
         setServerErrorMsg(null);
-
+        setNetworkError(null)
         setOpenExternalAcceptanceDialog(false);
         formikAcceptanceForm.resetForm();
         setLoading(false);
@@ -128,6 +132,7 @@ const AcceptExternalRequestDialog = ({
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
+        setNetworkError(null);
         // setOpenExternalAcceptanceDialog(false)
       });
   };
@@ -152,6 +157,14 @@ const AcceptExternalRequestDialog = ({
                 {serverSuccessMsg ? (
                   <Alert severity="success" style={successStyle}>
                     {serverSuccessMsg}
+                  </Alert>
+                ) : null}
+              </Typography>
+
+              <Typography variant="h1">
+                {networkError ? (
+                  <Alert severity="success" style={successStyle}>
+                    Your internet connection may be unstable. Please try again.
                   </Alert>
                 ) : null}
               </Typography>

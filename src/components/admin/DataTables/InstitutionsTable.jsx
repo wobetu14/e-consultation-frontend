@@ -49,6 +49,7 @@ const InstitutionsTable = () => {
     networkErrorMessage,
     setNetworkErrorMessage,
     fetchInstitutions,
+    networkError
   } = useContext(InstitutionsDataContext);
 
   const errorStyle = {
@@ -230,6 +231,15 @@ const InstitutionsTable = () => {
               </Alert>
             ) : null}
           </Typography>
+
+          <Typography variant="h1">
+            {networkError==="AxiosError" ? (
+              <Alert severity="error" variant="outlined">
+                Your internet connection may be unstable. Please try again 
+              </Alert>
+            ) : null}
+          </Typography>
+
           {loading ? <LinearProgress size="small" color="info" /> : null}
         </motion.span>
       </Grid>

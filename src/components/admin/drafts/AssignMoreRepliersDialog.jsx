@@ -22,6 +22,7 @@ import { tokens } from "../../../theme";
 import { useFormik } from "formik";
 
 const AssignMoreRepliersDialog = ({
+  draftID,
   documentDetail,
   serverSuccessMsg,
   serverErrorMsg,
@@ -43,6 +44,7 @@ const AssignMoreRepliersDialog = ({
   const [myUsers, setMyUsers] = useState([]);
   const [repliersID, setRepliersID] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [networkError, setNetworkError]=useState(null);
 
   const errorStyle = {
     color: "red",
@@ -137,6 +139,9 @@ const AssignMoreRepliersDialog = ({
 
   const assignMoreRepliers = async (requestData) => {
     console.log(requestData);
+    setServerErrorMsg(null);
+    setServerSuccessMsg(null);
+    setNetworkError(null);
     setLoading(true);
 
     return await axios
@@ -149,12 +154,14 @@ const AssignMoreRepliersDialog = ({
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+        setNetworkError(null);
         setLoading(false);
         setOpenAssignRepliersDialog(false);
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
+        setNetworkError(errors.name);
         setLoading(false);
       });
   };
@@ -189,6 +196,15 @@ const AssignMoreRepliersDialog = ({
                   </Alert>
                 ) : null}
               </Typography>
+
+              <Typography variant="h1">
+                {networkError ? (
+                  <Alert severity="error" style={errorStyle}>
+                    Your internet connection may be unstable. Please try again.
+                  </Alert>
+                ) : null}
+              </Typography>
+
               {loading ? <LinearProgress size="small" color="info" /> : ""}
             </motion.span>
           </Grid>
