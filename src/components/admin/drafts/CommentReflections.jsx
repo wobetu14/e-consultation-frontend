@@ -62,15 +62,15 @@ const CommentReflections = () => {
 
   useEffect(() => {
     fetchDocumentDetails();
-  }, [documentDetail, documentSections, documentComments]);
+  }, [documentDetail]);
 
   useEffect(() => {
     fetchDocumentSections();
-  }, [documentDetail, documentSections, documentComments]);
+  }, [documentSections]);
 
   useEffect(() => {
     fetchDocumentComments();
-  }, [documentDetail, documentSections, documentComments]);
+  }, [documentComments]);
 
   const fetchDocumentDetails = async () => {
     return await axios.get(`drafts/${params.id}`,
@@ -620,6 +620,10 @@ const CommentReflections = () => {
                               documentDetail={documentDetail}
                               comments={section.comments}
                               section={section}
+
+                              fetchDocumentDetails={fetchDocumentDetails}
+                              fetchDocumentSections={fetchDocumentSections}
+                              fetchDocumentComments={fetchDocumentComments}
                             />
                           )}
                         </Box>
@@ -659,6 +663,10 @@ const CommentReflections = () => {
                                         documentDetail={documentDetail}
                                         comments={sectionChild1.comments}
                                         section={sectionChild1}
+
+                                        fetchDocumentDetails={fetchDocumentDetails}
+                                        fetchDocumentSections={fetchDocumentSections}
+                                        fetchDocumentComments={fetchDocumentComments}
                                       />
                                     )
                                   }
@@ -697,6 +705,10 @@ const CommentReflections = () => {
                                                   sectionChild1Sub1.comments
                                                 }
                                                 section={sectionChild1Sub1}
+
+                                                fetchDocumentDetails={fetchDocumentDetails}
+                                                fetchDocumentSections={fetchDocumentSections}
+                                                fetchDocumentComments={fetchDocumentComments}
                                               />
                                             )}
                                           </Box>
@@ -745,6 +757,10 @@ const CommentReflections = () => {
                                                           section={
                                                             sectionChild1Sub1Sub1
                                                           }
+
+                                                          fetchDocumentDetails={fetchDocumentDetails}
+                                                          fetchDocumentSections={fetchDocumentSections}
+                                                          fetchDocumentComments={fetchDocumentComments}
                                                         />
                                                       )}
                                                     </Box>
@@ -804,6 +820,10 @@ const CommentReflections = () => {
                                                                     section={
                                                                       sectionChild1Sub1Sub1Sub1
                                                                     }
+
+                                                                    fetchDocumentDetails={fetchDocumentDetails}
+                                                                    fetchDocumentSections={fetchDocumentSections}
+                                                                    fetchDocumentComments={fetchDocumentComments}
                                                                   />
                                                                 )}
                                                               </Box>
@@ -863,6 +883,10 @@ const CommentReflections = () => {
                                                                               section={
                                                                                 sectionChild1Sub1Sub1Sub1Sub1
                                                                               }
+
+                                                                              fetchDocumentDetails={fetchDocumentDetails}
+                                                                              fetchDocumentSections={fetchDocumentSections}
+                                                                              fetchDocumentComments={fetchDocumentComments}
                                                                             />
                                                                           )}
                                                                         </Box>
@@ -925,6 +949,10 @@ const CommentReflections = () => {
                         <ReplyDocumentLevelComments
                           documentDetail={documentDetail}
                           comment={comment}
+
+                          fetchDocumentDetails={fetchDocumentDetails}
+                          fetchDocumentSections={fetchDocumentSections}
+                          fetchDocumentComments={fetchDocumentComments}
                         />
                       ))
                     ) : (

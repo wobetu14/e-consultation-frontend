@@ -57,15 +57,15 @@ const DocumentDetails = () => {
 
   useEffect(() => {
     fetchDocumentDetails()
-  }, [documentDetail, documentSections, documentComments]);
+  }, [documentDetail]);
 
   useEffect(() => {
     fetchDocumentSections()
-  }, [documentDetail, documentSections, documentComments]);
+  }, [documentDetail]);
 
   useEffect(() => {
     fetchDocumentComments()
-  }, [documentDetail, documentSections, documentComments]);
+  }, [documentDetail]);
 
   const fetchDocumentDetails = async () => {
     return await axios.get(`drafts/${params.id}`, 
@@ -145,6 +145,10 @@ const DocumentDetails = () => {
         serverSuccessMsg={serverSuccessMsg}
         setServerErrorMsg={setServerErrorMsg}
         setServerSuccessMsg={setServerSuccessMsg}
+
+        fetchDocumentDetails={fetchDocumentDetails}
+        fetchDocumentSections={fetchDocumentSections}
+        fetchDocumentComments={fetchDocumentComments}
       />
 
       <ListItemButton
@@ -196,6 +200,10 @@ const DocumentDetails = () => {
           setDocumentSections={setDocumentSections}
           documentComments={documentComments}
           setDocumentComments={setDocumentComments}
+
+          fetchDocumentDetails={fetchDocumentDetails}
+          fetchDocumentSections={fetchDocumentSections}
+          fetchDocumentComments={fetchDocumentComments}
         />
       </Collapse>
 

@@ -21,7 +21,14 @@ import { useFormik } from "formik";
 
 import axios from "../../../axios/AxiosGlobal";
 
-const AddNewReflection = ({ comment, reflections }) => {
+const AddNewReflection = ({ 
+  comment, 
+  reflections,
+
+  fetchDocumentDetails,
+  fetchDocumentSections,
+  fetchDocumentComments,
+ }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -71,6 +78,11 @@ const AddNewReflection = ({ comment, reflections }) => {
         console.log(res);
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+
+        fetchDocumentDetails();
+        fetchDocumentSections();
+        fetchDocumentComments();
+        
         formik.resetForm();
       })
       .catch((errors) => {

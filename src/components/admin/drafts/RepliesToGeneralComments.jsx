@@ -13,7 +13,15 @@ import ReplyIcon from "@mui/icons-material/Reply";
 import AddNewDocumentReply from "./AddNewDocumentReply";
 import { UserContext } from "../../../contexts/UserContext";
 
-const RepliesToGeneralComments = ({ reflections, comment, documentDetail }) => {
+const RepliesToGeneralComments = ({ 
+  reflections, 
+  comment, 
+  documentDetail,
+
+  fetchDocumentDetails,
+  fetchDocumentSections,
+  fetchDocumentComments,
+ }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();
@@ -106,7 +114,13 @@ const RepliesToGeneralComments = ({ reflections, comment, documentDetail }) => {
             </List>
             {documentDetail && (documentDetail.draft_status.name === "Open") ? (
               <>
-                <AddNewDocumentReply comment={comment} />
+                <AddNewDocumentReply 
+                comment={comment}
+
+                fetchDocumentDetails={fetchDocumentDetails}
+                fetchDocumentSections={fetchDocumentSections}
+                fetchDocumentComments={fetchDocumentComments}
+                 />
               </>
             ) : (
               ""

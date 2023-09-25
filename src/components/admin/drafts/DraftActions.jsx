@@ -17,6 +17,10 @@ const DraftActions = ({
   setServerErrorMsg,
   setServerSuccessMsg,
   setDocumentDetail,
+
+  fetchDocumentDetails,
+  fetchDocumentSections,
+  fetchDocumentComments,
 }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [openRejectionDialog, setOpenRejectionDialog] = useState(false);
@@ -40,6 +44,10 @@ const DraftActions = ({
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+
+        fetchDocumentDetails();
+        fetchDocumentSections();
+        fetchDocumentComments();
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
@@ -67,6 +75,10 @@ const DraftActions = ({
                 setServerErrorMsg={setServerErrorMsg}
                 openDialog={openDialog}
                 setOpenDialog={setOpenDialog}
+
+                fetchDocumentDetails={fetchDocumentDetails}
+                fetchDocumentSections={fetchDocumentSections}
+                fetchDocumentComments={fetchDocumentComments}
               />
               <RejectApprovalRequest
                 draftID={draftID}
@@ -77,9 +89,13 @@ const DraftActions = ({
                 setServerErrorMsg={setServerErrorMsg}
                 openRejectionDialog={openRejectionDialog}
                 setOpenRejectionDialog={setOpenRejectionDialog}
+
+                fetchDocumentDetails={fetchDocumentDetails}
+                fetchDocumentSections={fetchDocumentSections}
+                fetchDocumentComments={fetchDocumentComments}
               />
             </>
-          ) : documentDetail.draft_status.name === "Open" || documentDetail.draft_status.name === "Closed" ? (
+          ) : documentDetail.draft_status.name === "Open" ? (
             <>
               <InviteCommenters
                 draftID={draftID}
@@ -90,6 +106,10 @@ const DraftActions = ({
                 setServerErrorMsg={setServerErrorMsg}
                 openInviteDialog={openInviteDialog}
                 setOpenInviteDialog={setOpenInviteDialog}
+
+                fetchDocumentDetails={fetchDocumentDetails}
+                fetchDocumentSections={fetchDocumentSections}
+                fetchDocumentComments={fetchDocumentComments}
               />
               <AssignRepliers
                 draftID={draftID}
@@ -100,6 +120,10 @@ const DraftActions = ({
                 setServerErrorMsg={setServerErrorMsg}
                 openAssignRepliersDialog={openAssignRepliersDialog}
                 setOpenAssignRepliersDialog={setOpenAssignRepliersDialog}
+
+                fetchDocumentDetails={fetchDocumentDetails}
+                fetchDocumentSections={fetchDocumentSections}
+                fetchDocumentComments={fetchDocumentComments}
               />
 
               <Button
@@ -190,6 +214,10 @@ const AcceptApprovalRequest = ({
   setServerErrorMsg,
   openDialog,
   setOpenDialog,
+
+  fetchDocumentDetails,
+  fetchDocumentSections,
+  fetchDocumentComments,
 }) => {
   const showDialog = () => {
     setOpenDialog(true);
@@ -219,6 +247,10 @@ const AcceptApprovalRequest = ({
           openDialog={openDialog}
           setOpenDialog={setOpenDialog}
           showDialog={showDialog}
+
+          fetchDocumentDetails={fetchDocumentDetails}
+          fetchDocumentSections={fetchDocumentSections}
+          fetchDocumentComments={fetchDocumentComments}
           title="Accept and Invite Document for Comment."
         />
       )}
@@ -235,6 +267,10 @@ const RejectApprovalRequest = ({
   setServerErrorMsg,
   openRejectionDialog,
   setOpenRejectionDialog,
+
+  fetchDocumentDetails,
+  fetchDocumentSections,
+  fetchDocumentComments
 }) => {
   const showRejectionDialog = () => {
     setOpenRejectionDialog(true);
@@ -264,6 +300,10 @@ const RejectApprovalRequest = ({
           openRejectionDialog={openRejectionDialog}
           setOpenRejectionDialog={setOpenRejectionDialog}
           showRejectionDialog={showRejectionDialog}
+
+          fetchDocumentDetails={fetchDocumentDetails}
+          fetchDocumentSections={fetchDocumentSections}
+          fetchDocumentComments={fetchDocumentComments}
           title="Reject Draft Opening Request."
         />
       )}

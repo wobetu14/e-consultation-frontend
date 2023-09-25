@@ -16,7 +16,15 @@ import PublicCommentReplies from "./PublicCommentReplies";
 import ManageComment from "./ManageComment";
 import DeleteCommentDialog from "./Manage_Comments/DeleteCommentDialog";
 
-const SectionFeedbacks = ({ comments, section, documentDetail }) => {
+const SectionFeedbacks = ({ 
+  comments, 
+  section, 
+  documentDetail,
+
+  fetchDocumentDetails,
+  fetchDocumentSections,
+  fetchDocumentComments,
+ }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();
@@ -133,6 +141,10 @@ const SectionFeedbacks = ({ comments, section, documentDetail }) => {
                                     setOpenEditDialog={setOpenEditDialog}
                                     commentID={comment.id}
                                     commentText={comment.section_comment}
+
+                                    fetchDocumentDetails={fetchDocumentDetails}
+                                    fetchDocumentSections={fetchDocumentSections}
+                                    fetchDocumentComments={fetchDocumentComments}
                                    />
                                 </div>
                               </div>
@@ -157,6 +169,10 @@ const SectionFeedbacks = ({ comments, section, documentDetail }) => {
                             <PublicCommentReplies
                               comment={comment}
                               reflections={comment.reflection_on_comments}
+
+                              fetchDocumentDetails={fetchDocumentDetails}
+                              fetchDocumentSections={fetchDocumentSections}
+                              fetchDocumentComments={fetchDocumentComments}
                             />
                           ) : (
                             ""
@@ -172,7 +188,12 @@ const SectionFeedbacks = ({ comments, section, documentDetail }) => {
               userRole != null &&
               userRole !== undefined &&
               parseInt(documentDetail.comment_closed)===0 ? (
-                <AddSectionComment section={section} />
+                <AddSectionComment 
+                section={section} 
+                fetchDocumentDetails={fetchDocumentDetails}
+                fetchDocumentSections={fetchDocumentSections}
+                fetchDocumentComments={fetchDocumentComments}
+                />
               ) : (
                 ""
               )
@@ -182,7 +203,11 @@ const SectionFeedbacks = ({ comments, section, documentDetail }) => {
 
             {
               openDeleteDialog && (
-                <DeleteCommentDialog title="Deleting comment" text="You are about to delete this comment. Are you sure?" />
+                <DeleteCommentDialog 
+                fetchDocumentDetails={fetchDocumentDetails}
+                fetchDocumentSections={fetchDocumentSections}
+                fetchDocumentComments={fetchDocumentComments}
+                title="Deleting comment" text="You are about to delete this comment. Are you sure?" />
               )
             }
           </motion.span>

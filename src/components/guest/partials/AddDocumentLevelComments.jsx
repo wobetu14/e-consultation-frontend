@@ -23,7 +23,13 @@ import { UserContext } from "../../../contexts/UserContext";
 /**
  * Create a coponent to allow user add new document level comments / general comments
  */
-const AddDocumentLevelComments = ({ documentID }) => {
+const AddDocumentLevelComments = ({ 
+  documentID,
+
+  fetchDocumentDetails,
+  fetchDocumentSections,
+  fetchDocumentComments,
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();
@@ -112,6 +118,11 @@ const AddDocumentLevelComments = ({ documentID }) => {
         console.log(res.data.message);
         setServerSuccessMsg(res.data.success);
         setServerErrorMsg(null);
+
+        fetchDocumentDetails();
+        fetchDocumentSections();
+        fetchDocumentComments();
+        
         formik.resetForm();
       })
       .catch((errors) => {

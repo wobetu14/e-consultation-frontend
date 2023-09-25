@@ -14,7 +14,15 @@ import { UserContext } from "../../../contexts/UserContext";
 import AddNewReflection from "../../admin/drafts/AddNewReflection";
 import ReplyIcon from "@mui/icons-material/Reply";
 
-const RepliesToComments = ({ reflections, comment, documentDetail }) => {
+const RepliesToComments = ({ 
+  reflections, 
+  comment, 
+  documentDetail,
+
+  fetchDocumentDetails,
+  fetchDocumentSections,
+  fetchDocumentComments,
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();
@@ -113,7 +121,12 @@ const RepliesToComments = ({ reflections, comment, documentDetail }) => {
             </List>
             <>
               {documentDetail && (documentDetail.draft_status.name === "Open") ? (
-                <AddNewReflection comment={comment} />
+                <AddNewReflection comment={comment} 
+
+                fetchDocumentDetails={fetchDocumentDetails}
+                fetchDocumentSections={fetchDocumentSections}
+                fetchDocumentComments={fetchDocumentComments}
+                 />
               ) : (
                 ""
               )}

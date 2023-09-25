@@ -19,6 +19,10 @@ const DraftMetaInfo = ({
   serverSuccessMsg,
   setServerErrorMsg,
   setServerSuccessMsg,
+  
+  fetchDocumentDetails,
+  fetchDocumentSections,
+  fetchDocumentComments,
 }) => {
   const params = useParams();
   const [documentSections, setDocumentSections] = useState(null);
@@ -27,7 +31,7 @@ const DraftMetaInfo = ({
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  useEffect(() => {
+  /* useEffect(() => {
     fetchDocumentSections();
   }, [documentSections, documentComments]);
 
@@ -65,7 +69,7 @@ const DraftMetaInfo = ({
       .catch((error) => {
         <p color="red">{error.response.message}</p>;
       });
-  };
+  }; */
 
   return (
     <Box>
@@ -168,7 +172,7 @@ const DraftMetaInfo = ({
                     ""
                   )}
 
-{documentDetail &&
+                  {documentDetail &&
                   documentDetail.draft_status.name === "Open" && parseInt(documentDetail.comment_closed)===0 ? (
                     <Chip
                       label="Open for comment"
@@ -290,6 +294,10 @@ const DraftMetaInfo = ({
                 serverSuccessMsg={serverSuccessMsg}
                 setServerErrorMsg={setServerErrorMsg}
                 setServerSuccessMsg={setServerSuccessMsg}
+
+                fetchDocumentDetails={fetchDocumentDetails}
+                fetchDocumentSections={fetchDocumentSections}
+                fetchDocumentComments={fetchDocumentComments}
               />
             </Grid>
           </Grid>

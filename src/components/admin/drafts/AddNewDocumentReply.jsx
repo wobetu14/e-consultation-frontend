@@ -18,7 +18,14 @@ import SendIcon from "@mui/icons-material/Send";
 import { useFormik } from "formik";
 import axios from "../../../axios/AxiosGlobal";
 
-const AddNewDocumentReply = ({ comment, reflections }) => {
+const AddNewDocumentReply = ({ 
+  comment, 
+  reflections,
+
+  fetchDocumentDetails,
+  fetchDocumentSections,
+  fetchDocumentComments,
+ }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();
@@ -69,6 +76,11 @@ const AddNewDocumentReply = ({ comment, reflections }) => {
         console.log(res);
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+
+        fetchDocumentDetails();
+        fetchDocumentSections();
+        fetchDocumentComments();
+        
         formik.resetForm();
       })
       .catch((errors) => {

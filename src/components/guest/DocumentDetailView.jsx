@@ -84,15 +84,15 @@ const DocumentDetailView = () => {
 
   useEffect(() => {
     fetchDocumentDetails();
-  }, [documentDetail, documentSections, documentComments]);
+  }, [documentDetail]);
 
   useEffect(() => {
     fetchDocumentSections()
-  }, [documentDetail, documentSections, documentComments]);
+  }, [documentSections]);
 
   useEffect(() => {
     fetchDocumentComments()
-  }, [documentDetail, documentSections, documentComments]);
+  }, [documentComments]);
 
   const fetchDocumentDetails = async () => {
     return await axios.get(`drafts/${params.id}`,
@@ -619,6 +619,9 @@ const DocumentDetailView = () => {
                               documentDetail={documentDetail}
                               comments={section.comments}
                               section={section}
+                              fetchDocumentDetails={fetchDocumentDetails}
+                              fetchDocumentSections={fetchDocumentSections}
+                              fetchDocumentComments={fetchDocumentComments}
                             />
                           )}
                         </Box>
@@ -661,6 +664,9 @@ const DocumentDetailView = () => {
                                         documentDetail={documentDetail}
                                         comments={sectionChild1.comments}
                                         section={sectionChild1}
+                                        fetchDocumentDetails={fetchDocumentDetails}
+                                        fetchDocumentSections={fetchDocumentSections}
+                                        fetchDocumentComments={fetchDocumentComments}
                                       />
                                     )
                                   }
@@ -699,6 +705,10 @@ const DocumentDetailView = () => {
                                                   sectionChild1Sub1.comments
                                                 }
                                                 section={sectionChild1Sub1}
+
+                                                fetchDocumentDetails={fetchDocumentDetails}
+                                                fetchDocumentSections={fetchDocumentSections}
+                                                fetchDocumentComments={fetchDocumentComments}
                                               />
                                             )}
                                           </Box>
@@ -747,6 +757,10 @@ const DocumentDetailView = () => {
                                                           section={
                                                             sectionChild1Sub1Sub1
                                                           }
+
+                                                          fetchDocumentDetails={fetchDocumentDetails}
+                                                          fetchDocumentSections={fetchDocumentSections}
+                                                          fetchDocumentComments={fetchDocumentComments}
                                                         />
                                                       )}
                                                     </Box>
@@ -806,6 +820,10 @@ const DocumentDetailView = () => {
                                                                     section={
                                                                       sectionChild1Sub1Sub1Sub1
                                                                     }
+
+                                                                    fetchDocumentDetails={fetchDocumentDetails}
+                                                                    fetchDocumentSections={fetchDocumentSections}
+                                                                    fetchDocumentComments={fetchDocumentComments}
                                                                   />
                                                                 )}
                                                               </Box>
@@ -865,6 +883,10 @@ const DocumentDetailView = () => {
                                                                               section={
                                                                                 sectionChild1Sub1Sub1Sub1Sub1
                                                                               }
+
+                                                                              fetchDocumentDetails={fetchDocumentDetails}
+                                                                              fetchDocumentSections={fetchDocumentSections}
+                                                                              fetchDocumentComments={fetchDocumentComments}
                                                                             />
                                                                           )}
                                                                         </Box>
@@ -949,7 +971,11 @@ const DocumentDetailView = () => {
                         })
                         .map((comment) => (
                           /* Render the generel comments component if there is documentComments has value */
-                          <DocumentLevelComments comment={comment} />
+                          <DocumentLevelComments comment={comment} 
+                            fetchDocumentDetails={fetchDocumentDetails}
+                            fetchDocumentSections={fetchDocumentSections}
+                            fetchDocumentComments={fetchDocumentComments}
+                          />
                         ))
                     ) : (
                       /* Otherwise, display 'No comments' message */
@@ -969,6 +995,10 @@ const DocumentDetailView = () => {
                         documentID={
                           documentDetail ? documentDetail.id : params.id
                         }
+
+                        fetchDocumentDetails={fetchDocumentDetails}
+                        fetchDocumentSections={fetchDocumentSections}
+                        fetchDocumentComments={fetchDocumentComments}
                       />
                     ) : (
                       ""

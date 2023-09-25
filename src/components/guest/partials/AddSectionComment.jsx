@@ -19,7 +19,15 @@ import { useFormik } from "formik";
 import axios from "../../../axios/AxiosGlobal";
 import { UserContext } from "../../../contexts/UserContext";
 
-const SectionFeedbacks = ({ section, documentDetail, comments }) => {
+const SectionFeedbacks = ({ 
+  section, 
+  documentDetail, 
+  comments,
+
+  fetchDocumentDetails,
+  fetchDocumentSections,
+  fetchDocumentComments
+ }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();
@@ -77,6 +85,11 @@ const SectionFeedbacks = ({ section, documentDetail, comments }) => {
         console.log(res.data.message);
         setServerSuccessMsg(res.data.success);
         setServerErrorMsg(null);
+
+        fetchDocumentDetails();
+        fetchDocumentSections();
+        fetchDocumentComments();
+        
         formik.resetForm();
       })
       .catch((errors) => {

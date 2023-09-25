@@ -12,7 +12,15 @@ import Avatar from "@mui/material/Avatar";
 
 import RepliesToComments from "../../guest/partials/RepliesToComments";
 
-const ReplyFeedbacks = ({ comments, documentDetail }) => {
+const ReplyFeedbacks = ({ 
+  comments, 
+  documentDetail,
+
+  fetchDocumentDetails,
+  fetchDocumentSections,
+  fetchDocumentComments,
+
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();
@@ -112,6 +120,10 @@ const ReplyFeedbacks = ({ comments, documentDetail }) => {
                           documentDetail={documentDetail}
                           comment={comment}
                           reflections={comment.reflection_on_comments}
+
+                          fetchDocumentDetails={fetchDocumentDetails}
+                          fetchDocumentSections={fetchDocumentSections}
+                          fetchDocumentComments={fetchDocumentComments}
                         />
                       </ListItem>
                     </>

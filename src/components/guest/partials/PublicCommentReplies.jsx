@@ -11,7 +11,13 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ReplyIcon from "@mui/icons-material/Reply";
 
-const PublicCommentReplies = ({ reflections, comment }) => {
+const PublicCommentReplies = ({ 
+  reflections, 
+  comment,
+  fetchDocumentDetails,
+  fetchDocumentSections,
+  fetchDocumentComments,
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();
