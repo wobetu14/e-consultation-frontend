@@ -52,7 +52,6 @@ export const DraftsDataProvider = (props) => {
     try {
       const res = await axios.get("mydrafts", 
       {
-        
         headers:{
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         Accept: "application/json;",

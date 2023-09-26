@@ -111,7 +111,11 @@ const DraftAssignments = () => {
             </Typography> 
              ):
             (
-                  <CircularProgress color="secondary" />
+                  // <CircularProgress color="secondary" />
+
+                    <Typography variant="body1">
+                      Please wait...
+                    </Typography>
 
             )}
           </TableBody>
