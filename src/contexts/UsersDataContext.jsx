@@ -30,7 +30,7 @@ export const UsersDataProvider = (props) => {
       setNetworkErrorMessage(null);
         try{
           const res = await  axios.get('users', 
-          { timeout:"5000",
+          { 
             headers:{
             Authorization: `Bearer ${localStorage.getItem("token")}`,
             Accept: "application/json;",

@@ -83,7 +83,7 @@ const Home = () => {
     setNetworkError(null);
     return await axios
       .get(`drafts`,
-      { timeout:"10000",
+      { 
         headers:{
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         Accept: "application/json;",

@@ -30,7 +30,7 @@ export const InstitutionsDataProvider = (props) => {
     setNetworkErrorMessage(null);
     try {
       const res = await axios.get("public/institutions", 
-      { timeout:"5000",
+      { 
         headers:{
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         Accept: "application/json;",

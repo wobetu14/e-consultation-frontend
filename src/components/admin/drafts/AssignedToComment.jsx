@@ -20,7 +20,7 @@ const AssignedToComment = () => {
     setNetworkErrorMessage(null)
     return await axios
       .get(`drafts-am-commenting`, 
-      { timeout:"5000",
+      { 
         headers:{
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         Accept: "application/json;",

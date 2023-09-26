@@ -84,7 +84,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
     return await axios
       .get(
         `comment-request?commenter_institution_id=${userInfo.user.institution_id}`,
-        { timeout:"5000",
+        { 
           headers:{
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           Accept: "application/json;",

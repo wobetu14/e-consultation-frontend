@@ -29,7 +29,7 @@ export const RegionsDataProvider = (props) => {
     setFilteredRegions(null)
     try {
       const res = await axios.get("regions", 
-      { timeout:"5000",
+      { 
         headers:{
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         Accept: "application/json;",

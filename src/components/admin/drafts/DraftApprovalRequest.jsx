@@ -62,7 +62,7 @@ const DraftApprovalRequest = () => {
     setNetworkErrorMessage(null);
     return await axios
       .get("mydrafts", 
-      { timeout:"5000",
+      {
         headers:{
         Authorization: `Bearer ${localStorage.getItem("token")}`,
         Accept: "application/json;",
