@@ -271,7 +271,7 @@ const CreateDraft = () => {
         "Content-Type": "multipart/form-data"
       }})
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
         setNetworkError(null);
@@ -282,9 +282,9 @@ const CreateDraft = () => {
       .catch((errors) => {
         setLoading(false);
         setServerErrorMsg(errors.response.data.message);
-        setNetworkError(errors.name);
+        setNetworkError(errors);
         setServerSuccessMsg(null);
-        console.log("Errors"+errors)
+        console.log(errors)
       });
   };
 

@@ -23,6 +23,8 @@ const DraftMetaInfo = ({
   fetchDocumentDetails,
   fetchDocumentSections,
   fetchDocumentComments,
+  loading,
+  setLoading
 }) => {
   const params = useParams();
   const [documentSections, setDocumentSections] = useState(null);
@@ -298,6 +300,9 @@ const DraftMetaInfo = ({
                 fetchDocumentDetails={fetchDocumentDetails}
                 fetchDocumentSections={fetchDocumentSections}
                 fetchDocumentComments={fetchDocumentComments}
+
+                loading={loading}
+                setLoading={setLoading}
               />
             </Grid>
           </Grid>

@@ -272,9 +272,9 @@ const DraftsTable = () => {
           </Typography>
 
           <Typography variant="h1">
-            {networkError==="AxiosError" ? (
+            {networkError!==null ? (
               <Alert severity="error" variant="outlined">
-                Your internet connection may be unstable. Please try again 
+                Something went wrong. Probably your internet connection may be unstable. Please try again 
               </Alert>
             ) : null}
           </Typography>

@@ -7,6 +7,7 @@ import {
   ListItemButton,
   ListItemText,
   Alert,
+  LinearProgress,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -35,6 +36,8 @@ const DocumentDetails = () => {
 
   const [serverErrorMsg, setServerErrorMsg] = useState(null);
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
+
+  const [loading, setLoading]=useState(false);
 
   const errorStyle = {
     color: "red",
@@ -111,7 +114,7 @@ const DocumentDetails = () => {
   };
 
   return (
-    <Box>
+    <Box m="0 20">
       <Grid align="center" sx={{ paddingBottom: "5px", paddingTop: "5px" }}>
         <motion.span
           initial={{ opacity: 0 }}
@@ -133,6 +136,10 @@ const DocumentDetails = () => {
               </Alert>
             ) : null}
           </Typography>
+
+          <Typography variant="h1">
+          {loading && <LinearProgress size="small" color="info" />}
+          </Typography>
         </motion.span>
       </Grid>
 
@@ -149,6 +156,9 @@ const DocumentDetails = () => {
         fetchDocumentDetails={fetchDocumentDetails}
         fetchDocumentSections={fetchDocumentSections}
         fetchDocumentComments={fetchDocumentComments}
+
+        loading={loading}
+        setLoading={setLoading}
       />
 
       <ListItemButton

@@ -21,6 +21,9 @@ const DraftActions = ({
   fetchDocumentDetails,
   fetchDocumentSections,
   fetchDocumentComments,
+
+  loading,
+  setLoading
 }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [openRejectionDialog, setOpenRejectionDialog] = useState(false);
@@ -34,6 +37,9 @@ const DraftActions = ({
   const colors = tokens(theme.palette.mode);
 
   const closeCommenting = async (draftID) => {
+    setLoading(true);
+    setServerErrorMsg(null);
+    setServerSuccessMsg(null);
     return await axios
       .post(`close-comment/draft/${draftID}`,
       {headers:{
@@ -48,10 +54,13 @@ const DraftActions = ({
         fetchDocumentDetails();
         fetchDocumentSections();
         fetchDocumentComments();
+
+        setLoading(false);
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
+        setLoading(false);
       });
   };
 
