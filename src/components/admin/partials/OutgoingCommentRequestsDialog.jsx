@@ -32,6 +32,10 @@ const OutgoingCommentRequestsDialog = ({
   openDialog,
   setOpenDialog,
   showDialog,
+
+  fetchDocumentDetails,
+  fetchDocumentSections,
+  fetchDocumentComments,
 }) => {
   const params = useParams();
   const theme = useTheme();
@@ -70,12 +74,21 @@ const OutgoingCommentRequestsDialog = ({
     fontSize: "18px",
   };
 
-  React.useEffect(() => {
-    fetchInstitutions();
-    getInstitutionsID();
+  useEffect(() => {
     getMyUsersID();
+  }, [repliersEmail]);
+
+  useEffect(()=>{
+    getInstitutionsID();
+  }, [selectedInstitutions])
+
+  useEffect(()=>{
+    fetchInstitutions();
+  },[])
+
+  useEffect(()=>{
     fetchMyUsers();
-  }, [selectedInstitutions, repliersEmail]);
+  }, [])
 
   const getMyUsersID = () => {
     if (repliersEmail.length > 0) {
@@ -176,6 +189,10 @@ const OutgoingCommentRequestsDialog = ({
         "Content-Type": "multipart/form-data"
       }})
       .then((res) => {
+        fetchDocumentDetails();
+        fetchDocumentSections();
+        fetchDocumentComments();
+
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
         setnetworkError(null)
@@ -330,11 +347,12 @@ const OutgoingCommentRequestsDialog = ({
                 option.first_name + " " + option.middle_name
               }
               onChange={(e, value) => setRepliersEmail(value)}
+              onClick={fetchMyUsers}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   variant="standard"
-                  label="Enter email addresses"
+                  label="Select repliers"
                   value={(option) => option}
                 />
               )}
@@ -359,6 +377,7 @@ const OutgoingCommentRequestsDialog = ({
               options={institutions}
               getOptionLabel={(option) => option.name}
               onChange={(e, value) => setSelectedInstitutions(value)}
+              onClick={fetchInstitutions}
               renderInput={(params) => (
                 <TextField
                   {...params}

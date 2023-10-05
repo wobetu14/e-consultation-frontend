@@ -23,7 +23,7 @@ export const RegionsDataProvider = (props) => {
 
   useEffect(() => {
     fetchRegions()
-  }, [regions]);
+  }, []);
 
   const fetchRegions = async () => {
     setFilteredRegions(null)

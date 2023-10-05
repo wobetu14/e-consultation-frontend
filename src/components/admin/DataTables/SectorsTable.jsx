@@ -203,7 +203,7 @@ const SectorsTable = () => {
           </Typography>
 
           <Typography variant="h1">
-            {networkError==="AxiosError" ? (
+            {networkError==="ERR_NETWORK" ? (
               <Alert severity="error" variant="outlined">
                 Your internet connection may be unstable. Please try again 
               </Alert>

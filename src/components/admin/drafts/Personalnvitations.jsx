@@ -24,7 +24,7 @@ const PersonalInvitations = () => {
 
   useEffect(() => {
     fetchInvitedInstitutions();
-  }, [invitedPeople]);
+  }, []);
 
   const fetchInvitedInstitutions = async () => {
     return await axios

@@ -272,7 +272,7 @@ const DraftsTable = () => {
           </Typography>
 
           <Typography variant="h1">
-            {networkError!==null ? (
+            {networkError==="ERR_NETWORK" ? (
               <Alert severity="error" variant="outlined">
                 Something went wrong. Probably your internet connection may be unstable. Please try again 
               </Alert>

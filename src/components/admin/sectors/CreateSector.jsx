@@ -77,7 +77,7 @@ const CreateSector = () => {
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
-        setNetworkError(errors.name)
+        setNetworkError(errors.code)
         setLoading(false);
       });
   };

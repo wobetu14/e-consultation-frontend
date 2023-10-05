@@ -60,15 +60,15 @@ const DocumentDetails = () => {
 
   useEffect(() => {
     fetchDocumentDetails()
-  }, [documentDetail]);
+  }, []);
 
   useEffect(() => {
     fetchDocumentSections()
-  }, [documentDetail]);
+  }, []);
 
   useEffect(() => {
     fetchDocumentComments()
-  }, [documentDetail]);
+  }, []);
 
   const fetchDocumentDetails = async () => {
     return await axios.get(`drafts/${params.id}`, 

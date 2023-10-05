@@ -15,19 +15,19 @@ const CommenterDashboard = () => {
 
   useEffect(()=>{
     fetchDrafts();
-  }, [drafts])
+  }, [])
 
   useEffect(()=>{
     fetchUsers();
-  }, [users])
+  }, [])
 
   useEffect(()=>{
     fetchComments();
-  }, [comments])
+  }, [])
 
   useEffect(()=>{
    fetchOpenDrafts();
-  },[openDrafts])
+  },[])
 
 
   const fetchDrafts = async () => {

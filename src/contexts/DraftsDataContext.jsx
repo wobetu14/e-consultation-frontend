@@ -45,7 +45,7 @@ export const DraftsDataProvider = (props) => {
    */
   useEffect(() => {
     fetchDrafts();
-  }, [drafts]);
+  }, []);
 
   const fetchDrafts = async () => {
     setNetworkErrorMessage(null)

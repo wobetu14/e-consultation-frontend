@@ -14,7 +14,8 @@ const CreateRegion = () => {
     setServerSuccessMsg, 
     setLoading,
     networkError,
-    setNetworkError
+    setNetworkError, 
+    fetchRegions
   } =
     useContext(RegionsDataContext);
 
@@ -63,12 +64,13 @@ const CreateRegion = () => {
         setServerErrorMsg(null);
         setNetworkError(null)
         setLoading(false);
+        fetchRegions();
         formik.resetForm();
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
-        setNetworkError(errors.name)
+        setNetworkError(errors.code)
         setLoading(false);
       });
   };

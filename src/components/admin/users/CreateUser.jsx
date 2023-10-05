@@ -46,14 +46,10 @@ const CreateUser = () => {
   };
 
   useEffect(() => {
-    /* const id = setInterval(fetchInstitutions(), 1000);
-    return () => clearInterval(id); */
     fetchInstitutions();
   }, []);
 
   useEffect(() => {
-    /* const id = setInterval(fetchUserRoles(), 1000);
-    return () => clearInterval(id); */
     fetchUserRoles();
   }, []);
 
@@ -182,7 +178,6 @@ const CreateUser = () => {
       };
 
       createUser(userData);
-      fetchUsers();
     },
   });
 
@@ -200,19 +195,19 @@ const CreateUser = () => {
       }} 
       )
       .then((res) => {
-        console.log(res);
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
         setNetworkError(null);
         formik.resetForm();
         fetchUsers();
         setLoading(false);
+        
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
-        setNetworkError(errors.name);
-        console.log(errors.message)
+        setNetworkError(errors.code);
+        console.log(errors);
         setLoading(false);
       });
   };

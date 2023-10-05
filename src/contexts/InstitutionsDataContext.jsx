@@ -24,7 +24,7 @@ export const InstitutionsDataProvider = (props) => {
 
   useEffect(() => {
     fetchInstitutions();
-  }, [institutions]);
+  }, []);
 
   const fetchInstitutions = async () => {
     setNetworkErrorMessage(null);
@@ -112,7 +112,6 @@ export const InstitutionsDataProvider = (props) => {
         setRequestCompleted:setRequestCompleted,
         networkErrorMessage:networkErrorMessage,
         setNetworkErrorMessage:setNetworkErrorMessage,
-        fetchInstitutions:fetchInstitutions,
         networkError:networkError,
         setNetworkError:setNetworkError
       }}

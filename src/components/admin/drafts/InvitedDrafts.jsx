@@ -40,7 +40,7 @@ const InvitedDrafts = () => {
 
   useEffect(() => {
     fetchInvitedDrafts();
-  }, [invitedDrafts]);
+  }, []);
 
   const handleNetworkStatus=()=>{
     fetchInvitedDrafts();

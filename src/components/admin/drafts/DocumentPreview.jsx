@@ -84,15 +84,15 @@ const DocumentPreview = () => {
 
   useEffect(() => {
     fetchDocumentDetails();
-  }, [documentDetail, documentSections, documentComments]);
+  }, []);
 
   useEffect(() => {
     fetchDocumentSections();
-  }, [documentDetail, documentSections, documentComments]);
+  }, []);
 
   useEffect(() => {
     fetchDocumentComments();
-  }, [documentDetail, documentSections, documentComments]);
+  }, []);
 
   const fetchDocumentDetails = async () => {
     return await axios.get(`drafts/${params.id}`,

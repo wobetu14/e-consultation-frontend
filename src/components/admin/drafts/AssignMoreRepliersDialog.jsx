@@ -60,7 +60,7 @@ const AssignMoreRepliersDialog = ({
 
   React.useEffect(()=>{
     fetchInstitutions();
-  },[selectedInstitutions])
+  },[])
 
   React.useEffect(()=>{
     getInstitutionsID();
@@ -72,7 +72,7 @@ const AssignMoreRepliersDialog = ({
 
   React.useEffect(() => {
     fetchMyUsers();
-  }, [repliersEmail]);
+  }, []);
 
   const getMyUsersID = () => {
     if (repliersEmail.length > 0) {

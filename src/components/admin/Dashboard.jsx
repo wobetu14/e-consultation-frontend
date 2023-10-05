@@ -37,19 +37,19 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchDrafts();
-  }, [drafts]);
+  }, []);
 
   useEffect(()=>{
     fetchUsers();
-  }, [users])
+  }, [])
 
   useEffect(()=>{
     fetchComments();
-  }, [comments])
+  }, [])
 
   useEffect(()=>{
     fetchOpenDrafts();
-  }, [openDrafts])
+  }, [])
 
   // drafts, users, comments, openDrafts
 

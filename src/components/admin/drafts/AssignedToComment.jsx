@@ -39,7 +39,7 @@ const AssignedToComment = () => {
 
   useEffect(() => {
     fetchInvitedDrafts();
-  }, [invitedDrafts]);
+  }, []);
 
   const handleNetworkStatus=()=>{
     fetchInvitedDrafts();

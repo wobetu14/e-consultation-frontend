@@ -64,11 +64,11 @@ const UserProfile = () => {
 
   useEffect(() => {
     fetchInstitutions();
-  }, [institutions]);
+  }, []);
 
   useEffect(() => {
     fetchUserRoles()
-  }, [userRoles]);
+  }, []);
 
   const fetchInstitutions = async () => {
     return await axios
@@ -197,7 +197,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     fetchUser();
-  }, [usersData]);
+  }, []);
 
   return (
     <Box m="0 20px" width={"95%"}>

@@ -25,7 +25,7 @@ const InstitutionInvitations = ({ documentDetail }) => {
 
   useEffect(() => {
     fetchInvitedInstitutions();
-  }, [invitedInstitutions]);
+  }, []);
 
   const fetchInvitedInstitutions = async () => {
     return await axios

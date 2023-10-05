@@ -57,19 +57,19 @@ const EditDraft = () => {
 
   useEffect(() => {
     fetchInstitutions();
-  }, [institutions]);
+  }, []);
 
   useEffect(() => {
     fetchLawCategories();
-  }, [lawCategories]);
+  }, []);
 
   useEffect(() => {
     fetchSectors()
-  }, [sectors]);
+  }, []);
 
   useEffect(() => {
     fetchDrafts();
-  }, [drafts]);
+  }, []);
 
   const fetchInstitutions = async () => {
     return await axios

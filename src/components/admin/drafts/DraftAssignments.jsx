@@ -42,7 +42,7 @@ const DraftAssignments = () => {
 
   useEffect(() => {
     fetchCommentAssignments();
-  }, [commentAssignments]);
+  }, []);
 
   const handleNetworkStatus=()=>{
     fetchCommentAssignments();

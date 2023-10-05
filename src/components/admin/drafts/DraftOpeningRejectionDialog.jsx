@@ -31,6 +31,10 @@ const DraftOpeningRejectionDialog = ({
   openRejectionDialog,
   setOpenRejectionDialog,
   showRejectionDialog,
+
+  fetchDocumentDetails,
+  fetchDocumentSections,
+  fetchDocumentComments
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -83,11 +87,15 @@ const DraftOpeningRejectionDialog = ({
         "Content-Type": "multipart/form-data"
       }})
       .then((res) => {
+        fetchDocumentDetails();
+        fetchDocumentSections();
+        fetchDocumentComments();
+        
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
         setNetworkError(null);
         setLoading(false)
-        setOpenRejectionDialog(false)
+        setOpenRejectionDialog(false);
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);

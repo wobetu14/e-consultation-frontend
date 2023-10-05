@@ -30,11 +30,11 @@ const ExternalRequestMetaInfo = ({
 
   useEffect(() => {
     fetchDocumentSections()
-  }, [documentSections]);
+  }, []);
 
   useEffect(() => {
     fetchDocumentComments();
-  }, [documentComments]);
+  }, []);
 
   const fetchDocumentSections = async () => {
     return await axios

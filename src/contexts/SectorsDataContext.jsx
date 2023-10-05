@@ -23,7 +23,7 @@ export const SectorsDataProvider = (props) => {
 
   useEffect(() => {
     fetchSectors();
-  }, [sectors]);
+  }, []);
 
   const fetchSectors = async () => {
     setNetworkErrorMessage(null)

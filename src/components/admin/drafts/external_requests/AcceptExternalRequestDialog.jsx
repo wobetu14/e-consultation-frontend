@@ -62,8 +62,11 @@ const AcceptExternalRequestDialog = ({
 
   React.useEffect(() => {
     getMyUsersID();
-    fetchMyUsers();
   }, [repliersEmail]);
+
+  useEffect(()=>{
+    fetchMyUsers();
+  }, [])
 
   const getMyUsersID = () => {
     if (repliersEmail.length > 0) {
@@ -214,6 +217,7 @@ const AcceptExternalRequestDialog = ({
                 option.first_name + " " + option.middle_name
               }
               onChange={(e, value) => setRepliersEmail(value)}
+              onClick={fetchMyUsers}
               renderInput={(params) => (
                 <TextField
                   {...params}

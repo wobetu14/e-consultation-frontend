@@ -78,7 +78,7 @@ const CreateInstitution = () => {
 
   useEffect(() => {
     fetchInstitutionCategories()
-  }, [institutionsCategories]);
+  }, []);
 
   const fetchInstitutionCategories = async () => {
     return await axios
@@ -99,7 +99,7 @@ const CreateInstitution = () => {
 
   useEffect(() => {
     fetchInstitutionLevels()
-  }, [institutionsLevels]);
+  }, []);
 
   const fetchInstitutionLevels = async () => {
     return await axios
@@ -235,7 +235,7 @@ const CreateInstitution = () => {
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
-        setNetworkError(errors.name)
+        setNetworkError(errors.code)
         setServerSuccessMsg(null);
         setLoading(false);
       });

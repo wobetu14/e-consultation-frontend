@@ -78,7 +78,7 @@ const DocumentsFilters = ({
    */
   useEffect(() => {
     fetchLawCategories()
-  }, [lawCategories]);
+  }, []);
 
  /**
    * Function definition for fetchLawCategories() call inside the useEffect hook created above.
@@ -106,7 +106,7 @@ const DocumentsFilters = ({
    */
   useEffect(() => {
     fetchRegions();
-  }, [regions]);
+  }, []);
 
   /**
    * Function definition for fetchRegions() call inside the useEffect hook created above.
@@ -137,7 +137,7 @@ const DocumentsFilters = ({
 
   useEffect(() => {
     fetchInstitutions();
-  }, [institutions]);
+  }, []);
 
   const fetchInstitutions = async () => {
     return await axios

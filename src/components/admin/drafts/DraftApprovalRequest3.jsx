@@ -71,7 +71,7 @@ const DraftApprovalRequest = () => {
 
   useEffect(() => {
     fetchDrafts();
-  }, [draftsData]);
+  }, []);
 
   return (
     <Box m="0 20px" width={"95%"}>

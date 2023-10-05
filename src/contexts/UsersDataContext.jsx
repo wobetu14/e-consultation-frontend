@@ -24,7 +24,7 @@ export const UsersDataProvider = (props) => {
 
     useEffect(()=>{
       fetchUsers()
-    }, [users])
+    }, [])
 
     const fetchUsers =async() =>{
       setNetworkErrorMessage(null);
@@ -120,7 +120,6 @@ export const UsersDataProvider = (props) => {
         setRequestCompleted:setRequestCompleted,
         networkErrorMessage:networkErrorMessage,
         setNetworkErrorMessage:setNetworkErrorMessage,
-        fetchUsers:fetchUsers,
         networkError:networkError,
         setNetworkError:setNetworkError
       }}>

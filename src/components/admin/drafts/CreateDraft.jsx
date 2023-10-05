@@ -16,7 +16,7 @@ import {
 import { Box } from "@mui/system";
 import { useFormik } from "formik";
 import * as YUP from "yup";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import Header from "../AdminHeader";
 import axios from "../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
@@ -59,6 +59,7 @@ const CreateDraft = () => {
    */
   const [selectedSectors, setSelectedSectors] = useState([]);
 
+  const inputFile=useRef(null);
 
   /**
    * Destructure and access variable from the DraftsDataContext context 
@@ -81,28 +82,28 @@ const CreateDraft = () => {
 
   useEffect(() => {
     fetchInstitutions();
-  }, [institutions]);
+  }, []);
 
   /**
    * Fetch list of law categories on component load using the useEffect hook
    */
   useEffect(() => {
    fetchLawCategories()
-  }, [lawCategories]);
+  }, []);
 
   /**
    * Fetch list of sectors on component load using the useEffect hook
    */
   useEffect(() => {
     fetchSectors()
-  }, [sectors]);
+  }, []);
 
   /**
    * Initiate / update the fetchDrafts method call from the context
    */
   useEffect(() => {
     fetchDrafts();
-  }, [drafts]);
+  }, []);
 
   const fetchInstitutions = async () => {
     return await axios
@@ -276,13 +277,18 @@ const CreateDraft = () => {
         setServerErrorMsg(null);
         setNetworkError(null);
         formik.resetForm();
+
+        inputFile.current.value = ""; 
+        inputFile.current.type = "text"; 
+        inputFile.current.type = "file"; 
+        setTagLists([]);
         fetchDrafts();
         setLoading(false);
       })
       .catch((errors) => {
         setLoading(false);
         setServerErrorMsg(errors.response.data.message);
-        setNetworkError(errors);
+        setNetworkError(errors.code);
         setServerSuccessMsg(null);
         console.log(errors)
       });
@@ -324,10 +330,10 @@ const CreateDraft = () => {
               />
 
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                Law Category
+                Law Category *
               </Typography>
               <FormControl sx={{ minWidth: "100%", paddingBottom: "30px" }}>
-                <InputLabel>Select Law Category</InputLabel>
+                <InputLabel>Select Law Category *</InputLabel>
                 <Select
                   labelId="law_category_Id"
                   id="law_category_Id"
@@ -379,6 +385,7 @@ const CreateDraft = () => {
                 getOptionLabel={(option) => option.name}
                 onClick={fetchSectors}
                 onChange={(e, value) => setSelectedSectors(value)}
+                // onSubmit={(e)=>formik.setFieldValue("sectors", [])}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -614,13 +621,15 @@ const CreateDraft = () => {
                 Please attach the draft document file *. (Only .doc or .docx
                 files are allowed.)
               </Typography>
-              <TextField
-                variant="outlined"
+              <input
+                /* variant="outlined"
                 fullWidth
                 sx={{ paddingBottom: "20px" }}
-                color="info"
+                color="info" */
                 type="file"
                 name="file"
+                required
+                ref={inputFile}
                 onBlur={formik.handleBlur}
                 onChange={(e) => {
                   formik.setFieldValue("file", e.target.files[0]);

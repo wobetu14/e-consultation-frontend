@@ -188,7 +188,7 @@ const DraftApprovalRequest = () => {
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    {draft.draft_status.name === "New" ? (
+                    {draft.draft_status!==null && draft.draft_status.name === "New" ? (
                       <Chip
                         label={draft.draft_status.name}
                         size="small"
@@ -201,7 +201,7 @@ const DraftApprovalRequest = () => {
                       ""
                     )}
 
-                    {draft.draft_status.name === "Requested" ? (
+                    {draft.draft_status!==null && draft.draft_status.name === "Requested" ? (
                       <Chip
                         label={draft.draft_status.name}
                         size="small"
@@ -213,7 +213,7 @@ const DraftApprovalRequest = () => {
                     ) : (
                       ""
                     )}
-                    {draft.draft_status.name === "Rejected" ? (
+                    {draft.draft_status!==null && draft.draft_status.name === "Rejected" ? (
                       <Tooltip title={draft.request_rejection_message} arrow>
                           <Chip
                           label={draft.draft_status.name}
@@ -229,7 +229,7 @@ const DraftApprovalRequest = () => {
                       ""
                     )}
 
-                    {draft.draft_status.name === "Open" ? (
+                    {draft.draft_status!==null && draft.draft_status.name === "Open" ? (
                       <Chip
                         label={draft.draft_status.name}
                         size="small"
@@ -242,7 +242,7 @@ const DraftApprovalRequest = () => {
                       ""
                     )}
 
-                    {draft.draft_status.name === "Closed" ? (
+                    {draft.draft_status!==null && draft.draft_status.name === "Closed" ? (
                       <Chip
                         label={draft.draft_status.name}
                         size="small"
@@ -258,7 +258,7 @@ const DraftApprovalRequest = () => {
                     <span>&nbsp;</span>
                     
                     {
-                    draft && draft.draft_status.name==="Closed" ? (
+                    draft && draft.draft_status!==null && draft.draft_status.name==="Closed" ? (
                       <Chip
                        label="Consultation ended"
                         size="small"
@@ -293,7 +293,7 @@ const DraftApprovalRequest = () => {
                     </Button>
 
                     {userRole === "Uploader" ? (
-                      draft.draft_status.name === "New" || draft.draft_status.name === "Rejected" ? (
+                      draft.draft_status!==null && (draft.draft_status.name === "New" || draft.draft_status.name === "Rejected") ? (
                         // <TableCell align="right">
                         <SendApprovalRequest
                           loading={loading}

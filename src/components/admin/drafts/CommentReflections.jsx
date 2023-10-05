@@ -62,15 +62,15 @@ const CommentReflections = () => {
 
   useEffect(() => {
     fetchDocumentDetails();
-  }, [documentDetail]);
+  }, []);
 
   useEffect(() => {
     fetchDocumentSections();
-  }, [documentSections]);
+  }, []);
 
   useEffect(() => {
     fetchDocumentComments();
-  }, [documentComments]);
+  }, []);
 
   const fetchDocumentDetails = async () => {
     return await axios.get(`drafts/${params.id}`,

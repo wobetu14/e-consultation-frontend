@@ -48,13 +48,12 @@ const DraftActions = ({
         "Content-Type": "multipart/form-data"
       }})
       .then((res) => {
-        setServerSuccessMsg(res.data.message);
-        setServerErrorMsg(null);
-
         fetchDocumentDetails();
         fetchDocumentSections();
         fetchDocumentComments();
-
+        
+        setServerSuccessMsg(res.data.message);
+        setServerErrorMsg(null);
         setLoading(false);
       })
       .catch((errors) => {
@@ -329,6 +328,7 @@ const InviteCommenters = ({
   setServerErrorMsg,
   openInviteDialog,
   setOpenInviteDialog,
+  
 }) => {
   const showInviteDialog = () => {
     setOpenInviteDialog(true);
