@@ -12,7 +12,7 @@ import { Box } from "@mui/system";
 import { useFormik } from "formik";
 import * as YUP from "yup";
 import "yup-phone";
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Header from "../AdminHeader";
 import axios from "../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
@@ -201,7 +201,6 @@ const CreateUser = () => {
         formik.resetForm();
         fetchUsers();
         setLoading(false);
-        
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);

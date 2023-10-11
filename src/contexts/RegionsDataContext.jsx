@@ -26,7 +26,7 @@ export const RegionsDataProvider = (props) => {
   }, []);
 
   const fetchRegions = async () => {
-    setFilteredRegions(null)
+    setFilteredRegions([])
     try {
       const res = await axios.get("regions", 
       { 

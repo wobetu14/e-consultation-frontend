@@ -10,9 +10,10 @@ import { UserContext } from "../contexts/UserContext";
  * baseURL, header (authorization, Accept data type) etc
  */
 
+//  https://backend.e-consultation.gov.et
 
 const instance = axios.create({
-  baseURL: "http://196.188.107.43:8080/api/v1/",
+  baseURL: "https://backend.e-consultation.gov.et/api/v1/",
   headers:{
     Authorization: `Bearer ${localStorage.getItem("token")}`,
     Accept: "application/json",
@@ -23,5 +24,5 @@ const instance = axios.create({
 /**
  * Define root URL for accessing resources from the server side such as files, images and server-side generated reports
  */
-export const rootURL = "http://196.188.107.43:8080/api/v1/";
+export const rootURL = "https://backend.e-consultation.gov.et/api/v1/";
 export default instance;

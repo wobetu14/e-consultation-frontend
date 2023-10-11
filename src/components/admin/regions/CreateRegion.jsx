@@ -60,6 +60,7 @@ const CreateRegion = () => {
         "Content-Type": "multipart/form-data"
       }})
       .then((res) => {
+        console.log(res);
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
         setNetworkError(null)

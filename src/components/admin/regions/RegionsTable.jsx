@@ -113,7 +113,7 @@ const RegionsTable = () => {
         </Typography>
       ),
       selector: (row) => (
-        <Typography variant="body1">{row.created_by}</Typography>
+        <Typography variant="body1">{row.creator ? row.creator.first_name:""} {row.creator ? row.creator.middle_name:""}</Typography>
       ),
       sortable: true,
     },
@@ -208,7 +208,7 @@ const RegionsTable = () => {
           <DataTable
             columns={columns}
             data={filteredRegions}
-            progressPending={filteredRegions.length <= 0}
+            progressPending={regions.length <= 0}
             progressComponent={
               <Box mb="20px">
               {/* Display progress bar if the data prop value is empty */}
@@ -288,7 +288,7 @@ const RegionsTable = () => {
                       sx={{ textTransform: "none" }}
                       onClick={showAddRegionForm}
                     >
-                      <AddIcon /> Add New User
+                      <AddIcon /> Add New Region
                     </Button>
                   )}
                 </Box>

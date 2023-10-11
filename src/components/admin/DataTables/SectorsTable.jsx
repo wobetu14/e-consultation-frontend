@@ -123,7 +123,7 @@ const SectorsTable = () => {
         </Typography>
       ),
       selector: (row) => (
-        <Typography variant="body1">{row.created_by}</Typography>
+        <Typography variant="body1">{row.creator ? row.creator.first_name:""} {row.creator ? row.creator.middle_name:""}</Typography>
       ),
       sortable: true,
     },

@@ -335,6 +335,7 @@ const CreateDraft = () => {
               <FormControl sx={{ minWidth: "100%", paddingBottom: "30px" }}>
                 <InputLabel>Select Law Category *</InputLabel>
                 <Select
+                  label="Law Category"
                   labelId="law_category_Id"
                   id="law_category_Id"
                   size="small"
@@ -376,6 +377,7 @@ const CreateDraft = () => {
               </Typography>
               <Autocomplete
                 multiple
+                label="Tags"
                 id="tags-standard"
                 autoSelect
                 color="info"
@@ -425,7 +427,7 @@ const CreateDraft = () => {
               </Typography>
               <Autocomplete
                 multiple
-                id="tags-standard"
+                id="taglists"
                 freeSolo
                 autoSelect
                 color="info"
