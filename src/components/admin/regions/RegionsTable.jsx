@@ -2,6 +2,7 @@ import {
   Alert,
   Box,
   Button,
+  Checkbox,
   CircularProgress,
   Grid,
   LinearProgress,
@@ -209,6 +210,8 @@ const RegionsTable = () => {
             columns={columns}
             data={filteredRegions}
             progressPending={regions.length <= 0}
+            selectableRows
+            selectableRowsComponent={Checkbox} 
             progressComponent={
               <Box mb="20px">
               {/* Display progress bar if the data prop value is empty */}

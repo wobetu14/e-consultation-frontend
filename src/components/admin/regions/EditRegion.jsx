@@ -16,7 +16,15 @@ const EditRegion = () => {
   // User context
   const { userInfo } = useContext(UserContext);
   
-  const { region, setServerErrorMsg, setServerSuccessMsg, setLoading } =
+  const { 
+    region, 
+    fetchRegions,
+    setServerErrorMsg, 
+    setServerSuccessMsg, 
+    setShowRegionEditForm,
+    setLoading,
+    setNetworkError
+   } =
     useContext(RegionsDataContext);
 
   const helperTextStyle = {
@@ -38,11 +46,14 @@ const EditRegion = () => {
         _method: "put",
       };
 
-      registerRegion(regionData);
+      updateRegion(regionData);
     },
   });
 
-  const registerRegion = async (regionData) => {
+  const updateRegion = async (regionData) => {
+    setNetworkError(null);
+    setServerErrorMsg(null);
+    setServerSuccessMsg(null);
     setLoading(true);
     return await axios
       .post(`regions/${region.id}`, regionData,
@@ -54,12 +65,15 @@ const EditRegion = () => {
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
-        formik.resetForm();
+        setNetworkError(null);
+        setShowRegionEditForm(false);
+        fetchRegions();
         setLoading(false);
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
+        setNetworkError(errors.code);
         setLoading(false);
       });
   };

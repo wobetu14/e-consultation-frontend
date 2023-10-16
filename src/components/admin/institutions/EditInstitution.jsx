@@ -26,29 +26,42 @@ const CreateInstitution = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const [institutionsTypes, setInstitutionTypes] = useState(null);
-  const [institutionsCategories, setInstitutionCategories] = useState(null);
-  const [institutionsLevels, setInstitutionLevels] = useState(null);
+  
+
 
   const [regions, setRegions] = useState(null);
   const [sectors, setSectors] = useState(null);
 
   // User context
   const { userInfo } = useContext(UserContext);
-  const { institution, setServerErrorMsg, setServerSuccessMsg, setLoading } =
+  const { 
+    institution, 
+    setServerErrorMsg, 
+    setServerSuccessMsg, 
+    setLoading,
+    setNetworkError,
+    fetchInstitutions,
+    setShowInstitutionEditForm
+   } =
     useContext(InstitutionsDataContext);
+
+  const [institutionsTypes, setInstitutionTypes] = useState(null);
+  const [institutionsCategories, setInstitutionCategories] = useState(null);
+  const [institutionsLevels, setInstitutionLevels] = useState(null);
+
+    const [canCreateDraft, setCanCreateDraft]=useState(parseInt(institution.can_create_draft));
 
   useEffect(() => {
     fetchInstitutionTypes();
-  }, [institutionsTypes]);
+  }, []);
 
   useEffect(() => {
     fetchRegions();
-  }, [regions]);
+  }, []);
 
   useEffect(() => {
     fetchEconomicSectors();
-  }, [sectors]);
+  }, []);
 
   const fetchInstitutionTypes = async () => {
     return await axios
@@ -69,7 +82,7 @@ const CreateInstitution = () => {
 
   useEffect(() => {
     fetchInstitutionCategories();
-  }, [institutionsCategories]);
+  }, []);
 
   const fetchInstitutionCategories = async () => {
     return await axios
@@ -90,7 +103,7 @@ const CreateInstitution = () => {
 
   useEffect(() => {
     fetchInstitutionLevels();
-  }, [institutionsLevels]);
+  }, []);
 
   const fetchInstitutionLevels = async () => {
     return await axios
@@ -152,7 +165,7 @@ const CreateInstitution = () => {
       email: institution.email,
       telephone: institution.telephone,
       address: institution.address,
-      canCreateDraft: institution.can_create_draft,
+      canCreateDraft: canCreateDraft,
 
       createdBy: userInfo.user.id,
       updatedBy: userInfo.user.id,
@@ -168,15 +181,18 @@ const CreateInstitution = () => {
         telephone: values.telephone,
         address: values.address,
         created_by: values.createdBy,
-        can_create_draft: values.canCreateDraft,
+        can_create_draft: canCreateDraft,
         updated_by: values.updatedBy,
         _method: "put",
       };
-      createInstitution(institutionData);
+      updateInstitution(institutionData);
     },
   });
 
-  const createInstitution = async (institutionData) => {
+  const updateInstitution = async (institutionData) => {
+    setNetworkError(null);
+    setServerErrorMsg(null);
+    setServerSuccessMsg(null);
     setLoading(true);
     return await axios
       .post(`institutions/${institution.id}`, institutionData,
@@ -188,12 +204,16 @@ const CreateInstitution = () => {
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+        setNetworkError(null)
+        setShowInstitutionEditForm(false);
+        fetchInstitutions();
         formik.resetForm();
         setLoading(false);
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
+        setNetworkError(errors.code)
         setLoading(false);
       });
   };
@@ -323,18 +343,18 @@ const CreateInstitution = () => {
                 aria-labelledby="demo-controlled-radio-buttons-group"
                 name="canCreateDraft"
                 size="small"
-                value={formik.values.canCreateDraft}
-                onChange={formik.handleChange}
+                value={canCreateDraft}
+                onChange={(e)=>setCanCreateDraft(parseInt(e.target.value))}
               >
                 <FormControlLabel
                   value={1}
-                  checked={institution.can_create_draft === 1}
+                  checked={canCreateDraft === 1}
                   control={<Radio />}
                   label="Yes"
                 />
                 <FormControlLabel
                   value={0}
-                  checked={institution.can_create_draft === 0}
+                  checked={canCreateDraft === 0}
                   control={<Radio />}
                   label="No"
                 />

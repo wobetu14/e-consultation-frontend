@@ -46,6 +46,10 @@ export const UsersDataProvider = (props) => {
       }
 
       const deleteUser=async (userID) => {
+        setNetworkError(null);
+        setServerErrorMsg(null);
+        setServerSuccessMsg(null);
+        setLoading(true);
         return await axios.delete(`users/${userID}`, 
         {headers:{
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -55,12 +59,16 @@ export const UsersDataProvider = (props) => {
         .then(res => {
           setServerSuccessMsg(res.data.message);
           setServerErrorMsg(null);
+          setNetworkError(null);
+          setLoading(false);
           setOpenDialog(false);
           fetchUsers();
         })
         .catch(errors =>{
           setServerErrorMsg(errors.response.data.message);
           setServerSuccessMsg(null) 
+          setNetworkError(errors.code);
+          setLoading(false);
         }) 
        }
 

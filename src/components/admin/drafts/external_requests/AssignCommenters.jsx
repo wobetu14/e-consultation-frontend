@@ -53,7 +53,7 @@ const AssignCommenters = ({
 
   useEffect(()=>{
     getMyUsersID();
-  }, [])
+  }, [myUsers])
 
   useEffect(()=>{
     fetchMyUsers();

@@ -2,6 +2,7 @@ import {
   Alert,
   Box,
   Button,
+  Checkbox,
   CircularProgress,
   Grid,
   LinearProgress,
@@ -10,7 +11,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import DataTable from "react-data-table-component";
 import { Stack } from "@mui/system";
 import { tokens } from "../../../theme";
@@ -105,7 +106,7 @@ const UsersTable = () => {
         </Typography>
       ),
       selector: (row) => (
-        <Typography variant="body1">{`${row.first_name} ${row.middle_name}`}</Typography>
+        <Typography variant="body1" key={row.id}>{`${row.first_name} ${row.middle_name}`}</Typography>
       ),
       sortable: true,
     },
@@ -117,7 +118,7 @@ const UsersTable = () => {
         </Typography>
       ),
       selector: (row) => (
-        <Typography variant="body1">{row.mobile_number}</Typography>
+        <Typography variant="body1" key={row.id}>{row.mobile_number}</Typography>
       ),
       sortable: true,
     },
@@ -128,7 +129,7 @@ const UsersTable = () => {
         </Typography>
       ),
       selector: (row) => (
-        <Typography variant="body1">{row.institution ? row.institution:""}</Typography>
+        <Typography variant="body1" key={row.id}>{row.institution ? row.institution:""}</Typography>
       ),
       sortable: true,
     },
@@ -138,7 +139,7 @@ const UsersTable = () => {
           Region
         </Typography>
       ),
-      selector: (row) => <Typography variant="body1">{row.region ? row.region:""}</Typography>,
+      selector: (row) => <Typography variant="body1" key={row.id}>{row.region ? row.region:""}</Typography>,
       sortable: true,
     },
     {
@@ -148,7 +149,7 @@ const UsersTable = () => {
         </Typography>
       ),
       selector: (row) => (
-        <Typography variant="body1">{row.created_by}</Typography>
+        <Typography variant="body1" key={row.id}>{row.created_by}</Typography>
       ),
       sortable: true,
     },
@@ -161,7 +162,7 @@ const UsersTable = () => {
       ),
       selector: (row) =>
         row.roles.map((role) => (
-          <li style={{ listStyleType: "none" }}>
+          <li style={{ listStyleType: "none" }} key={role.id}>
             <Typography variant="body1">{role.name}</Typography>
           </li>
         )),
@@ -258,6 +259,8 @@ const UsersTable = () => {
           columns={columns}
           data={filteredUsers}
           progressPending={users.length <= 0}
+          selectableRows
+          selectableRowsComponent={Checkbox} 
           progressComponent={
             <Box mb="20px">
               {/* Display progress bar if the data prop value is empty */}
@@ -317,7 +320,7 @@ const UsersTable = () => {
                     sx={{ textTransform: "none" }}
                     onClick={hideForm}
                   >
-                    <VisibilityOffIcon /> Hide Form
+                    <VisibilityOffIcon fontSize="small" /> Hide Form
                   </Button>
                 ) : showUserEditForm ? (
                   <Button

@@ -122,13 +122,13 @@ const AssignMoreRepliersDialog = ({
 
   const formikAcceptanceForm = useFormik({
     initialValues: {
-      draft_id: params.id,
+      draft_id: draftID,
       comment_repliers: [],
     },
 
     onSubmit: (values) => {
       const requestData = {
-        draft_id: params.id,
+        draft_id: draftID,
         comment_repliers:
           repliersID.length > 0 ? repliersID.map((replierID) => replierID) : [],
       };
@@ -161,7 +161,7 @@ const AssignMoreRepliersDialog = ({
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
-        setNetworkError(errors.name);
+        setNetworkError(errors.code);
         setLoading(false);
       });
   };
@@ -170,7 +170,7 @@ const AssignMoreRepliersDialog = ({
     <Dialog open={openAssignRepliersDialog}>
       <DialogTitle>
         <Typography variant="h5" fontWeight="600">
-          {title}
+          {title} 
         </Typography>
       </DialogTitle>
       <DialogContent>
@@ -198,7 +198,7 @@ const AssignMoreRepliersDialog = ({
               </Typography>
 
               <Typography variant="h1">
-                {networkError ? (
+                {networkError==="ERR_NETWORK" ? (
                   <Alert severity="error" style={errorStyle}>
                     Your internet connection may be unstable. Please try again.
                   </Alert>

@@ -4,7 +4,6 @@ import React, {
   useEffect,
   useState,
   useContext,
-  useRef,
 } from "react";
 import axios from "../../../axios/AxiosGlobal";
 import { useTheme } from "@emotion/react";

@@ -2,7 +2,6 @@ import {
   Alert,
   Box,
   Button,
-  CircularProgress,
   Grid,
   LinearProgress,
   Paper,
@@ -161,7 +160,7 @@ const DraftsTable = () => {
       ),
       selector: (row) => (
         <Typography variant="body1">
-          {row.creator ? row.creator.name : ""}
+          {row.uploader ? row.uploader.first_name : ""} {row.uploader ? row.uploader.last_name : ""}
         </Typography>
       ),
       sortable: true,
@@ -291,8 +290,7 @@ const DraftsTable = () => {
                 textAlign="left"
                 sx={{ color: colors.warningColor[100] }}
               >
-                This process may take longer. We are converting and extracting
-                content from the document. Please wait...
+                This process may take a while. Please wait...
               </Typography>
               <LinearProgress color="info" /> {/* Line progress bar indicator imported from Material UI */}
             </Box>

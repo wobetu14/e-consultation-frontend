@@ -121,7 +121,7 @@ const InviteMoreDialog = ({
 
      const formikAcceptanceForm=useFormik({
         initialValues:{
-            draft_id:params.id,
+            draft_id:draftID,
 
             institutions: [],
             institutionMessage:"Dear Sir / Madam, We kindly invite your organization to review this draft documnet. You can assign experts among staff and let them review it. ",
@@ -132,7 +132,7 @@ const InviteMoreDialog = ({
 
       onSubmit:(values)=>{
         const requestData={
-            draft_id:params.id,
+            draft_id:draftID,
 
             institutions:instIDs.length>0 ? instIDs.map((instIDs)=>instIDs):[],
             institution_message:values.institutionMessage,
@@ -167,7 +167,7 @@ const InviteMoreDialog = ({
         })
         .catch(errors =>{
            setServerErrorMsg(errors.response.data.message);
-           setNetworkError(errors.name);
+           setNetworkError(errors.code);
            setServerSuccessMsg(null) 
            setLoading(false)
         })  
@@ -200,7 +200,7 @@ const InviteMoreDialog = ({
                 </Typography> 
 
                 <Typography variant='h1'>
-                {networkError ? <Alert severity='error' style={errorStyle}>
+                {networkError==="ERR_NETWORK" ? <Alert severity='error' style={errorStyle}>
                     Your internet connection may be unstable. Please try again.
                 </Alert>:null}
                 </Typography> 

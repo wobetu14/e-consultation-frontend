@@ -18,9 +18,12 @@ const EditSector = () => {
   const {
     sector,
     setSector,
+    fetchSectors,
     setServerErrorMsg,
     setServerSuccessMsg,
+    setNetworkError,
     setLoading,
+    setShowSectorEditForm
   } = useContext(SectorsDataContext);
 
   const helperTextStyle = {
@@ -47,11 +50,13 @@ const EditSector = () => {
       };
 
       updateSector(sectorData);
-      fetchSectors();
     },
   });
 
   const updateSector = async (sectorData) => {
+    setNetworkError(null);
+    setServerErrorMsg(null);
+    setServerSuccessMsg(null);
     setLoading(true);
     return await axios
       .post(`sectors/${sector.id}`, sectorData,
@@ -63,23 +68,17 @@ const EditSector = () => {
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+        setNetworkError(null);
+        setShowSectorEditForm(false);
+        fetchSectors();
         setLoading(false);
       })
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
+        setNetworkError(errors.code);
         setLoading(false);
       });
-  };
-
-  const fetchSectors = async () => {
-    try {
-      const res = await axios.get("sectors");
-      console.log(res.data.data.data);
-      setSector(res.data.data.data);
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   return (

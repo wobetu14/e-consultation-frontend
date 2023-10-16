@@ -3,15 +3,16 @@ import {
   Button,
   Grid,
   Paper,
-  TextField,
   Alert,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Collapse,
+  LinearProgress,
 } from "@mui/material";
 import { Box } from "@mui/system";
+import { motion } from "framer-motion";
 import React, { useEffect, useState, useContext } from "react";
 import axios from "../../../axios/AxiosGlobal";
 import Header from "../AdminHeader";
@@ -20,22 +21,23 @@ import { tokens } from "../../../theme";
 import { UserContext } from "../../../contexts/UserContext";
 import EditIcon from "@mui/icons-material/Edit";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { useFormik } from "formik";
-import * as YUP from "yup";
-import { motion } from "framer-motion";
+
 import ChangePassword from "./ChangePassword";
+import EditProfileForm from "./EditProfileForm";
 
 const UserProfile = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [usersData, setUsersData] = useState(null);
   const [showProfileForm, setShowProfileForm] = useState(false);
-  const { userInfo } = useContext(UserContext);
+  const { userInfo, setUserInfo } = useContext(UserContext);
+  const [usersData, setUsersData] = useState(null);
 
   const [institutions, setInstitutions] = useState(null);
   const [userRoles, setUserRoles] = useState(null);
 
   const [openListItem, setOpenListItem] = useState(false);
+  const [loading, setLoading]=useState(false);
+  const [networkError, setNetworkError]=useState(null);
 
   const handleOpenListItem = () => {
     setOpenListItem(!openListItem);
@@ -68,6 +70,10 @@ const UserProfile = () => {
 
   useEffect(() => {
     fetchUserRoles()
+  }, []);
+
+  useEffect(() => {
+    fetchUser();
   }, []);
 
   const fetchInstitutions = async () => {
@@ -105,78 +111,6 @@ const UserProfile = () => {
       });
   };
 
-  const formik = useFormik({
-    initialValues: {
-      userID: userInfo ? userInfo.user.id : "",
-      firstName: userInfo ? userInfo.user.first_name : "",
-      middleName: userInfo ? userInfo.user.middle_name : "",
-      lastName: userInfo ? userInfo.user.last_name : "",
-      mobileNumber: userInfo ? userInfo.user.mobile_number : "",
-      email: userInfo ? userInfo.user.email : "",
-      roleID: userInfo.user.roles[0].id,
-      // institutionID:userInfo ? (userInfo.user.institution_id):"",
-      updatedBy: userInfo ? userInfo.user.id : "",
-    },
-
-    validationSchema: YUP.object({
-      firstName: YUP.string().required(
-        "This field is required. Please enter the first name."
-      ),
-      middleName: YUP.string().required(
-        "This field is required. Please enter father name."
-      ),
-      lastName: YUP.string().required(
-        "This field is required. Please enter grandfather name."
-      ),
-      mobileNumber: YUP.string().required(
-        "This field is required. Please enter mobile number."
-      ),
-      email: YUP.string().required(
-        "This field is required. Please enter email address."
-      ),
-      roleID: YUP.string().required(
-        "This field is required. Please select user role."
-      ),
-      // institutionID:YUP.string().required("This field is required. Please select Institution.")
-    }),
-
-    onSubmit: (values) => {
-      const userData = {
-        id: values.userID,
-        first_name: values.firstName,
-        middle_name: values.middleName,
-        last_name: values.lastName,
-        mobile_number: values.mobileNumber,
-        email: values.email,
-        roles: values.roleID,
-        // created_by:values.createdBy,
-        updated_by: values.updatedBy,
-        // institution_id:values.institutionID
-      };
-
-      registerUser(userData);
-    },
-  });
-
-  const registerUser = async (userData) => {
-    //  console.log(companyData)
-    return await axios
-      .patch(`users/${userInfo.user.id}`, userData,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
-      .then((res) => {
-        setServerSuccessMsg(res.data.message);
-        setServerErrorMsg(null);
-      })
-      .catch((errors) => {
-        setServerErrorMsg(errors.response.data.message);
-        setServerSuccessMsg(null);
-      });
-  };
-
   const fetchUser = async () => {
     return await axios
       .get(`users/${userInfo.user.id}`,
@@ -187,6 +121,7 @@ const UserProfile = () => {
       }})
       .then((res) => res.data)
       .then((res) => {
+        console.log("User Profiel Data");
         console.log(res.data);
         setUsersData(res.data);
       })
@@ -194,10 +129,6 @@ const UserProfile = () => {
         console.log(error.message);
       });
   };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
   return (
     <Box m="0 20px" width={"95%"}>
@@ -223,6 +154,21 @@ const UserProfile = () => {
               </Alert>
             ) : null}
           </Typography>
+
+          <Typography variant="h1">
+            {networkError==="ERR_NETWORK" ? (
+              <Alert severity="success" style={successStyle}>
+                Something went wrong. Your internet connection may be unstable. Please try again.
+              </Alert>
+            ) : null}
+          </Typography>
+
+          <Typography variant="h1">
+            {loading ? (
+              <LinearProgress color="info" />
+            ) : null}
+          </Typography>
+
         </motion.span>
       </Grid>
       <Grid container spacing={2}>
@@ -364,138 +310,16 @@ const UserProfile = () => {
       </Grid>
 
       {showProfileForm && (
-        <Box m="0 20px" width={"95%"}>
-          <Typography
-            variant="h4"
-            sx={{ fontWeight: "500", marginBottom: "20px", marginTop: "20px" }}
-          >
-            Update Profile{" "}
-          </Typography>
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            <form onSubmit={formik.handleSubmit}>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <TextField
-                    label="First Name"
-                    variant="outlined"
-                    fullWidth
-                    size="small"
-                    sx={{ paddingBottom: "30px" }}
-                    color="info"
-                    name="firstName"
-                    value={formik.values.firstName}
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    helperText={
-                      formik.touched.firstName && formik.errors.firstName ? (
-                        <span style={helperTextStyle}>
-                          {formik.errors.firstName}
-                        </span>
-                      ) : null
-                    }
-                  />
-                  <TextField
-                    label="Middle Name"
-                    variant="outlined"
-                    fullWidth
-                    sx={{ paddingBottom: "30px" }}
-                    color="info"
-                    size="small"
-                    name="middleName"
-                    value={formik.values.middleName}
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    helperText={
-                      formik.touched.middleName && formik.errors.middleName ? (
-                        <span style={helperTextStyle}>
-                          {formik.errors.middleName}
-                        </span>
-                      ) : null
-                    }
-                  />
-                  <TextField
-                    label="Last Name"
-                    variant="outlined"
-                    fullWidth
-                    sx={{ paddingBottom: "30px" }}
-                    color="info"
-                    size="small"
-                    name="lastName"
-                    value={formik.values.lastName}
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    helperText={
-                      formik.touched.lastName && formik.errors.lastName ? (
-                        <span style={helperTextStyle}>
-                          {formik.errors.lastName}
-                        </span>
-                      ) : null
-                    }
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <TextField
-                    label="Mobile Number"
-                    variant="outlined"
-                    fullWidth
-                    size="small"
-                    sx={{ paddingBottom: "30px" }}
-                    color="info"
-                    name="mobileNumber"
-                    value={formik.values.mobileNumber}
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    helperText={
-                      formik.touched.mobileNumber &&
-                      formik.errors.mobileNumber ? (
-                        <span style={helperTextStyle}>
-                          {formik.errors.mobileNumber}
-                        </span>
-                      ) : null
-                    }
-                  />
-                  <TextField
-                    label="Email Address"
-                    variant="outlined"
-                    fullWidth
-                    sx={{ paddingBottom: "30px" }}
-                    color="info"
-                    size="small"
-                    name="email"
-                    disabled
-                    value={formik.values.email}
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    helperText={
-                      formik.touched.email && formik.errors.email ? (
-                        <span style={helperTextStyle}>
-                          {formik.errors.email}
-                        </span>
-                      ) : null
-                    }
-                  />
-                  <Grid
-                    sx={{ marginBottom: "100px", marginTop: "30px" }}
-                    align="right"
-                  >
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      size="small"
-                      color="secondary"
-                    >
-                      Save changes
-                    </Button>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </form>
-          </motion.span>
-        </Box>
+        <EditProfileForm 
+          usersData={usersData}
+          setUsersData={setUsersData}
+          setServerErrorMsg={setServerErrorMsg}
+          setServerSuccessMsg={setServerSuccessMsg}    
+          helperTextStyle={helperTextStyle}   
+          setShowProfileForm={setShowProfileForm}   
+          setLoading={setLoading}
+          setNetworkError={setNetworkError}
+        />
       )}
     </Box>
   );

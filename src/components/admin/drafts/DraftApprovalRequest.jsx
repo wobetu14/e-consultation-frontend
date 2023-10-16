@@ -4,7 +4,6 @@ import {
   Chip,
   Grid,
   Alert,
-  CircularProgress,
   Tooltip,
   LinearProgress,
 } from "@mui/material";
@@ -41,6 +40,7 @@ const DraftApprovalRequest = () => {
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
 
   const [networkErrorMessage, setNetworkErrorMessage]=useState(null);
+  const [errorSendingRequest, setErrorSendingRequest]=useState(null);
   const [loading, setLoading]=useState(false);
 
   const errorStyle = {
@@ -112,11 +112,21 @@ const DraftApprovalRequest = () => {
             ) : null}
           </Typography>
 
+          <Typography variant="h1">
+            {errorSendingRequest==="ERR_NETWORK" ? (
+              <Alert severity="error" style={errorStyle}>
+                Something went wrong. Check your network.
+              </Alert>
+            ) : null}
+          </Typography>
+
           {
             loading && (
-              <LinearProgress size="small" />
+              <LinearProgress size="small" color="info" />
             )
           }
+
+
 
         </motion.span>
       </Grid>
@@ -298,10 +308,13 @@ const DraftApprovalRequest = () => {
                         <SendApprovalRequest
                           loading={loading}
                           setLoading={setLoading}
-                          draft={draft}
+                          draftID={draft.id}
                           fetchDrafts={fetchDrafts}
                           setServerSuccessMsg={setServerSuccessMsg}
                           setServerErrorMsg={setServerErrorMsg}
+
+                          errorSendingRequest={errorSendingRequest}
+                          setErrorSendingRequest={setErrorSendingRequest}
                         />
                       ) : (
                         ""
@@ -317,7 +330,7 @@ const DraftApprovalRequest = () => {
               <Typography
               variant="body1"
               >
-              Your internet connection may be unstable. You can &nbsp;
+              Something went wrong. Your internet connection may be unstable. You can &nbsp;
                 <Button 
                   variant="outlined"
                   color="primary"
@@ -349,33 +362,43 @@ export default DraftApprovalRequest;
 const SendApprovalRequest = ({
   loading,
   setLoading,
-  draft,
+  draftID,
   fetchDrafts,
   setServerSuccessMsg,
   setServerErrorMsg,
+
+  errorSendingRequest,
+  setErrorSendingRequest
 }) => {
   const sendRequestForApproval = async () => {
+    console.log("Request Info");
+    console.log(localStorage.getItem("token"));
+    console.log(draftID);
     setServerErrorMsg(null);
     setServerSuccessMsg(null);
+    setErrorSendingRequest(null);    
     setLoading(true);
-    return await axios.post(`request-for-comment/draft/${draft.id}`,
+    return await axios.post(`request-for-comment/draft/${draftID}`, draftID, 
       {
         headers:{
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           Accept: "application/json;",
-          "Content-Type": "multipart/form-data"
+          "Content-Type": "application/x-www-form-urlencoded"
         }
     })
       .then((res) => {
+        setLoading(false);
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
+        setErrorSendingRequest(null);
         fetchDrafts();
-        setLoading(false);
       })
       .catch((errors) => {
+        setLoading(false);
+        console.log(errors)
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
-        setLoading(false);
+        setErrorSendingRequest(errors.code);
       });
   };
 

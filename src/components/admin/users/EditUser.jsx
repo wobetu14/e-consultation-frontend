@@ -37,6 +37,9 @@ const EditUser = () => {
     setShowUserEditForm,
     setServerErrorMsg,
     setServerSuccessMsg,
+    setLoading,
+    networkError,
+    setNetworkError
   } = useContext(UsersDataContext);
 
   const helperTextStyle = {
@@ -46,19 +49,16 @@ const EditUser = () => {
   };
 
   useEffect(() => {
-    const id = setInterval(fetchInstitutions(), 1000);
-    return () => clearInterval(id);
-  }, [institutions]);
+    fetchInstitutions();
+  }, []);
 
   useEffect(() => {
-    const id = setInterval(fetchUserRoles(), 1000);
-    return () => clearInterval(id);
-  }, [userRoles]);
+    fetchUserRoles();
+  }, []);
 
   useEffect(() => {
-    const id = setInterval(fetchRegions(), 1000);
-    return () => clearInterval(id);
-  }, [regions]);
+    fetchRegions();
+  }, []);
 
   const fetchRegions = async () => {
     return await axios
@@ -144,15 +144,23 @@ const EditUser = () => {
   });
 
   const updateUser = async (userData) => {
+    setNetworkError(null);
+    setServerErrorMsg(null);
+    setServerSuccessMsg(null);
+    setLoading(true);
     try {
       const res = await axios.post(`users/${user.id}`, userData);
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null);
       setShowUserEditForm(false);
+      setNetworkError(null)
       fetchUsers();
+      setLoading(false);
     } catch (error) {
       setServerErrorMsg(error.response.data.message);
       setServerSuccessMsg(null);
+      setNetworkError(error.code);
+      setLoading(false);
     }
   };
 

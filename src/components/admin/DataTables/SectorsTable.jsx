@@ -2,7 +2,7 @@ import {
   Alert,
   Box,
   Button,
-  CircularProgress,
+  Checkbox,
   Grid,
   LinearProgress,
   Paper,
@@ -229,6 +229,8 @@ const SectorsTable = () => {
             columns={columns}
             data={filteredSectors}
             progressPending={filteredSectors.length <= 0}
+            selectableRows
+            selectableRowsComponent={Checkbox} 
             progressComponent={
               <Box mb="20px">
               {/* Display progress bar if the data prop value is empty */}

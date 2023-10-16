@@ -28,10 +28,6 @@ const EditDraft = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const [institutions, setInstitutions] = useState(null);
-  const [lawCategories, setLawCategories] = useState(null);
-  const [sectors, setSectors] = useState(null);
-
   // User context
   const { userInfo} =
     useContext(UserContext);
@@ -44,7 +40,13 @@ const EditDraft = () => {
     setServerErrorMsg,
     setServerSuccessMsg,
     setLoading,
+    setNetworkError,
   } = useContext(DraftsDataContext);
+
+  const [institutions, setInstitutions] = useState(null);
+  const [lawCategories, setLawCategories] = useState(null);
+  const [sectors, setSectors] = useState(draft.sector);
+  const [documentAccess, setDocumentAccess]=useState(parseInt(draft.is_private))
 
   const [tagLists, setTagLists] = useState([]);
   const [selectedSectors, setSelectedSectors] = useState([]);
@@ -126,12 +128,12 @@ const EditDraft = () => {
     initialValues: {
       institutionID: draft ? draft.institution.id : "",
       shortTitle: draft ? draft.short_title : "",
-      lawCategoryId: draft ? draft.law_category_id : "",
+      lawCategoryId: draft ? draft.law_category.id : "",
       draftStatusId: draft ? draft.draft_status_id : "",
       sectors: draft.sector.length > 0 ? draft.sector.map((sec) => sec) : [],
       file: null,
       active: draft ? draft.active : "",
-      isPrivate: draft ? draft.is_private : "",
+      isPrivate: documentAccess,
       tags: draft ? draft.tags : [],
       baseLegalReference: draft ? draft.base_legal_reference : "",
       definition: draft ? draft.definition : "",
@@ -159,7 +161,7 @@ const EditDraft = () => {
         file: values.file,
         slug: values.slug,
         // active:values.active,
-        is_private: values.isPrivate,
+        is_private: documentAccess,
         parent_id: values.parentId,
         tags:
           tagLists.length > 0
@@ -185,7 +187,9 @@ const EditDraft = () => {
   });
 
   const updateDraftDocument = async (draftsData) => {
-    //  console.log(companyData)
+    setNetworkError(null);
+    setServerErrorMsg(null);
+    setServerSuccessMsg(null);
     setLoading(true);
     return await axios
       .post(`drafts/${draft.id}`, draftsData,
@@ -199,6 +203,7 @@ const EditDraft = () => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
         setShowDraftEditForm(false);
+        setNetworkError(null);
         formik.resetForm();
         fetchDrafts();
         setLoading(false);
@@ -206,6 +211,7 @@ const EditDraft = () => {
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
+        setNetworkError(errors.code);
         setLoading(false);
       });
   };
@@ -243,7 +249,7 @@ const EditDraft = () => {
               />
 
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                Law Category
+                Law Category 
               </Typography>
               <FormControl sx={{ minWidth: "100%", paddingBottom: "30px" }}>
                 <InputLabel>Select Law Category</InputLabel>
@@ -283,7 +289,7 @@ const EditDraft = () => {
                 </FormHelperText>
               </FormControl>
 
-              <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
+              {/* <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
                 Economic Sector
               </Typography>
               <Autocomplete
@@ -304,7 +310,7 @@ const EditDraft = () => {
                     value={formik.values.sectors.map((sec) => sec)}
                   />
                 )}
-              />
+              /> */}
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
                 Document Access
               </Typography>
@@ -312,22 +318,24 @@ const EditDraft = () => {
                 aria-labelledby="demo-controlled-radio-buttons-group"
                 name="isPrivate"
                 size="small"
-                value={formik.values.isPrivate}
-                onChange={formik.handleChange}
+                value={documentAccess}
+                onChange={(e)=>setDocumentAccess(parseInt(e.target.value))}
               >
                 <FormControlLabel
-                  value="0"
+                  value={0}
                   control={<Radio />}
+                  checked={documentAccess === 0}
                   label="Public"
                 />
                 <FormControlLabel
-                  value="1"
+                  value={1}
                   control={<Radio />}
+                  checked={documentAccess === 1}
                   label="Private"
                 />
               </RadioGroup>
 
-              <Autocomplete
+              {/* <Autocomplete
                 multiple
                 id="tags-standard"
                 freeSolo
@@ -345,7 +353,7 @@ const EditDraft = () => {
                     value={draft ? draft.tags : ""}
                   />
                 )}
-              />
+              /> */}
             </Grid>
             <Grid item xs={4}>
               <TextField
