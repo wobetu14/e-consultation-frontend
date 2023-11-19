@@ -12,6 +12,7 @@ import TwitterIcon from "@mui/icons-material/Twitter";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import LinkIcon from "@mui/icons-material/Link";
+import BusinessIcon from '@mui/icons-material/Business';
 
 const Footer = () => {
   const theme = useTheme();
@@ -75,11 +76,20 @@ const Footer = () => {
               marginRight: "20px",
             }}
           >
+
+            <Typography variant="h5" sx={{ fontWeight: 500 }}>
+              <BusinessIcon 
+                sx={{ color:colors.primary[100] }}
+               />
+              &nbsp; {t('ministry_of_justice')}
+            </Typography>
+
+            <br />
             <Typography variant="h5" sx={{ fontWeight: 500 }}>
               <LocationOnIcon 
                 sx={{ color:colors.primary[100] }}
                />
-              &nbsp; Bambis, Jomo Kenyatta Avenue, Addis Ababa, Ethiopia
+              &nbsp; {t('physical_address')}
             </Typography>
 
             <br />
@@ -95,10 +105,6 @@ const Footer = () => {
             </Typography>
             <br />
 
-            <Typography variant="h5" sx={{ fontWeight: 500 }}>
-              <LinkIcon sx={{ color:colors.primary[100] }}/>
-              &nbsp; https://www.eag.gov.et/
-            </Typography>
             <br />
           </Box>
         </Grid>

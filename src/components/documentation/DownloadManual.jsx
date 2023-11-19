@@ -4,16 +4,18 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import UserManualPDF from '../documentation/downloadable_files/E-Consultation Portal - User Manual.pdf';
+import {useTranslation} from 'react-i18next';
 
 const DownloadUserManual = () => {
+  const {t}=useTranslation()
   return (
     <Card sx={{ minWidth: 275 }} variant="outlined">
       <CardContent>
         <Typography variant="body1" sx={{ fontWeight:"600" }}>
-            User Manual
+            {t('user_manual')}
         </Typography>
         <Typography gutterBottom>
-          In case you want the PDF version of the user manual, you can download here. 
+          {t('user_manual_description')} 
         </Typography>
         <Button
          href={UserManualPDF}
@@ -23,7 +25,7 @@ const DownloadUserManual = () => {
          sx={{ textTransform:"none" }}
          >
             <Typography>
-             Download
+             {t('download')}
             </Typography>
         </Button>
       </CardContent>

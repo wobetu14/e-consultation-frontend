@@ -2,11 +2,13 @@ import { useTheme } from '@emotion/react'
 import { Box, Grid, Typography } from '@mui/material'
 import {motion} from 'framer-motion'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import Footer from '../../partials/Footer'
 import { tokens } from '../../theme'
 import AccordionContainer from './AccordionContainer'
 
 const HelpCenter = () => {
+  const {t}=useTranslation();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
@@ -20,7 +22,7 @@ const HelpCenter = () => {
         <Grid container sx={{ paddingTop:"50px", display:"flex", justifyContent:"space-between" }}>
             <Box margin="0px 200px">
             <Typography variant="h3" sx={{ fontWeight: "600", marginBottom:"20px", color:colors.brandColor[100]  }}>
-                FDRE E-Consultation Portal User Guide
+                {t('user_guide')}
               </Typography>
                 <AccordionContainer />
             </Box>

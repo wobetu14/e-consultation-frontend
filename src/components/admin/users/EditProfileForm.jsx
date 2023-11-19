@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import * as YUP from "yup";
 import axios from "../../../axios/AxiosGlobal";
 import { UserContext } from '../../../contexts/UserContext';
+import { useTranslation } from 'react-i18next';
 
 
 const EditProfileForm = ({
@@ -19,6 +20,7 @@ const EditProfileForm = ({
 }) => {
 
     const { userInfo, setUserInfo } = useContext(UserContext);
+    const {t}=useTranslation();
 
     const formik = useFormik({
         initialValues: {
@@ -106,7 +108,7 @@ const EditProfileForm = ({
             variant="h4"
             sx={{ fontWeight: "500", marginBottom: "20px", marginTop: "20px" }}
           >
-            Update Profile{" "}
+            {t('update_profile')}{" "}
           </Typography>
           <motion.span
             initial={{ opacity: 0 }}
@@ -117,7 +119,7 @@ const EditProfileForm = ({
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <TextField
-                    label="First Name"
+                    label={t('first_name')}
                     variant="outlined"
                     fullWidth
                     size="small"
@@ -136,7 +138,7 @@ const EditProfileForm = ({
                     }
                   />
                   <TextField
-                    label="Middle Name"
+                    label={t('middle_name')}
                     variant="outlined"
                     fullWidth
                     sx={{ paddingBottom: "30px" }}
@@ -155,7 +157,7 @@ const EditProfileForm = ({
                     }
                   />
                   <TextField
-                    label="Last Name"
+                    label={t('last_name')}
                     variant="outlined"
                     fullWidth
                     sx={{ paddingBottom: "30px" }}
@@ -176,7 +178,7 @@ const EditProfileForm = ({
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    label="Mobile Number"
+                    label={t('mobile_number')}
                     variant="outlined"
                     fullWidth
                     size="small"
@@ -196,7 +198,7 @@ const EditProfileForm = ({
                     }
                   />
                   <TextField
-                    label="Email Address"
+                    label={t('email_address')}
                     variant="outlined"
                     fullWidth
                     sx={{ paddingBottom: "30px" }}
@@ -225,7 +227,7 @@ const EditProfileForm = ({
                       size="small"
                       color="secondary"
                     >
-                      Save changes
+                      {t('save_changes')}
                     </Button>
                   </Grid>
                 </Grid>

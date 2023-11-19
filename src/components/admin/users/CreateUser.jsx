@@ -18,12 +18,14 @@ import axios from "../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
 import { UsersDataContext } from "../../../contexts/UsersDataContext";
 import { UserContext } from "../../../contexts/UserContext";
+import { useTranslation } from "react-i18next";
 
 const CreateUser = () => {
   const [institutions, setInstitutions] = useState(null);
   const [regions, setRegions] = useState(null);
   const [userRoles, setUserRoles] = useState(null);
   const [newRoleID, setNewRoleID]=useState(null);
+  const {t}=useTranslation();
 
   // User context
   const { userInfo, userRole } = useContext(UserContext);
@@ -72,7 +74,7 @@ const CreateUser = () => {
         setRegions(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -89,7 +91,7 @@ const CreateUser = () => {
         setInstitutions(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -103,11 +105,10 @@ const CreateUser = () => {
       }})
       .then((res) => res.data.data)
       .then((res) => {
-        console.log(res);
         setUserRoles(res);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -129,26 +130,26 @@ const CreateUser = () => {
 
     validationSchema: YUP.object({
       firstName: YUP.string().required(
-        "This field is required. Please enter the first name."
+        `${t('field_required')} ${t('please_enter_first_name')}`
       ),
       middleName: YUP.string().required(
-        "This field is required. Please enter father name."
+        `${t('field_required')} ${t('please_enter_middle_name')}`
       ),
       lastName: YUP.string().required(
-        "This field is required. Please enter grandfather name."
+        `${t('field_required')} ${t('please_enter_last_name')}`
       ),
       mobileNumber: YUP.string()
-        .required("This field is required. Please enter mobile number.")
+        .required(`${t('field_required')} ${t('please_enter_mobile_number')}`)
         .phone(
           "ET",
           true,
-          "Invalid phone number. Use +251, or 251 or 09... etc. Note: phone numbers starting with 07 are invalid for the time being."
+          `${t('invalid_phone_number')}`
         ),
       email: YUP.string()
-        .required("This field is required. Please enter email address.")
-        .email("Invalid email address"),
+        .required(`${t('field_required')} ${t('please_enter_email_address')}`)
+        .email(`${t('invalid_email')}`),
         roleName: YUP.string().required(
-        "This field is required. Please select user role."
+        `${'field_required'} ${t('please_select_user_role')}`
       ),
       // institutionID:YUP.string().required("This field is required. Please select Institution.")
     }),
@@ -206,14 +207,13 @@ const CreateUser = () => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
         setNetworkError(errors.code);
-        console.log(errors);
         setLoading(false);
       });
   };
 
   return (
     <Box m="0" width={"95%"}>
-      <Header title="Create New User" subtitle="Manage users" />
+      <Header title={t('add_new_user')} subtitle={t('manage_users')} />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -223,7 +223,7 @@ const CreateUser = () => {
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <TextField
-                label="First Name *"
+                label={`${t('first_name')} *`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -242,7 +242,7 @@ const CreateUser = () => {
                 }
               />
               <TextField
-                label="Mobile Number *"
+                label={`${t('mobile_number')}`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -264,7 +264,7 @@ const CreateUser = () => {
                 userInfo.user.roles[0].name === "Super Admin" &&  
                 formik.values.roleName === "Regional Admin" ? (
                   <FormControl sx={{ minWidth: "100%", paddingBottom: "5px" }}>
-                    <InputLabel>Select Region *</InputLabel>
+                    <InputLabel>{t('select_region')} *</InputLabel>
                     <Select
                       labelId="region_id"
                       id="region_id"
@@ -355,7 +355,7 @@ const CreateUser = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label="Middle Name *"
+                label={`${t('middle_name')} *`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -374,7 +374,7 @@ const CreateUser = () => {
                 }
               />
               <TextField
-                label="Email Address *"
+                label={`${t('email_address')}`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -395,7 +395,7 @@ const CreateUser = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label="Last Name *"
+                label={`${t('last_name')} *`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -415,7 +415,7 @@ const CreateUser = () => {
               />
 
               <FormControl sx={{ minWidth: "100%", paddingBottom: "30px" }}>
-                <InputLabel>Select User Role *</InputLabel>
+                <InputLabel>{t('select_user_role')}</InputLabel>
                 <Select
                   labelId="user_role"
                   size="small"
@@ -456,7 +456,7 @@ const CreateUser = () => {
                   sx={{ align: "right", textTransform: "none" }}
                   color="info"
                 >
-                  Save{" "}
+                  {t('save')}{" "}
                 </Button>
               </Grid>
             </Grid>

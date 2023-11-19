@@ -41,7 +41,7 @@ const InstitutionInvitations = ({ documentDetail }) => {
         setInvitedInstitutions(res.data.data);
       })
       .catch((error) => {
-        console.log(error.message);
+        
       });
   };
 

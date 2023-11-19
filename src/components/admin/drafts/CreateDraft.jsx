@@ -118,7 +118,7 @@ const CreateDraft = () => {
         setInstitutions(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+     
       });
   };
 
@@ -135,7 +135,7 @@ const CreateDraft = () => {
         setLawCategories(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -152,7 +152,7 @@ const CreateDraft = () => {
         setSectors(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -272,7 +272,6 @@ const CreateDraft = () => {
         "Content-Type": "multipart/form-data"
       }})
       .then((res) => {
-        // console.log(res.data);
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
         setNetworkError(null);
@@ -290,7 +289,6 @@ const CreateDraft = () => {
         setServerErrorMsg(errors.response.data.message);
         setNetworkError(errors.code);
         setServerSuccessMsg(null);
-        console.log(errors)
       });
   };
 

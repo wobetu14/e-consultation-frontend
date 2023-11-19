@@ -88,8 +88,7 @@ const ExternalRequestDetails = () => {
         setDocumentSections(response.data.data);
       })
       .catch((error) => {
-        console.log(error.response.message)
-        // <p color="red">{error.response.data.message}</p>;
+        
       });
   };
 

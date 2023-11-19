@@ -76,11 +76,10 @@ const AssignCommenters = ({
         Accept: "application/json;",
         "Content-Type": "multipart/form-data"
       }});
-      console.log("My users");
-      console.log(res.data.data);
+      
       setMyUsers(res.data.data);
     } catch (error) {
-      console.log(error);
+      
     }
   };
 

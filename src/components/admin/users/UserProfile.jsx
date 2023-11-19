@@ -24,6 +24,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 import ChangePassword from "./ChangePassword";
 import EditProfileForm from "./EditProfileForm";
+import { useTranslation } from "react-i18next";
 
 const UserProfile = () => {
   const theme = useTheme();
@@ -38,6 +39,8 @@ const UserProfile = () => {
   const [openListItem, setOpenListItem] = useState(false);
   const [loading, setLoading]=useState(false);
   const [networkError, setNetworkError]=useState(null);
+
+  const {t}=useTranslation();
 
   const handleOpenListItem = () => {
     setOpenListItem(!openListItem);
@@ -89,7 +92,7 @@ const UserProfile = () => {
         setInstitutions(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -103,11 +106,11 @@ const UserProfile = () => {
       }})
       .then((res) => res.data.data)
       .then((res) => {
-        console.log(res);
+        
         setUserRoles(res);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -121,18 +124,16 @@ const UserProfile = () => {
       }})
       .then((res) => res.data)
       .then((res) => {
-        console.log("User Profiel Data");
-        console.log(res.data);
         setUsersData(res.data);
       })
       .catch((error) => {
-        console.log(error.message);
+        
       });
   };
 
   return (
     <Box m="0 20px" width={"95%"}>
-      <Header title="User Profile" subtitle="Manage Profile" />
+      <Header title={t('user_profile')} subtitle={t('manage_profile')} />
       <Grid align="center" sx={{ paddingBottom: "15px", paddingTop: "15px" }}>
         <motion.span
           initial={{ opacity: 0 }}
@@ -178,7 +179,7 @@ const UserProfile = () => {
               <Grid container spacing={2}>
                 <Grid item xs={4}>
                   <Typography variant="h5" sx={{ fontWeight: "600" }}>
-                    Full Name
+                    {t('full_name')}
                   </Typography>
                 </Grid>
                 <Grid item xs={8}>
@@ -195,7 +196,7 @@ const UserProfile = () => {
 
                 <Grid item xs={4}>
                   <Typography variant="h5" sx={{ fontWeight: "600" }}>
-                    Email Address
+                    {t('email_address')}
                   </Typography>
                 </Grid>
                 <Grid item xs={8}>
@@ -206,7 +207,7 @@ const UserProfile = () => {
 
                 <Grid item xs={4}>
                   <Typography variant="h5" sx={{ fontWeight: "600" }}>
-                    Mobile Number
+                    {t('mobile_number')}
                   </Typography>
                 </Grid>
                 <Grid item xs={8}>
@@ -217,7 +218,7 @@ const UserProfile = () => {
 
                 <Grid item xs={4}>
                   <Typography variant="h5" sx={{ fontWeight: "600" }}>
-                    Region
+                    {t('region')}
                   </Typography>
                 </Grid>
                 <Grid item xs={8}>
@@ -228,7 +229,7 @@ const UserProfile = () => {
 
                 <Grid item xs={4}>
                   <Typography variant="h5" sx={{ fontWeight: "600" }}>
-                    Institution
+                    {t('institution')}
                   </Typography>
                 </Grid>
                 <Grid item xs={8}>
@@ -239,7 +240,7 @@ const UserProfile = () => {
 
                 <Grid item xs={4}>
                   <Typography variant="h5" sx={{ fontWeight: "600" }}>
-                    Roles
+                    {t('role')}
                   </Typography>
                 </Grid>
                 <Grid item xs={8}>
@@ -271,7 +272,7 @@ const UserProfile = () => {
                       </>
                     ) : (
                       <>
-                        <EditIcon /> &nbsp; Edit
+                        <EditIcon fontSize="small" /> &nbsp; {t('edit')}
                       </>
                     )}
                   </Button>
@@ -295,7 +296,7 @@ const UserProfile = () => {
                     color={colors.headerText[100]}
                     sx={{ mb: "5px", fontWeight: 600 }}
                   >
-                    Change Password
+                    {t('change_password')}
                   </Typography>
                 }
               />

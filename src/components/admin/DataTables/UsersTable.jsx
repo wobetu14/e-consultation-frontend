@@ -28,11 +28,13 @@ import DeleteUserDialog from "../../../partials/DeleteUserDialog";
 import { UserContext } from "../../../contexts/UserContext";
 import RefreshIcon from '@mui/icons-material/Refresh';
 import CheckIcon from '@mui/icons-material/Check';
+import { useTranslation } from "react-i18next";
 
 const UsersTable = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { userInfo, userRole, userToken, setUserInfo, setUserRole, setUserToken } = useContext(UserContext);
+  const {t} = useTranslation();
   const {
     user,
     setUser,
@@ -102,7 +104,7 @@ const UsersTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Full Name
+          {t('full_name')}
         </Typography>
       ),
       selector: (row) => (
@@ -114,7 +116,7 @@ const UsersTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Mobile
+          {t('mobile')}
         </Typography>
       ),
       selector: (row) => (
@@ -125,7 +127,7 @@ const UsersTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Institution
+          {t('institution')}
         </Typography>
       ),
       selector: (row) => (
@@ -136,7 +138,7 @@ const UsersTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Region
+          {t('region')}
         </Typography>
       ),
       selector: (row) => <Typography variant="body1" key={row.id}>{row.region ? row.region:""}</Typography>,
@@ -145,7 +147,7 @@ const UsersTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Created By
+          {t('created_by')}
         </Typography>
       ),
       selector: (row) => (
@@ -157,7 +159,7 @@ const UsersTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Role
+          {t('role')}
         </Typography>
       ),
       selector: (row) =>
@@ -170,7 +172,7 @@ const UsersTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Actions
+          {t('actions')}
         </Typography>
       ),
       selector: (row) => {
@@ -207,7 +209,7 @@ const UsersTable = () => {
     <Box m="0 20px" sx={{ width:{
       xs:300, sm:500, md:700, lg:900, xl:1200
     } }}>
-      <Header title="Users" subtitle="Manage Users" />
+      <Header title={t('users')} subtitle={t('manage_users')} />
 
       <Grid align="center" sx={{ paddingBottom: "5px", paddingTop: "5px" }}>
         <motion.span
@@ -226,7 +228,7 @@ const UsersTable = () => {
           <Typography variant="h1">
             {networkError==="ERR_NETWORK" ? (
               <Alert severity="error" variant="outlined">
-                Your internet connection may be unstable. Please try again 
+                {t('network_error_message')}
               </Alert>
             ) : null}
           </Typography>
@@ -244,10 +246,10 @@ const UsersTable = () => {
       </Grid>
       {openDialog && (
         <DeleteUserDialog
-          title="Deleting User..."
-          text={`You are about to delete user ${
+          title={`${t('deleting_user')}...`}
+          text={`${t('you_are_deleting_user')} ${
             user ? user.first_name + " " + user.middle_name : ""
-          }. Are you sure?`}
+          }. ${t('are_you_sure')}`}
         />
       )}
 
@@ -259,19 +261,19 @@ const UsersTable = () => {
           columns={columns}
           data={filteredUsers}
           progressPending={users.length <= 0}
-          selectableRows
-          selectableRowsComponent={Checkbox} 
+          highlightOnHover
+          pointerOnHover
           progressComponent={
             <Box mb="20px">
               {/* Display progress bar if the data prop value is empty */}
               {
-                requestCompleted===1 && filteredUsers.length<=0 && networkErrorMessage!=="AxiosError" ? "No records found": (
+                requestCompleted===1 && filteredUsers.length<=0 && networkErrorMessage!=="AxiosError" ? `${t('no_record')}`: (
                   networkErrorMessage==="AxiosError" ? (
                     <>
                     <Typography
                       variant="body1"
                     >
-                      Your internet connection may be unstable. You can &nbsp;
+                      {t('network_error_message')} &nbsp;
                       <Button 
                         variant="outlined"
                         color="primary"
@@ -279,11 +281,11 @@ const UsersTable = () => {
                         sx={{ textTransform:'none' }}
                         onClick={handleNetworkStatus}
                       >
-                        Try again <RefreshIcon />
+                        {t('try_again')} <RefreshIcon />
                       </Button>
                     </Typography>
                     </>
-                  ): "Please wait..."
+                  ): `${t('please_wait')}...`
                 )
               }
             </Box>
@@ -302,7 +304,7 @@ const UsersTable = () => {
             >
               <Box width="30%">
                 <TextField
-                  label="Search..."
+                  label={`${t('search')}...`}
                   variant="outlined"
                   size="small"
                   color="info"
@@ -320,7 +322,7 @@ const UsersTable = () => {
                     sx={{ textTransform: "none" }}
                     onClick={hideForm}
                   >
-                    <VisibilityOffIcon fontSize="small" /> Hide Form
+                    <VisibilityOffIcon fontSize="small" /> {t('hide_form')}
                   </Button>
                 ) : showUserEditForm ? (
                   <Button
@@ -330,7 +332,7 @@ const UsersTable = () => {
                     sx={{ textTransform: "none" }}
                     onClick={hideForm}
                   >
-                    <VisibilityOffIcon /> Hide Form
+                    <VisibilityOffIcon /> {t('hide_form')}
                   </Button>
                 ) : (
                   <Button
@@ -340,7 +342,7 @@ const UsersTable = () => {
                     sx={{ textTransform: "none" }}
                     onClick={showAddUserForm}
                   >
-                    <AddIcon /> Add New User
+                    <AddIcon /> {t('add_new_user')}
                   </Button>
                 )}
               </Box>

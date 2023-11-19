@@ -371,9 +371,6 @@ const SendApprovalRequest = ({
   setErrorSendingRequest
 }) => {
   const sendRequestForApproval = async () => {
-    console.log("Request Info");
-    console.log(localStorage.getItem("token"));
-    console.log(draftID);
     setServerErrorMsg(null);
     setServerSuccessMsg(null);
     setErrorSendingRequest(null);    
@@ -395,7 +392,6 @@ const SendApprovalRequest = ({
       })
       .catch((errors) => {
         setLoading(false);
-        console.log(errors)
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
         setErrorSendingRequest(errors.code);

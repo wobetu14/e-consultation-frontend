@@ -25,10 +25,13 @@ import CreateInstitution from "../institutions/CreateInstitution";
 import EditInstitution from "../institutions/EditInstitution";
 import DeleteInstitutionDialog from "../institutions/DeleteInstitutionDialog";
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { useTranslation } from "react-i18next";
 
 const InstitutionsTable = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const {t}=useTranslation();
   const {
     filteredInstitutions,
     searchInstitution,
@@ -75,7 +78,6 @@ const InstitutionsTable = () => {
     setInstitution(institutionRow);
     setShowInstitutionEditForm(true);
     setShowInstitutionAddForm(false);
-    console.log(institutionRow);
   };
 
   const hideForm = () => {
@@ -96,7 +98,7 @@ const InstitutionsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Institution Name
+          {t('institution')}
         </Typography>
       ),
       selector: (row) => (
@@ -108,7 +110,7 @@ const InstitutionsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Institution Type
+          {t('institution_type')}
         </Typography>
       ),
       selector: (row) => (
@@ -120,7 +122,7 @@ const InstitutionsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Email
+          {t('email_address')}
         </Typography>
       ),
       selector: (row) => <Typography variant="body1">{row.email}</Typography>,
@@ -129,7 +131,7 @@ const InstitutionsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Telephone
+          {t('telephone')}
         </Typography>
       ),
       selector: (row) => (
@@ -140,7 +142,7 @@ const InstitutionsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Address
+          {t('address')}
         </Typography>
       ),
       selector: (row) => <Typography variant="body1">{row.address}</Typography>,
@@ -150,7 +152,7 @@ const InstitutionsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Region
+          {t('region')}
         </Typography>
       ),
       selector: (row) => (
@@ -173,7 +175,7 @@ const InstitutionsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Actions
+          {t('actions')}
         </Typography>
       ),
       selector: (row) => {
@@ -210,7 +212,7 @@ const InstitutionsTable = () => {
     <Box sx={{ width:{
       xs:300, sm:500, md:700, lg:900, xl:1200
     } }}>
-      <Header title="Institutions" subtitle="Manage Institutions" />
+      <Header title={t('institutions_info')} subtitle={t('manage_institutions')} />
       <Grid align="center" sx={{ paddingBottom: "5px", paddingTop: "5px" }}>
         <motion.span
           initial={{ opacity: 0 }}
@@ -236,7 +238,7 @@ const InstitutionsTable = () => {
           <Typography variant="h1">
             {networkError==="ERR_NETWORK" ? (
               <Alert severity="error" variant="outlined">
-                Your internet connection may be unstable. Please try again 
+                {t('network_error_message')}
               </Alert>
             ) : null}
           </Typography>
@@ -264,19 +266,19 @@ const InstitutionsTable = () => {
           columns={columns}
           data={filteredInstitutions}
           progressPending={filteredInstitutions.length <= 0}
-          selectableRows
-          selectableRowsComponent={Checkbox} 
+          highlightOnHover
+          pointerOnHover
           progressComponent={
             <Box mb="20px">
               {/* Display progress bar if the data prop value is empty */}
               {
-                requestCompleted===1 && filteredInstitutions.length<=0 && networkErrorMessage!=="AxiosError" ? "No records found": (
+                requestCompleted===1 && filteredInstitutions.length<=0 && networkErrorMessage!=="AxiosError" ? `${t('no_record')}`: (
                   networkErrorMessage==="AxiosError" ? (
                     <>
                     <Typography
                       variant="body1"
                     >
-                      Your internet connection may be unstable. You can &nbsp;
+                      {t('network_error_message')} &nbsp;
                       <Button 
                         variant="outlined"
                         color="primary"
@@ -284,11 +286,11 @@ const InstitutionsTable = () => {
                         sx={{ textTransform:'none' }}
                         onClick={handleNetworkStatus}
                       >
-                        Try again <RefreshIcon />
+                        {t('try_again')} <RefreshIcon />
                       </Button>
                     </Typography>
                     </>
-                  ): "Please wait..."
+                  ): `${t('please_wait')}`
                 )
               }
             </Box>
@@ -308,7 +310,7 @@ const InstitutionsTable = () => {
             >
               <Box width="30%">
                 <TextField
-                  label="Search..."
+                  label={`${t('search')}...`}
                   variant="outlined"
                   size="small"
                   color="info"
@@ -326,7 +328,7 @@ const InstitutionsTable = () => {
                     sx={{ textTransform: "none" }}
                     onClick={hideForm}
                   >
-                    <VisibilityOffIcon /> Hide Form
+                    <VisibilityOffIcon /> {t('hide_form')}
                   </Button>
                 ) : showInstitutionEditForm ? (
                   <Button
@@ -336,7 +338,7 @@ const InstitutionsTable = () => {
                     sx={{ textTransform: "none" }}
                     onClick={hideForm}
                   >
-                    <VisibilityOffIcon /> Hide Form
+                    <VisibilityOffIcon /> {t('hide_form')}
                   </Button>
                 ) : (
                   <Button
@@ -346,7 +348,7 @@ const InstitutionsTable = () => {
                     sx={{ textTransform: "none" }}
                     onClick={showAddInstitutionForm}
                   >
-                    <AddIcon /> Add New Institution
+                    <AddIcon /> {t('add_new_institution')}
                   </Button>
                 )}
               </Box>

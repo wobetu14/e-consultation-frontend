@@ -8,10 +8,13 @@ import axios from "../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
 import { UserContext } from "../../../contexts/UserContext";
 import { SectorsDataContext } from "../../../contexts/SectorsDataContext";
+import { useTranslation } from "react-i18next";
 
 const EditSector = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const {t}=useTranslation()
 
   // User context
   const { userInfo } = useContext(UserContext);
@@ -83,7 +86,7 @@ const EditSector = () => {
 
   return (
     <Box width={"95%"}>
-      <Header title="Update Sector Information" subtitle="" />
+      <Header title={t('update_sector_information')} subtitle="" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -93,7 +96,7 @@ const EditSector = () => {
           <Grid container spacing={1}>
             <Grid item xs={5}>
               <TextField
-                label="Name of economic sector"
+                label={`${t('name_of_economic_sector')} *`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -115,7 +118,7 @@ const EditSector = () => {
 
             <Grid item xs={5}>
               <TextField
-                label="Short description"
+                label={t('description')}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -152,7 +155,7 @@ const EditSector = () => {
                   }}
                   color="info"
                 >
-                  Save Changes{" "}
+                  {t('save_changes')}{" "}
                 </Button>
               </Grid>
             </Grid>

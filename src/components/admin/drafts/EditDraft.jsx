@@ -86,7 +86,7 @@ const EditDraft = () => {
         setInstitutions(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -103,7 +103,7 @@ const EditDraft = () => {
         setLawCategories(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -120,7 +120,7 @@ const EditDraft = () => {
         setSectors(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -199,7 +199,6 @@ const EditDraft = () => {
         "Content-Type": "multipart/form-data"
       }})
       .then((res) => {
-        console.log(res.data);
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
         setShowDraftEditForm(false);

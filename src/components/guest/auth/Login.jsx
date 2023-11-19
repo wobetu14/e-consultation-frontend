@@ -59,7 +59,6 @@ const Login = () => {
     return await axios
       .post("https://backend.e-consultation.gov.et/api/v1/login", userData)
       .then((res) => {
-        // console.log(res.data);
         if (res.status !== 200) {
           setServerError(res.data.message);
           setLoading(false);

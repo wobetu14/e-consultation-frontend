@@ -95,7 +95,6 @@ const DraftsTable = () => {
     setDraft(row);
     setShowDraftEditForm(true);
     setShowDraftAddForm(false);
-    console.log(row);
   };
 
   const hideForm = () => {
@@ -324,6 +323,8 @@ const DraftsTable = () => {
           selectableRowsHighlight
           subHeader /* Create sub header to add other table components such as filter TextField and Add / Edit drafts button */
           progressPending={filteredDrafts.length <= 0} /* Display pending progress bar if the length of filteredDrafts array is less or equals to 0 */
+          highlightOnHover
+          pointerOnHover
           progressComponent={
             <Box mb="20px">
               {/* Display progress bar if the data prop value is empty */}

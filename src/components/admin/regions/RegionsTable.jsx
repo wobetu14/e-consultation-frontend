@@ -25,10 +25,12 @@ import CreateRegion from "./CreateRegion";
 import EditRegion from "./EditRegion";
 import DeleteRegionDialog from "./DeleteRegionDialog";
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { useTranslation } from "react-i18next";
 
 const RegionsTable = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const {t}=useTranslation()
 
   // RegionsDataContext
   const {
@@ -98,7 +100,7 @@ const RegionsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Region Name
+          {t('region')}
         </Typography>
       ),
       selector: (row) => (
@@ -110,7 +112,7 @@ const RegionsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Created By
+          {t('created_by')}
         </Typography>
       ),
       selector: (row) => (
@@ -122,7 +124,7 @@ const RegionsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Actions
+          {t('actions')}
         </Typography>
       ),
       selector: (row) => {
@@ -184,7 +186,7 @@ const RegionsTable = () => {
           <Typography variant="h1">
             {networkError==="ERR_NETWORK" ? (
               <Alert severity="error" variant="outlined">
-                Your internet connection may be unstable. Please try again 
+                {t('network_error_message')}
               </Alert>
             ) : null}
           </Typography>
@@ -195,10 +197,10 @@ const RegionsTable = () => {
 
       {openDialog && (
         <DeleteRegionDialog
-          title="Deleting Region..."
-          text={`You are about to delete region named \"${
+          title={`${t('deleting_region')}...`}
+          text={`${t('you_are_deleting_region_info')} \"${
             region ? region.name : ""
-          }\". Are you sure?`}
+          }\". ${t('are_you_sure')}`}
         />
       )}
       {showRegionAddForm && <CreateRegion />}
@@ -210,19 +212,19 @@ const RegionsTable = () => {
             columns={columns}
             data={filteredRegions}
             progressPending={regions.length <= 0}
-            selectableRows
-            selectableRowsComponent={Checkbox} 
+            highlightOnHover
+            pointerOnHover
             progressComponent={
               <Box mb="20px">
               {/* Display progress bar if the data prop value is empty */}
               {
-                requestCompleted===1 && filteredRegions.length<=0 && networkErrorMessage!=="AxiosError" ? "No records found": (
+                requestCompleted===1 && filteredRegions.length<=0 && networkErrorMessage!=="AxiosError" ? `${t('no_record')}`: (
                   networkErrorMessage==="AxiosError" ? (
                     <>
                     <Typography
                       variant="body1"
                     >
-                      Your internet connection may be unstable. You can &nbsp;
+                      {t('network_error_message')} &nbsp;
                       <Button 
                         variant="outlined"
                         color="primary"
@@ -230,11 +232,11 @@ const RegionsTable = () => {
                         sx={{ textTransform:'none' }}
                         onClick={handleNetworkStatus}
                       >
-                        Try again <RefreshIcon />
+                        {t('try_again')} <RefreshIcon />
                       </Button>
                     </Typography>
                     </>
-                  ): "Please wait..."
+                  ): `${t('please_wait')}...`
                 )
               }
             </Box>
@@ -253,7 +255,7 @@ const RegionsTable = () => {
               >
                 <Box width="30%">
                   <TextField
-                    label="Search..."
+                    label={`${t('search')}...`}
                     variant="outlined"
                     size="small"
                     color="info"
@@ -271,7 +273,7 @@ const RegionsTable = () => {
                       sx={{ textTransform: "none" }}
                       onClick={hideForm}
                     >
-                      <VisibilityOffIcon /> Hide Form
+                      <VisibilityOffIcon /> {t('hide_form')}
                     </Button>
                   ) : showRegionEditForm ? (
                     <Button
@@ -281,7 +283,7 @@ const RegionsTable = () => {
                       sx={{ textTransform: "none" }}
                       onClick={hideForm}
                     >
-                      <VisibilityOffIcon /> Hide Form
+                      <VisibilityOffIcon /> {t('hide_form')}
                     </Button>
                   ) : (
                     <Button
@@ -291,7 +293,7 @@ const RegionsTable = () => {
                       sx={{ textTransform: "none" }}
                       onClick={showAddRegionForm}
                     >
-                      <AddIcon /> Add New Region
+                      <AddIcon /> {t('add_new_region')}
                     </Button>
                   )}
                 </Box>

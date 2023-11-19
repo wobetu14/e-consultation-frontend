@@ -99,7 +99,7 @@ const InviteMoreDialog = ({
           }})
           setInstitutions(res.data.data.data);
         } catch(error){
-            console.log(error);
+            
          }
       }
 
@@ -111,11 +111,10 @@ const InviteMoreDialog = ({
             Accept: "application/json;",
             "Content-Type": "multipart/form-data"
           }})
-          console.log("My users");
-          console.log(res.data.data)
+          
           setMyUsers(res.data.data);
         } catch(error){
-            console.log(error);
+            
          }
       }
 
@@ -146,7 +145,7 @@ const InviteMoreDialog = ({
     }); 
 
     const inviteMorePeopleAndInstitutions=async (requestData) => {
-        console.log(requestData)
+        
         setServerErrorMsg(null);
         setServerSuccessMsg(null);
         setNetworkError(null);

@@ -25,10 +25,13 @@ import EditSector from "../sectors/EditSector";
 import { SectorsDataContext } from "../../../contexts/SectorsDataContext";
 import DeleteSectorDialog from "../sectors/DeleteSectorDialog";
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { useTranslation } from "react-i18next";
 
 const SectorsTable = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const {t}=useTranslation();
 
   const {
     sectors,
@@ -96,7 +99,7 @@ const SectorsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Name
+          {t('sector_name')}
         </Typography>
       ),
       selector: (row) => (
@@ -108,7 +111,7 @@ const SectorsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Description
+          {t('description')}
         </Typography>
       ),
       selector: (row) => (
@@ -119,7 +122,7 @@ const SectorsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Created By
+          {t('created_by')}
         </Typography>
       ),
       selector: (row) => (
@@ -130,7 +133,7 @@ const SectorsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Region
+          {t('region')}
         </Typography>
       ),
       selector: (row) => (
@@ -142,7 +145,7 @@ const SectorsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Actions
+          {t('actions')}
         </Typography>
       ),
       selector: (row) => {
@@ -205,7 +208,7 @@ const SectorsTable = () => {
           <Typography variant="h1">
             {networkError==="ERR_NETWORK" ? (
               <Alert severity="error" variant="outlined">
-                Your internet connection may be unstable. Please try again 
+                {t('network_error_message')}
               </Alert>
             ) : null}
           </Typography>
@@ -216,10 +219,10 @@ const SectorsTable = () => {
 
       {openDialog && (
         <DeleteSectorDialog
-          title="Deleting Sector Info..."
-          text={`You are about to delete sector named "${
+          title={`${t('deleting_sector_info')}...`}
+          text={`${t('you_are_deleting_sector')} ${
             sector ? sector.name : ""
-          }". Are you sure?`}
+          }". ${t('are_you_sure')}`}
         />
       )}
       {showSectorAddForm && <CreateSector />}
@@ -229,19 +232,19 @@ const SectorsTable = () => {
             columns={columns}
             data={filteredSectors}
             progressPending={filteredSectors.length <= 0}
-            selectableRows
-            selectableRowsComponent={Checkbox} 
+            highlightOnHover
+            pointerOnHover
             progressComponent={
               <Box mb="20px">
               {/* Display progress bar if the data prop value is empty */}
               {
-                requestCompleted===1 && filteredSectors.length<=0 && networkErrorMessage!=="AxiosError" ? "No records found": (
+                requestCompleted===1 && filteredSectors.length<=0 && networkErrorMessage!=="AxiosError" ? `${t('no_record')}`: (
                   networkErrorMessage==="AxiosError" ? (
                     <>
                     <Typography
                       variant="body1"
                     >
-                      Your internet connection may be unstable. You can &nbsp;
+                      {t('network_error_message')} &nbsp;
                       <Button 
                         variant="outlined"
                         color="primary"
@@ -249,11 +252,11 @@ const SectorsTable = () => {
                         sx={{ textTransform:'none' }}
                         onClick={handleNetworkStatus}
                       >
-                        Try again <RefreshIcon />
+                        {t('try_again')} <RefreshIcon />
                       </Button>
                     </Typography>
                     </>
-                  ): "Please wait..."
+                  ): `${t('please_wait')}...`
                 )
               }
             </Box>
@@ -272,7 +275,7 @@ const SectorsTable = () => {
               >
                 <Box width="30%">
                   <TextField
-                    label="Search..."
+                    label={`${t('search')}...`}
                     variant="outlined"
                     size="small"
                     color="info"
@@ -290,7 +293,7 @@ const SectorsTable = () => {
                       sx={{ textTransform: "none" }}
                       onClick={hideForm}
                     >
-                      <VisibilityOffIcon /> Hide Form
+                      <VisibilityOffIcon fontSize="small" /> {t('hide_form')}
                     </Button>
                   ) : showSectorEditForm ? (
                     <Button
@@ -300,7 +303,7 @@ const SectorsTable = () => {
                       sx={{ textTransform: "none" }}
                       onClick={hideForm}
                     >
-                      <VisibilityOffIcon /> Hide Form
+                      <VisibilityOffIcon fontSize="small" /> {t('hide_form')}
                     </Button>
                   ) : (
                     <Button
@@ -310,7 +313,7 @@ const SectorsTable = () => {
                       sx={{ textTransform: "none" }}
                       onClick={showAddSectorForm}
                     >
-                      <AddIcon /> Add New Sector
+                      <AddIcon fontSize="small" /> {t('add_new_sector')}
                     </Button>
                   )}
                 </Box>

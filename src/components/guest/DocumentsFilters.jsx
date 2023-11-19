@@ -96,7 +96,7 @@ const DocumentsFilters = ({
         setLawCategories(res.data.data.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -125,7 +125,7 @@ const DocumentsFilters = ({
         setRegions(res.data.data.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -151,7 +151,7 @@ const DocumentsFilters = ({
         setInstitutions(res.data.data.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -172,7 +172,7 @@ const DocumentsFilters = ({
         setSectors(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -199,7 +199,7 @@ const DocumentsFilters = ({
         setLoading(false);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
         setLoading(false);
       });
   };
@@ -221,7 +221,7 @@ const DocumentsFilters = ({
         setLoading(false);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
         setLoading(false);
       });
   };
@@ -243,7 +243,6 @@ const DocumentsFilters = ({
         setLoading(false);
       })
       .catch((error) => {
-        console.log(error.response.message);
         setLoading(false);
       });
   };
@@ -265,7 +264,7 @@ const DocumentsFilters = ({
         setLoading(false);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
         setLoading(false);
       });
   };
@@ -305,7 +304,7 @@ const DocumentsFilters = ({
 
       <Box marginBottom="15px">
         <Typography variant="h6" fontWeight={600}>
-          {t("region_name")}
+          {t("filter_by_region_name")}
         </Typography>
 
         <div>

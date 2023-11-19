@@ -12,10 +12,13 @@ import {
 
 import { tokens } from "../../../theme";
 import { SectorsDataContext } from "../../../contexts/SectorsDataContext";
+import { useTranslation } from "react-i18next";
 
 const DeleteSectorDialog = ({ title, text }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const {t}=useTranslation();
 
   // SectorsDataContext
   const {
@@ -45,7 +48,7 @@ const DeleteSectorDialog = ({ title, text }) => {
             size="small"
             sx={{ textTransform: "none" }}
           >
-            Cancel
+            {t('cancel')}
           </Button>
           <Button
             onClick={() => deleteSector(sector.id)}
@@ -57,7 +60,7 @@ const DeleteSectorDialog = ({ title, text }) => {
               textTransform: "none",
             }}
           >
-            Delete
+            {t('delete')}
           </Button>
         </DialogActions>
       </Dialog>

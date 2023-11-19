@@ -47,6 +47,7 @@ import AssignedToComment from "./components/admin/drafts/AssignedToComment";
 import HelpCenter from "./components/documentation/HelpCenter";
 import ResourceCenter from "./components/documentation/admin_documentation/ResourceCenter";
 import PasswordChangeRequest from "./components/guest/PasswordChangeRequest";
+import PrepareTranslation from "./components/documentation/admin_documentation/PrepareTranslation";
 
 function App() {
   /**
@@ -254,6 +255,12 @@ function App() {
                   path="resource_center" 
                   element={<ResourceCenter />}
                 />
+
+                <Route
+                  path="prepare_language_translation" 
+                  element={<PrepareTranslation />}
+                />
+
                 <Route path="*" element={<PageNotFound />} />
               </Route>
             </Routes>

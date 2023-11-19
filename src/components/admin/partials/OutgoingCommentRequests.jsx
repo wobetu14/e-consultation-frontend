@@ -61,7 +61,7 @@ const OutgoingCommentRequests = () => {
         setDraftsData(res.data);
       })
       .catch((error) => {
-        console.log(error.message);
+        
       });
   };
 

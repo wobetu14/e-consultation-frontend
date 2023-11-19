@@ -45,7 +45,7 @@ export default function LanguageButton() {
 
   const currentLanguageCode=cookies.get('i18next') || 'en'
   const currentLanguage=appLanguages.find(l=>l.code===currentLanguageCode)
-  console.log(currentLanguage);
+  
 
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);

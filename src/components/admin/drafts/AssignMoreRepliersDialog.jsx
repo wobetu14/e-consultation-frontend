@@ -100,7 +100,6 @@ const AssignMoreRepliersDialog = ({
       }});
       setInstitutions(res.data.data.data);
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -112,11 +111,8 @@ const AssignMoreRepliersDialog = ({
         Accept: "application/json;",
         "Content-Type": "multipart/form-data"
       }});
-      console.log("My users");
-      console.log(res.data.data);
       setMyUsers(res.data.data);
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -138,7 +134,6 @@ const AssignMoreRepliersDialog = ({
   });
 
   const assignMoreRepliers = async (requestData) => {
-    console.log(requestData);
     setServerErrorMsg(null);
     setServerSuccessMsg(null);
     setNetworkError(null);

@@ -38,7 +38,7 @@ const PersonalInvitations = () => {
         setInvitedPeople(res.data.data);
       })
       .catch((error) => {
-        console.log(error.message);
+        
       });
   };
 

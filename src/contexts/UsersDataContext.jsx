@@ -83,7 +83,7 @@ export const UsersDataProvider = (props) => {
             setUser(res.data.data);
             setOpenDialog(true);
         } catch(error){
-            console.log(error);
+            
          }
       }
 

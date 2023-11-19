@@ -100,7 +100,7 @@ export const DraftsDataProvider = (props) => {
       setDraft(res.data.data.data);
       setOpenDialog(true);
     } catch (error) {
-      console.log(error);
+      
     }
   };
 

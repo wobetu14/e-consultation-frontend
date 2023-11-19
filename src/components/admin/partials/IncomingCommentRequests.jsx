@@ -92,7 +92,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
       )
       .then((res) => res.data.data)
       .then((res) => {
-        console.log("Incoming requests");
+        
         setIncomingCommentData(res);
         setNetworkError(null)
         setLoading(true)

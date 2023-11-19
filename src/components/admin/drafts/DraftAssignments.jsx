@@ -35,7 +35,7 @@ const DraftAssignments = () => {
         setNetworkErrorMessage(null);
       })
       .catch((error) => {
-        console.log(error);
+  
         setNetworkErrorMessage(error.name);
       });
   };

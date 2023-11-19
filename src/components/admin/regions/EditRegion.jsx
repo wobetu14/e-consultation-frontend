@@ -8,10 +8,13 @@ import axios from "../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
 import { RegionsDataContext } from "../../../contexts/RegionsDataContext";
 import { UserContext } from "../../../contexts/UserContext";
+import { useTranslation } from "react-i18next";
 
 const EditRegion = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const {t}=useTranslation();
 
   // User context
   const { userInfo } = useContext(UserContext);
@@ -80,7 +83,7 @@ const EditRegion = () => {
 
   return (
     <Box width={"95%"}>
-      <Header title="Create New Region" subtitle="" />
+      <Header title={t('update_region_info')} subtitle="" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -90,7 +93,7 @@ const EditRegion = () => {
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <TextField
-                label="Region Name"
+                label={`${t('region_name')} *`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -122,7 +125,7 @@ const EditRegion = () => {
                   }}
                   color="info"
                 >
-                  Save Changes
+                  {t('save_changes')}
                 </Button>
               </Grid>
             </Grid>

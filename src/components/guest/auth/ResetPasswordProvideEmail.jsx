@@ -65,7 +65,7 @@ const ResetPasswordProvideEmail = () => {
   });
 
   const sendPasswordResetCode = async (userData) => {
-    console.log(userData);
+  
     setLoading(true);
     return await axios
       .post("forgot-password", userData,
@@ -75,7 +75,6 @@ const ResetPasswordProvideEmail = () => {
         "Content-Type": "multipart/form-data"
       }})
       .then((res) => {
-        console.log(res.data);
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
         navigate("/reset_password", {

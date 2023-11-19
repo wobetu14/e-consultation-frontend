@@ -12,10 +12,13 @@ import {
 
 import { tokens } from "../../../theme";
 import { RegionsDataContext } from "../../../contexts/RegionsDataContext";
+import { useTranslation } from "react-i18next";
 
 const DeleteRegionDialog = ({ title, text }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const {t}=useTranslation();
 
   // RegionsDataContext
   const { region, openDialog, setOpenDialog, deleteRegion } =
@@ -41,7 +44,7 @@ const DeleteRegionDialog = ({ title, text }) => {
             size="small"
             sx={{ textTransform: "none" }}
           >
-            Cancel
+            {t('cancel')}
           </Button>
           <Button
             onClick={() => deleteRegion(region.id)}
@@ -53,7 +56,7 @@ const DeleteRegionDialog = ({ title, text }) => {
               textTransform: "none",
             }}
           >
-            Delete
+            {t('delete')}
           </Button>
         </DialogActions>
       </Dialog>

@@ -115,7 +115,7 @@ const AddDocumentLevelComments = ({
         "Content-Type": "multipart/form-data"
       }})
       .then((res) => {
-        console.log(res.data.message);
+        
         setServerSuccessMsg(res.data.success);
         setServerErrorMsg(null);
 

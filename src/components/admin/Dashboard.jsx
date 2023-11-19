@@ -12,9 +12,9 @@ import Drafts from "./drafts/Drafts";
 import axios from "../../axios/AxiosGlobal";
 import UserProfile from "./users/UserProfile";
 import './Dashboard.css'
+import { useTranslation } from "react-i18next";
 
 const Dashboard = () => {
-
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { userInfo, userRole, userToken, setUserInfo, setUserRole, setUserToken } = useContext(UserContext);
@@ -22,6 +22,8 @@ const Dashboard = () => {
   const [comments, setComments] = useState(0);
   const [users, setUsers] = useState(null);
   const [openDrafts, setOpenDrafts] = useState(0);
+
+  const {t}=useTranslation(); 
 
   /* useEffect(()=>{
     window.location.reload(true);
@@ -61,10 +63,8 @@ const Dashboard = () => {
         Accept: "application/json;",
         "Content-Type": "multipart/form-data"
       }});
-      console.log(res.data.data);
       setDrafts(res.data.data);
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -80,7 +80,6 @@ const Dashboard = () => {
       );
       setUsers(res.data.data);
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -92,10 +91,8 @@ const Dashboard = () => {
         Accept: "application/json;",
         "Content-Type": "multipart/form-data"
       }});
-      console.log(res.data);
       setComments(res.data);
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -107,10 +104,8 @@ const Dashboard = () => {
         Accept: "application/json;",
         "Content-Type": "multipart/form-data"
       }});
-      console.log(res.data);
-      setOpenDrafts(res.data);
+        setOpenDrafts(res.data);
     } catch (error) {
-      console.log(error);
     }
   };
 
@@ -120,7 +115,7 @@ const Dashboard = () => {
     } }} 
     >
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
+        <Header title={t('dashboard')} subtitle={t('dashboard_greeting')} />
       </Box>
 
       {userRole === "Uploader" || userRole === "Approver" ? (
@@ -150,7 +145,7 @@ const Dashboard = () => {
           >
             <StatBox
               title={drafts ? drafts.length : ""}
-              subtitle="Total Documents"
+              subtitle={t('total_documents')}
               icon={
                 <LibraryBooksIcon
                   sx={{ color: colors.primary[400], fontSize: "35px" }}
@@ -174,7 +169,7 @@ const Dashboard = () => {
           >
             <StatBox
               title={openDrafts > 0 ? openDrafts : 0}
-              subtitle="Open for Comment"
+              subtitle={t('opened_documents')}
               icon={
                 <MenuBookIcon
                   sx={{ color: colors.brandColor[300], fontSize: "35px" }}
@@ -198,7 +193,7 @@ const Dashboard = () => {
           >
             <StatBox
               title={users ? users.length : ""}
-              subtitle="Total Users"
+              subtitle={t('total_users')}
               icon={
                 <PersonAddIcon
                   sx={{ color: colors.brandColor[300], fontSize: "35px" }}
@@ -217,12 +212,12 @@ const Dashboard = () => {
               /* border: "2px solid",
               borderColor: colors.yellowColor[300], */
               boxShadow: "5px, 10px",
-              width:'300px'
+              width:'300px',
             }}
           >
             <StatBox
               title={comments > 0 ? comments : 0}
-              subtitle="Total Comments"
+              subtitle={t('total_comments')}
               icon={
                 <CommentIcon
                   sx={{ color: colors.yellowColor[300], fontSize: "26px" }}

@@ -11,10 +11,12 @@ import {
     } from '@mui/material'
 import { UsersDataContext } from '../contexts/UsersDataContext';
 import { tokens } from '../theme';
+import { useTranslation } from 'react-i18next';
 
 const DeleteUserDialog = ({title, text}) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode); 
+    const {t}=useTranslation();
     
     // UsersDataContext
     const {
@@ -49,7 +51,7 @@ const DeleteUserDialog = ({title, text}) => {
               size="small"
               sx={{ textTransform:"none" }}
               >
-                  Cancel
+                  {t('cancel')}
               </Button>
              <Button 
                 onClick={()=>deleteUser(user.id)}
@@ -57,7 +59,7 @@ const DeleteUserDialog = ({title, text}) => {
                 size="small"
                 sx={{ backgroundColor: colors.dangerColor[200], color:colors.grey[300], textTransform:"none"}}
              >
-                Delete
+                {t('delete')}
             </Button>
          </DialogActions>
      </Dialog>

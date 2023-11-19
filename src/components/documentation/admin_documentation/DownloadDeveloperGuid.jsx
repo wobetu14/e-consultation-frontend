@@ -4,17 +4,19 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import DeveloperGuide from '../downloadable_files/FDRE E-Consultation Portal - Developer Guide.pdf';
+import { useTranslation } from 'react-i18next';
 
 const DownloadDeveloperGuide = () => {
+  const {t}=useTranslation();
   return (
     <Card sx={{ minWidth: 275 }} variant="outlined">
       <CardContent>
         <Typography variant="body1" sx={{ fontWeight:"600" }}>
-            Developer Guide
+            {t('developer_guide')}
         </Typography>
 
         <Typography gutterBottom>
-          A guide to help developers to configure, maintain and scale up the project.
+          {t('developer_guide_description')}
         </Typography>
         <Button
          href={DeveloperGuide}
@@ -24,7 +26,7 @@ const DownloadDeveloperGuide = () => {
          sx={{ textTransform:"none" }}
          >
             <Typography>
-             Download
+             {t('download')}
             </Typography>
         </Button>
       </CardContent>

@@ -34,7 +34,7 @@ const AccountActivation = () => {
         "Content-Type": "multipart/form-data"
       }})
       .then((res) => {
-        console.log(res.data.data.user.roles[0].name);
+        
 
 
         // if (res.status !== 200) {

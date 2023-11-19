@@ -7,8 +7,11 @@ import Header from "../AdminHeader";
 import axios from "../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
 import { RegionsDataContext } from "../../../contexts/RegionsDataContext";
+import { useTranslation } from "react-i18next";
+
 
 const CreateRegion = () => {
+  const {t}=useTranslation();
   const { 
     setServerErrorMsg, 
     setServerSuccessMsg, 
@@ -33,7 +36,7 @@ const CreateRegion = () => {
 
     validationSchema: YUP.object({
       regionName: YUP.string().required(
-        "This field is required. Please enter the region name."
+        `${t('field_required')}${t('please_enter_region_name')}`
       ),
     }),
 
@@ -60,7 +63,7 @@ const CreateRegion = () => {
         "Content-Type": "multipart/form-data"
       }})
       .then((res) => {
-        console.log(res);
+        
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
         setNetworkError(null)
@@ -78,7 +81,7 @@ const CreateRegion = () => {
 
   return (
     <Box width={"95%"}>
-      <Header title="Create New Region" subtitle="" />
+      <Header title={t('add_new_region')} subtitle="" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -89,7 +92,7 @@ const CreateRegion = () => {
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <TextField
-                label="Region Name *"
+                label={`${t('region_name')} *`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -116,7 +119,7 @@ const CreateRegion = () => {
                   sx={{ align: "right", textTransform: "none" }}
                   color="secondary"
                 >
-                  Save{" "}
+                  {t('save')}{" "}
                 </Button>
               </Grid>
             </Grid>

@@ -21,6 +21,7 @@ import axios from "../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
 import { UserContext } from "../../../contexts/UserContext";
 import { InstitutionsDataContext } from "../../../contexts/InstitutionsDataContext";
+import { useTranslation } from "react-i18next";
 
 const CreateInstitution = () => {
   const theme = useTheme();
@@ -31,6 +32,8 @@ const CreateInstitution = () => {
 
   const [regions, setRegions] = useState(null);
   const [sectors, setSectors] = useState(null);
+
+  const {t}=useTranslation();
 
   // User context
   const { userInfo } = useContext(UserContext);
@@ -76,7 +79,7 @@ const CreateInstitution = () => {
         setInstitutionTypes(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -97,7 +100,7 @@ const CreateInstitution = () => {
         setInstitutionCategories(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -118,7 +121,7 @@ const CreateInstitution = () => {
         setInstitutionLevels(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -135,7 +138,7 @@ const CreateInstitution = () => {
         setRegions(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -152,7 +155,7 @@ const CreateInstitution = () => {
         setSectors(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -220,7 +223,7 @@ const CreateInstitution = () => {
 
   return (
     <Box width={"95%"}>
-      <Header title="Update Institution Info" subtitle="" />
+      <Header title={t('update_institution_info')} subtitle="" />
       <h3>{formik.values.institutionName}</h3>
       <motion.span
         initial={{ opacity: 0 }}
@@ -231,7 +234,7 @@ const CreateInstitution = () => {
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <TextField
-                label="Institution Name"
+                label={t('institution')}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -244,7 +247,7 @@ const CreateInstitution = () => {
               />
 
               <FormControl sx={{ minWidth: "100%", paddingBottom: "30px" }}>
-                <InputLabel>Select Institution Category</InputLabel>
+                <InputLabel>{t('select_institution_category')}</InputLabel>
                 <Select
                   labelId="institution_category_id"
                   id="institution_category"
@@ -270,7 +273,7 @@ const CreateInstitution = () => {
               </FormControl>
 
               <FormControl sx={{ minWidth: "100%", paddingBottom: "30px" }}>
-                <InputLabel>Select Institution Level</InputLabel>
+                <InputLabel>{t('select_institution_level')}</InputLabel>
                 <Select
                   labelId="institution_level_id"
                   id="institution_level"
@@ -297,7 +300,7 @@ const CreateInstitution = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label="Email Address"
+                label={t('email_address')}
                 variant="outlined"
                 size="small"
                 type="email"
@@ -310,7 +313,7 @@ const CreateInstitution = () => {
                 onChange={formik.handleChange}
               />
               <TextField
-                label="Telephone Number"
+                label={t('telephone')}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -324,7 +327,7 @@ const CreateInstitution = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label="Address"
+                label={t('address')}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -337,7 +340,7 @@ const CreateInstitution = () => {
               />
 
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                Can this institution create draft document?
+                {t('can_create_draft')}
               </Typography>
               <RadioGroup
                 aria-labelledby="demo-controlled-radio-buttons-group"
@@ -350,13 +353,13 @@ const CreateInstitution = () => {
                   value={1}
                   checked={canCreateDraft === 1}
                   control={<Radio />}
-                  label="Yes"
+                  label={t('yes')}
                 />
                 <FormControlLabel
                   value={0}
                   checked={canCreateDraft === 0}
                   control={<Radio />}
-                  label="No"
+                  label={t('no')}
                 />
               </RadioGroup>
 
@@ -373,7 +376,7 @@ const CreateInstitution = () => {
                   }}
                   color="info"
                 >
-                  Save Changes{" "}
+                  {t('save_changes')}{" "}
                 </Button>
               </Grid>
             </Grid>

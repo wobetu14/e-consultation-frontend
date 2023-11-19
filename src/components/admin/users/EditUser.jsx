@@ -18,6 +18,7 @@ import axios from "../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
 import { UserContext } from "../../../contexts/UserContext";
 import { UsersDataContext } from "../../../contexts/UsersDataContext";
+import { useTranslation } from "react-i18next";
 
 const EditUser = () => {
   const theme = useTheme();
@@ -26,6 +27,8 @@ const EditUser = () => {
   const [institutions, setInstitutions] = useState(null);
   const [regions, setRegions] = useState(null);
   const [userRoles, setUserRoles] = useState(null);
+
+  const {t} = useTranslation()
 
   // User context
   const { userInfo, userRole } = useContext(UserContext);
@@ -73,7 +76,7 @@ const EditUser = () => {
         setRegions(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -90,7 +93,7 @@ const EditUser = () => {
         setInstitutions(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -107,7 +110,7 @@ const EditUser = () => {
         setUserRoles(res);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -149,7 +152,12 @@ const EditUser = () => {
     setServerSuccessMsg(null);
     setLoading(true);
     try {
-      const res = await axios.post(`users/${user.id}`, userData);
+      const res = await axios.post(`users/${user.id}`, userData,
+      {headers:{
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Accept: "application/json;",
+        "Content-Type": "multipart/form-data"
+      }});
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null);
       setShowUserEditForm(false);
@@ -166,7 +174,7 @@ const EditUser = () => {
 
   return (
     <Box m="0" width={"95%"}>
-      <Header title="Edit user information" subtitle="" />
+      <Header title={t('edit_user')} subtitle="" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -176,7 +184,7 @@ const EditUser = () => {
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <TextField
-                label="First Name *"
+                label={`${t('first_name')}`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -195,7 +203,7 @@ const EditUser = () => {
                 }
               />
               <TextField
-                label="Mobile Number *"
+                label={`${t('mobile_number')}`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -217,7 +225,7 @@ const EditUser = () => {
                 userInfo.user.roles[0].name === "Super Admin" &&
                 formik.values.roleID === 4 ? (
                   <FormControl sx={{ minWidth: "100%", paddingBottom: "5px" }}>
-                    <InputLabel>Select Region *</InputLabel>
+                    <InputLabel>{t('region')}</InputLabel>
                     <Select
                       labelId="region_id"
                       id="region_id"
@@ -267,7 +275,7 @@ const EditUser = () => {
                 ""
               ) : (
                 <FormControl sx={{ minWidth: "100%", paddingBottom: "5px" }}>
-                  <InputLabel>Select Institution</InputLabel>
+                  <InputLabel>{t('institution')}</InputLabel>
                   <Select
                     labelId="institution_id"
                     id="institution_id"
@@ -306,7 +314,7 @@ const EditUser = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label="Middle Name *"
+                label={`${t('middle_name')} *`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -325,7 +333,7 @@ const EditUser = () => {
                 }
               />
               <TextField
-                label="Email Address *"
+                label={`${t('email_address')}`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -344,7 +352,7 @@ const EditUser = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label="Last Name *"
+                label={`${t('last_name')}`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -364,7 +372,7 @@ const EditUser = () => {
               />
 
               <FormControl sx={{ minWidth: "100%", paddingBottom: "30px" }}>
-                <InputLabel>Select User Role *</InputLabel>
+                <InputLabel>{t('select_user_role')}</InputLabel>
                 <Select
                   labelId="user_role"
                   size="small"
@@ -409,7 +417,7 @@ const EditUser = () => {
                   }}
                   color="info"
                 >
-                  Save Changes{" "}
+                  {t('save_changes')}{" "}
                 </Button>
               </Grid>
             </Grid>

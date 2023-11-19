@@ -10,7 +10,6 @@ import { UserContext } from "../contexts/UserContext";
  * baseURL, header (authorization, Accept data type) etc
  */
 
-//  https://backend.e-consultation.gov.et
 
 const instance = axios.create({
   baseURL: "https://backend.e-consultation.gov.et/api/v1/",

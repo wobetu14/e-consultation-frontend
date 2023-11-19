@@ -38,7 +38,6 @@ const CommentRepliers = () => {
         setAssignedPeople(res.data.data);
       })
       .catch((error) => {
-        console.log(error.message);
       });
   };
 

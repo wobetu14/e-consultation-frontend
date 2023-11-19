@@ -84,7 +84,7 @@ const PasswordChangeRequest = () => {
   });
 
   const changePassword = async (userData) => {
-    console.log(userData);
+    
     setLoading(true);
     return await axios
       .post("change-password", userData, 
@@ -94,7 +94,6 @@ const PasswordChangeRequest = () => {
         "Content-Type": "multipart/form-data"
       }})
       .then((res) => {
-        console.log(res.data);
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
         formikChangePassword.resetForm();

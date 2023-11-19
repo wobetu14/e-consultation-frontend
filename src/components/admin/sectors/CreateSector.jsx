@@ -8,11 +8,14 @@ import axios from "../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
 import { UserContext } from "../../../contexts/UserContext";
 import { SectorsDataContext } from "../../../contexts/SectorsDataContext";
+import { useTranslation } from "react-i18next";
 
 const CreateSector = () => {
   
   // User context
   const { userInfo } = useContext(UserContext);
+
+  const {t}=useTranslation();
   const { 
     setServerErrorMsg, 
     setServerSuccessMsg, 
@@ -38,7 +41,7 @@ const CreateSector = () => {
 
     validationSchema: YUP.object({
       sectorName: YUP.string().required(
-        "This field is required. Please enter the sector name."
+        `${t('field_required')}${t('please_enter_sector_name')}`
       ),
     }),
 
@@ -84,7 +87,7 @@ const CreateSector = () => {
 
   return (
     <Box width={"95%"}>
-      <Header title="Create New Sector" subtitle="" />
+      <Header title={t('add_new_sector')} subtitle="" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -94,7 +97,7 @@ const CreateSector = () => {
           <Grid container spacing={1}>
             <Grid item xs={5}>
               <TextField
-                label="Name of economic sector *"
+                label={`${t('name_of_economic_sector')} *`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -116,7 +119,7 @@ const CreateSector = () => {
 
             <Grid item xs={5}>
               <TextField
-                label="Short description"
+                label={t('description')}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -148,7 +151,7 @@ const CreateSector = () => {
                   sx={{ align: "right", textTransform: "none" }}
                   color="secondary"
                 >
-                  Save
+                  {t('save')}
                 </Button>
               </Grid>
             </Grid>

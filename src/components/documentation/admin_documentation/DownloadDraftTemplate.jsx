@@ -4,17 +4,19 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import DraftTemplateDoc from '../downloadable_files/FDRE E-Consultation Portal - Draft Template.docx';
+import { useTranslation } from 'react-i18next';
 
 const DownloadDraftTemplate = () => {
+  const {t}=useTranslation();
   return (
     <Card sx={{ minWidth: 275 }} variant="outlined">
       <CardContent>
         <Typography variant="body1" sx={{ fontWeight:"600" }}>
-            Draft Template
+            {t('draft_template')}
         </Typography>
 
         <Typography gutterBottom>
-            A template that help you to prepare the draft document.
+            {t('draft_template_description')}
         </Typography>
 
         <Button
@@ -25,7 +27,7 @@ const DownloadDraftTemplate = () => {
          sx={{ textTransform:"none" }}
          >
             <Typography>
-              Download
+              {t('download')}
             </Typography>
         </Button>
       </CardContent>

@@ -93,7 +93,6 @@ const ResetPassword = () => {
         "Content-Type": "multipart/form-data"
       }})
       .then((res) => {
-        console.log(res.data);
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
         formikResetPassword.resetForm();

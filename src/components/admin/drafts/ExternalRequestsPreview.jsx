@@ -62,7 +62,6 @@ const ExternalRequestsPreview = () => {
       Accept: "application/json;",
       "Content-Type": "multipart/form-data"
     }}).then((response) => {
-      console.log(response.data.data);
       setDocumentDetail(response.data.data);
     });
   };

@@ -13,10 +13,13 @@ import "yup-phone";
 import {useState } from "react";
 import axios from "../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const ChangePassword = () => {
   const [serverErrorMsg, setServerErrorMsg] = useState(null);
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
+  
+  const {t}=useTranslation()
 
   const [loading, setLoading] = useState(false);
 
@@ -47,18 +50,18 @@ const ChangePassword = () => {
 
     validationSchema: YUP.object({
       oldPassword: YUP.string().required(
-        "This field is required. Please enter your old password."
+       `${t('field_required')} ${t('please_enter_old_password')}`
       ),
       newPassword: YUP.string().required(
-        "This field is required. Please enter your new password."
+        `${t('field_required')} ${t('please_enter_new_password')}`
       ),
       confirmPassword: YUP.string()
         .required(
-          "This field is required. Please re-enter password to confirm."
+          `${t('field_required')} ${t('please_confirm_password')}`
         )
         .oneOf(
           [YUP.ref("newPassword"), null],
-          "Confirmation password didn't match."
+          `${t('password_mismatch')}`
         ),
     }),
 
@@ -74,7 +77,6 @@ const ChangePassword = () => {
   });
 
   const changePassword = async (userData) => {
-    console.log(userData);
     setLoading(true);
     return await axios
       .post("change-password", userData, 
@@ -84,7 +86,7 @@ const ChangePassword = () => {
         "Content-Type": "multipart/form-data"
       }})
       .then((res) => {
-        console.log(res.data);
+        
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
         formikChangePassword.resetForm();
@@ -134,7 +136,7 @@ const ChangePassword = () => {
           {/* <Grid container spacing={2}>
           <Grid item xs={4}> */}
           <TextField
-            label="Enter old password *"
+            label={`${t('enter_old_password')} *`}
             type="password"
             variant="outlined"
             size="small"
@@ -155,7 +157,7 @@ const ChangePassword = () => {
             }
           />
           <TextField
-            label="Enter new password *"
+            label={`${t('enter_new_password')} *`}
             type="password"
             variant="outlined"
             size="small"
@@ -177,7 +179,7 @@ const ChangePassword = () => {
           />
 
           <TextField
-            label="Confirm Password *"
+            label={`${t('confirm_password')}`}
             type="password"
             variant="outlined"
             size="small"
@@ -206,7 +208,7 @@ const ChangePassword = () => {
               sx={{ align: "right", textTransform: "none" }}
               color="info"
             >
-              Change Password
+              {t('change_password')}
             </Button>
           </Grid>
         </form>

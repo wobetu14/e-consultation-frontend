@@ -40,7 +40,7 @@ const CommenterDashboard = () => {
       }});
       setDrafts(res.data.data);
     } catch (error) {
-      console.log(error);
+      
     }
   };
 
@@ -56,7 +56,7 @@ const CommenterDashboard = () => {
       );
       setUsers(res.data.data);
     } catch (error) {
-      console.log(error);
+      
     }
   };
 
@@ -70,7 +70,7 @@ const CommenterDashboard = () => {
       }});
       setComments(res.data);
     } catch (error) {
-      console.log(error);
+      
     }
   };
 
@@ -84,7 +84,7 @@ const CommenterDashboard = () => {
       }});
       setOpenDrafts(res.data);
     } catch (error) {
-      console.log(error);
+      
     }
   };
 

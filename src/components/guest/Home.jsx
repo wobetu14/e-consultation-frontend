@@ -65,7 +65,7 @@ const Home = () => {
         setDrafts(res.data.data.data);
       })
       .catch((error) => {
-        console.log(error.message);
+        
       });
   };
 
@@ -97,8 +97,6 @@ const Home = () => {
       })
       .catch((error) => {
         setNetworkError(error.name);
-        console.log(error.response.data.message);
-        console.log(error.name);
       });
   };
 
@@ -138,7 +136,7 @@ const Home = () => {
           setDrafts(response.data.data.data);
         })
         .catch((e) => {
-          console.log(e.message);
+          
         });
     }
   };

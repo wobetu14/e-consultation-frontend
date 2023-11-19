@@ -21,6 +21,7 @@ import axios from "../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
 import { UserContext } from "../../../contexts/UserContext";
 import { InstitutionsDataContext } from "../../../contexts/InstitutionsDataContext";
+import { useTranslation } from "react-i18next";
 
 const CreateInstitution = () => {
   const [institutionsTypes, setInstitutionTypes] = useState(null);
@@ -28,6 +29,8 @@ const CreateInstitution = () => {
   const [institutionsLevels, setInstitutionLevels] = useState(null);
   const [regions, setRegions] = useState(null);
   const [sectors, setSectors] = useState(null);
+
+  const {t}=useTranslation();
 
   // User context
   const { userInfo} =
@@ -72,7 +75,7 @@ const CreateInstitution = () => {
         setInstitutionTypes(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -93,7 +96,7 @@ const CreateInstitution = () => {
         setInstitutionCategories(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -114,7 +117,7 @@ const CreateInstitution = () => {
         setInstitutionLevels(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -131,7 +134,7 @@ const CreateInstitution = () => {
         setRegions(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -148,7 +151,7 @@ const CreateInstitution = () => {
         setSectors(res.data);
       })
       .catch((error) => {
-        console.log(error.response.message);
+        
       });
   };
 
@@ -171,24 +174,25 @@ const CreateInstitution = () => {
 
     validationSchema: YUP.object({
       institutionName: YUP.string().required(
-        "This field is required. Please enter the institution name."
+        `${t('field_required')}${t('please_enter_institution_name')}`
       ),
 
       institutionCategoryId: YUP.number().required(
-        "This field is required. Please select institution category."
+        `${t('field_required')}${t('please_select_institution_category')}`
       ),
       // institutionLevelId:YUP.number().required("This field is required. Please select level of institution."),
 
       telephone: YUP.string()
-        .required("This field is required. Please enter mobile number.")
+        .required(`${t('field_required')}${t('please_enter_mobile_number')}`)
         .phone(
           "ET",
           true,
-          "Invalid phone number. Use +251, or 251 or 09... etc. Note: phone numbers starting with 07 are invalid for the time being."
+          `${t('invalid_phone_number')}`,
+          // "Invalid phone number. Use +251, or 251 or 09... etc. Note: phone numbers starting with 07 are invalid for the time being."
         ),
       email: YUP.string()
-        .required("This field is required. Please enter email address.")
-        .email("Invalid email address"),
+        .required(`${t('field_required')}${t('please_enter_email_address')}`)
+        .email(`${t('invalid_email')}`),
       canCreateDraft: YUP.number().required(
         "This field is required. Please choose an option."
       ),
@@ -225,7 +229,7 @@ const CreateInstitution = () => {
       }}, 
       )
       .then((res) => {
-        console.log(res);
+        
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
         formik.resetForm();
@@ -243,7 +247,7 @@ const CreateInstitution = () => {
 
   return (
     <Box width={"95%"}>
-      <Header title="Create New Institution" subtitle="" />
+      <Header title={t('add_new_institution')} subtitle="" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -253,7 +257,7 @@ const CreateInstitution = () => {
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <TextField
-                label="Institution Name *"
+                label={`${t('institution')} *`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -274,7 +278,7 @@ const CreateInstitution = () => {
               />
 
               <FormControl sx={{ minWidth: "100%", paddingBottom: "30px" }}>
-                <InputLabel>Select Institution Category *</InputLabel>
+                <InputLabel>{t('select_institution_category')} *</InputLabel>
                 <Select
                   labelId="institution_category_id"
                   id="institution_category"
@@ -317,7 +321,7 @@ const CreateInstitution = () => {
               </FormControl>
 
               <FormControl sx={{ minWidth: "100%", paddingBottom: "30px" }}>
-                <InputLabel>Select Institution Level</InputLabel>
+                <InputLabel>{t('select_institution_level')}</InputLabel>
                 <Select
                   labelId="institution_level_id"
                   id="institution_level"
@@ -361,7 +365,7 @@ const CreateInstitution = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label="Email Address *"
+                label={`${t('email_address')} *`}
                 variant="outlined"
                 size="small"
                 type="email"
@@ -379,7 +383,7 @@ const CreateInstitution = () => {
                 }
               />
               <TextField
-                label="Telephone Number *"
+                label={`${t('telephone')}`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -400,7 +404,7 @@ const CreateInstitution = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label="Address"
+                label={t('address')}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -418,7 +422,7 @@ const CreateInstitution = () => {
               />
 
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                Can this institution create draft document? *
+                {t('can_create_draft')} *
               </Typography>
               <RadioGroup
                 aria-labelledby="demo-controlled-radio-buttons-group"
@@ -427,8 +431,8 @@ const CreateInstitution = () => {
                 value={formik.values.canCreateDraft}
                 onChange={formik.handleChange}
               >
-                <FormControlLabel value={1} control={<Radio />} label="Yes" />
-                <FormControlLabel value={0} control={<Radio />} label="No" />
+                <FormControlLabel value={1} control={<Radio />} label={t('yes')} />
+                <FormControlLabel value={0} control={<Radio />} label={t('no')} />
               </RadioGroup>
 
               <Grid sx={{ paddingBottom: "20px" }} align="right">
@@ -439,7 +443,7 @@ const CreateInstitution = () => {
                   sx={{ align: "right", textTransform: "none" }}
                   color="secondary"
                 >
-                  Save{" "}
+                  {t('save')}{" "}
                 </Button>
               </Grid>
             </Grid>

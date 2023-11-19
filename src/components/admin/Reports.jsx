@@ -1,12 +1,14 @@
 import { Typography, Button, Box } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { rootURL } from "../../axios/AxiosGlobal";
 import Header from "./AdminHeader";
 const Reports = () => {
+  const {t}=useTranslation();
   return (
     <Box m="0 20px" width={"95%"}>
-      <Header title="Audit activities and other reports " subtitle="" />
+      <Header title={t('audit_reports')} subtitle="" />
       <Typography variant="h5" sx={{ fontWeight: "600" }}>
-        Audit Activities
+       {t('audit_activities')}
       </Typography>
       <Button
         href={`${rootURL}report/audit`}
@@ -16,11 +18,11 @@ const Reports = () => {
         target="_blank"
         sx={{ textTransform: "none", marginBottom: "20px" }}
       >
-        Download audit activities
+        {t('download_audit_reports')}
       </Button>
 
       <Typography variant="h5" sx={{ fontWeight: "600" }}>
-        Draft Document Report
+        {t('draft_document_report')}
       </Typography>
       <Button
         href={`${rootURL}report/drafts`}
@@ -30,7 +32,7 @@ const Reports = () => {
         color="secondary"
         sx={{ textTransform: "none", marginBottom: "20px" }}
       >
-        Download draft document report
+        {t('download_draft_document_report')}
       </Button>
     </Box>
   );
