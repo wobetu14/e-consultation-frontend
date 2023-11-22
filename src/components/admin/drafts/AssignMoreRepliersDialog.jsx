@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import { tokens } from "../../../theme";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 
 const AssignMoreRepliersDialog = ({
   draftID,
@@ -45,6 +46,8 @@ const AssignMoreRepliersDialog = ({
   const [repliersID, setRepliersID] = useState([]);
   const [loading, setLoading] = useState(false);
   const [networkError, setNetworkError]=useState(null);
+
+  const {t}=useTranslation();
 
   const errorStyle = {
     color: "red",
@@ -195,7 +198,7 @@ const AssignMoreRepliersDialog = ({
               <Typography variant="h1">
                 {networkError==="ERR_NETWORK" ? (
                   <Alert severity="error" style={errorStyle}>
-                    Your internet connection may be unstable. Please try again.
+                    {t('network_error_message')}
                   </Alert>
                 ) : null}
               </Typography>
@@ -209,7 +212,7 @@ const AssignMoreRepliersDialog = ({
             onSubmit={formikAcceptanceForm.handleSubmit}
           >
             <Typography variant="subtitle1" fontWeight="600">
-              Assign Repliers
+              {t('assign_repliers')}
             </Typography>
             <Autocomplete
               multiple
@@ -227,8 +230,9 @@ const AssignMoreRepliersDialog = ({
                 <TextField
                   {...params}
                   variant="standard"
-                  label="Enter email addresses"
+                  label={t('enter_email_address')}
                   value={(option) => option}
+                  color="info"
                 />
               )}
             />
@@ -247,7 +251,7 @@ const AssignMoreRepliersDialog = ({
                 }}
                 onClick={assignMoreRepliers}
               >
-                <Typography variant="body2">Assign and close</Typography>
+                <Typography variant="body2">{t('assign_and_close')}</Typography>
               </Button>
             </Box>
           </form>
@@ -260,7 +264,7 @@ const AssignMoreRepliersDialog = ({
             color="secondary"
             sx={{ textTransform: "none" }}
           >
-            <Typography variant="body2">Cancel</Typography>
+            <Typography variant="body2">{t('cancel')}</Typography>
           </Button>
         </DialogActions>
       </DialogContent>

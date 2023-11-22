@@ -20,6 +20,7 @@ import {
 
 import { Formik, useFormik } from "formik";
 import { tokens } from "../../../../theme";
+import { useTranslation } from "react-i18next";
 
 const AcceptExternalRequestDialog = ({
   requestID,
@@ -42,6 +43,8 @@ const AcceptExternalRequestDialog = ({
   const [repliersID, setRepliersID] = useState([]);
   const [loading, setLoading] = useState(false);
   const [networkError, setNetworkError]=useState(null);
+
+  const {t}=useTranslation();
 
   const errorStyle = {
     color: "red",
@@ -166,7 +169,7 @@ const AcceptExternalRequestDialog = ({
               <Typography variant="h1">
                 {networkError ? (
                   <Alert severity="success" style={successStyle}>
-                    Your internet connection may be unstable. Please try again.
+                    {t('network_error_message')}
                   </Alert>
                 ) : null}
               </Typography>
@@ -187,7 +190,7 @@ const AcceptExternalRequestDialog = ({
             onSubmit={formikAcceptanceForm.handleSubmit}
           >
             <TextField
-              label="Write acceptance message (not mandatory)"
+              label={`${t('write_acceptance_message')} (${t('not_mandatory')})`}
               variant="outlined"
               size="small"
               fullWidth
@@ -202,7 +205,7 @@ const AcceptExternalRequestDialog = ({
             />
 
             <Typography variant="subtitle1" fontWeight="600">
-              Assign Commenters
+              {t('assign_commenters')}
             </Typography>
             <Autocomplete
               multiple
@@ -221,7 +224,7 @@ const AcceptExternalRequestDialog = ({
                 <TextField
                   {...params}
                   variant="outlined"
-                  label="Select Commenters"
+                  label={t('select_commenters')}
                   color="info"
                   value={(option) => option}
                 />
@@ -241,7 +244,7 @@ const AcceptExternalRequestDialog = ({
                   color: colors[300],
                 }}
               >
-                <Typography variant="body2">Accept and close</Typography>
+                <Typography variant="body2">{`${t('accept')} ${t('and')} ${t('close')}`}</Typography>
               </Button>
             </Box>
           </form>
@@ -254,7 +257,7 @@ const AcceptExternalRequestDialog = ({
             color="secondary"
             sx={{ textTransform: "none" }}
           >
-            <Typography variant="body2">Cancel</Typography>
+            <Typography variant="body2">{t('cancel')}</Typography>
           </Button>
         </DialogActions>
       </DialogContent>

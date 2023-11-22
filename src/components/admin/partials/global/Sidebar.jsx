@@ -393,7 +393,7 @@ const Sidebar = () => {
                         /> */}
 
                 <Item
-                  title="Opening Request"
+                  title={t('opening_request')}
                   to="draft_approval_request"
                   icon={<FactCheckIcon />}
                   selected={selected}
@@ -401,7 +401,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title="Incoming Requests"
+                  title={t('incoming_requests')}
                   to="external_comment_requests"
                   icon={<ScheduleSendIcon />}
                   selected={selected}
@@ -439,7 +439,7 @@ const Sidebar = () => {
                     /> */}
 
                 <Item
-                  title="Opening Request"
+                  title={t('opening_request')}
                   to="draft_approval_request"
                   icon={<FactCheckIcon />}
                   selected={selected}

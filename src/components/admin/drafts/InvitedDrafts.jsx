@@ -12,10 +12,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { useTranslation } from "react-i18next";
 
 const InvitedDrafts = () => {
   const [invitedDrafts, setInvitedDrafts] = useState(null);
-  const [networkErrorMessage, setNetworkErrorMessage]=useState(null)
+  const [networkErrorMessage, setNetworkErrorMessage]=useState(null);
+
+  const {t}=useTranslation();
 
   const fetchInvitedDrafts = async () => {
     setNetworkErrorMessage(null)
@@ -47,7 +50,7 @@ const InvitedDrafts = () => {
 
   return (
     <Box m="0 20px" width={"95%"}>
-      <Header title="List of draft documents I have been invited to provide comments" />
+      <Header title={t('list_of_invited_drafts')} />
 
       <TableContainer
         component={Paper}
@@ -58,19 +61,19 @@ const InvitedDrafts = () => {
             <TableRow>
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  Draft Title
+                  {t('short_title')}
                 </Typography>
               </TableCell>
 
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  Institution
+                  {t('institution')}
                 </Typography>
               </TableCell>
 
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  Message
+                  {t('message')}
                 </Typography>
               </TableCell>
             </TableRow>
@@ -107,7 +110,7 @@ const InvitedDrafts = () => {
                       sx={{ textTransform: "none", marginRight: "5px" }}
                     >
                       <Typography variant="body1">
-                        Please provide your feedback on this draft document
+                        {t('please_provide_your_feedback')}
                       </Typography>
                     </Button>
                   </TableCell>
@@ -117,7 +120,7 @@ const InvitedDrafts = () => {
               <Typography
               variant="body1"
               >
-              Your internet connection may be unstable. You can &nbsp;
+              {t('network_error_message')} &nbsp;
                 <Button 
                   variant="outlined"
                   color="primary"
@@ -125,7 +128,7 @@ const InvitedDrafts = () => {
                   sx={{ textTransform:'none' }}
                   onClick={handleNetworkStatus}
                 >
-                  Try again <RefreshIcon />
+                  {t('try_again')} <RefreshIcon />
                 </Button>
             </Typography> 
              ):
@@ -133,7 +136,7 @@ const InvitedDrafts = () => {
                   // <CircularProgress color="secondary" />
 
                     <Typography variant="body1">
-                      Please wait...
+                      {t('please_wait')}...
                     </Typography>
 
             )}

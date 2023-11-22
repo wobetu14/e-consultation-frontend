@@ -12,10 +12,13 @@ import {
 
 import { DraftsDataContext } from "../../../contexts/DraftsDataContext";
 import { tokens } from "../../../theme";
+import { useTranslation } from 'react-i18next';
 
 const DeleteDraftDialog = ({ title, text }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const {t}=useTranslation();
 
   // DraftsDataContext
   const { draft, openDialog, setOpenDialog, deleteDraft } =
@@ -41,7 +44,7 @@ const DeleteDraftDialog = ({ title, text }) => {
             size="small"
             sx={{ textTransform: "none" }}
           >
-            Cancel
+            {t('cancel')}
           </Button>
           <Button
             onClick={() => deleteDraft(draft.id)}
@@ -53,7 +56,7 @@ const DeleteDraftDialog = ({ title, text }) => {
               textTransform: "none",
             }}
           >
-            Delete
+            {t('delete')}
           </Button>
         </DialogActions>
       </Dialog>

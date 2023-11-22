@@ -14,10 +14,13 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "../../../axios/AxiosGlobal";
 import { useParams } from "react-router-dom";
 import { UserContext } from "../../../contexts/UserContext";
+import { useTranslation } from "react-i18next";
 
 const InstitutionInvitations = ({ documentDetail }) => {
   const [invitedInstitutions, setInvitedInstitutions] = useState(null);
   const params = useParams();
+
+  const {t}=useTranslation();
 
   // User context
   const { userInfo, userRole } =
@@ -48,7 +51,7 @@ const InstitutionInvitations = ({ documentDetail }) => {
   return (
     <Box m="0 20px" width={"95%"}>
       <Typography variant="h5" fontWeight="600">
-        Invitations to Institutions
+        {t('invitations_to_institutions')}
       </Typography>
       <TableContainer
         component={Paper}
@@ -60,7 +63,7 @@ const InstitutionInvitations = ({ documentDetail }) => {
               {userRole === "Approver" ? (
                 <TableCell>
                   <Typography variant="h5" fontWeight={600}>
-                    To (Institution)
+                    {t('to')} ({t('institution')})
                   </Typography>
                 </TableCell>
               ) : (
@@ -68,12 +71,12 @@ const InstitutionInvitations = ({ documentDetail }) => {
               )}
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  Requesting User
+                  {t('requesting_user')}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  Acceptance Status
+                  {t('acceptance_status')}
                 </Typography>
               </TableCell>
             </TableRow>

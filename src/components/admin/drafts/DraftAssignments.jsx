@@ -13,12 +13,15 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { UserContext } from "../../../contexts/UserContext";
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { useTranslation } from "react-i18next";
 
 const DraftAssignments = () => {
   const [commentAssignments, setCommentAssignments] = useState(null);
 
   const { userInfo } = useContext(UserContext);
-  const [networkErrorMessage, setNetworkErrorMessage]=useState(null)
+  const [networkErrorMessage, setNetworkErrorMessage]=useState(null);
+  
+  const {t}=useTranslation();
 
   const fetchCommentAssignments = async () => {
     setNetworkErrorMessage(null)
@@ -50,7 +53,7 @@ const DraftAssignments = () => {
 
   return (
     <Box m="0 20px" width={"95%"}>
-      <Header title="List of Draft Documents I have been assigned for to reflect on public comments" />
+      <Header title={t('list_of_assigned_draft_documents')} />
 
       <TableContainer
         component={Paper}
@@ -61,7 +64,7 @@ const DraftAssignments = () => {
             <TableRow>
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  Draft Title
+                  {t('short_title')}
                 </Typography>
               </TableCell>
             </TableRow>
@@ -88,7 +91,7 @@ const DraftAssignments = () => {
                       sx={{ textTransform: "none", marginRight: "5px" }}
                     >
                       <Typography variant="body1">
-                        Reply to comments on this document
+                        {t('reply_to_comments_on_this_document')}
                       </Typography>
                     </Button>
                   </TableCell>
@@ -98,7 +101,7 @@ const DraftAssignments = () => {
               <Typography
               variant="body1"
               >
-              Your internet connection may be unstable. You can &nbsp;
+              {t('network_error_message')} &nbsp;
                 <Button 
                   variant="outlined"
                   color="primary"
@@ -106,7 +109,7 @@ const DraftAssignments = () => {
                   sx={{ textTransform:'none' }}
                   onClick={handleNetworkStatus}
                 >
-                  Try again <RefreshIcon />
+                  {t('try_again')} <RefreshIcon />
                 </Button>
             </Typography> 
              ):
@@ -114,7 +117,7 @@ const DraftAssignments = () => {
                   // <CircularProgress color="secondary" />
 
                     <Typography variant="body1">
-                      Please wait...
+                      {t('please_wait')}...
                     </Typography>
 
             )}

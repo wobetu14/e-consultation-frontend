@@ -13,6 +13,9 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const {t}=useTranslation();
+
   return (
     <MenuItem
       active={selected === title}
@@ -143,7 +146,7 @@ const CommenterSidebar = () => {
                 />
 
                 <Item
-                  title="Assigned to Comment"
+                  title={t('assigned_to_comment')}
                   to="assigned_to_comment"
                   icon={<ListIcon />}
                   selected={selected}

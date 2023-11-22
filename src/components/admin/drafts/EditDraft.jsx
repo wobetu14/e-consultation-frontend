@@ -23,10 +23,13 @@ import axios from "../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
 import { UserContext } from "../../../contexts/UserContext";
 import { DraftsDataContext } from "../../../contexts/DraftsDataContext";
+import { useTranslation } from "react-i18next";
 
 const EditDraft = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const {t}=useTranslation();
 
   // User context
   const { userInfo} =
@@ -217,7 +220,7 @@ const EditDraft = () => {
 
   return (
     <Box width={"95%"}>
-      <Header title="Edit Drfat Document Information" subtitle="" />
+      <Header title={t('update_draft_info')} subtitle="" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -227,7 +230,7 @@ const EditDraft = () => {
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <TextField
-                label="Short title"
+                label={t('short_title')}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -251,12 +254,12 @@ const EditDraft = () => {
                 Law Category 
               </Typography>
               <FormControl sx={{ minWidth: "100%", paddingBottom: "30px" }}>
-                <InputLabel>Select Law Category</InputLabel>
+                <InputLabel>{t('select_law_category')}</InputLabel>
                 <Select
                   labelId="law_category_Id"
                   id="law_category_Id"
                   size="small"
-                  placeholder="Select law category"
+                  placeholder={t('select_law_category')}
                   color="info"
                   name="lawCategoryId"
                   value={formik.values.lawCategoryId}
@@ -311,7 +314,7 @@ const EditDraft = () => {
                 )}
               /> */}
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                Document Access
+                {t('document_access')}
               </Typography>
               <RadioGroup
                 aria-labelledby="demo-controlled-radio-buttons-group"
@@ -324,13 +327,13 @@ const EditDraft = () => {
                   value={0}
                   control={<Radio />}
                   checked={documentAccess === 0}
-                  label="Public"
+                  label={t('public')}
                 />
                 <FormControlLabel
                   value={1}
                   control={<Radio />}
                   checked={documentAccess === 1}
-                  label="Private"
+                  label={t('private')}
                 />
               </RadioGroup>
 
@@ -356,7 +359,7 @@ const EditDraft = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label="Base Legal Reference"
+                label={t('legal_reference')}
                 variant="outlined"
                 size="small"
                 multiline
@@ -379,7 +382,7 @@ const EditDraft = () => {
               />
 
               <TextField
-                label="Definition"
+                label={t('definition')}
                 variant="outlined"
                 size="small"
                 multiline
@@ -401,7 +404,7 @@ const EditDraft = () => {
               />
 
               <TextField
-                label="Scope"
+                label={t('scope')}
                 variant="outlined"
                 size="small"
                 multiline
@@ -421,7 +424,7 @@ const EditDraft = () => {
               />
 
               <TextField
-                label="Main Provision"
+                label={t('main_provision')}
                 variant="outlined"
                 size="small"
                 multiline
@@ -445,7 +448,7 @@ const EditDraft = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label="Summary"
+                label={t('summary')}
                 variant="outlined"
                 size="small"
                 multiline
@@ -464,7 +467,7 @@ const EditDraft = () => {
                 }
               />
               <TextField
-                label="Amended Laws"
+                label={t('amended_laws')}
                 variant="outlined"
                 size="small"
                 multiline
@@ -485,7 +488,7 @@ const EditDraft = () => {
               />
 
               <TextField
-                label="Repealed Laws"
+                label={t('repealed_laws')}
                 variant="outlined"
                 size="small"
                 multiline
@@ -506,7 +509,7 @@ const EditDraft = () => {
               />
 
               <TextField
-                label="Transitory Provision"
+                label={t('transitory_provision')}
                 variant="outlined"
                 size="small"
                 multiline
@@ -529,9 +532,8 @@ const EditDraft = () => {
               />
 
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                <strong>Attachement:</strong>
-                Please attach the draft document file. (Only .doc or .docx files
-                are allowed.)
+                <strong>{t('attachement_file')} : </strong>
+                {t('attach_draft_document_note')}
               </Typography>
               <TextField
                 variant="outlined"
@@ -558,7 +560,7 @@ const EditDraft = () => {
                 target="_blank"
                 sx={{ textTransform: "none" }}
               >
-                Download previous file
+                {t('download_previous_file')}
               </Button>
 
               <Grid sx={{ paddingBottom: "20px" }} align="right">
@@ -574,7 +576,7 @@ const EditDraft = () => {
                   }}
                   color="info"
                 >
-                  Save Changes{" "}
+                  {t('save_changes')}{" "}
                 </Button>
               </Grid>
             </Grid>

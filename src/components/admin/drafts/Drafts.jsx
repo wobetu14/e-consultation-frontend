@@ -3,6 +3,7 @@ import React from "react";
 import Header from "../AdminHeader";
 import DraftsTable from "../DataTables/DraftsTable";
 import { DraftsDataProvider } from "../../../contexts/DraftsDataContext";
+import {useTranslation} from 'react-i18next';
 
 /**
  * Create Drafts table and encapsulate Drafts Data Provider and then
@@ -10,11 +11,12 @@ import { DraftsDataProvider } from "../../../contexts/DraftsDataContext";
  * the data from the context provided by DraftsDatarovider 
  */
 const Drafts = () => {
+  const {t}=useTranslation();
   return (
     <Box>
       <Header
-        title="Draft Documents / Consultations"
-        subtitle="Manage draft documents / consultations"
+        title={t('draft_documents')}
+        subtitle={t('manage_draft_documents')}
       />
       {/* Create Drafts Data Provided */}
       <DraftsDataProvider>

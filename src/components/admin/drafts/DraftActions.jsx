@@ -8,6 +8,7 @@ import OutgoingCommentRequestsDialog from "../partials/OutgoingCommentRequestsDi
 import DraftOpeningRejectionDialog from "./DraftOpeningRejectionDialog";
 import InviteMoreDialog from "../../admin/drafts/InviteMoreDialog";
 import AssignMoreRepliersDialog from "./AssignMoreRepliersDialog";
+import { useTranslation } from "react-i18next";
 
 const DraftActions = ({
   draftID,
@@ -35,6 +36,8 @@ const DraftActions = ({
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const {t}=useTranslation();
 
   const closeCommenting = async (draftID) => {
     setLoading(true);
@@ -83,6 +86,7 @@ const DraftActions = ({
                 setServerErrorMsg={setServerErrorMsg}
                 openDialog={openDialog}
                 setOpenDialog={setOpenDialog}
+                t={t}
 
                 fetchDocumentDetails={fetchDocumentDetails}
                 fetchDocumentSections={fetchDocumentSections}
@@ -97,6 +101,7 @@ const DraftActions = ({
                 setServerErrorMsg={setServerErrorMsg}
                 openRejectionDialog={openRejectionDialog}
                 setOpenRejectionDialog={setOpenRejectionDialog}
+                t={t}
 
                 fetchDocumentDetails={fetchDocumentDetails}
                 fetchDocumentSections={fetchDocumentSections}
@@ -114,6 +119,7 @@ const DraftActions = ({
                 setServerErrorMsg={setServerErrorMsg}
                 openInviteDialog={openInviteDialog}
                 setOpenInviteDialog={setOpenInviteDialog}
+                t={t}
 
                 fetchDocumentDetails={fetchDocumentDetails}
                 fetchDocumentSections={fetchDocumentSections}
@@ -128,6 +134,7 @@ const DraftActions = ({
                 setServerErrorMsg={setServerErrorMsg}
                 openAssignRepliersDialog={openAssignRepliersDialog}
                 setOpenAssignRepliersDialog={setOpenAssignRepliersDialog}
+                t={t}
 
                 fetchDocumentDetails={fetchDocumentDetails}
                 fetchDocumentSections={fetchDocumentSections}
@@ -146,7 +153,7 @@ const DraftActions = ({
                 }}
                 onClick={() => closeCommenting(documentDetail.id)}
               >
-                <Typography variant="body2">End Consultation</Typography>
+                <Typography variant="body2">{t('end_consultation')}</Typography>
               </Button>
             </>
           ) : (
@@ -222,6 +229,7 @@ const AcceptApprovalRequest = ({
   setServerErrorMsg,
   openDialog,
   setOpenDialog,
+  t,
 
   fetchDocumentDetails,
   fetchDocumentSections,
@@ -240,7 +248,7 @@ const AcceptApprovalRequest = ({
         sx={{ textTransform: "none", marginRight: "5px" }}
         onClick={showDialog}
       >
-        Accept
+        {t('accept')}
       </Button>
 
       {openDialog && (
@@ -259,7 +267,7 @@ const AcceptApprovalRequest = ({
           fetchDocumentDetails={fetchDocumentDetails}
           fetchDocumentSections={fetchDocumentSections}
           fetchDocumentComments={fetchDocumentComments}
-          title="Accept and Invite Document for Comment."
+          title={t('accept_document_and_invite')}
         />
       )}
     </>
@@ -275,6 +283,7 @@ const RejectApprovalRequest = ({
   setServerErrorMsg,
   openRejectionDialog,
   setOpenRejectionDialog,
+  t,
 
   fetchDocumentDetails,
   fetchDocumentSections,
@@ -293,7 +302,7 @@ const RejectApprovalRequest = ({
         sx={{ textTransform: "none" }}
         onClick={showRejectionDialog}
       >
-        Reject
+        {t('reject')}
       </Button>
 
       {openRejectionDialog && (
@@ -312,7 +321,7 @@ const RejectApprovalRequest = ({
           fetchDocumentDetails={fetchDocumentDetails}
           fetchDocumentSections={fetchDocumentSections}
           fetchDocumentComments={fetchDocumentComments}
-          title="Reject Draft Opening Request."
+          title={t('reject_opening_request')}
         />
       )}
     </>
@@ -328,6 +337,7 @@ const InviteCommenters = ({
   setServerErrorMsg,
   openInviteDialog,
   setOpenInviteDialog,
+  t
   
 }) => {
   const showInviteDialog = () => {
@@ -343,7 +353,7 @@ const InviteCommenters = ({
         sx={{ textTransform: "none", marginRight: "5px" }}
         onClick={showInviteDialog}
       >
-        <Typography variant="body2">Invite</Typography>
+        <Typography variant="body2">{t('invite')}</Typography>
       </Button>
 
       {openInviteDialog && (
@@ -358,7 +368,7 @@ const InviteCommenters = ({
             setServerErrorMsg={setServerErrorMsg}
             openInviteDialog={openInviteDialog}
             setOpenInviteDialog={setOpenInviteDialog}
-            title="Invite more people and institutions for commenting."
+            title={t('invite_more_people_and_institutions')}
           />
         </>
       )}
@@ -375,6 +385,7 @@ const AssignRepliers = ({
   setServerErrorMsg,
   openAssignRepliersDialog,
   setOpenAssignRepliersDialog,
+  t
 }) => {
   const showAssignRepliersDialog = async () => {
     setOpenAssignRepliersDialog(true);
@@ -389,7 +400,7 @@ const AssignRepliers = ({
         sx={{ textTransform: "none", marginRight: "5px" }}
         onClick={showAssignRepliersDialog}
       >
-        <Typography variant="body2">Assign Repliers</Typography>
+        <Typography variant="body2">{t('assign_repliers')}</Typography>
       </Button>
 
       {openAssignRepliersDialog && (
@@ -403,7 +414,7 @@ const AssignRepliers = ({
           setServerErrorMsg={setServerErrorMsg}
           openAssignRepliersDialog={openAssignRepliersDialog}
           setOpenAssignRepliersDialog={setOpenAssignRepliersDialog}
-          title="Assign more comment repliers to reply on comments provided on this document."
+          title={t('assign_more_comment_repliers')}
         />
       )}
     </>

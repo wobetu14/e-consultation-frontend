@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import { tokens } from "../../../theme";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 
 const OutgoingCommentRequestsDialog = ({
   draftID,
@@ -43,6 +44,8 @@ const OutgoingCommentRequestsDialog = ({
 
   const [institutions, setInstitutions] = useState([]);
   const [selectedInstitutions, setSelectedInstitutions] = useState([]);
+
+  const {t}=useTranslation()
 
   // Set list of email address for invitation
   const [peopleEmail, setPeopleEmail] = useState([]);
@@ -257,7 +260,7 @@ const OutgoingCommentRequestsDialog = ({
             onSubmit={formikAcceptanceForm.handleSubmit}
           >
             <Typography variant="h5" fontWeight="600">
-              Set draft opening and closing date
+              {t('set_opening_and_closing_dates')}
             </Typography>
             <TextField
               // label="Draft Openining Date"
@@ -305,7 +308,7 @@ const OutgoingCommentRequestsDialog = ({
             />
 
             <TextField
-              label="Write a remark (not mandatory)"
+              label={`${t('write_remark')} (${t('not_mandatory')})`}
               variant="outlined"
               size="small"
               fullWidth
@@ -331,7 +334,7 @@ const OutgoingCommentRequestsDialog = ({
                         </Typography>
                     </Button> */}
             <Typography variant="subtitle1" fontWeight="600">
-              Assign Repliers
+              {t('assign_repliers')}
             </Typography>
 
             <Autocomplete
@@ -350,9 +353,10 @@ const OutgoingCommentRequestsDialog = ({
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  variant="standard"
-                  label="Select repliers"
+                  variant="outlined"
+                  label={t('select_repliers')}
                   value={(option) => option}
+                  color="info"
                 />
               )}
             />
@@ -363,7 +367,7 @@ const OutgoingCommentRequestsDialog = ({
             
             <form onSubmit={formikInviteInstitutionForm.handleSubmit} style={{ paddingBottom:"30px" }}> */}
             <Typography variant="subtitle1" fontWeight="600">
-              Invite Institutions
+              {t('invite_institutions')}
             </Typography>
             {/* <Stack spacing={2} > */}
             <Autocomplete
@@ -380,16 +384,17 @@ const OutgoingCommentRequestsDialog = ({
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  variant="standard"
-                  label="Select Institutions"
-                  placeholder="Institutions"
+                  variant="outlined"
+                  label={t('select_institutions')}
+                  placeholder={t('institutions')}
                   value={(option) => option.name}
+                  color="info"
                 />
               )}
             />
 
             <TextField
-              label="Write a remark (not mandatory)"
+              label={`${t('write_remark')} (${t('not_mandatory')})`}
               variant="outlined"
               size="small"
               fullWidth
@@ -409,10 +414,7 @@ const OutgoingCommentRequestsDialog = ({
 
         <form onSubmit={formikInvitePeopleForm.handleSubmit}> */}
             <Typography variant="subtitle1" fontWeight="600">
-              Invite People
-              {peopleEmail.length > 0
-                ? peopleEmail.map((email) => <h3>{email}</h3>)
-                : ""}
+              {t('invite_people')}
             </Typography>
             {/* <Stack spacing={2} sx={{ width: 500 }}> */}
             <Autocomplete
@@ -428,15 +430,16 @@ const OutgoingCommentRequestsDialog = ({
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  variant="standard"
-                  label="Enter email addresses"
+                  variant="outlined"
+                  label={t('enter_email_address')}
                   value={(option) => option}
+                  color="info"
                 />
               )}
             />
 
             <TextField
-              label="Write a remark (not mandatory)"
+              label={`${t('write_remark')} (${t('not_mandatory')})`}
               variant="outlined"
               size="small"
               fullWidth
@@ -465,7 +468,7 @@ const OutgoingCommentRequestsDialog = ({
                 onClick={acceptCommentOpening}
               >
                 <Typography variant="body2">
-                  Publish Draft for Comment
+                  {t('publish_draft_for_comment')}
                 </Typography>
               </Button>
             </Box>
@@ -479,7 +482,7 @@ const OutgoingCommentRequestsDialog = ({
             color="info"
             sx={{ textTransform: "none" }}
           >
-            <Typography variant="body2">Cancel</Typography>
+            <Typography variant="body2">{t('cancel')}</Typography>
           </Button>
         </DialogActions>
       </DialogContent>

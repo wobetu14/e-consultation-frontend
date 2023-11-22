@@ -2,8 +2,8 @@ import { Box, Button, Card, CardContent, Container, Paper, Typography } from '@m
 import React, { useState } from 'react';
 import Header from '../../admin/AdminHeader';
 import * as xlsx from 'xlsx';
-import TranslationTemplate from '../downloadable_files/translation.xlsx';
-import AmharicTranslationTemplate from '../downloadable_files/amharic_translation.xlsx';
+import TranslationTemplate from '../downloadable_files/translation__en.xlsx';
+import AmharicTranslationTemplate from '../downloadable_files/translation__am.xlsx';
 import {useTranslation} from 'react-i18next';
 
 const PrepareTranslation = () => {

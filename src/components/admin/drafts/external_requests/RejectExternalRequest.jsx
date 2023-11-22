@@ -20,6 +20,7 @@ import {
 import { useFormik } from "formik";
 import { tokens } from "../../../../theme";
 import { UserContext } from "../../../../contexts/UserContext";
+import { useTranslation } from "react-i18next";
 
 const RejectExternalRequest = ({
   requestID,
@@ -38,6 +39,8 @@ const RejectExternalRequest = ({
 
   const [institutions, setInstitutions] = useState([]);
   const [selectedInstitutions, setSelectedInstitutions] = useState([]);
+
+  const {t}=useTranslation();
 
 
   const [instIDs, setInsIDs] = useState([]);
@@ -178,7 +181,7 @@ const RejectExternalRequest = ({
     <Dialog open={openExternalRejectionDialog} fullWidth>
       <DialogTitle>
         <Typography variant="h5" fontWeight="600">
-          {title} {requestID} {requestTitle}
+          {title} ( {requestTitle} )
         </Typography>
       </DialogTitle>
       <DialogContent>
@@ -222,7 +225,7 @@ const RejectExternalRequest = ({
             onSubmit={formikRejectForm.handleSubmit}
           >
             <TextField
-              label="Write rejection message (not mandatory)"
+              label={`${t('write_rejection_message')} (${t('not_mandatory')})`}
               variant="outlined"
               size="small"
               fullWidth
@@ -248,7 +251,7 @@ const RejectExternalRequest = ({
                   color: colors.grey[300],
                 }}
               >
-                <Typography variant="body2">Reject this request</Typography>
+                <Typography variant="body2">{t('reject_this_request')}</Typography>
               </Button>
             </Box>
           </form>
@@ -261,7 +264,7 @@ const RejectExternalRequest = ({
             color="secondary"
             sx={{ textTransform: "none" }}
           >
-            <Typography variant="body2">Cancel</Typography>
+            <Typography variant="body2">{t('cancel')}</Typography>
           </Button>
         </DialogActions>
       </DialogContent>

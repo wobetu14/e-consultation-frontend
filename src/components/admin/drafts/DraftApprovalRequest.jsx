@@ -28,7 +28,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { UserContext } from "../../../contexts/UserContext";
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { use } from "i18next";
+import { useTranslation } from "react-i18next";
 
 const DraftApprovalRequest = () => {
   const theme = useTheme();
@@ -42,6 +42,8 @@ const DraftApprovalRequest = () => {
   const [networkErrorMessage, setNetworkErrorMessage]=useState(null);
   const [errorSendingRequest, setErrorSendingRequest]=useState(null);
   const [loading, setLoading]=useState(false);
+
+  const {t}=useTranslation();
 
   const errorStyle = {
     color: "red",
@@ -89,7 +91,7 @@ const DraftApprovalRequest = () => {
     <Box m="0 20px" sx={{ width:{
       xs:300, sm:500, md:700, lg:1000, xl:1200
     } }}>
-      <Header title="Draft Approval Request" />
+      <Header title={t('draft_approval_request')}/>
       <Grid align="center" sx={{ paddingBottom: "15px", paddingTop: "15px" }}>
         <motion.span
           initial={{ opacity: 0 }}
@@ -140,7 +142,7 @@ const DraftApprovalRequest = () => {
               {userRole === "Approver" ? (
                 <TableCell>
                   <Typography variant="h5" fontWeight={600}>
-                    Uploader
+                    {t('uploader')}
                   </Typography>
                 </TableCell>
               ) : (
@@ -148,23 +150,23 @@ const DraftApprovalRequest = () => {
               )}
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  Title
+                  {t('short_title')}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  Description
+                  {t('description')}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  Draft Status
+                  {t('draft_status')}
                 </Typography>
               </TableCell>
 
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  Actions
+                  {t('actions')}
                 </Typography>
               </TableCell>
             </TableRow>
@@ -299,7 +301,7 @@ const DraftApprovalRequest = () => {
                       sx={{ textTransform: "none", marginRight: "5px" }}
                     >
                       {/* <PreviewIcon size="small"/> */}
-                      Detail
+                      {t('detail')}
                     </Button>
 
                     {userRole === "Uploader" ? (
@@ -315,6 +317,7 @@ const DraftApprovalRequest = () => {
 
                           errorSendingRequest={errorSendingRequest}
                           setErrorSendingRequest={setErrorSendingRequest}
+                          t={t}
                         />
                       ) : (
                         ""
@@ -338,7 +341,7 @@ const DraftApprovalRequest = () => {
                   sx={{ textTransform:'none' }}
                   onClick={handleNetworkStatus}
                 >
-                  Try again <RefreshIcon />
+                  {t('try again')} <RefreshIcon />
                 </Button>
             </Typography> 
              ):
@@ -346,7 +349,7 @@ const DraftApprovalRequest = () => {
                   // <CircularProgress color="secondary" />
                   
                   <Typography variant="body1">
-                    Please wait...
+                    {`${t('please_wait')}...`}
                   </Typography>
 
             )}
@@ -368,7 +371,8 @@ const SendApprovalRequest = ({
   setServerErrorMsg,
 
   errorSendingRequest,
-  setErrorSendingRequest
+  setErrorSendingRequest,
+  t
 }) => {
   const sendRequestForApproval = async () => {
     setServerErrorMsg(null);
@@ -407,7 +411,7 @@ const SendApprovalRequest = ({
         sx={{ textTransform: "none", marginRight: "5px" }}
         onClick={sendRequestForApproval}
       >
-        Send Request
+        {t('send_request')}
       </Button>
     </>
   );

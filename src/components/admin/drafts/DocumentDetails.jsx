@@ -24,6 +24,7 @@ import DocumentPreview from "./DocumentPreview";
 import PersonalInvitations from "./Personalnvitations";
 import InstitutionInvitations from "./InstitutionInvitations";
 import CommentRepliers from "./CommentRepliers";
+import { useTranslation } from "react-i18next";
 
 const DocumentDetails = () => {
   const params = useParams();
@@ -38,6 +39,8 @@ const DocumentDetails = () => {
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
 
   const [loading, setLoading]=useState(false);
+
+  const {t}=useTranslation();
 
   const errorStyle = {
     color: "red",
@@ -186,7 +189,7 @@ const DocumentDetails = () => {
                 color: colors.grey[600]
               }}
             >
-              Document Preview
+              {t('document_preview')}
             </Typography>
           }
         />

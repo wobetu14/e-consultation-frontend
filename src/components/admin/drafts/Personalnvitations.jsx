@@ -14,6 +14,7 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "../../../axios/AxiosGlobal";
 import { useParams } from "react-router-dom";
 import { UserContext } from "../../../contexts/UserContext";
+import { useTranslation } from "react-i18next";
 
 const PersonalInvitations = () => {
   const params = useParams();
@@ -21,6 +22,8 @@ const PersonalInvitations = () => {
 
   // User context
   const { userRole } = useContext(UserContext);
+
+  const {t}=useTranslation();
 
   useEffect(() => {
     fetchInvitedInstitutions();
@@ -45,7 +48,7 @@ const PersonalInvitations = () => {
   return (
     <Box m="0 20px" width={"95%"}>
       <Typography variant="h5" fontWeight="600">
-        Invitations to People
+        {t('invitations_to_people')}
       </Typography>
       <TableContainer
         component={Paper}
@@ -57,7 +60,7 @@ const PersonalInvitations = () => {
               {userRole === "Approver" ? (
                 <TableCell>
                   <Typography variant="h5" fontWeight={600}>
-                    To (Email Addresses)
+                    {t('to')} ({t('email_address')})
                   </Typography>
                 </TableCell>
               ) : (
@@ -65,7 +68,7 @@ const PersonalInvitations = () => {
               )}
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  Requesting User
+                  {t('requesting_user')}
                 </Typography>
               </TableCell>
             </TableRow>

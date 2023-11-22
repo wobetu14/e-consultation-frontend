@@ -26,6 +26,7 @@ import EditDraft from "../drafts/EditDraft";
 import DeleteDraftDialog from "../drafts/DeleteDraftDialog";
 import { rootURL } from "../../../axios/AxiosGlobal";
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { useTranslation } from "react-i18next";
 
 /**
  * This component is used to create drafts data table along with search and pagination functionalities.
@@ -38,6 +39,8 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 const DraftsTable = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const {t}=useTranslation();
   
   /**
    * Destructure important data from the Drafts Data Context. Note that we are going to destructure only 
@@ -126,7 +129,7 @@ const DraftsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Title
+          {t('title')}
         </Typography>
       ),
       selector: (row) => (
@@ -141,7 +144,7 @@ const DraftsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Owning Institution
+          {t('owning_institution')}
         </Typography>
       ),
       selector: (row) => (
@@ -154,7 +157,7 @@ const DraftsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Created By
+          {t('created_by')}
         </Typography>
       ),
       selector: (row) => (
@@ -168,12 +171,12 @@ const DraftsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Download File
+          {t('download_file')}
         </Typography>
       ),
       selector: (row) => (
         <a href={row.file} target="_blank" rel="noreferrer">
-          <Typography variant="body1">Download</Typography>
+          <Typography variant="body1">{t('download')}</Typography>
         </a>
       ),
       sortable: true,
@@ -182,13 +185,13 @@ const DraftsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Download Comments Report
+          {t('download_comment_reports')}
         </Typography>
       ),
       selector: (row) =>
         row.draft_status !== null && row.draft_status.name === "Closed" ? (
           <a href={`${rootURL}report/${row.id}`} target="_blank" rel="noreferrer">
-            <Typography variant="body1">Get comments report</Typography>
+            <Typography variant="body1">{t('download')}</Typography>
           </a>
         ) : (
           ""
@@ -199,7 +202,7 @@ const DraftsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          Actions
+          {t('actions')}
         </Typography>
       ),
       selector: (row) => {
@@ -272,7 +275,7 @@ const DraftsTable = () => {
           <Typography variant="h1">
             {networkError==="ERR_NETWORK" ? (
               <Alert severity="error" variant="outlined">
-                Something went wrong. Probably your internet connection may be unstable. Please try again 
+                {t('network_error_message')}
               </Alert>
             ) : null}
           </Typography>
@@ -289,7 +292,7 @@ const DraftsTable = () => {
                 textAlign="left"
                 sx={{ color: colors.warningColor[100] }}
               >
-                This process may take a while. Please wait...
+                {t('process_may_take_long')} {t('please_wait')}
               </Typography>
               <LinearProgress color="info" /> {/* Line progress bar indicator imported from Material UI */}
             </Box>
@@ -299,10 +302,10 @@ const DraftsTable = () => {
 
       {openDialog && (
         <DeleteDraftDialog
-          title="Deleting Draft Document..."
-          text={`You are about to delete draft document "${
+          title={`${t('deleting_draft_document')}`}
+          text={`${t('you_are_deleting_draft')} "${
             draft ? draft.short_title : ""
-          }". Are you sure?`}
+          }". ${t('are_you_sure')}`}
         />
       )}
       {showDraftAddForm && <CreateDraft />} {/* Show <CreateDraft /> component if showDraftAddForm value is true */}
@@ -329,13 +332,13 @@ const DraftsTable = () => {
             <Box mb="20px">
               {/* Display progress bar if the data prop value is empty */}
               {
-                requestCompleted===1 && filteredDrafts.length<=0 && networkErrorMessage!=="AxiosError" ? "No records found": (
+                requestCompleted===1 && filteredDrafts.length<=0 && networkErrorMessage!=="AxiosError" ? `${t('no_record')}`: (
                   networkErrorMessage==="AxiosError" ? (
                     <>
                     <Typography
                       variant="body1"
                     >
-                      Your internet connection may be unstable. You can &nbsp;
+                      {t('network_error_message')} &nbsp;
                       <Button 
                         variant="outlined"
                         color="primary"
@@ -343,11 +346,11 @@ const DraftsTable = () => {
                         sx={{ textTransform:'none' }}
                         onClick={handleNetworkStatus}
                       >
-                        Try again <RefreshIcon />
+                        {t('try_again')} <RefreshIcon />
                       </Button>
                     </Typography>
                     </>
-                  ): "Please wait..."
+                  ): `${t('please_wait')}...`
                 )
               }
             </Box>
@@ -365,7 +368,7 @@ const DraftsTable = () => {
             >
               <Box width="30%">
                 <TextField
-                  label="Search..."
+                  label={`${t('search')}...`}
                   variant="outlined"
                   size="small"
                   color="info"
@@ -384,7 +387,7 @@ const DraftsTable = () => {
                     sx={{ textTransform: "none" }}
                     onClick={hideForm}
                   >
-                    <VisibilityOffIcon /> Hide Form
+                    <VisibilityOffIcon /> {t('hide_form')}
                   </Button>
                 ) : 
                 /* Show edit drafts form and a button to hide and show the edit draft form */
@@ -397,7 +400,7 @@ const DraftsTable = () => {
                     sx={{ textTransform: "none" }}
                     onClick={hideForm}
                   >
-                    <VisibilityOffIcon /> Hide Form
+                    <VisibilityOffIcon /> {t('hide_form')}
                   </Button>
                 ) : (
                   <Button
@@ -407,7 +410,7 @@ const DraftsTable = () => {
                     sx={{ textTransform: "none" }}
                     onClick={showAddDraftForm}
                   >
-                    <AddIcon /> Add New Draft
+                    <AddIcon /> {t('add_new_draft')}
                   </Button>
                 )}
               </Box>

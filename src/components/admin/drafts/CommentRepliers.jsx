@@ -14,10 +14,13 @@ import React, { useContext, useEffect, useState } from "react";
 import axios from "../../../axios/AxiosGlobal";
 import { useParams } from "react-router-dom";
 import { UserContext } from "../../../contexts/UserContext";
+import {useTranslation} from 'react-i18next';
 
 const CommentRepliers = () => {
   const params = useParams();
   const [assignedPeople, setAssignedPeople] = useState(null);
+
+  const {t}=useTranslation();
 
   // User context
   const { userRole } = useContext(UserContext);
@@ -44,7 +47,7 @@ const CommentRepliers = () => {
   return (
     <Box m="0 20px" width={"95%"}>
       <Typography variant="h5" fontWeight="600">
-        Assigned staff to reply for comments on this document
+        {t('assigned_staff_to_reply')}
       </Typography>
       <TableContainer
         component={Paper}
@@ -56,7 +59,7 @@ const CommentRepliers = () => {
               {userRole === "Approver" ? (
                 <TableCell>
                   <Typography variant="h5" fontWeight={600}>
-                    To (Name)
+                    {t('to')} ({t('full_name')})
                   </Typography>
                 </TableCell>
               ) : (

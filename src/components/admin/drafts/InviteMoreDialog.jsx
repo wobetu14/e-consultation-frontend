@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from '../../../axios/AxiosGlobal'
 import { motion } from 'framer-motion';
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom';
 import { 
      Autocomplete,
      Button,
@@ -16,6 +16,7 @@ import {
     } from '@mui/material'
 import { tokens } from '../../../theme';
 import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
 
 const InviteMoreDialog = ({
     draftID,
@@ -44,6 +45,8 @@ const InviteMoreDialog = ({
     const [loading, setLoading]=useState(false);
 
     const [networkError, setNetworkError]=useState(null);
+
+    const {t}=useTranslation();
 
     const errorStyle={
     color:'red',
@@ -200,7 +203,7 @@ const InviteMoreDialog = ({
 
                 <Typography variant='h1'>
                 {networkError==="ERR_NETWORK" ? <Alert severity='error' style={errorStyle}>
-                    Your internet connection may be unstable. Please try again.
+                    {t('network_error_message')}
                 </Alert>:null}
                 </Typography> 
                 {
@@ -215,7 +218,7 @@ const InviteMoreDialog = ({
 
         <form style={{ marginBottom:"30px" }} onSubmit={formikAcceptanceForm.handleSubmit}>
                 <Typography variant="subtitle1" fontWeight="600">
-                    Invite Institutions
+                    {t('invite_institutions')}
                 </Typography>
                 {/* <Stack spacing={2} > */}
             <Autocomplete
@@ -231,16 +234,17 @@ const InviteMoreDialog = ({
                 renderInput={(params) => (
                 <TextField
                     {...params}
-                    variant="standard"
-                    label="Select Institutions"
-                    placeholder="Institutions"
+                    variant="outlined"
+                    label={t('select_institutions')}
+                    placeholder={t('institutions')}
                     value={(option)=>option.name}
+                    color="info"
                 />
                 )}
             />
 
                     <TextField 
-                        label="Write a remark (not mandatory)" 
+                        label={`${t('write_remark')} (${t('not_mandatory')})`}
                         variant='outlined'
                         size='small' 
                         fullWidth
@@ -259,12 +263,7 @@ const InviteMoreDialog = ({
 
         <form onSubmit={formikInvitePeopleForm.handleSubmit}> */}
             <Typography variant="subtitle1" fontWeight="600">
-                Invite People
-                {
-                    peopleEmail.length>0 ? (
-                        peopleEmail.map((email)=><h3>{email}</h3>)
-                    ):""
-                }
+                {t('invite_people')}
             </Typography>
                 {/* <Stack spacing={2} sx={{ width: 500 }}> */}
             <Autocomplete
@@ -280,15 +279,16 @@ const InviteMoreDialog = ({
                 renderInput={(params) => (
                 <TextField
                     {...params}
-                    variant="standard"
-                    label="Enter email addresses"
+                    variant="outlined"
+                    label={t('enter_email_address')}
                     value={(option)=>option}
+                    color="info"
                 />
                 )}
             />
 
                     <TextField 
-                        label="Write a remark (not mandatory)" 
+                        label={`${t('write_remark')} (${t('not_mandatory')})`}
                         variant='outlined'
                         size='small' 
                         fullWidth
@@ -314,7 +314,7 @@ const InviteMoreDialog = ({
                     onClick={inviteMorePeopleAndInstitutions}
                     >  
                      <Typography variant='body2'>
-                        Invite and close
+                        {t('invite_and_close')}
                      </Typography>
                 </Button>
             </Box> 
@@ -331,7 +331,7 @@ const InviteMoreDialog = ({
             sx={{ textTransform:"none"}}
             >
                  <Typography variant='body2'>
-                        Cancel
+                        {t('cancel')}
                  </Typography>
             </Button>
     </DialogActions>

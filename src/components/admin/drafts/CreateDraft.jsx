@@ -21,6 +21,7 @@ import Header from "../AdminHeader";
 import axios from "../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
 import { DraftsDataContext } from "../../../contexts/DraftsDataContext";
+import { useTranslation } from "react-i18next";
 
 /**
  * Create a functional component named CreateDraft
@@ -58,6 +59,8 @@ const CreateDraft = () => {
    * value
    */
   const [selectedSectors, setSelectedSectors] = useState([]);
+
+  const {t}=useTranslation();
 
   const inputFile=useRef(null);
 
@@ -192,25 +195,25 @@ const CreateDraft = () => {
 
     validationSchema: YUP.object({
       shortTitle: YUP.string().required(
-        "This field is required. Please provide a short description about the document."
+        `${t('field_required')} ${t('please_provide_short_title')}`
       ),
 
       definition: YUP.string().required(
-        "This field is required. Please provide law category information for this document."
+        `${t('field_required')} ${t('please_provide_document_definition')}`
       ),
 
       lawCategoryId: YUP.string().required(
-        "This field is required. Please provide a definition for the document."
+        `${t('field_required')} ${t('please_provide_law_category')}`
       ),
 
       file: YUP.mixed().required(
-        "This field is required. Please choose file to upload."
+        `${t('field_required')} ${t('please_choose_file_to_upload')}`
       ),
       isPrivate: YUP.number().required(
-        "This field is required. Please provide the status of this document."
+        `${t('field_required')} ${t('please_provide_document_access')}`
       ),
       summary: YUP.string().required(
-        "This field is required. Please provide summary."
+        `${t('field_required')} ${t('please_provide_document_summary')}`
       ),
     }),
 
@@ -297,7 +300,7 @@ const CreateDraft = () => {
      * Define form and fields to input draft detail information
      */
     <Box width={"95%"}>
-      <Header title="Upload new draft document" subtitle="" />
+      <Header title={t('upload_draft_document')} subtitle="" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -307,7 +310,7 @@ const CreateDraft = () => {
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <TextField
-                label="Short title *"
+                label={`${t('short_title')} *`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -328,16 +331,16 @@ const CreateDraft = () => {
               />
 
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                Law Category *
+                {t('law_category')} *
               </Typography>
               <FormControl sx={{ minWidth: "100%", paddingBottom: "30px" }}>
-                <InputLabel>Select Law Category *</InputLabel>
+                <InputLabel>{t('select_law_category')} *</InputLabel>
                 <Select
-                  label="Law Category"
+                  label={t('law_category')}
                   labelId="law_category_Id"
                   id="law_category_Id"
                   size="small"
-                  placeholder="Select law category"
+                  placeholder={`${t('select_law_category')}`}
                   color="info"
                   name="lawCategoryId"
                   onClick={fetchLawCategories}
@@ -371,7 +374,7 @@ const CreateDraft = () => {
               </FormControl>
 
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                Economic Sector
+                {t('economic_sector')}
               </Typography>
               <Autocomplete
                 multiple
@@ -389,14 +392,15 @@ const CreateDraft = () => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Select sectors"
-                    placeholder="Sectors "
+                    label={t('select_economic_sectors')}
+                    placeholder={t('sectors')}
                     value={(option) => option.name}
+                    color="info"
                   />
                 )}
               />
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                Document Access *
+                {t('document_access')} *
               </Typography>
               <RadioGroup
                 aria-labelledby="demo-controlled-radio-buttons-group"
@@ -408,12 +412,12 @@ const CreateDraft = () => {
                 <FormControlLabel
                   value="0"
                   control={<Radio />}
-                  label="Public"
+                  label={t('public')}
                 />
                 <FormControlLabel
                   value="1"
                   control={<Radio />}
-                  label="Private"
+                  label={t('private')}
                 />
                 {formik.touched.isPrivate && formik.errors.isPrivate ? (
                   <span style={helperTextStyle}>{formik.errors.isPrivate}</span>
@@ -421,7 +425,7 @@ const CreateDraft = () => {
               </RadioGroup>
 
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                Enter Draft Tags
+                {t('enter_tags')}
               </Typography>
               <Autocomplete
                 multiple
@@ -436,16 +440,17 @@ const CreateDraft = () => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="List of tags"
+                    label={t('list_tags')}
                     name="tags"
                     value={tagLists.map((tag) => tag)}
+                    color="info"
                   />
                 )}
               />
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label="Base Legal Reference"
+                label={t('legal_reference')}
                 variant="outlined"
                 size="small"
                 multiline
@@ -468,7 +473,7 @@ const CreateDraft = () => {
               />
 
               <TextField
-                label="Definition *"
+                label={`${t('definition')} *`}
                 variant="outlined"
                 size="small"
                 multiline
@@ -490,7 +495,7 @@ const CreateDraft = () => {
               />
 
               <TextField
-                label="Scope"
+                label={t('scope')}
                 variant="outlined"
                 size="small"
                 multiline
@@ -510,7 +515,7 @@ const CreateDraft = () => {
               />
 
               <TextField
-                label="Main Provision"
+                label={t('main_provision')}
                 variant="outlined"
                 size="small"
                 multiline
@@ -534,7 +539,7 @@ const CreateDraft = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label="Summary *"
+                label={`${t('summary')} *`}
                 variant="outlined"
                 size="small"
                 multiline
@@ -553,7 +558,7 @@ const CreateDraft = () => {
                 }
               />
               <TextField
-                label="Amended Laws"
+                label={t('amended_laws')}
                 variant="outlined"
                 size="small"
                 multiline
@@ -574,7 +579,7 @@ const CreateDraft = () => {
               />
 
               <TextField
-                label="Repealed Laws"
+                label={t('repealed_laws')}
                 variant="outlined"
                 size="small"
                 multiline
@@ -595,7 +600,7 @@ const CreateDraft = () => {
               />
 
               <TextField
-                label="Transitory Provision"
+                label={t('transitory_provision')}
                 variant="outlined"
                 size="small"
                 multiline
@@ -617,9 +622,8 @@ const CreateDraft = () => {
                 }
               />
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                <strong>Attachement:</strong>
-                Please attach the draft document file *. (Only .doc or .docx
-                files are allowed.)
+                <strong>{t('attachement_file')}: </strong>
+                {t('attach_draft_document_note')}
               </Typography>
               <input
                 /* variant="outlined"
@@ -650,7 +654,7 @@ const CreateDraft = () => {
                   color="secondary"
                   elevation={10}
                 >
-                  Save{" "}
+                  {t('save')}{" "}
                 </Button>
               </Grid>
             </Grid>

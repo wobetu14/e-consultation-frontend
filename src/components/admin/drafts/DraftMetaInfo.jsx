@@ -7,6 +7,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import React, {useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import axios from "../../../axios/AxiosGlobal";
 import { tokens } from "../../../theme";
@@ -29,6 +30,8 @@ const DraftMetaInfo = ({
   const params = useParams();
   const [documentSections, setDocumentSections] = useState(null);
   const [documentComments, setDocumentComments] = useState(null);
+
+  const {t}=useTranslation();
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -106,12 +109,12 @@ const DraftMetaInfo = ({
                   color: colors.primary[200],
                 }}
               >
-                Document Details
+                {t('document_details')}
               </Typography>
 
               <Grid container spacing={1}>
                 <Grid item xs={6} md={6}>
-                  <strong>Institution</strong>
+                  <strong>{t('institution')}</strong>
                 </Grid>
                 <Grid item xs={6} md={6}>
                   {documentDetail.institution
@@ -120,7 +123,7 @@ const DraftMetaInfo = ({
                 </Grid>
 
                 <Grid item xs={6} md={6}>
-                  <strong>Law category</strong>
+                  <strong>{t('law_category')}</strong>
                 </Grid>
                 <Grid item xs={6} md={6}>
                   {documentDetail.law_category
@@ -129,7 +132,7 @@ const DraftMetaInfo = ({
                 </Grid>
 
                 <Grid item xs={6} md={6}>
-                  <strong>Draft status</strong>
+                  <strong>{t('draft_status')}</strong>
                 </Grid>
                 <Grid item xs={6} md={6}>
                   {documentDetail &&
@@ -218,7 +221,7 @@ const DraftMetaInfo = ({
                 </Grid>
 
                 <Grid item xs={6} md={6}>
-                  <strong>Opening date for comment</strong>
+                  <strong>{t('draft_opening_date')}</strong>
                 </Grid>
                 <Grid item xs={6} md={6}>
                   <Chip
@@ -236,7 +239,7 @@ const DraftMetaInfo = ({
                 </Grid>
 
                 <Grid item xs={6} md={6}>
-                  <strong>Closing date for comment</strong>
+                  <strong>{t('draft_closing_date')}</strong>
                 </Grid>
                 <Grid item xs={6} md={6}>
                   <Chip
@@ -254,7 +257,7 @@ const DraftMetaInfo = ({
                 </Grid>
 
                 <Grid item xs={6} md={6}>
-                  <strong>Base Legal Reference</strong>
+                  <strong>{t('legal_reference')}</strong>
                 </Grid>
                 <Grid item xs={6} md={6}>
                   {documentDetail.base_legal_reference
@@ -263,14 +266,14 @@ const DraftMetaInfo = ({
                 </Grid>
 
                 <Grid item xs={6} md={6}>
-                  <strong>Definition</strong>
+                  <strong>{t('definition')}</strong>
                 </Grid>
                 <Grid item xs={6} md={6}>
                   {documentDetail.definition ? documentDetail.definition : null}
                 </Grid>
 
                 <Grid item xs={6} md={6}>
-                  <strong>Document Access</strong>
+                  <strong>{t('document_access')}</strong>
                 </Grid>
                 <Grid item xs={6} md={6}>
                   <Chip

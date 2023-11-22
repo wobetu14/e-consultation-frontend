@@ -18,6 +18,7 @@ import {
 
 import { tokens } from "../../../theme";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 
 const DraftOpeningRejectionDialog = ({
   draftID,
@@ -40,6 +41,8 @@ const DraftOpeningRejectionDialog = ({
   const colors = tokens(theme.palette.mode);
   const [loading, setLoading]=useState(false);
   const [networkError, setNetworkError]=useState(null);
+
+  const {t}=useTranslation()
 
   const helperTextStyle = {
     color: "red",
@@ -128,7 +131,7 @@ const DraftOpeningRejectionDialog = ({
               <Typography variant="h1">
                 {networkError ? (
                   <Alert severity="error" style={errorStyle}>
-                    Your internet connection may be unstable. Please try again.
+                    {t('network_error_message')}
                   </Alert>
                 ) : null}
               </Typography>
@@ -140,10 +143,10 @@ const DraftOpeningRejectionDialog = ({
             >
               <Stack spacing={1}>
                 <Typography variant="h5" fontWeight="600">
-                  Reason to reject this request?
+                  {t('reason_to_reject')}?
                 </Typography>
                 <TextField
-                  label="Please write your reason to reject this request..."
+                  label={`${t('please_write_reason_to_reject')}...`}
                   variant="outlined"
                   size="small"
                   multiline
@@ -171,7 +174,7 @@ const DraftOpeningRejectionDialog = ({
                       color: colors.grey[300],
                     }}
                   >
-                    <Typography variant="body2">Reject this Request</Typography>
+                    <Typography variant="body2">{t('reject_this_request')}</Typography>
                   </Button>
                 </Box>
               </Stack>
@@ -186,7 +189,7 @@ const DraftOpeningRejectionDialog = ({
             color="info"
             sx={{ textTransform: "none" }}
           >
-            <Typography variant="body2">Cancel</Typography>
+            <Typography variant="body2">{t('cancel')}</Typography>
           </Button>
         </DialogActions>
       </Dialog>

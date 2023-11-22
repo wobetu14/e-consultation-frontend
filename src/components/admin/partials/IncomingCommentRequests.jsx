@@ -1,4 +1,4 @@
-import { Typography, Button, Grid, Alert, CircularProgress, LinearProgress } from "@mui/material";
+import { Typography, Button, Grid, Alert } from "@mui/material";
 import { Box } from "@mui/system";
 import React, {
   useEffect,
@@ -22,12 +22,15 @@ import AcceptExternalRequestDialog from "../drafts/external_requests/AcceptExter
 import RejectExternalRequest from "../drafts/external_requests/RejectExternalRequest";
 import AssignCommenters from "../drafts/external_requests/AssignCommenters";
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { useTranslation } from "react-i18next";
 
 const IncomingCommentRequests = ({loading, setLoading}) => {
   const theme = useTheme();
 
   const colors = tokens(theme.palette.mode);
   const [incomingCommentData, setIncomingCommentData] = useState(null);
+
+  const {t}=useTranslation();
 
   // Hide and show dialogs
   const [openExternalAcceptanceDialog, setOpenExternalAcceptanceDialog] =
@@ -145,10 +148,10 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
           variant="h5"
           sx={{ fontWeight: "600", color: colors.primary[200] }}
         >
-          Incoming Comment Requests
+          {t('incoming_comment_requests')}
         </Typography>
         <Typography variant="body1" sx={{ color: "#000" }}>
-          Incoming request for comment from other institutions.
+          {t('incoming_request_for_comment_from_other_institutions')}
         </Typography>
       </Paper>
 
@@ -162,7 +165,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
               {userRole === "Approver" ? (
                 <TableCell>
                   <Typography variant="h5" fontWeight={600}>
-                    From (Institution)
+                    {t('from')} ({t('institution')})
                   </Typography>
                 </TableCell>
               ) : (
@@ -170,17 +173,17 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
               )}
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  Title
+                  {t('short_title')}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  Acceptance Status
+                  {t('acceptance_status')}
                 </Typography>
               </TableCell>
               <TableCell colSpan={4}>
                 <Typography variant="h5" fontWeight={600}>
-                  Actions
+                  {t('actions')}
                 </Typography>
               </TableCell>
             </TableRow>
@@ -219,7 +222,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
                         href={`/admin/external_request_details/${incommingData.draft_id}`}
                         sx={{ textTransform: "none", marginRight: "5px" }}
                       >
-                        Detail
+                        {t('detail')}
                       </Button>
 
                       {incommingData.status === 0 ? (
@@ -235,7 +238,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
                               color: colors.grey[300],
                             }}
                           >
-                            Accept
+                            {t('accept')}
                           </Button>
 
                           <Button
@@ -249,7 +252,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
                               color: colors.grey[300],
                             }}
                           >
-                            Reject
+                            {t('reject')}
                           </Button>
                         </>
                       ) : incommingData.status === 1 ? (
@@ -261,7 +264,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
                             onClick={()=>showAssignCommenterDialog(incommingData.id, incommingData.draft_title)}
                             sx={{ textTransform: "none", marginRight: "5px" }}
                           >
-                            Assign Commenters
+                            {t('assign_commenters')}
                           </Button>
                         </>
                       ) : (
@@ -284,7 +287,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
                           setOpenExternalAcceptanceDialog={
                             setOpenExternalAcceptanceDialog
                           }
-                          title="Accept draft and assign expert to comment"
+                          title={t('accept_incoming_request')}
                         />
                       )}
 
@@ -305,7 +308,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
                           setOpenExternalRejectionDialog={
                             setOpenExternalRejectionDialog
                           }
-                          title="Reject this draft commenting request"
+                          title={t('reject_incoming_request')}
                         />
                       )}
                       {openAssignCommenterDialog && (
@@ -323,7 +326,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
                           setOpenAssignCommenterDialog={
                             setOpenAssignCommenterDialog
                           }
-                          title="Assign more commenters for this draft document."
+                          title={t('assign_more_commenters')}
                         />
                       )}
                     </TableCell>
@@ -333,7 +336,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
                 <Typography
                 variant="body1"
                 >
-                Your internet connection may be unstable. You can &nbsp;
+                {t('network_error_message')} &nbsp;
                   <Button 
                     variant="outlined"
                     color="primary"
@@ -341,7 +344,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
                     sx={{ textTransform:'none' }}
                     onClick={handleNetworkStatus}
                   >
-                    Try again <RefreshIcon />
+                    {t('try_again')} <RefreshIcon />
                   </Button>
               </Typography> 
                ):
@@ -349,7 +352,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
                     // <CircularProgress color="secondary" />
 
                     <Typography variant="body1">
-                      Please wait...
+                      {`${t('please_wait')}...`}
                     </Typography>
   
               )}
