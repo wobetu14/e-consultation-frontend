@@ -49,7 +49,7 @@ const Topbar = ({menuItems}) => {
       elevation={0} 
       position='relative'
       sx={{
-       backgroundColor:colors.primary[100], 
+       backgroundColor:colors.primary[200], 
        zIndex:2 }}>
           <Grid container>
             <Grid item xs={10}>

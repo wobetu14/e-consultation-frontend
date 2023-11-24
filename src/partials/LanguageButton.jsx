@@ -115,7 +115,7 @@ export default function LanguageButton() {
                 <MenuList id="split-button-menu" autoFocusItem>
                   {appLanguages.map(({code, name}) => (
                     <MenuItem
-                     sx={{ color:colors.grey[100], backgroundColor:colors.grey[600] }}
+                    //  sx={{ color:colors.grey[100], backgroundColor:colors.grey[600] }}
                       key={code}
                       disabled={code === currentLanguageCode}
                       selected={code === currentLanguageCode}

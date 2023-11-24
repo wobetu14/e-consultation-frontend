@@ -13,6 +13,8 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import LinkIcon from "@mui/icons-material/Link";
 import BusinessIcon from '@mui/icons-material/Business';
+import EULogo from './../images/sponsers_logo/European-Union_flag.png';
+import GIZLogo from './../images/sponsers_logo/giz-logo.gif'
 
 const Footer = () => {
   const theme = useTheme();
@@ -158,6 +160,52 @@ const Footer = () => {
             />
             {/* </Typography> */}
           </Box>
+
+          <Box
+            sx={{
+              // height:"50vh",
+              paddingRight: "25px",
+              marginRight: "20px",
+            }}
+          >
+              <Typography variant="h5" 
+              sx={{
+                  paddingTop: "15px",
+                  fontWeight: 500,
+                  color: colors.headerText[100]
+                }}
+                >
+                <a href="https://www.giz.de/en/html/index.html" 
+                target="_blank" rel="noreferrer" 
+                style={{ textDecoration:"none", color:colors.primary[200] }}>
+                  Developed by <strong>GIZ International Services</strong>
+                </a>
+              </Typography>
+              <a href="https://www.giz.de/en/html/index.html" 
+                target="_blank" rel="noreferrer" 
+                style={{ textDecoration:"none", color:colors.primary[200] }}
+                >
+                <img src={GIZLogo} alt="" />
+              </a>
+
+              <Typography variant="h5" 
+               sx={{
+                paddingTop: "15px",
+                fontWeight: 500,
+                color: colors.headerText[100]
+              }}
+              >
+                <a href="https://european-union.europa.eu/select-language?destination=/node/1" 
+                  target="_blank" rel="noreferrer" 
+                  style={{ textDecoration:"none", color:colors.primary[200] }}>
+                  Funded by the <strong>European Union</strong>
+                </a>
+              </Typography>
+              
+              <a href="https://european-union.europa.eu/select-language?destination=/node/1" target="_blank" rel="noreferrer">
+                <img src={EULogo} alt="" />
+              </a>
+          </Box>
         </Grid>
       </Grid>
 
@@ -166,8 +214,10 @@ const Footer = () => {
         <Box
           sx={{
             padding: "25px",
-            backgroundColor: colors.primary[100],
+            backgroundColor: colors.primary[200],
             width: "100%",
+            display:"flex",
+            justifyContent:"space-between"
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 600, color: "white" }}>
