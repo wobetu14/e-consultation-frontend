@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import HomeIcon from "@mui/icons-material/Home";
 import CachedIcon from '@mui/icons-material/Cached';
 import { useNavigate } from "react-router-dom";
+import LanguageButton from "../../../../partials/LanguageButton";
 
 const Topbar = () => {
   const theme = useTheme();
@@ -42,6 +43,9 @@ const Topbar = () => {
         >
           <HomeIcon fontSize="small" color="primary" /> &nbsp; {t("home")}
         </Button>
+
+        <LanguageButton />
+
         <Logout />
         <IconButton onClick={colorMode.toggleColorMode}>
           {theme.palette.mode === "dark" ? (
@@ -50,9 +54,9 @@ const Topbar = () => {
             <LightModeOutlinedIcon />
           )}
         </IconButton>
-        <IconButton>
+        {/* <IconButton>
           <PersonOutlinedIcon />
-        </IconButton>
+        </IconButton> */}
       </Box>
     </Box>
   );

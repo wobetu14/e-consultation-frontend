@@ -49,7 +49,7 @@ const Topbar = ({menuItems}) => {
       elevation={0} 
       position='relative'
       sx={{
-       backgroundColor:colors.primary[200], 
+       backgroundColor:colors.warningColor[300], 
        zIndex:2 }}>
           <Grid container>
             <Grid item xs={10}>
@@ -57,7 +57,7 @@ const Topbar = ({menuItems}) => {
             </Grid>
             <Grid item xs={2}>
                 <Box display="flex">
-                    <IconButton onClick={colorMode.toggleColorMode} sx={{ color:colors.grey[400] }}>
+                    <IconButton onClick={colorMode.toggleColorMode} /* sx={{ color:colors.grey[400] }} */>
                         {theme.palette.mode==="dark" ? (
                             <DarkModeOutlinedIcon />
                         ):(

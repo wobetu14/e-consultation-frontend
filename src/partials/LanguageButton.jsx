@@ -86,7 +86,7 @@ export default function LanguageButton() {
           aria-label="select language"
           aria-haspopup="menu"
           onClick={handleToggle}
-          sx={{ color:colors.grey[400]}}
+          // sx={{ color:colors.grey[400]}}
         >
           <LanguageOutlined />&nbsp;
           {currentLanguage.name} 
