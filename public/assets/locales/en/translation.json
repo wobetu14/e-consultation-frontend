@@ -169,9 +169,9 @@
     "developer_guide":"Developer Guide",
     "language_tool":"Language Tool",
     "next":"Next",
-    "prepare_langauge_and_convert_to_JSON":"Prepare new langauge and convert to JSON data",
-    "download_translation_template":"Download translation template - English version",
-    "download_amharic_translation_template":"Download amharic translation template - Amharic Version",
+    "prepare_language_and_convert_to_JSON":"Prepare new language and convert to JSON data",
+    "download_translation_template_en":"Download translation template - English version",
+    "download_translation_template_am":"Download translation template - Amharic Version",
     "how_it_works":"How it works?",
     "upload_file":"Upload file",
     "result":"Result",
@@ -287,5 +287,6 @@
     "list_of_assigned_drafts_to_comment":"List of drafts you have been assigned to comment",
     "message":"Message",
     "please_provide_your_feedback":"Please provide your feedback on this draft document",
-    "list_of_invited_drafts":"List of draft documents you have been invited to provide comments"
+    "list_of_invited_drafts":"List of draft documents you have been invited to provide comments",
+    "ok_got_it":"Ok got it"
 }

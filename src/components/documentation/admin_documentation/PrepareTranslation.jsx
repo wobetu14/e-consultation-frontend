@@ -5,10 +5,17 @@ import * as xlsx from 'xlsx';
 import TranslationTemplate from '../downloadable_files/translation__en.xlsx';
 import AmharicTranslationTemplate from '../downloadable_files/translation__am.xlsx';
 import {useTranslation} from 'react-i18next';
+import PrepareLangHowtoDialog from './PrepareLangHowtoDialog';
 
 const PrepareTranslation = () => {
     const [jsonFile, setjsonFile] = useState(null);
+    const [showHowtoDialog, setShowHowtoDialog]=useState(false);
+
     const {t}=useTranslation();
+
+    const showLanguagePrepInfoDialog=(e)=>{
+        setShowHowtoDialog(true);
+    }
 
   const readUploadFile = (e) => {
     if (e.target.files) {
@@ -31,7 +38,7 @@ const PrepareTranslation = () => {
       } }} 
       >
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Header title={t('language_tool')} subtitle={t('prepare_langauge_and_convert_to_JSON')} />
+          <Header title={t('language_tool')} subtitle={t('prepare_language_and_convert_to_JSON')} />
         </Box>
             <Typography mb="5px">
                 <Button
@@ -41,7 +48,7 @@ const PrepareTranslation = () => {
                     size="small"
                     sx={{ textTransform:"none", marginRight:'5px' }}
                 >
-                    {t('download_translation_template')}
+                    {t('download_translation_template_en')}
                 </Button>
                 <Button
                     href={AmharicTranslationTemplate}
@@ -50,7 +57,7 @@ const PrepareTranslation = () => {
                     size="small"
                     sx={{ textTransform:"none", marginRight:'5px' }}
                 >
-                    {t('download_amharic_translation_template')}
+                    {t('download_translation_template_am')}
                 </Button>
 
                 <Button
@@ -59,10 +66,18 @@ const PrepareTranslation = () => {
                     color="secondary"
                     size="small"
                     sx={{ textTransform:"none" }}
+                    onClick={(e)=>showLanguagePrepInfoDialog(e)}
                 >
                     {t('how_it_works')}
                 </Button>
             </Typography>
+
+            {
+                showHowtoDialog && (
+                    <PrepareLangHowtoDialog 
+                    showHowtoDialog={showHowtoDialog} setShowHowtoDialog={setShowHowtoDialog}  />
+                )
+            }
  
         <Card sx={{ minWidth: 275 }} variant="outlined">
             <CardContent>
@@ -88,11 +103,13 @@ const PrepareTranslation = () => {
                         </Typography>
                         <Card sx={{ minWidth: 275, backgroundColor:'#17202A', marginTop:"15px" }} variant="outlined">
                             <CardContent>
+                                <code style={{ color:'white' }}>&#123;</code><br />
                                 {
                                     jsonFile.map((jsonData)=>
                                     (
                                     <code
                                     key={jsonData}
+                                    style={{ marginLeft:"20px" }}
                                     >
                                     <span style={{ color:'#7D3C98' }}>&quot;{jsonData.Word}&quot;</span>
                                     <span style={{ color:'white' }}>:</span>
@@ -102,6 +119,7 @@ const PrepareTranslation = () => {
                                     </code>
                                     ))
                                 }
+                                <code style={{ color:'white' }}>&#125;</code>
                             </CardContent>
                         </Card>
                     </>

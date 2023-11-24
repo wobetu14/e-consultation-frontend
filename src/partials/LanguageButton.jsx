@@ -37,6 +37,12 @@ const appLanguages=[
     name:'ትግርኛ',
     country_code:'Ethiopia'
   },
+
+  {
+    code:'sm',
+    name:'Somali',
+    country_code:'Ethiopia'
+  }
 ]
 
 export default function LanguageButton() {

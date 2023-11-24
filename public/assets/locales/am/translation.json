@@ -169,9 +169,9 @@
     "developer_guide":"የአፕሊኬሽን አልሚው መምሪያ",
     "language_tool":"የቋንቋ መሳሪያ",
     "next":"ቀጣይ",
-    "prepare_langauge_and_convert_to_JSON":"አዲስ ቋንቋ ያዘጋጁና ወደ JSON ፋይል ይቀይሩ",
-    "download_translation_template":"የትርጉም አብነት ያውርዱ - እንግሊዘኛ እትም",
-    "download_amharic_translation_template":"የትርጉም አብነት ያውርዱ - አማርኛ እትም",
+    "prepare_language_and_convert_to_JSON":"አዲስ ቋንቋ ያዘጋጁና ወደ JSON ፋይል ይቀይሩ",
+    "download_translation_template_en":"የትርጉም አብነት ያውርዱ - እንግሊዘኛ እትም",
+    "download_translation_template_am":"የትርጉም አብነት ያውርዱ - አማርኛ እትም",
     "how_it_works":"እንዴት ነው የሚሰራው?",
     "upload_file":"ፋይል ይስቀሉ",
     "result":"ውጤት",
@@ -288,5 +288,6 @@
     "list_of_assigned_drafts_to_comment":"አስተያየት እንዲሰጡባቸው የተመደቡባቸው ሰነዶች ዝርዝር",
     "message":"መልዕክት",
     "please_provide_your_feedback":"እባክዎ በዚህ ሰነድ ዙሪያ አስተያየት ይስጡ",
-    "list_of_invited_drafts":"አስተያየት እንዲሰጡባቸው በግል የተጋበዟቸው ሰነዶች ዝርዝር"   
+    "list_of_invited_drafts":"አስተያየት እንዲሰጡባቸው በግል የተጋበዟቸው ሰነዶች ዝርዝር",
+    "ok_got_it":"እሽ ገብቶኛል"
 }
