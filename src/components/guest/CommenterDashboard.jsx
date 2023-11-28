@@ -6,86 +6,81 @@ import axios from "../../axios/AxiosGlobal";
 import UserProfile from "../admin/users/UserProfile";
 
 const CommenterDashboard = () => {
-  const { userInfo } =
-    useContext(UserContext);
+  const { userInfo } = useContext(UserContext);
   const [drafts, setDrafts] = useState(null);
   const [comments, setComments] = useState(0);
   const [users, setUsers] = useState(null);
   const [openDrafts, setOpenDrafts] = useState(0);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchDrafts();
-  }, [])
+  }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchUsers();
-  }, [])
+  }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchComments();
-  }, [])
+  }, []);
 
-  useEffect(()=>{
-   fetchOpenDrafts();
-  },[])
-
+  useEffect(() => {
+    fetchOpenDrafts();
+  }, []);
 
   const fetchDrafts = async () => {
     try {
-      const res = await axios.get("mydrafts",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }});
+      const res = await axios.get("mydrafts", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      });
       setDrafts(res.data.data);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const fetchUsers = async () => {
     try {
       const res = await axios.get(
         `users?institution_id=${userInfo.user.institution_id}`,
-        {headers:{
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          Accept: "application/json;",
-          "Content-Type": "multipart/form-data"
-        }}
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json;",
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
       setUsers(res.data.data);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const fetchComments = async () => {
     try {
-      const res = await axios.get("count-comments",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }});
+      const res = await axios.get("count-comments", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      });
       setComments(res.data);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const fetchOpenDrafts = async () => {
     try {
-      const res = await axios.get("count-opened-drafts",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }});
+      const res = await axios.get("count-opened-drafts", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      });
       setOpenDrafts(res.data);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   return (

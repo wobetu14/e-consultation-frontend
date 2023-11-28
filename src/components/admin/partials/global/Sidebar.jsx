@@ -37,15 +37,12 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 };
 
 const Sidebar = () => {
-  const {t}=useTranslation();
+  const { t } = useTranslation();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
-  const { userInfo, userRole } =
-    useContext(UserContext);
-
-  
+  const { userInfo, userRole } = useContext(UserContext);
 
   return (
     <Box
@@ -63,7 +60,6 @@ const Sidebar = () => {
     >
       <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
-          {/* LOGO AND MENU ICON */}
           <MenuItem
             onClick={() => setIsCollapsed(!isCollapsed)}
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
@@ -86,7 +82,7 @@ const Sidebar = () => {
                     color: colors.headerText[100],
                   }}
                 >
-                  {t('admin')}
+                  {t("admin")}
                 </Typography>
                 <IconButton
                   onClick={() => setIsCollapsed(!isCollapsed)}
@@ -131,7 +127,7 @@ const Sidebar = () => {
                     size="small"
                     sx={{ textTransform: "none", color: "#000" }}
                   >
-                    {t('go_to_profile')}
+                    {t("go_to_profile")}
                   </Button>
                 </Typography>
               </Box>
@@ -156,7 +152,7 @@ const Sidebar = () => {
             {userRole === "Super Admin" ? (
               <>
                 <Item
-                  title={t('dashboard')}
+                  title={t("dashboard")}
                   to="/admin"
                   icon={<HomeIcon />}
                   selected={selected}
@@ -164,7 +160,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('users')}
+                  title={t("users")}
                   to="users"
                   icon={<PersonIcon />}
                   selected={selected}
@@ -172,7 +168,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('sectors')}
+                  title={t("sectors")}
                   to="sectors"
                   icon={<SectorIcon />}
                   selected={selected}
@@ -180,7 +176,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('regions')}
+                  title={t("regions")}
                   to="regions"
                   icon={<RegionIcon />}
                   selected={selected}
@@ -188,7 +184,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('audit_and_reports')}
+                  title={t("audit_and_reports")}
                   to="reports"
                   icon={<AssessmentIcon />}
                   selected={selected}
@@ -196,7 +192,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('resource_center')}
+                  title={t("resource_center")}
                   to="resource_center"
                   icon={<SourceIcon />}
                   selected={selected}
@@ -210,7 +206,7 @@ const Sidebar = () => {
             {userRole === "Federal Admin" ? (
               <>
                 <Item
-                  title={t('dashboard')}
+                  title={t("dashboard")}
                   to="/admin"
                   icon={<HomeIcon />}
                   selected={selected}
@@ -218,7 +214,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('users')}
+                  title={t("users")}
                   to="users"
                   icon={<PersonIcon />}
                   selected={selected}
@@ -226,7 +222,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('institutions_info')}
+                  title={t("institutions_info")}
                   to="institutions"
                   icon={<InstitutionIcon />}
                   selected={selected}
@@ -234,7 +230,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('audit_and_reports')}
+                  title={t("audit_and_reports")}
                   to="reports"
                   icon={<AssessmentIcon />}
                   selected={selected}
@@ -242,7 +238,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('resource_center')}
+                  title={t("resource_center")}
                   to="resource_center"
                   icon={<SourceIcon />}
                   selected={selected}
@@ -256,7 +252,7 @@ const Sidebar = () => {
             {userRole === "Federal Institutions Admin" ? (
               <>
                 <Item
-                  title={t('dashboard')}
+                  title={t("dashboard")}
                   to="/admin"
                   icon={<HomeIcon />}
                   selected={selected}
@@ -264,7 +260,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('users')}
+                  title={t("users")}
                   to="users"
                   icon={<PersonIcon />}
                   selected={selected}
@@ -272,7 +268,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('resource_center')}
+                  title={t("resource_center")}
                   to="resource_center"
                   icon={<SourceIcon />}
                   selected={selected}
@@ -286,7 +282,7 @@ const Sidebar = () => {
             {userRole === "Regional Admin" ? (
               <>
                 <Item
-                  title={t('dashboard')}
+                  title={t("dashboard")}
                   to="/admin"
                   icon={<HomeIcon />}
                   selected={selected}
@@ -294,7 +290,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('users')}
+                  title={t("users")}
                   to="users"
                   icon={<PersonIcon />}
                   selected={selected}
@@ -302,7 +298,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('institutions_info')}
+                  title={t("institutions_info")}
                   to="institutions"
                   icon={<InstitutionIcon />}
                   selected={selected}
@@ -310,7 +306,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('audit_and_reports')}
+                  title={t("audit_and_reports")}
                   to="reports"
                   icon={<AssessmentIcon />}
                   selected={selected}
@@ -318,7 +314,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('resource_center')}
+                  title={t("resource_center")}
                   to="resource_center"
                   icon={<SourceIcon />}
                   selected={selected}
@@ -332,7 +328,7 @@ const Sidebar = () => {
             {userRole === "Regional Institutions Admin" ? (
               <>
                 <Item
-                  title={t('dashboard')}
+                  title={t("dashboard")}
                   to="/admin"
                   icon={<HomeIcon />}
                   selected={selected}
@@ -340,7 +336,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('users')}
+                  title={t("users")}
                   to="users"
                   icon={<PersonIcon />}
                   selected={selected}
@@ -348,7 +344,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('audit_and_reports')}
+                  title={t("audit_and_reports")}
                   to="reports"
                   icon={<AssessmentIcon />}
                   selected={selected}
@@ -356,7 +352,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('resource_center')}
+                  title={t("resource_center")}
                   to="resource_center"
                   icon={<SourceIcon />}
                   selected={selected}
@@ -370,30 +366,15 @@ const Sidebar = () => {
             {userRole === "Approver" ? (
               <>
                 <Item
-                  title={t('dashboard')}
+                  title={t("dashboard")}
                   to="/admin"
                   icon={<HomeIcon />}
                   selected={selected}
                   setSelected={setSelected}
                 />
 
-                {/* <Item
-                        title="Users"
-                        to="users"
-                        icon={<PersonIcon />}
-                        selected={selected}
-                        setSelected={setSelected}
-                      /> */}
-                {/*  <Item
-                          title="Draft Documents"
-                          to="drafts"
-                          icon={<MenuBookIcon />}
-                          selected={selected}
-                          setSelected={setSelected}
-                        /> */}
-
                 <Item
-                  title={t('opening_request')}
+                  title={t("opening_request")}
                   to="draft_approval_request"
                   icon={<FactCheckIcon />}
                   selected={selected}
@@ -401,7 +382,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('incoming_requests')}
+                  title={t("incoming_requests")}
                   to="external_comment_requests"
                   icon={<ScheduleSendIcon />}
                   selected={selected}
@@ -409,7 +390,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('resource_center')}
+                  title={t("resource_center")}
                   to="resource_center"
                   icon={<SourceIcon />}
                   selected={selected}
@@ -423,23 +404,15 @@ const Sidebar = () => {
             {userRole === "Uploader" ? (
               <>
                 <Item
-                  title={t('dashboard')}
+                  title={t("dashboard")}
                   to="/admin"
                   icon={<HomeIcon />}
                   selected={selected}
                   setSelected={setSelected}
                 />
 
-                {/*  <Item
-                      title="Draft Documents"
-                      to="drafts"
-                      icon={<MenuBookIcon />}
-                      selected={selected}
-                      setSelected={setSelected}
-                    /> */}
-
                 <Item
-                  title={t('opening_request')}
+                  title={t("opening_request")}
                   to="draft_approval_request"
                   icon={<FactCheckIcon />}
                   selected={selected}
@@ -447,7 +420,7 @@ const Sidebar = () => {
                 />
 
                 <Item
-                  title={t('resource_center')}
+                  title={t("resource_center")}
                   to="resource_center"
                   icon={<SourceIcon />}
                   selected={selected}

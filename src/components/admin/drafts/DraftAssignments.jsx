@@ -1,4 +1,7 @@
-import { Typography, Button, LinearProgress, CircularProgress } from "@mui/material";
+import {
+  Typography,
+  Button,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState, useContext } from "react";
 import axios from "../../../axios/AxiosGlobal";
@@ -12,33 +15,33 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { UserContext } from "../../../contexts/UserContext";
-import RefreshIcon from '@mui/icons-material/Refresh';
+import RefreshIcon from "@mui/icons-material/Refresh";
 import { useTranslation } from "react-i18next";
 
 const DraftAssignments = () => {
   const [commentAssignments, setCommentAssignments] = useState(null);
 
   const { userInfo } = useContext(UserContext);
-  const [networkErrorMessage, setNetworkErrorMessage]=useState(null);
-  
-  const {t}=useTranslation();
+  const [networkErrorMessage, setNetworkErrorMessage] = useState(null);
+
+  const { t } = useTranslation();
 
   const fetchCommentAssignments = async () => {
-    setNetworkErrorMessage(null)
+    setNetworkErrorMessage(null);
     return await axios
-      .get(`comment-repliers?replier=${userInfo.user.id}`,
-      { headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`comment-repliers?replier=${userInfo.user.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setCommentAssignments(res);
         setNetworkErrorMessage(null);
       })
       .catch((error) => {
-  
         setNetworkErrorMessage(error.name);
       });
   };
@@ -47,13 +50,13 @@ const DraftAssignments = () => {
     fetchCommentAssignments();
   }, []);
 
-  const handleNetworkStatus=()=>{
+  const handleNetworkStatus = () => {
     fetchCommentAssignments();
-  }
+  };
 
   return (
     <Box m="0 20px" width={"95%"}>
-      <Header title={t('list_of_assigned_draft_documents')} />
+      <Header title={t("list_of_assigned_draft_documents")} />
 
       <TableContainer
         component={Paper}
@@ -64,7 +67,7 @@ const DraftAssignments = () => {
             <TableRow>
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  {t('short_title')}
+                  {t("short_title")}
                 </Typography>
               </TableCell>
             </TableRow>
@@ -91,35 +94,27 @@ const DraftAssignments = () => {
                       sx={{ textTransform: "none", marginRight: "5px" }}
                     >
                       <Typography variant="body1">
-                        {t('reply_to_comments_on_this_document')}
+                        {t("reply_to_comments_on_this_document")}
                       </Typography>
                     </Button>
                   </TableCell>
                 </TableRow>
               ))
-            ) : networkErrorMessage!==null ? (
-              <Typography
-              variant="body1"
-              >
-              {t('network_error_message')} &nbsp;
-                <Button 
+            ) : networkErrorMessage !== null ? (
+              <Typography variant="body1">
+                {t("network_error_message")} &nbsp;
+                <Button
                   variant="outlined"
                   color="primary"
                   size="small"
-                  sx={{ textTransform:'none' }}
+                  sx={{ textTransform: "none" }}
                   onClick={handleNetworkStatus}
                 >
-                  {t('try_again')} <RefreshIcon />
+                  {t("try_again")} <RefreshIcon />
                 </Button>
-            </Typography> 
-             ):
-            (
-                  // <CircularProgress color="secondary" />
-
-                    <Typography variant="body1">
-                      {t('please_wait')}...
-                    </Typography>
-
+              </Typography>
+            ) : (
+              <Typography variant="body1">{t("please_wait")}...</Typography>
             )}
           </TableBody>
         </Table>

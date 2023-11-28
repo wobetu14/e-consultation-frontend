@@ -1,6 +1,5 @@
 import {
   Box,
-  LinearProgress,
   Paper,
   Table,
   TableBody,
@@ -23,7 +22,7 @@ const PersonalInvitations = () => {
   // User context
   const { userRole } = useContext(UserContext);
 
-  const {t}=useTranslation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchInvitedInstitutions();
@@ -31,24 +30,23 @@ const PersonalInvitations = () => {
 
   const fetchInvitedInstitutions = async () => {
     return await axios
-      .get(`comment-request?is_personal=${1}&draft_id=${params.id}`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`comment-request?is_personal=${1}&draft_id=${params.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setInvitedPeople(res.data.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   return (
     <Box m="0 20px" width={"95%"}>
       <Typography variant="h5" fontWeight="600">
-        {t('invitations_to_people')}
+        {t("invitations_to_people")}
       </Typography>
       <TableContainer
         component={Paper}
@@ -60,7 +58,7 @@ const PersonalInvitations = () => {
               {userRole === "Approver" ? (
                 <TableCell>
                   <Typography variant="h5" fontWeight={600}>
-                    {t('to')} ({t('email_address')})
+                    {t("to")} ({t("email_address")})
                   </Typography>
                 </TableCell>
               ) : (
@@ -68,34 +66,34 @@ const PersonalInvitations = () => {
               )}
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  {t('requesting_user')}
+                  {t("requesting_user")}
                 </Typography>
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {invitedPeople ? (
-              invitedPeople.map((people) => (
-                <TableRow
-                  key={people.id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell>
-                    <Typography variant="body1">
-                      {people.email ? people.email : ""}
-                    </Typography>
-                  </TableCell>
+            {invitedPeople
+              ? invitedPeople.map((people) => (
+                  <TableRow
+                    key={people.id}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell>
+                      <Typography variant="body1">
+                        {people.email ? people.email : ""}
+                      </Typography>
+                    </TableCell>
 
-                  <TableCell>
-                    <Typography variant="body1">
-                      {people.requested_by_name ? people.requested_by_name : ""}
-                    </Typography>
-                  </TableCell>
-                </TableRow>
-              ))
-            ) : (
-              ""
-            )}
+                    <TableCell>
+                      <Typography variant="body1">
+                        {people.requested_by_name
+                          ? people.requested_by_name
+                          : ""}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                ))
+              : ""}
           </TableBody>
         </Table>
       </TableContainer>

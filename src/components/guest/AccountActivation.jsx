@@ -27,40 +27,25 @@ const AccountActivation = () => {
 
   const activateUser = async () => {
     return await axios
-      .get(`activation/${params.token}`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`activation/${params.token}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
-        
+        setActivation(true);
+        setLoggedIn(true);
+        setServerError(null);
+        localStorage.setItem("token", res.data.data.token);
+        localStorage.setItem("userRole", res.data.data.user.roles[0].name);
+        localStorage.setItem("userInfo", JSON.stringify(res.data.data));
 
-
-        // if (res.status !== 200) {
-        //   setServerError(res.data.message);
-        // } else {
-        //   if (res.status === 200 && res.data.token) {
-            setActivation(true);
-            setLoggedIn(true);
-            setServerError(null);
-            localStorage.setItem("token", res.data.data.token);
-            localStorage.setItem("userRole", res.data.data.user.roles[0].name);
-            localStorage.setItem("userInfo", JSON.stringify(res.data.data));
-
-            setUserRole(localStorage.getItem("userRole"));
-            setUserToken(localStorage.getItem("token"));
-            setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
-
-            // if (localStorage.getItem("userRole") === "Commenter") {
-              navigate("/");
-            /* }
-          } else {
-            setServerError(
-              "Ooops! Something went wrong. We couldn't activate this account."
-            ); */
-          // }
-        // }
+        setUserRole(localStorage.getItem("userRole"));
+        setUserToken(localStorage.getItem("token"));
+        setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+        navigate("/");
       })
       .catch((errors) => {
         setServerError(errors.message);

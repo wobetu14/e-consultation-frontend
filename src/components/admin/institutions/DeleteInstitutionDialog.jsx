@@ -16,14 +16,10 @@ import { InstitutionsDataContext } from "../../../contexts/InstitutionsDataConte
 const DeleteInstitutionDialog = ({ title, text }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  
+
   // UsersDataContext
-  const {
-    institution,
-    openDialog,
-    setOpenDialog,
-    deleteInstitution,
-  } = useContext(InstitutionsDataContext);
+  const { institution, openDialog, setOpenDialog, deleteInstitution } =
+    useContext(InstitutionsDataContext);
   return (
     <>
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>

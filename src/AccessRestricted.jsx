@@ -4,7 +4,7 @@ import {
   Box,
   Button,
   Grid,
-  Typography,
+  Typography, 
   useTheme,
 } from "@mui/material";
 import { motion } from "framer-motion";

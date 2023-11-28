@@ -50,19 +50,18 @@ const OutgoingCommentRequests = () => {
 
   const fetchDrafts = async () => {
     return await axios
-      .get(`drafts`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`drafts`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setDraftsData(res.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   useEffect(() => {
@@ -269,4 +268,4 @@ const OutgoingCommentRequests = () => {
     </Box>
   );
 };
-export default OutgoingCommentRequests; 
+export default OutgoingCommentRequests;

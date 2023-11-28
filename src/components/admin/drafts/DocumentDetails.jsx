@@ -38,9 +38,9 @@ const DocumentDetails = () => {
   const [serverErrorMsg, setServerErrorMsg] = useState(null);
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
 
-  const [loading, setLoading]=useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const {t}=useTranslation();
+  const { t } = useTranslation();
 
   const errorStyle = {
     color: "red",
@@ -62,36 +62,40 @@ const DocumentDetails = () => {
   };
 
   useEffect(() => {
-    fetchDocumentDetails()
+    fetchDocumentDetails();
   }, []);
 
   useEffect(() => {
-    fetchDocumentSections()
+    fetchDocumentSections();
   }, []);
 
   useEffect(() => {
-    fetchDocumentComments()
+    fetchDocumentComments();
   }, []);
 
   const fetchDocumentDetails = async () => {
-    return await axios.get(`drafts/${params.id}`, 
-    {headers:{
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-      Accept: "application/json;",
-      "Content-Type": "multipart/form-data"
-    }}).then((response) => {
-      setDocumentDetail(response.data.data);
-    });
+    return await axios
+      .get(`drafts/${params.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        setDocumentDetail(response.data.data);
+      });
   };
 
   const fetchDocumentSections = async () => {
     return await axios
-      .get(`draft/${params.id}/draft-sections`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`draft/${params.id}/draft-sections`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
         setDocumentSections(response.data.data);
       })
@@ -102,12 +106,13 @@ const DocumentDetails = () => {
 
   const fetchDocumentComments = async () => {
     return await axios
-      .get(`draft/${params.id}/general-comments`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`draft/${params.id}/general-comments`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
         setDocumentComments(response.data.data);
       })
@@ -141,12 +146,10 @@ const DocumentDetails = () => {
           </Typography>
 
           <Typography variant="h1">
-          {loading && <LinearProgress size="small" color="info" />}
+            {loading && <LinearProgress size="small" color="info" />}
           </Typography>
         </motion.span>
       </Grid>
-
-      {/* <Button variant="contained" color="success" size="small" onClick={handleAcceptanceDialog}>Accept</Button> */}
 
       <DraftMetaInfo
         documentDetail={documentDetail}
@@ -155,18 +158,16 @@ const DocumentDetails = () => {
         serverSuccessMsg={serverSuccessMsg}
         setServerErrorMsg={setServerErrorMsg}
         setServerSuccessMsg={setServerSuccessMsg}
-
         fetchDocumentDetails={fetchDocumentDetails}
         fetchDocumentSections={fetchDocumentSections}
         fetchDocumentComments={fetchDocumentComments}
-
         loading={loading}
         setLoading={setLoading}
       />
 
       <ListItemButton
         onClick={handlePreviewCollapse}
-        color='secondary'
+        color="secondary"
         sx={{
           marginLeft: "40px",
           marginRight: "40px",
@@ -186,10 +187,10 @@ const DocumentDetails = () => {
               sx={{
                 fontWeight: "500",
                 textAlign: "center",
-                color: colors.grey[600]
+                color: colors.grey[600],
               }}
             >
-              {t('document_preview')}
+              {t("document_preview")}
             </Typography>
           }
         />
@@ -213,7 +214,6 @@ const DocumentDetails = () => {
           setDocumentSections={setDocumentSections}
           documentComments={documentComments}
           setDocumentComments={setDocumentComments}
-
           fetchDocumentDetails={fetchDocumentDetails}
           fetchDocumentSections={fetchDocumentSections}
           fetchDocumentComments={fetchDocumentComments}

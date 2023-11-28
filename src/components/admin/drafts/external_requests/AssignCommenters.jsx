@@ -23,7 +23,6 @@ const AssignCommenters = ({
   requestID,
   requestTitle,
   incomingCommentRequests,
-
   serverSuccessMsg,
   serverErrorMsg,
   setServerSuccessMsg,
@@ -32,12 +31,11 @@ const AssignCommenters = ({
   setOpenAssignCommenterDialog,
   title = "Assign more commenters for this draft document.",
 }) => {
-
   const [repliersEmail, setRepliersEmail] = useState([]);
   const [myUsers, setMyUsers] = useState([]);
   const [repliersID, setRepliersID] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [networkError, setNetworkError]=useState(null);
+  const [networkError, setNetworkError] = useState(null);
 
   const errorStyle = {
     color: "red",
@@ -51,14 +49,13 @@ const AssignCommenters = ({
     fontSize: "18px",
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getMyUsersID();
-  }, [myUsers])
+  }, [myUsers]);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchMyUsers();
-  }, [repliersEmail])
-
+  }, [repliersEmail]);
 
   const getMyUsersID = () => {
     if (repliersEmail.length > 0) {
@@ -70,17 +67,16 @@ const AssignCommenters = ({
 
   const fetchMyUsers = async () => {
     try {
-      const res = await axios.get(`commenters-per-institution`, 
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }});
-      
+      const res = await axios.get(`commenters-per-institution`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
       setMyUsers(res.data.data);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const formikAssignCommenterForm = useFormik({
@@ -109,12 +105,13 @@ const AssignCommenters = ({
     setNetworkError(null);
     setLoading(true);
     return await axios
-      .post(`assign-commenters`, commentersData,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .post(`assign-commenters`, commentersData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);

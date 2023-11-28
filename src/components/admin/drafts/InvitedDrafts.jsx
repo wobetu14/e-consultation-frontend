@@ -1,4 +1,7 @@
-import { Typography, Button, LinearProgress, CircularProgress } from "@mui/material";
+import {
+  Typography,
+  Button,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import axios from "../../../axios/AxiosGlobal";
@@ -11,32 +14,32 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import RefreshIcon from '@mui/icons-material/Refresh';
+import RefreshIcon from "@mui/icons-material/Refresh";
 import { useTranslation } from "react-i18next";
 
 const InvitedDrafts = () => {
   const [invitedDrafts, setInvitedDrafts] = useState(null);
-  const [networkErrorMessage, setNetworkErrorMessage]=useState(null);
+  const [networkErrorMessage, setNetworkErrorMessage] = useState(null);
 
-  const {t}=useTranslation();
+  const { t } = useTranslation();
 
   const fetchInvitedDrafts = async () => {
-    setNetworkErrorMessage(null)
+    setNetworkErrorMessage(null);
     return await axios
-      .get(`drafts-am-invited-personally`,
-      { 
-        headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`drafts-am-invited-personally`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setInvitedDrafts(res);
         setNetworkErrorMessage(null);
       })
       .catch((error) => {
-        setNetworkErrorMessage(error.name)
+        setNetworkErrorMessage(error.name);
       });
   };
 
@@ -44,13 +47,13 @@ const InvitedDrafts = () => {
     fetchInvitedDrafts();
   }, []);
 
-  const handleNetworkStatus=()=>{
+  const handleNetworkStatus = () => {
     fetchInvitedDrafts();
-  }
+  };
 
   return (
     <Box m="0 20px" width={"95%"}>
-      <Header title={t('list_of_invited_drafts')} />
+      <Header title={t("list_of_invited_drafts")} />
 
       <TableContainer
         component={Paper}
@@ -61,19 +64,19 @@ const InvitedDrafts = () => {
             <TableRow>
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  {t('short_title')}
+                  {t("short_title")}
                 </Typography>
               </TableCell>
 
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  {t('institution')}
+                  {t("institution")}
                 </Typography>
               </TableCell>
 
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  {t('message')}
+                  {t("message")}
                 </Typography>
               </TableCell>
             </TableRow>
@@ -110,35 +113,27 @@ const InvitedDrafts = () => {
                       sx={{ textTransform: "none", marginRight: "5px" }}
                     >
                       <Typography variant="body1">
-                        {t('please_provide_your_feedback')}
+                        {t("please_provide_your_feedback")}
                       </Typography>
                     </Button>
                   </TableCell>
                 </TableRow>
               ))
-            ) : networkErrorMessage!==null ? (
-              <Typography
-              variant="body1"
-              >
-              {t('network_error_message')} &nbsp;
-                <Button 
+            ) : networkErrorMessage !== null ? (
+              <Typography variant="body1">
+                {t("network_error_message")} &nbsp;
+                <Button
                   variant="outlined"
                   color="primary"
                   size="small"
-                  sx={{ textTransform:'none' }}
+                  sx={{ textTransform: "none" }}
                   onClick={handleNetworkStatus}
                 >
-                  {t('try_again')} <RefreshIcon />
+                  {t("try_again")} <RefreshIcon />
                 </Button>
-            </Typography> 
-             ):
-            (
-                  // <CircularProgress color="secondary" />
-
-                    <Typography variant="body1">
-                      {t('please_wait')}...
-                    </Typography>
-
+              </Typography>
+            ) : (
+              <Typography variant="body1">{t("please_wait")}...</Typography>
             )}
           </TableBody>
         </Table>

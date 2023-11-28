@@ -6,7 +6,7 @@ import {
   useTheme,
   Chip,
 } from "@mui/material";
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "../../../../axios/AxiosGlobal";
 
@@ -29,7 +29,7 @@ const ExternalRequestMetaInfo = ({
   const colors = tokens(theme.palette.mode);
 
   useEffect(() => {
-    fetchDocumentSections()
+    fetchDocumentSections();
   }, []);
 
   useEffect(() => {
@@ -38,12 +38,13 @@ const ExternalRequestMetaInfo = ({
 
   const fetchDocumentSections = async () => {
     return await axios
-      .get(`draft/${params.id}/draft-sections`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`draft/${params.id}/draft-sections`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
         setDocumentSections(response.data.data);
       })
@@ -54,18 +55,17 @@ const ExternalRequestMetaInfo = ({
 
   const fetchDocumentComments = async () => {
     return await axios
-      .get(`draft/${params.id}/general-comments`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`draft/${params.id}/general-comments`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
         setDocumentComments(response.data.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   return (

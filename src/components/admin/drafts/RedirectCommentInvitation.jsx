@@ -1,8 +1,4 @@
-import {
-  Box,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -17,8 +13,7 @@ const RedirectCommentInvitation = () => {
   const [hasAccount, setHasAccount] = useState(false);
 
   const navigate = useNavigate();
-  const { userInfo } =
-    useContext(UserContext);
+  const { userInfo } = useContext(UserContext);
 
   useEffect(() => {
     redirectUSer();

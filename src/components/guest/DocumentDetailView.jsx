@@ -35,8 +35,8 @@ const DocumentDetailView = () => {
   const params = useParams();
 
   /**
-   * Create documentDetail, documentSections, and documentComments to handle document information 
-   * and its sections requested from the API and use it for rendering and explore the document 
+   * Create documentDetail, documentSections, and documentComments to handle document information
+   * and its sections requested from the API and use it for rendering and explore the document
    * section by section.
    */
   const [documentDetail, setDocumentDetail] = useState(null);
@@ -44,14 +44,10 @@ const DocumentDetailView = () => {
   const [documentComments, setDocumentComments] = useState(null);
 
   /**
-   * Create variable contentBgColor and use it to highlight the active document section while user is navigating 
+   * Create variable contentBgColor and use it to highlight the active document section while user is navigating
    * the document sections for reading.
    */
   const [contentBgColor, setContentBgColor] = useState(null);
-
-  // Show commenting box and comments on mouse enter
-  const [commentsVisible, setCommentsVisible] = useState(false);
-  const [sectionID, setSectionID] = useState(0);
 
   // access the logged in user information from the UserContext definition
   const { userInfo, userRole } = useContext(UserContext);
@@ -66,19 +62,19 @@ const DocumentDetailView = () => {
   // General comments collapse functionality to collapse and release the general commments component
   const [commentsOpen, setCommentsOpen] = React.useState(true);
 
-  // Handle the collapse functionality in response to user's onChnage event to collapse the table of contents 
+  // Handle the collapse functionality in response to user's onChnage event to collapse the table of contents
   const handleArticlesCollapse = () => {
     setArticlesOpen(!articlesOpen);
   };
 
-  // Handle the collapse functionality in rseponse to user's onChnage event to collapse 
+  // Handle the collapse functionality in rseponse to user's onChnage event to collapse
   // and release the general comments components
   const handleCommentsCollapse = () => {
     setCommentsOpen(!commentsOpen);
   };
 
   /**
-   * Create useEffect hook and call a function the implements 
+   * Create useEffect hook and call a function the implements
    * an API call to fetch documentDetails, documentSections and documentComments data
    */
 
@@ -87,32 +83,36 @@ const DocumentDetailView = () => {
   }, []);
 
   useEffect(() => {
-    fetchDocumentSections()
+    fetchDocumentSections();
   }, []);
 
   useEffect(() => {
-    fetchDocumentComments()
+    fetchDocumentComments();
   }, []);
 
   const fetchDocumentDetails = async () => {
-    return await axios.get(`drafts/${params.id}`,
-    {headers:{
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-      Accept: "application/json;",
-      "Content-Type": "multipart/form-data"
-    }}).then((response) => {
-      setDocumentDetail(response.data.data);
-    });
+    return await axios
+      .get(`drafts/${params.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        setDocumentDetail(response.data.data);
+      });
   };
 
   const fetchDocumentSections = async () => {
     return await axios
-      .get(`draft/${params.id}/draft-sections`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`draft/${params.id}/draft-sections`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
         setDocumentSections(response.data.data);
       })
@@ -123,12 +123,13 @@ const DocumentDetailView = () => {
 
   const fetchDocumentComments = async () => {
     return await axios
-      .get(`draft/${params.id}/general-comments`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`draft/${params.id}/general-comments`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
         setDocumentComments(response.data.data);
       })
@@ -141,7 +142,9 @@ const DocumentDetailView = () => {
     /**
      * Create UI to render the document meta information, document content and comments and replies
      */
-    <Box sx={{ backgroundColor: colors.grey[200] }}> {/* Box to to render the documents meta info */}
+    <Box sx={{ backgroundColor: colors.grey[200] }}>
+      {" "}
+      {/* Box to to render the documents meta info */}
       <Box
         sx={{
           backgroundColor: "#255B7E",
@@ -247,7 +250,8 @@ const DocumentDetailView = () => {
                   )}
 
                   {documentDetail &&
-                  documentDetail.draft_status.name === "Open" && parseInt(documentDetail.comment_closed)===0 ? (
+                  documentDetail.draft_status.name === "Open" &&
+                  parseInt(documentDetail.comment_closed) === 0 ? (
                     <Chip
                       label="Open for comment"
                       size="small"
@@ -261,7 +265,8 @@ const DocumentDetailView = () => {
                   )}
 
                   {documentDetail &&
-                  documentDetail.draft_status.name === "Open" && parseInt(documentDetail.comment_closed)===1 ? (
+                  documentDetail.draft_status.name === "Open" &&
+                  parseInt(documentDetail.comment_closed) === 1 ? (
                     <Chip
                       label="Closed for comment"
                       size="small"
@@ -273,20 +278,21 @@ const DocumentDetailView = () => {
                   ) : (
                     ""
                   )}
-                  
-                    {
-                        documentDetail && documentDetail.draft_status.name==="Closed" ? (
-                          <Chip
-                          label="Consultation ended"
-                          size="small"
-                          sx={{
-                            backgroundColor: colors.secondary[100],
-                            color: colors.grey[500],
-                            marginRight: "5px",
-                          }}
-                        />
-                        ):""
-                      }
+
+                  {documentDetail &&
+                  documentDetail.draft_status.name === "Closed" ? (
+                    <Chip
+                      label="Consultation ended"
+                      size="small"
+                      sx={{
+                        backgroundColor: colors.secondary[100],
+                        color: colors.grey[500],
+                        marginRight: "5px",
+                      }}
+                    />
+                  ) : (
+                    ""
+                  )}
                 </Grid>
 
                 <Grid item xs={6} md={6}>
@@ -377,7 +383,7 @@ const DocumentDetailView = () => {
             </Grid>
 
             <Grid item xs={3}>
-              {documentDetail.draft_status.name === "Closed"  ? (
+              {documentDetail.draft_status.name === "Closed" ? (
                 <Paper
                   elevation={1}
                   sx={{
@@ -431,8 +437,9 @@ const DocumentDetailView = () => {
           <CircularProgress color="secondary" />
         )}
       </Box>
-
-      <Box sx={{ backgroundColor: colors.grey[200] }}> {/* Create Box to render document content */}
+      <Box sx={{ backgroundColor: colors.grey[200] }}>
+        {" "}
+        {/* Create Box to render document content */}
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -521,7 +528,7 @@ const DocumentDetailView = () => {
                                                 <SectionNavigationMenu
                                                   section={child111}
                                                   setContentBgColor={
-                                                  setContentBgColor
+                                                    setContentBgColor
                                                   }
                                                   paddingValue={12}
                                                 />
@@ -575,8 +582,7 @@ const DocumentDetailView = () => {
                     ))
                   ) : (
                     <Box>
-                      {/* Create a progress bar to indicate the loading if the documentSections variable is empty  */}
-                      {/* <CircularProgress color="secondary" /> */}
+                      
                     </Box>
                   )}
                 </Collapse>
@@ -595,7 +601,7 @@ const DocumentDetailView = () => {
                           id={section.id}
                           sx={{
                             padding: "20px",
-                          }} 
+                          }}
                         >
                           <Typography
                             variant="h4"
@@ -635,7 +641,7 @@ const DocumentDetailView = () => {
                                   id={sectionChild1.id}
                                   sx={{
                                     padding: "20px",
-                                  }} 
+                                  }}
                                 >
                                   <Typography
                                     variant="h4"
@@ -657,19 +663,22 @@ const DocumentDetailView = () => {
                                     {sectionChild1.section_body}
                                   </Typography>
 
-                                  {
-                                    userRole ===
-                                      "Commenter" && (
-                                      <SectionFeedbacks
-                                        documentDetail={documentDetail}
-                                        comments={sectionChild1.comments}
-                                        section={sectionChild1}
-                                        fetchDocumentDetails={fetchDocumentDetails}
-                                        fetchDocumentSections={fetchDocumentSections}
-                                        fetchDocumentComments={fetchDocumentComments}
-                                      />
-                                    )
-                                  }
+                                  {userRole === "Commenter" && (
+                                    <SectionFeedbacks
+                                      documentDetail={documentDetail}
+                                      comments={sectionChild1.comments}
+                                      section={sectionChild1}
+                                      fetchDocumentDetails={
+                                        fetchDocumentDetails
+                                      }
+                                      fetchDocumentSections={
+                                        fetchDocumentSections
+                                      }
+                                      fetchDocumentComments={
+                                        fetchDocumentComments
+                                      }
+                                    />
+                                  )}
                                 </Box>
                                 {sectionChild1.children.length > 0
                                   ? sectionChild1.children.map(
@@ -705,10 +714,15 @@ const DocumentDetailView = () => {
                                                   sectionChild1Sub1.comments
                                                 }
                                                 section={sectionChild1Sub1}
-
-                                                fetchDocumentDetails={fetchDocumentDetails}
-                                                fetchDocumentSections={fetchDocumentSections}
-                                                fetchDocumentComments={fetchDocumentComments}
+                                                fetchDocumentDetails={
+                                                  fetchDocumentDetails
+                                                }
+                                                fetchDocumentSections={
+                                                  fetchDocumentSections
+                                                }
+                                                fetchDocumentComments={
+                                                  fetchDocumentComments
+                                                }
                                               />
                                             )}
                                           </Box>
@@ -757,10 +771,15 @@ const DocumentDetailView = () => {
                                                           section={
                                                             sectionChild1Sub1Sub1
                                                           }
-
-                                                          fetchDocumentDetails={fetchDocumentDetails}
-                                                          fetchDocumentSections={fetchDocumentSections}
-                                                          fetchDocumentComments={fetchDocumentComments}
+                                                          fetchDocumentDetails={
+                                                            fetchDocumentDetails
+                                                          }
+                                                          fetchDocumentSections={
+                                                            fetchDocumentSections
+                                                          }
+                                                          fetchDocumentComments={
+                                                            fetchDocumentComments
+                                                          }
                                                         />
                                                       )}
                                                     </Box>
@@ -820,10 +839,15 @@ const DocumentDetailView = () => {
                                                                     section={
                                                                       sectionChild1Sub1Sub1Sub1
                                                                     }
-
-                                                                    fetchDocumentDetails={fetchDocumentDetails}
-                                                                    fetchDocumentSections={fetchDocumentSections}
-                                                                    fetchDocumentComments={fetchDocumentComments}
+                                                                    fetchDocumentDetails={
+                                                                      fetchDocumentDetails
+                                                                    }
+                                                                    fetchDocumentSections={
+                                                                      fetchDocumentSections
+                                                                    }
+                                                                    fetchDocumentComments={
+                                                                      fetchDocumentComments
+                                                                    }
                                                                   />
                                                                 )}
                                                               </Box>
@@ -883,10 +907,15 @@ const DocumentDetailView = () => {
                                                                               section={
                                                                                 sectionChild1Sub1Sub1Sub1Sub1
                                                                               }
-
-                                                                              fetchDocumentDetails={fetchDocumentDetails}
-                                                                              fetchDocumentSections={fetchDocumentSections}
-                                                                              fetchDocumentComments={fetchDocumentComments}
+                                                                              fetchDocumentDetails={
+                                                                                fetchDocumentDetails
+                                                                              }
+                                                                              fetchDocumentSections={
+                                                                                fetchDocumentSections
+                                                                              }
+                                                                              fetchDocumentComments={
+                                                                                fetchDocumentComments
+                                                                              }
                                                                             />
                                                                           )}
                                                                         </Box>
@@ -914,7 +943,7 @@ const DocumentDetailView = () => {
                   ))
                 ) : (
                   <Box>
-                    {/* <CircularProgress color="secondary" /> */}
+                    
                   </Box>
                 )}
               </Grid>
@@ -971,7 +1000,8 @@ const DocumentDetailView = () => {
                         })
                         .map((comment) => (
                           /* Render the generel comments component if there is documentComments has value */
-                          <DocumentLevelComments comment={comment} 
+                          <DocumentLevelComments
+                            comment={comment}
                             fetchDocumentDetails={fetchDocumentDetails}
                             fetchDocumentSections={fetchDocumentSections}
                             fetchDocumentComments={fetchDocumentComments}
@@ -989,13 +1019,11 @@ const DocumentDetailView = () => {
                     {userRole === "Commenter" &&
                     documentDetail &&
                     documentDetail.draft_status.name === "Open" &&
-                    parseInt(documentDetail.comment_closed)===0
-                     ? (
+                    parseInt(documentDetail.comment_closed) === 0 ? (
                       <AddDocumentLevelComments
                         documentID={
                           documentDetail ? documentDetail.id : params.id
                         }
-
                         fetchDocumentDetails={fetchDocumentDetails}
                         fetchDocumentSections={fetchDocumentSections}
                         fetchDocumentComments={fetchDocumentComments}

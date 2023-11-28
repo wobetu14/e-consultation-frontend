@@ -17,7 +17,7 @@ import React, { useEffect, useState } from "react";
 import { tokens } from "../../theme";
 import { useTranslation } from "react-i18next";
 /**
- * Create a DocumentsFilter functional component 
+ * Create a DocumentsFilter functional component
  * and pass props from parent component called DocumentDisplay
  */
 const DocumentsFilters = ({
@@ -36,19 +36,19 @@ const DocumentsFilters = ({
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();
 
-/**
- * Declare variables to handle data related to 
- * law categories. The lawCategoryID variable is used to handle ID of a selcted law category value by a user 
- * as a filtering criteria.
- * The lawCategories variable is used to store list of law category values coming from API request result. 
- * so that these values will be rendered with a dropdown box and allow user to select one as a filtering criterion.
- * 
- */
+  /**
+   * Declare variables to handle data related to
+   * law categories. The lawCategoryID variable is used to handle ID of a selcted law category value by a user
+   * as a filtering criteria.
+   * The lawCategories variable is used to store list of law category values coming from API request result.
+   * so that these values will be rendered with a dropdown box and allow user to select one as a filtering criterion.
+   *
+   */
   const [lawCategoryID, setLawCategoryID] = useState(0);
   const [lawCategories, setLawCategories] = useState(null);
 
   /**
-   * As described above the regionID, regions, institutionID, institutions are also used 
+   * As described above the regionID, regions, institutionID, institutions are also used
    * for the same purpose. i.e. to filter drafts based on region and institution
    */
   const [regionID, setRegionID] = useState(0);
@@ -60,7 +60,7 @@ const DocumentsFilters = ({
   const [draftStatusName, setDraftStatusName] = useState("");
 
   /**
-   * The sectors and selectedSectors variable is also used to handel data related to sectors 
+   * The sectors and selectedSectors variable is also used to handel data related to sectors
    * for the purpose of filtering draft based on list of sectors information.
    */
   const [sectors, setSectors] = useState([]);
@@ -68,36 +68,35 @@ const DocumentsFilters = ({
 
   // useEffect to calculate dynamic page size for pagination
   useEffect(() => {
-    setPageCount(Math.ceil(parseInt(totalDrafts) / 10))
+    setPageCount(Math.ceil(parseInt(totalDrafts) / 10));
   }, [drafts]);
 
   /**
    * Create useEffect hook to fetch list of law categories from the database upon page load,
    * and used for rendering
-   * as Dropdown box labeling. 
+   * as Dropdown box labeling.
    */
   useEffect(() => {
-    fetchLawCategories()
+    fetchLawCategories();
   }, []);
 
- /**
+  /**
    * Function definition for fetchLawCategories() call inside the useEffect hook created above.
    * This function basically sends API request to fetch list of law categories.
    */
   const fetchLawCategories = async () => {
     return await axios
-      .get("public/law-categories",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("public/law-categories", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setLawCategories(res.data.data.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   /**
@@ -115,23 +114,22 @@ const DocumentsFilters = ({
 
   const fetchRegions = async () => {
     return await axios
-      .get("public/regions",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("public/regions", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setRegions(res.data.data.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   /**
-   * Create useEffect hook to fetch list of institutions upon page load and use it to render 
-   * list of institutions with a dropdown box. This code style works for sectors as well as 
+   * Create useEffect hook to fetch list of institutions upon page load and use it to render
+   * list of institutions with a dropdown box. This code style works for sectors as well as
    * written below followed by this institutions snippet as well.
    */
 
@@ -141,18 +139,17 @@ const DocumentsFilters = ({
 
   const fetchInstitutions = async () => {
     return await axios
-      .get("public/institutions",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("public/institutions", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setInstitutions(res.data.data.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   useEffect(() => {
@@ -161,19 +158,18 @@ const DocumentsFilters = ({
 
   const fetchSectors = async () => {
     return await axios
-      .get("public/sectors",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("public/sectors", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setSectors(res.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   /**
@@ -187,19 +183,19 @@ const DocumentsFilters = ({
     setRegionID(e.target.value);
     setLoading(true);
     return await axios
-      .get(`drafts?region=${e.target.value}`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`drafts?region=${e.target.value}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setDrafts(res.data);
         setLoading(false);
       })
       .catch((error) => {
-        
         setLoading(false);
       });
   };
@@ -209,19 +205,19 @@ const DocumentsFilters = ({
     setInstitutionID(event.target.value);
     setLoading(true);
     return await axios
-      .get(`drafts?institution=${event.target.value}`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`drafts?institution=${event.target.value}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setDrafts(res.data);
         setLoading(false);
       })
       .catch((error) => {
-        
         setLoading(false);
       });
   };
@@ -231,12 +227,13 @@ const DocumentsFilters = ({
     setLawCategoryID(e.target.value);
     setLoading(true);
     return await axios
-      .get(`drafts?law_category=${e.target.value}`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`drafts?law_category=${e.target.value}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setDrafts(res.data);
@@ -252,19 +249,19 @@ const DocumentsFilters = ({
     setDraftStatusName(e.target.value);
     setLoading(true);
     return await axios
-      .get(`drafts?draft_status=${e.target.value}`, 
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`drafts?draft_status=${e.target.value}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setDrafts(res.data);
         setLoading(false);
       })
       .catch((error) => {
-        
         setLoading(false);
       });
   };

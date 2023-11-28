@@ -11,20 +11,17 @@ import { SectorsDataContext } from "../../../contexts/SectorsDataContext";
 import { useTranslation } from "react-i18next";
 
 const CreateSector = () => {
-  
   // User context
   const { userInfo } = useContext(UserContext);
 
-  const {t}=useTranslation();
-  const { 
-    setServerErrorMsg, 
-    setServerSuccessMsg, 
-    fetchSectors, 
+  const { t } = useTranslation();
+  const {
+    setServerErrorMsg,
+    setServerSuccessMsg,
+    fetchSectors,
     setLoading,
-    networkError,
-    setNetworkError
-  } =
-    useContext(SectorsDataContext);
+    setNetworkError,
+  } = useContext(SectorsDataContext);
 
   const helperTextStyle = {
     color: "red",
@@ -41,7 +38,7 @@ const CreateSector = () => {
 
     validationSchema: YUP.object({
       sectorName: YUP.string().required(
-        `${t('field_required')}${t('please_enter_sector_name')}`
+        `${t("field_required")}${t("please_enter_sector_name")}`
       ),
     }),
 
@@ -63,12 +60,13 @@ const CreateSector = () => {
     setServerSuccessMsg(null);
     setLoading(true);
     return await axios
-      .post("sectors", sectorData, 
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .post("sectors", sectorData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
@@ -80,14 +78,14 @@ const CreateSector = () => {
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
-        setNetworkError(errors.code)
+        setNetworkError(errors.code);
         setLoading(false);
       });
   };
 
   return (
     <Box width={"95%"}>
-      <Header title={t('add_new_sector')} subtitle="" />
+      <Header title={t("add_new_sector")} subtitle="" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -97,7 +95,7 @@ const CreateSector = () => {
           <Grid container spacing={1}>
             <Grid item xs={5}>
               <TextField
-                label={`${t('name_of_economic_sector')} *`}
+                label={`${t("name_of_economic_sector")} *`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -119,7 +117,7 @@ const CreateSector = () => {
 
             <Grid item xs={5}>
               <TextField
-                label={t('description')}
+                label={t("description")}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -151,7 +149,7 @@ const CreateSector = () => {
                   sx={{ align: "right", textTransform: "none" }}
                   color="secondary"
                 >
-                  {t('save')}
+                  {t("save")}
                 </Button>
               </Grid>
             </Grid>

@@ -16,7 +16,7 @@ import "./DocumentDisplay.css";
 /**
  * This component renders list of draft documents and some meta info with a clickable feature to view the complete infomration
  * and content of the document so that use can read and comment on the draft document.
- * 
+ *
  * The drafts meta info is passed from Home then DocumentDisplay components and here we will create HTML to render the document.
  */
 
@@ -70,7 +70,8 @@ const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
                         and a label text "Open for comment" and if the status is "Closed" display with red background and a label text 
                         "Closed for comment"  
                       */}
-                      {draft.draft_status.name === "Open" && parseInt(draft.comment_closed)===0 ? (
+                      {draft.draft_status.name === "Open" &&
+                      parseInt(draft.comment_closed) === 0 ? (
                         <Chip
                           label={t("open_for_comment")}
                           size="small"
@@ -80,7 +81,8 @@ const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
                             marginRight: "5px",
                           }}
                         />
-                      ) : draft.draft_status.name === "Open" && parseInt(draft.comment_closed)===1 ? (
+                      ) : draft.draft_status.name === "Open" &&
+                        parseInt(draft.comment_closed) === 1 ? (
                         <Chip
                           label="Closed for Comment"
                           size="small"
@@ -94,9 +96,8 @@ const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
                         ""
                       )}
 
-                      {
-                        draft.draft_status.name==="Closed" ? (
-                          <Chip
+                      {draft.draft_status.name === "Closed" ? (
+                        <Chip
                           label="Consultation ended"
                           size="small"
                           sx={{
@@ -105,11 +106,13 @@ const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
                             marginRight: "5px",
                           }}
                         />
-                        ):""
-                      }
+                      ) : (
+                        ""
+                      )}
 
-                        {/* Display draft closing date if the draft status is "Open" */}
-                      {draft.draft_status.name === "Open" && parseInt(draft.comment_closed)===0 ? (
+                      {/* Display draft closing date if the draft status is "Open" */}
+                      {draft.draft_status.name === "Open" &&
+                      parseInt(draft.comment_closed) === 0 ? (
                         <label>
                           <strong> {t("draft_closing_date")}: </strong>{" "}
                           {draft.comment_closing_date} &nbsp;
@@ -118,13 +121,14 @@ const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
                         ""
                       )}
 
-                        {/* Display law category of the draft document. */}
+                      {/* Display law category of the draft document. */}
                       <label>
                         <strong>{t("law_category")}: </strong>{" "}
-                        {draft.law_category ? draft.law_category.name:""} &nbsp;
+                        {draft.law_category ? draft.law_category.name : ""}{" "}
+                        &nbsp;
                       </label>
 
-                         {/* Display institutions name which the draft is initiated by */}
+                      {/* Display institutions name which the draft is initiated by */}
                       <label>
                         <strong>{t("institution")}: </strong>{" "}
                         {draft.institution.name} &nbsp;

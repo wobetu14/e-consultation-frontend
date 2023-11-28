@@ -11,8 +11,8 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ReplyIcon from "@mui/icons-material/Reply";
 
-const PublicCommentReplies = ({ 
-  reflections, 
+const PublicCommentReplies = ({
+  reflections,
   comment,
   fetchDocumentDetails,
   fetchDocumentSections,

@@ -6,10 +6,9 @@ import {
   Chip,
   CircularProgress,
 } from "@mui/material";
-import React, {useEffect, useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import axios from "../../../axios/AxiosGlobal";
 import { tokens } from "../../../theme";
 import DraftActions from "./DraftActions";
 
@@ -28,53 +27,11 @@ const DraftMetaInfo = ({
   setLoading
 }) => {
   const params = useParams();
-  const [documentSections, setDocumentSections] = useState(null);
-  const [documentComments, setDocumentComments] = useState(null);
 
   const {t}=useTranslation();
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
-  /* useEffect(() => {
-    fetchDocumentSections();
-  }, [documentSections, documentComments]);
-
-  useEffect(() => {
-    fetchDocumentComments();
-  }, [documentSections, documentComments]);
-
-  const fetchDocumentSections = async () => {
-    return await axios
-      .get(`draft/${params.id}/draft-sections`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
-      .then((response) => {
-        setDocumentSections(response.data.data);
-      })
-      .catch((error) => {
-        <p color="red">{error.response.message}</p>;
-      });
-  };
-
-  const fetchDocumentComments = async () => {
-    return await axios
-      .get(`draft/${params.id}/general-comments`, 
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
-      .then((response) => {
-        setDocumentComments(response.data.data);
-      })
-      .catch((error) => {
-        <p color="red">{error.response.message}</p>;
-      });
-  }; */
 
   return (
     <Box>

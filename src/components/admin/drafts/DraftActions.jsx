@@ -24,7 +24,7 @@ const DraftActions = ({
   fetchDocumentComments,
 
   loading,
-  setLoading
+  setLoading,
 }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [openRejectionDialog, setOpenRejectionDialog] = useState(false);
@@ -37,24 +37,25 @@ const DraftActions = ({
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const {t}=useTranslation();
+  const { t } = useTranslation();
 
   const closeCommenting = async (draftID) => {
     setLoading(true);
     setServerErrorMsg(null);
     setServerSuccessMsg(null);
     return await axios
-      .post(`close-comment/draft/${draftID}`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .post(`close-comment/draft/${draftID}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         fetchDocumentDetails();
         fetchDocumentSections();
         fetchDocumentComments();
-        
+
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
         setLoading(false);
@@ -87,7 +88,6 @@ const DraftActions = ({
                 openDialog={openDialog}
                 setOpenDialog={setOpenDialog}
                 t={t}
-
                 fetchDocumentDetails={fetchDocumentDetails}
                 fetchDocumentSections={fetchDocumentSections}
                 fetchDocumentComments={fetchDocumentComments}
@@ -102,7 +102,6 @@ const DraftActions = ({
                 openRejectionDialog={openRejectionDialog}
                 setOpenRejectionDialog={setOpenRejectionDialog}
                 t={t}
-
                 fetchDocumentDetails={fetchDocumentDetails}
                 fetchDocumentSections={fetchDocumentSections}
                 fetchDocumentComments={fetchDocumentComments}
@@ -120,7 +119,6 @@ const DraftActions = ({
                 openInviteDialog={openInviteDialog}
                 setOpenInviteDialog={setOpenInviteDialog}
                 t={t}
-
                 fetchDocumentDetails={fetchDocumentDetails}
                 fetchDocumentSections={fetchDocumentSections}
                 fetchDocumentComments={fetchDocumentComments}
@@ -135,7 +133,6 @@ const DraftActions = ({
                 openAssignRepliersDialog={openAssignRepliersDialog}
                 setOpenAssignRepliersDialog={setOpenAssignRepliersDialog}
                 t={t}
-
                 fetchDocumentDetails={fetchDocumentDetails}
                 fetchDocumentSections={fetchDocumentSections}
                 fetchDocumentComments={fetchDocumentComments}
@@ -153,7 +150,7 @@ const DraftActions = ({
                 }}
                 onClick={() => closeCommenting(documentDetail.id)}
               >
-                <Typography variant="body2">{t('end_consultation')}</Typography>
+                <Typography variant="body2">{t("end_consultation")}</Typography>
               </Button>
             </>
           ) : (
@@ -167,7 +164,6 @@ const DraftActions = ({
                 setServerSuccessMsg={setServerSuccessMsg}
                 setServerErrorMsg={setServerErrorMsg}
               />
-              {/* <Button variant="contained" color="warning" size="small" sx={{ textTransform:"none" }}>Reject</Button> */}
             </>
           ) : (
             ""
@@ -189,12 +185,13 @@ const SendApprovalRequest = ({
 }) => {
   const sendOpeningRequest = async () => {
     return await axios
-      .post(`request-for-comment/draft/${documentDetail.id}`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .post(`request-for-comment/draft/${documentDetail.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
@@ -248,7 +245,7 @@ const AcceptApprovalRequest = ({
         sx={{ textTransform: "none", marginRight: "5px" }}
         onClick={showDialog}
       >
-        {t('accept')}
+        {t("accept")}
       </Button>
 
       {openDialog && (
@@ -263,11 +260,10 @@ const AcceptApprovalRequest = ({
           openDialog={openDialog}
           setOpenDialog={setOpenDialog}
           showDialog={showDialog}
-
           fetchDocumentDetails={fetchDocumentDetails}
           fetchDocumentSections={fetchDocumentSections}
           fetchDocumentComments={fetchDocumentComments}
-          title={t('accept_document_and_invite')}
+          title={t("accept_document_and_invite")}
         />
       )}
     </>
@@ -287,7 +283,7 @@ const RejectApprovalRequest = ({
 
   fetchDocumentDetails,
   fetchDocumentSections,
-  fetchDocumentComments
+  fetchDocumentComments,
 }) => {
   const showRejectionDialog = () => {
     setOpenRejectionDialog(true);
@@ -302,7 +298,7 @@ const RejectApprovalRequest = ({
         sx={{ textTransform: "none" }}
         onClick={showRejectionDialog}
       >
-        {t('reject')}
+        {t("reject")}
       </Button>
 
       {openRejectionDialog && (
@@ -317,11 +313,10 @@ const RejectApprovalRequest = ({
           openRejectionDialog={openRejectionDialog}
           setOpenRejectionDialog={setOpenRejectionDialog}
           showRejectionDialog={showRejectionDialog}
-
           fetchDocumentDetails={fetchDocumentDetails}
           fetchDocumentSections={fetchDocumentSections}
           fetchDocumentComments={fetchDocumentComments}
-          title={t('reject_opening_request')}
+          title={t("reject_opening_request")}
         />
       )}
     </>
@@ -337,8 +332,7 @@ const InviteCommenters = ({
   setServerErrorMsg,
   openInviteDialog,
   setOpenInviteDialog,
-  t
-  
+  t,
 }) => {
   const showInviteDialog = () => {
     setOpenInviteDialog(true);
@@ -353,7 +347,7 @@ const InviteCommenters = ({
         sx={{ textTransform: "none", marginRight: "5px" }}
         onClick={showInviteDialog}
       >
-        <Typography variant="body2">{t('invite')}</Typography>
+        <Typography variant="body2">{t("invite")}</Typography>
       </Button>
 
       {openInviteDialog && (
@@ -368,7 +362,7 @@ const InviteCommenters = ({
             setServerErrorMsg={setServerErrorMsg}
             openInviteDialog={openInviteDialog}
             setOpenInviteDialog={setOpenInviteDialog}
-            title={t('invite_more_people_and_institutions')}
+            title={t("invite_more_people_and_institutions")}
           />
         </>
       )}
@@ -385,7 +379,7 @@ const AssignRepliers = ({
   setServerErrorMsg,
   openAssignRepliersDialog,
   setOpenAssignRepliersDialog,
-  t
+  t,
 }) => {
   const showAssignRepliersDialog = async () => {
     setOpenAssignRepliersDialog(true);
@@ -400,7 +394,7 @@ const AssignRepliers = ({
         sx={{ textTransform: "none", marginRight: "5px" }}
         onClick={showAssignRepliersDialog}
       >
-        <Typography variant="body2">{t('assign_repliers')}</Typography>
+        <Typography variant="body2">{t("assign_repliers")}</Typography>
       </Button>
 
       {openAssignRepliersDialog && (
@@ -414,7 +408,7 @@ const AssignRepliers = ({
           setServerErrorMsg={setServerErrorMsg}
           openAssignRepliersDialog={openAssignRepliersDialog}
           setOpenAssignRepliersDialog={setOpenAssignRepliersDialog}
-          title={t('assign_more_comment_repliers')}
+          title={t("assign_more_comment_repliers")}
         />
       )}
     </>

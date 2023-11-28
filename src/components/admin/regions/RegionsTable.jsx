@@ -2,8 +2,6 @@ import {
   Alert,
   Box,
   Button,
-  Checkbox,
-  CircularProgress,
   Grid,
   LinearProgress,
   Paper,
@@ -50,12 +48,9 @@ const RegionsTable = () => {
     setOpenDialog,
     loading,
     requestCompleted,
-    setRequestCompleted,
     networkErrorMessage,
-    setNetworkErrorMessage,
     fetchRegions,
     networkError, 
-    setNetworkError,
   } = useContext(RegionsDataContext);
 
   const errorStyle = {

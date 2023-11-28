@@ -37,10 +37,10 @@ const UserProfile = () => {
   const [userRoles, setUserRoles] = useState(null);
 
   const [openListItem, setOpenListItem] = useState(false);
-  const [loading, setLoading]=useState(false);
-  const [networkError, setNetworkError]=useState(null);
+  const [loading, setLoading] = useState(false);
+  const [networkError, setNetworkError] = useState(null);
 
-  const {t}=useTranslation();
+  const { t } = useTranslation();
 
   const handleOpenListItem = () => {
     setOpenListItem(!openListItem);
@@ -72,7 +72,7 @@ const UserProfile = () => {
   }, []);
 
   useEffect(() => {
-    fetchUserRoles()
+    fetchUserRoles();
   }, []);
 
   useEffect(() => {
@@ -81,59 +81,55 @@ const UserProfile = () => {
 
   const fetchInstitutions = async () => {
     return await axios
-      .get("institutions",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("institutions", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setInstitutions(res.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const fetchUserRoles = async () => {
     return await axios
-      .get("roles", 
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("roles", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
-        
         setUserRoles(res);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const fetchUser = async () => {
     return await axios
-      .get(`users/${userInfo.user.id}`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`users/${userInfo.user.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data)
       .then((res) => {
         setUsersData(res.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   return (
     <Box m="0 20px" width={"95%"}>
-      <Header title={t('user_profile')} subtitle={t('manage_profile')} />
+      <Header title={t("user_profile")} subtitle={t("manage_profile")} />
       <Grid align="center" sx={{ paddingBottom: "15px", paddingTop: "15px" }}>
         <motion.span
           initial={{ opacity: 0 }}
@@ -157,19 +153,17 @@ const UserProfile = () => {
           </Typography>
 
           <Typography variant="h1">
-            {networkError==="ERR_NETWORK" ? (
+            {networkError === "ERR_NETWORK" ? (
               <Alert severity="success" style={successStyle}>
-                Something went wrong. Your internet connection may be unstable. Please try again.
+                Something went wrong. Your internet connection may be unstable.
+                Please try again.
               </Alert>
             ) : null}
           </Typography>
 
           <Typography variant="h1">
-            {loading ? (
-              <LinearProgress color="info" />
-            ) : null}
+            {loading ? <LinearProgress color="info" /> : null}
           </Typography>
-
         </motion.span>
       </Grid>
       <Grid container spacing={2}>
@@ -179,7 +173,7 @@ const UserProfile = () => {
               <Grid container spacing={2}>
                 <Grid item xs={4}>
                   <Typography variant="h5" sx={{ fontWeight: "600" }}>
-                    {t('full_name')}
+                    {t("full_name")}
                   </Typography>
                 </Grid>
                 <Grid item xs={8}>
@@ -196,7 +190,7 @@ const UserProfile = () => {
 
                 <Grid item xs={4}>
                   <Typography variant="h5" sx={{ fontWeight: "600" }}>
-                    {t('email_address')}
+                    {t("email_address")}
                   </Typography>
                 </Grid>
                 <Grid item xs={8}>
@@ -207,7 +201,7 @@ const UserProfile = () => {
 
                 <Grid item xs={4}>
                   <Typography variant="h5" sx={{ fontWeight: "600" }}>
-                    {t('mobile_number')}
+                    {t("mobile_number")}
                   </Typography>
                 </Grid>
                 <Grid item xs={8}>
@@ -218,7 +212,7 @@ const UserProfile = () => {
 
                 <Grid item xs={4}>
                   <Typography variant="h5" sx={{ fontWeight: "600" }}>
-                    {t('region')}
+                    {t("region")}
                   </Typography>
                 </Grid>
                 <Grid item xs={8}>
@@ -229,7 +223,7 @@ const UserProfile = () => {
 
                 <Grid item xs={4}>
                   <Typography variant="h5" sx={{ fontWeight: "600" }}>
-                    {t('institution')}
+                    {t("institution")}
                   </Typography>
                 </Grid>
                 <Grid item xs={8}>
@@ -240,7 +234,7 @@ const UserProfile = () => {
 
                 <Grid item xs={4}>
                   <Typography variant="h5" sx={{ fontWeight: "600" }}>
-                    {t('role')}
+                    {t("role")}
                   </Typography>
                 </Grid>
                 <Grid item xs={8}>
@@ -272,7 +266,7 @@ const UserProfile = () => {
                       </>
                     ) : (
                       <>
-                        <EditIcon fontSize="small" /> &nbsp; {t('edit')}
+                        <EditIcon fontSize="small" /> &nbsp; {t("edit")}
                       </>
                     )}
                   </Button>
@@ -296,7 +290,7 @@ const UserProfile = () => {
                     color={colors.headerText[100]}
                     sx={{ mb: "5px", fontWeight: 600 }}
                   >
-                    {t('change_password')}
+                    {t("change_password")}
                   </Typography>
                 }
               />
@@ -311,13 +305,13 @@ const UserProfile = () => {
       </Grid>
 
       {showProfileForm && (
-        <EditProfileForm 
+        <EditProfileForm
           usersData={usersData}
           setUsersData={setUsersData}
           setServerErrorMsg={setServerErrorMsg}
-          setServerSuccessMsg={setServerSuccessMsg}    
-          helperTextStyle={helperTextStyle}   
-          setShowProfileForm={setShowProfileForm}   
+          setServerSuccessMsg={setServerSuccessMsg}
+          helperTextStyle={helperTextStyle}
+          setShowProfileForm={setShowProfileForm}
           setLoading={setLoading}
           setNetworkError={setNetworkError}
         />

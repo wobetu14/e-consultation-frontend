@@ -12,7 +12,6 @@ import {
   MenuItem,
   RadioGroup,
   Radio,
-  Autocomplete,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useFormik } from "formik";
@@ -29,14 +28,12 @@ const EditDraft = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const {t}=useTranslation();
+  const { t } = useTranslation();
 
   // User context
-  const { userInfo} =
-    useContext(UserContext);
+  const { userInfo } = useContext(UserContext);
 
   const {
-    drafts,
     draft,
     fetchDrafts,
     setShowDraftEditForm,
@@ -49,7 +46,9 @@ const EditDraft = () => {
   const [institutions, setInstitutions] = useState(null);
   const [lawCategories, setLawCategories] = useState(null);
   const [sectors, setSectors] = useState(draft.sector);
-  const [documentAccess, setDocumentAccess]=useState(parseInt(draft.is_private))
+  const [documentAccess, setDocumentAccess] = useState(
+    parseInt(draft.is_private)
+  );
 
   const [tagLists, setTagLists] = useState([]);
   const [selectedSectors, setSelectedSectors] = useState([]);
@@ -69,7 +68,7 @@ const EditDraft = () => {
   }, []);
 
   useEffect(() => {
-    fetchSectors()
+    fetchSectors();
   }, []);
 
   useEffect(() => {
@@ -78,53 +77,50 @@ const EditDraft = () => {
 
   const fetchInstitutions = async () => {
     return await axios
-      .get("institutions",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("institutions", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setInstitutions(res.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const fetchLawCategories = async () => {
     return await axios
-      .get("law-categories",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("law-categories", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setLawCategories(res.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const fetchSectors = async () => {
     return await axios
-      .get("sectors",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("sectors", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setSectors(res.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const formik = useFormik({
@@ -195,12 +191,13 @@ const EditDraft = () => {
     setServerSuccessMsg(null);
     setLoading(true);
     return await axios
-      .post(`drafts/${draft.id}`, draftsData,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .post(`drafts/${draft.id}`, draftsData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
@@ -220,7 +217,7 @@ const EditDraft = () => {
 
   return (
     <Box width={"95%"}>
-      <Header title={t('update_draft_info')} subtitle="" />
+      <Header title={t("update_draft_info")} subtitle="" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -230,7 +227,7 @@ const EditDraft = () => {
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <TextField
-                label={t('short_title')}
+                label={t("short_title")}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -251,15 +248,15 @@ const EditDraft = () => {
               />
 
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                Law Category 
+                Law Category
               </Typography>
               <FormControl sx={{ minWidth: "100%", paddingBottom: "30px" }}>
-                <InputLabel>{t('select_law_category')}</InputLabel>
+                <InputLabel>{t("select_law_category")}</InputLabel>
                 <Select
                   labelId="law_category_Id"
                   id="law_category_Id"
                   size="small"
-                  placeholder={t('select_law_category')}
+                  placeholder={t("select_law_category")}
                   color="info"
                   name="lawCategoryId"
                   value={formik.values.lawCategoryId}
@@ -314,26 +311,26 @@ const EditDraft = () => {
                 )}
               /> */}
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                {t('document_access')}
+                {t("document_access")}
               </Typography>
               <RadioGroup
                 aria-labelledby="demo-controlled-radio-buttons-group"
                 name="isPrivate"
                 size="small"
                 value={documentAccess}
-                onChange={(e)=>setDocumentAccess(parseInt(e.target.value))}
+                onChange={(e) => setDocumentAccess(parseInt(e.target.value))}
               >
                 <FormControlLabel
                   value={0}
                   control={<Radio />}
                   checked={documentAccess === 0}
-                  label={t('public')}
+                  label={t("public")}
                 />
                 <FormControlLabel
                   value={1}
                   control={<Radio />}
                   checked={documentAccess === 1}
-                  label={t('private')}
+                  label={t("private")}
                 />
               </RadioGroup>
 
@@ -359,7 +356,7 @@ const EditDraft = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label={t('legal_reference')}
+                label={t("legal_reference")}
                 variant="outlined"
                 size="small"
                 multiline
@@ -382,7 +379,7 @@ const EditDraft = () => {
               />
 
               <TextField
-                label={t('definition')}
+                label={t("definition")}
                 variant="outlined"
                 size="small"
                 multiline
@@ -404,7 +401,7 @@ const EditDraft = () => {
               />
 
               <TextField
-                label={t('scope')}
+                label={t("scope")}
                 variant="outlined"
                 size="small"
                 multiline
@@ -424,7 +421,7 @@ const EditDraft = () => {
               />
 
               <TextField
-                label={t('main_provision')}
+                label={t("main_provision")}
                 variant="outlined"
                 size="small"
                 multiline
@@ -448,7 +445,7 @@ const EditDraft = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label={t('summary')}
+                label={t("summary")}
                 variant="outlined"
                 size="small"
                 multiline
@@ -467,7 +464,7 @@ const EditDraft = () => {
                 }
               />
               <TextField
-                label={t('amended_laws')}
+                label={t("amended_laws")}
                 variant="outlined"
                 size="small"
                 multiline
@@ -488,7 +485,7 @@ const EditDraft = () => {
               />
 
               <TextField
-                label={t('repealed_laws')}
+                label={t("repealed_laws")}
                 variant="outlined"
                 size="small"
                 multiline
@@ -509,7 +506,7 @@ const EditDraft = () => {
               />
 
               <TextField
-                label={t('transitory_provision')}
+                label={t("transitory_provision")}
                 variant="outlined"
                 size="small"
                 multiline
@@ -532,8 +529,8 @@ const EditDraft = () => {
               />
 
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                <strong>{t('attachement_file')} : </strong>
-                {t('attach_draft_document_note')}
+                <strong>{t("attachement_file")} : </strong>
+                {t("attach_draft_document_note")}
               </Typography>
               <TextField
                 variant="outlined"
@@ -560,7 +557,7 @@ const EditDraft = () => {
                 target="_blank"
                 sx={{ textTransform: "none" }}
               >
-                {t('download_previous_file')}
+                {t("download_previous_file")}
               </Button>
 
               <Grid sx={{ paddingBottom: "20px" }} align="right">
@@ -576,7 +573,7 @@ const EditDraft = () => {
                   }}
                   color="info"
                 >
-                  {t('save_changes')}{" "}
+                  {t("save_changes")}{" "}
                 </Button>
               </Grid>
             </Grid>

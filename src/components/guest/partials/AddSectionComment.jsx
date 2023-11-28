@@ -19,15 +19,15 @@ import { useFormik } from "formik";
 import axios from "../../../axios/AxiosGlobal";
 import { UserContext } from "../../../contexts/UserContext";
 
-const SectionFeedbacks = ({ 
-  section, 
-  documentDetail, 
+const SectionFeedbacks = ({
+  section,
+  documentDetail,
   comments,
 
   fetchDocumentDetails,
   fetchDocumentSections,
-  fetchDocumentComments
- }) => {
+  fetchDocumentComments,
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();
@@ -75,21 +75,21 @@ const SectionFeedbacks = ({
 
   const addComment = async (sectionCommentData) => {
     return await axios
-      .post("comments", sectionCommentData,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .post("comments", sectionCommentData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
-        
         setServerSuccessMsg(res.data.success);
         setServerErrorMsg(null);
 
         fetchDocumentDetails();
         fetchDocumentSections();
         fetchDocumentComments();
-        
+
         formik.resetForm();
       })
       .catch((errors) => {

@@ -40,8 +40,7 @@ const RejectExternalRequest = ({
   const [institutions, setInstitutions] = useState([]);
   const [selectedInstitutions, setSelectedInstitutions] = useState([]);
 
-  const {t}=useTranslation();
-
+  const { t } = useTranslation();
 
   const [instIDs, setInsIDs] = useState([]);
   const [repliersEmail, setRepliersEmail] = useState([]);
@@ -49,11 +48,10 @@ const RejectExternalRequest = ({
   const [repliersID, setRepliersID] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const [networkError, setNetworkError]=useState(null);
+  const [networkError, setNetworkError] = useState(null);
 
   // User Context info
-  const { userInfo } =
-    useContext(UserContext);
+  const { userInfo } = useContext(UserContext);
 
   const errorStyle = {
     color: "red",
@@ -67,22 +65,21 @@ const RejectExternalRequest = ({
     fontSize: "18px",
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchInstitutions();
-  },[])
+  }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     getInstitutionsID();
-  },[selectedInstitutions])
+  }, [selectedInstitutions]);
 
-  useEffect(()=>{
+  useEffect(() => {
     getMyUsersID();
-  }, [])
+  }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchMyUsers();
-  }, [repliersEmail])
-
+  }, [repliersEmail]);
 
   const getMyUsersID = () => {
     if (repliersEmail.length > 0) {
@@ -102,33 +99,32 @@ const RejectExternalRequest = ({
 
   const fetchInstitutions = async () => {
     try {
-      const res = await axios.get("public/institutions",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }});
+      const res = await axios.get("public/institutions", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      });
       setInstitutions(res.data.data.data);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const fetchMyUsers = async () => {
     try {
       const res = await axios.get(
         `users?institution_id=${userInfo.user.institution_id}`,
-        {headers:{
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          Accept: "application/json;",
-          "Content-Type": "multipart/form-data"
-        }}
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json;",
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
-      
+
       setMyUsers(res.data.data);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const formikRejectForm = useFormik({
@@ -154,12 +150,13 @@ const RejectExternalRequest = ({
     setNetworkError(null);
     setLoading(true);
     return await axios
-      .post(`reject-comment-request`, rejectionData,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .post(`reject-comment-request`, rejectionData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
@@ -175,7 +172,6 @@ const RejectExternalRequest = ({
         setLoading(false);
       });
   };
-
 
   return (
     <Dialog open={openExternalRejectionDialog} fullWidth>
@@ -225,7 +221,7 @@ const RejectExternalRequest = ({
             onSubmit={formikRejectForm.handleSubmit}
           >
             <TextField
-              label={`${t('write_rejection_message')} (${t('not_mandatory')})`}
+              label={`${t("write_rejection_message")} (${t("not_mandatory")})`}
               variant="outlined"
               size="small"
               fullWidth
@@ -251,7 +247,9 @@ const RejectExternalRequest = ({
                   color: colors.grey[300],
                 }}
               >
-                <Typography variant="body2">{t('reject_this_request')}</Typography>
+                <Typography variant="body2">
+                  {t("reject_this_request")}
+                </Typography>
               </Button>
             </Box>
           </form>
@@ -264,7 +262,7 @@ const RejectExternalRequest = ({
             color="secondary"
             sx={{ textTransform: "none" }}
           >
-            <Typography variant="body2">{t('cancel')}</Typography>
+            <Typography variant="body2">{t("cancel")}</Typography>
           </Button>
         </DialogActions>
       </DialogContent>

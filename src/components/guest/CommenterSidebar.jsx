@@ -14,8 +14,6 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const {t}=useTranslation();
-
   return (
     <MenuItem
       active={selected === title}
@@ -55,7 +53,6 @@ const CommenterSidebar = () => {
     >
       <ProSidebar collapsed={isCollapsed}>
         <Menu iconShape="square">
-          {/* LOGO AND MENU ICON */}
           <MenuItem
             onClick={() => setIsCollapsed(!isCollapsed)}
             icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
@@ -146,7 +143,7 @@ const CommenterSidebar = () => {
                 />
 
                 <Item
-                  title={t('assigned_to_comment')}
+                  title={t("assigned_to_comment")}
                   to="assigned_to_comment"
                   icon={<ListIcon />}
                   selected={selected}

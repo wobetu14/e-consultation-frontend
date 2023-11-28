@@ -195,14 +195,14 @@ const Footer = () => {
                 color: colors.headerText[100]
               }}
               >
-                <a href="https://european-union.europa.eu/select-language?destination=/node/1" 
+                <a href="https://www.eeas.europa.eu/delegations/ethiopia_en" 
                   target="_blank" rel="noreferrer" 
                   style={{ textDecoration:"none", color:colors.primary[200] }}>
                   Funded by the <strong>European Union</strong>
                 </a>
               </Typography>
               
-              <a href="https://european-union.europa.eu/select-language?destination=/node/1" target="_blank" rel="noreferrer">
+              <a href="https://www.eeas.europa.eu/delegations/ethiopia_en" target="_blank" rel="noreferrer">
                 <img src={EULogo} alt="" />
               </a>
           </Box>

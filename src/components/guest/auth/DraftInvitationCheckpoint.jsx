@@ -56,12 +56,13 @@ const DraftInvitationCheckpoint = ({ draftID }) => {
   const userLogin = async (userData) => {
     setLoading(true);
     return await axios
-      .post("login", userData,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .post("login", userData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         if (res.status !== 200) {
           setServerError(res.data.message);
@@ -169,16 +170,6 @@ const DraftInvitationCheckpoint = ({ draftID }) => {
             </Grid>
 
             <Grid sx={{ paddingBottom: "5px" }}>
-              {/*      <FormControlLabel
-              control={
-                <Checkbox
-                  name="checkeboxname"
-                  color='info'
-                  />
-              }
-              label={t('remember')}
-            /> */}
-
               <Button
                 type="submit"
                 variant="contained"

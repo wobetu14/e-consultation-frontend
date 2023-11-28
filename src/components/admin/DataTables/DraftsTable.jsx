@@ -25,7 +25,7 @@ import CreateDraft from "../drafts/CreateDraft";
 import EditDraft from "../drafts/EditDraft";
 import DeleteDraftDialog from "../drafts/DeleteDraftDialog";
 import { rootURL } from "../../../axios/AxiosGlobal";
-import RefreshIcon from '@mui/icons-material/Refresh';
+import RefreshIcon from "@mui/icons-material/Refresh";
 import { useTranslation } from "react-i18next";
 
 /**
@@ -40,15 +40,13 @@ const DraftsTable = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const {t}=useTranslation();
-  
+  const { t } = useTranslation();
+
   /**
-   * Destructure important data from the Drafts Data Context. Note that we are going to destructure only 
+   * Destructure important data from the Drafts Data Context. Note that we are going to destructure only
    * the variables we are going to use in this child component
    */
   const {
-    drafts, 
-    setDrafts,
     fetchDrafts,
     filteredDrafts,
     searchDraft,
@@ -65,10 +63,8 @@ const DraftsTable = () => {
     setOpenDialog,
     loading,
     requestCompleted,
-    setRequestCompleted,
     networkErrorMessage,
     networkError,
-    setNetworkerror
   } = useContext(DraftsDataContext);
 
   const errorStyle = {
@@ -86,7 +82,7 @@ const DraftsTable = () => {
   /**
    * Show / Hide Add User Form
    * These two methods are used to show and hide forms to add and edit drafts data.
-   * The hide / show functionalies are triggered upon click event of buttons available on the top right corner 
+   * The hide / show functionalies are triggered upon click event of buttons available on the top right corner
    * of the drafts data table
    */
   const showAddDraftForm = (msg) => {
@@ -110,26 +106,26 @@ const DraftsTable = () => {
    */
   const deleteDraftDialog = (draftRow) => {
     setDraft(draftRow);
-    // Set openDialog variable to true to show the delete dialog 
+    // Set openDialog variable to true to show the delete dialog
     setOpenDialog(true);
   };
 
-  const handleNetworkStatus=()=>{
+  const handleNetworkStatus = () => {
     fetchDrafts();
-  }
+  };
 
   /**
-   * Create columns and row selectors to create data table. 
+   * Create columns and row selectors to create data table.
    * We have used 'react-data-table-component' to build the data table.
    * Follow the documentation of 'react-data-table-component' to understand more how we have created
-   * the data table for this draft data. Read more at: https://www.npmjs.com/package/react-data-table-component 
-   * and https://youtu.be/3oHUtG0cjfY 
+   * the data table for this draft data. Read more at: https://www.npmjs.com/package/react-data-table-component
+   * and https://youtu.be/3oHUtG0cjfY
    */
   const columns = [
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('title')}
+          {t("title")}
         </Typography>
       ),
       selector: (row) => (
@@ -144,7 +140,7 @@ const DraftsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('owning_institution')}
+          {t("owning_institution")}
         </Typography>
       ),
       selector: (row) => (
@@ -157,12 +153,13 @@ const DraftsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('created_by')}
+          {t("created_by")}
         </Typography>
       ),
       selector: (row) => (
         <Typography variant="body1">
-          {row.uploader ? row.uploader.first_name : ""} {row.uploader ? row.uploader.last_name : ""}
+          {row.uploader ? row.uploader.first_name : ""}{" "}
+          {row.uploader ? row.uploader.last_name : ""}
         </Typography>
       ),
       sortable: true,
@@ -171,12 +168,12 @@ const DraftsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('download_file')}
+          {t("download_file")}
         </Typography>
       ),
       selector: (row) => (
         <a href={row.file} target="_blank" rel="noreferrer">
-          <Typography variant="body1">{t('download')}</Typography>
+          <Typography variant="body1">{t("download")}</Typography>
         </a>
       ),
       sortable: true,
@@ -185,13 +182,17 @@ const DraftsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('download_comment_reports')}
+          {t("download_comment_reports")}
         </Typography>
       ),
       selector: (row) =>
         row.draft_status !== null && row.draft_status.name === "Closed" ? (
-          <a href={`${rootURL}report/${row.id}`} target="_blank" rel="noreferrer">
-            <Typography variant="body1">{t('download')}</Typography>
+          <a
+            href={`${rootURL}report/${row.id}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Typography variant="body1">{t("download")}</Typography>
           </a>
         ) : (
           ""
@@ -202,7 +203,7 @@ const DraftsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('actions')}
+          {t("actions")}
         </Typography>
       ),
       selector: (row) => {
@@ -237,22 +238,29 @@ const DraftsTable = () => {
 
   return (
     /**
-     * Create the data table UI and render data based on the column definition and filteredDrafts data 
+     * Create the data table UI and render data based on the column definition and filteredDrafts data
      * which is available from the drafts context data
      */
     /**
      * First create Box as a parent object, then create Grid inside
      */
-    <Box sx={{ width:{
-      xs:300, sm:500, md:700, lg:900, xl:1200
-    } }}>
+    <Box
+      sx={{
+        width: {
+          xs: 300,
+          sm: 500,
+          md: 700,
+          lg: 900,
+          xl: 1200,
+        },
+      }}
+    >
       <Grid align="center" sx={{ paddingBottom: "5px", paddingTop: "5px" }}>
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-
           {/* 
             Display response message resulted from the API call. Sucess or error messages
            */}
@@ -273,9 +281,9 @@ const DraftsTable = () => {
           </Typography>
 
           <Typography variant="h1">
-            {networkError==="ERR_NETWORK" ? (
+            {networkError === "ERR_NETWORK" ? (
               <Alert severity="error" variant="outlined">
-                {t('network_error_message')}
+                {t("network_error_message")}
               </Alert>
             ) : null}
           </Typography>
@@ -292,70 +300,75 @@ const DraftsTable = () => {
                 textAlign="left"
                 sx={{ color: colors.warningColor[100] }}
               >
-                {t('process_may_take_long')} {t('please_wait')}
+                {t("process_may_take_long")} {t("please_wait")}
               </Typography>
-              <LinearProgress color="info" /> {/* Line progress bar indicator imported from Material UI */}
+              <LinearProgress color="info" />{" "}
+              {/* Line progress bar indicator imported from Material UI */}
             </Box>
           ) : null}
         </motion.span>
       </Grid>
-
       {openDialog && (
         <DeleteDraftDialog
-          title={`${t('deleting_draft_document')}`}
-          text={`${t('you_are_deleting_draft')} "${
+          title={`${t("deleting_draft_document")}`}
+          text={`${t("you_are_deleting_draft")} "${
             draft ? draft.short_title : ""
-          }". ${t('are_you_sure')}`}
+          }". ${t("are_you_sure")}`}
         />
       )}
-      {showDraftAddForm && <CreateDraft />} {/* Show <CreateDraft /> component if showDraftAddForm value is true */}
-      {showDraftEditForm && <EditDraft />}  {/* Show <EditDraft /> component if the showDraftEditForm value is true */}
+      {showDraftAddForm && <CreateDraft />}{" "}
 
-      <Paper
-        elevation={1}
-        sx={{ marginTop: "10px", marginBottom: "350px" }}
-      >
+      {/* Show <CreateDraft /> component if showDraftAddForm value is true */}
+
+      {showDraftEditForm && <EditDraft />}{" "}
+
+      {/* Show <EditDraft /> component if the showDraftEditForm value is true */}
+      
+      <Paper elevation={1} sx={{ marginTop: "10px", marginBottom: "350px" }}>
         {/* 
           Render the data table. <DataTable /> component is a built in data table from react-data-table-component.
           We have used predefined props from the coponents
         */}
         <DataTable
           columns={columns} /* Define columns from columns object definition */
-          data={filteredDrafts} /* define the data props value from filteredDrafts*/
+          data={
+            filteredDrafts
+          } /* define the data props value from filteredDrafts*/
           pagination /* Use table pagination */
           selectableRowsHighlight
           subHeader /* Create sub header to add other table components such as filter TextField and Add / Edit drafts button */
-          progressPending={filteredDrafts.length <= 0} /* Display pending progress bar if the length of filteredDrafts array is less or equals to 0 */
+          progressPending={
+            filteredDrafts.length <= 0
+          } /* Display pending progress bar if the length of filteredDrafts array is less or equals to 0 */
           highlightOnHover
           pointerOnHover
           progressComponent={
             <Box mb="20px">
               {/* Display progress bar if the data prop value is empty */}
-              {
-                requestCompleted===1 && filteredDrafts.length<=0 && networkErrorMessage!=="AxiosError" ? `${t('no_record')}`: (
-                  networkErrorMessage==="AxiosError" ? (
-                    <>
-                    <Typography
-                      variant="body1"
+              {requestCompleted === 1 &&
+              filteredDrafts.length <= 0 &&
+              networkErrorMessage !== "AxiosError" ? (
+                `${t("no_record")}`
+              ) : networkErrorMessage === "AxiosError" ? (
+                <>
+                  <Typography variant="body1">
+                    {t("network_error_message")} &nbsp;
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      size="small"
+                      sx={{ textTransform: "none" }}
+                      onClick={handleNetworkStatus}
                     >
-                      {t('network_error_message')} &nbsp;
-                      <Button 
-                        variant="outlined"
-                        color="primary"
-                        size="small"
-                        sx={{ textTransform:'none' }}
-                        onClick={handleNetworkStatus}
-                      >
-                        {t('try_again')} <RefreshIcon />
-                      </Button>
-                    </Typography>
-                    </>
-                  ): `${t('please_wait')}...`
-                )
-              }
+                      {t("try_again")} <RefreshIcon />
+                    </Button>
+                  </Typography>
+                </>
+              ) : (
+                `${t("please_wait")}...`
+              )}
             </Box>
           }
-          
           /* Add subheader components such as search TextField and Add form Button */
           subHeaderComponent={
             <Box
@@ -368,7 +381,7 @@ const DraftsTable = () => {
             >
               <Box width="30%">
                 <TextField
-                  label={`${t('search')}...`}
+                  label={`${t("search")}...`}
                   variant="outlined"
                   size="small"
                   color="info"
@@ -387,10 +400,9 @@ const DraftsTable = () => {
                     sx={{ textTransform: "none" }}
                     onClick={hideForm}
                   >
-                    <VisibilityOffIcon /> {t('hide_form')}
+                    <VisibilityOffIcon /> {t("hide_form")}
                   </Button>
-                ) : 
-                /* Show edit drafts form and a button to hide and show the edit draft form */
+                ) : /* Show edit drafts form and a button to hide and show the edit draft form */
                 /* Note that toggling between add form and edit form is vice versa. */
                 showDraftEditForm ? (
                   <Button
@@ -400,7 +412,7 @@ const DraftsTable = () => {
                     sx={{ textTransform: "none" }}
                     onClick={hideForm}
                   >
-                    <VisibilityOffIcon /> {t('hide_form')}
+                    <VisibilityOffIcon /> {t("hide_form")}
                   </Button>
                 ) : (
                   <Button
@@ -410,7 +422,7 @@ const DraftsTable = () => {
                     sx={{ textTransform: "none" }}
                     onClick={showAddDraftForm}
                   >
-                    <AddIcon /> {t('add_new_draft')}
+                    <AddIcon /> {t("add_new_draft")}
                   </Button>
                 )}
               </Box>

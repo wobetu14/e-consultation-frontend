@@ -15,11 +15,9 @@ import RepliesToComments from "../../guest/partials/RepliesToComments";
 const ReplyFeedbacks = ({ 
   comments, 
   documentDetail,
-
   fetchDocumentDetails,
   fetchDocumentSections,
   fetchDocumentComments,
-
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -130,7 +128,6 @@ const ReplyFeedbacks = ({
                   ))
                 : "No comments"}
             </List>
-
           </motion.span>
         </Box>
       )}

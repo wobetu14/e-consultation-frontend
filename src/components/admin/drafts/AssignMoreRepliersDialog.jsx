@@ -37,7 +37,7 @@ const AssignMoreRepliersDialog = ({
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const [institutions, setInstitutions] = useState([]);
+  const [setInstitutions] = useState([]);
   const [selectedInstitutions, setSelectedInstitutions] = useState([]);
 
   const [instIDs, setInsIDs] = useState([]);

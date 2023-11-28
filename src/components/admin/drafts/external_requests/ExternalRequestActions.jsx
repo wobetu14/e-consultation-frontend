@@ -5,18 +5,15 @@ import {
   Button,
   
 } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import axios from "../../../../axios/AxiosGlobal";
-import * as YUP from "yup";
 
 import OutgoingCommentRequestsDialog from "../../partials/OutgoingCommentRequestsDialog";
 import DraftOpeningRejectionDialog from "../DraftOpeningRejectionDialog";
-import InviteMoreDialog from "../InviteMoreDialog";
 import AssignMoreRepliersDialog from "../AssignMoreRepliersDialog";
 import { tokens } from "../../../../theme";
-import { UserContext } from "../../../../contexts/UserContext";
 
 const ExternalRequestActions = ({
   documentDetail,
@@ -27,19 +24,6 @@ const ExternalRequestActions = ({
   setDocumentDetail,
 }) => {
   const params = useParams();
-  const [documentSections, setDocumentSections] = useState(null);
-  const [documentComments, setDocumentComments] = useState(null);
-
-  const [openDialog, setOpenDialog] = useState(false);
-  const [openRejectionDialog, setOpenRejectionDialog] = useState(false);
-  const [openInviteDialog, setOpenInviteDialog] = useState(false);
-  const [openAssignRepliersDialog, setOpenAssignRepliersDialog] =
-    useState(false);
-
-  const { userInfo, setUserInfo, userRole, setUserRole, setUserToken } =
-    useContext(UserContext);
-
-  const [contentBgColor, setContentBgColor] = useState(null);
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);

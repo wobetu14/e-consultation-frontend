@@ -27,32 +27,30 @@ const CreateInstitution = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  
-
-
   const [regions, setRegions] = useState(null);
   const [sectors, setSectors] = useState(null);
 
-  const {t}=useTranslation();
+  const { t } = useTranslation();
 
   // User context
   const { userInfo } = useContext(UserContext);
-  const { 
-    institution, 
-    setServerErrorMsg, 
-    setServerSuccessMsg, 
+  const {
+    institution,
+    setServerErrorMsg,
+    setServerSuccessMsg,
     setLoading,
     setNetworkError,
     fetchInstitutions,
-    setShowInstitutionEditForm
-   } =
-    useContext(InstitutionsDataContext);
+    setShowInstitutionEditForm,
+  } = useContext(InstitutionsDataContext);
 
   const [institutionsTypes, setInstitutionTypes] = useState(null);
   const [institutionsCategories, setInstitutionCategories] = useState(null);
   const [institutionsLevels, setInstitutionLevels] = useState(null);
 
-    const [canCreateDraft, setCanCreateDraft]=useState(parseInt(institution.can_create_draft));
+  const [canCreateDraft, setCanCreateDraft] = useState(
+    parseInt(institution.can_create_draft)
+  );
 
   useEffect(() => {
     fetchInstitutionTypes();
@@ -68,19 +66,18 @@ const CreateInstitution = () => {
 
   const fetchInstitutionTypes = async () => {
     return await axios
-      .get("institution-types",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("institution-types", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setInstitutionTypes(res.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   useEffect(() => {
@@ -89,19 +86,18 @@ const CreateInstitution = () => {
 
   const fetchInstitutionCategories = async () => {
     return await axios
-      .get("institution-categories",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("institution-categories", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setInstitutionCategories(res.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   useEffect(() => {
@@ -110,53 +106,50 @@ const CreateInstitution = () => {
 
   const fetchInstitutionLevels = async () => {
     return await axios
-      .get("institution-levels",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("institution-levels", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setInstitutionLevels(res.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const fetchRegions = async () => {
     return await axios
-      .get("regions",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("regions", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setRegions(res.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const fetchEconomicSectors = async () => {
     return await axios
-      .get("sectors",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("sectors", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setSectors(res.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const formik = useFormik({
@@ -198,16 +191,17 @@ const CreateInstitution = () => {
     setServerSuccessMsg(null);
     setLoading(true);
     return await axios
-      .post(`institutions/${institution.id}`, institutionData,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .post(`institutions/${institution.id}`, institutionData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
-        setNetworkError(null)
+        setNetworkError(null);
         setShowInstitutionEditForm(false);
         fetchInstitutions();
         formik.resetForm();
@@ -216,14 +210,14 @@ const CreateInstitution = () => {
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
-        setNetworkError(errors.code)
+        setNetworkError(errors.code);
         setLoading(false);
       });
   };
 
   return (
     <Box width={"95%"}>
-      <Header title={t('update_institution_info')} subtitle="" />
+      <Header title={t("update_institution_info")} subtitle="" />
       <h3>{formik.values.institutionName}</h3>
       <motion.span
         initial={{ opacity: 0 }}
@@ -234,7 +228,7 @@ const CreateInstitution = () => {
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <TextField
-                label={t('institution')}
+                label={t("institution")}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -247,7 +241,7 @@ const CreateInstitution = () => {
               />
 
               <FormControl sx={{ minWidth: "100%", paddingBottom: "30px" }}>
-                <InputLabel>{t('select_institution_category')}</InputLabel>
+                <InputLabel>{t("select_institution_category")}</InputLabel>
                 <Select
                   labelId="institution_category_id"
                   id="institution_category"
@@ -273,7 +267,7 @@ const CreateInstitution = () => {
               </FormControl>
 
               <FormControl sx={{ minWidth: "100%", paddingBottom: "30px" }}>
-                <InputLabel>{t('select_institution_level')}</InputLabel>
+                <InputLabel>{t("select_institution_level")}</InputLabel>
                 <Select
                   labelId="institution_level_id"
                   id="institution_level"
@@ -300,7 +294,7 @@ const CreateInstitution = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label={t('email_address')}
+                label={t("email_address")}
                 variant="outlined"
                 size="small"
                 type="email"
@@ -313,7 +307,7 @@ const CreateInstitution = () => {
                 onChange={formik.handleChange}
               />
               <TextField
-                label={t('telephone')}
+                label={t("telephone")}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -327,7 +321,7 @@ const CreateInstitution = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label={t('address')}
+                label={t("address")}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -340,26 +334,26 @@ const CreateInstitution = () => {
               />
 
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                {t('can_create_draft')}
+                {t("can_create_draft")}
               </Typography>
               <RadioGroup
                 aria-labelledby="demo-controlled-radio-buttons-group"
                 name="canCreateDraft"
                 size="small"
                 value={canCreateDraft}
-                onChange={(e)=>setCanCreateDraft(parseInt(e.target.value))}
+                onChange={(e) => setCanCreateDraft(parseInt(e.target.value))}
               >
                 <FormControlLabel
                   value={1}
                   checked={canCreateDraft === 1}
                   control={<Radio />}
-                  label={t('yes')}
+                  label={t("yes")}
                 />
                 <FormControlLabel
                   value={0}
                   checked={canCreateDraft === 0}
                   control={<Radio />}
-                  label={t('no')}
+                  label={t("no")}
                 />
               </RadioGroup>
 
@@ -376,7 +370,7 @@ const CreateInstitution = () => {
                   }}
                   color="info"
                 >
-                  {t('save_changes')}{" "}
+                  {t("save_changes")}{" "}
                 </Button>
               </Grid>
             </Grid>

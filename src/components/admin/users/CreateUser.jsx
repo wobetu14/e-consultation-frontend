@@ -24,22 +24,19 @@ const CreateUser = () => {
   const [institutions, setInstitutions] = useState(null);
   const [regions, setRegions] = useState(null);
   const [userRoles, setUserRoles] = useState(null);
-  const [newRoleID, setNewRoleID]=useState(null);
-  const {t}=useTranslation();
+  const { t } = useTranslation();
 
   // User context
   const { userInfo, userRole } = useContext(UserContext);
 
   // UsersDataContext
-  const { 
-    fetchUsers, 
-    setServerErrorMsg, 
-    setServerSuccessMsg, 
+  const {
+    fetchUsers,
+    setServerErrorMsg,
+    setServerSuccessMsg,
     setLoading,
-    networkError, 
-    setNetworkError
-   } =
-    useContext(UsersDataContext);
+    setNetworkError,
+  } = useContext(UsersDataContext);
 
   const helperTextStyle = {
     color: "red",
@@ -56,60 +53,55 @@ const CreateUser = () => {
   }, []);
 
   useEffect(() => {
-    /* const id = setInterval(fetchRegions(), 1000);
-    return () => clearInterval(id); */
     fetchRegions();
   }, []);
 
   const fetchRegions = async () => {
     return await axios
-      .get("public/regions", 
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("public/regions", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setRegions(res.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const fetchInstitutions = async () => {
     return await axios
-      .get("institutions",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("institutions", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setInstitutions(res.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const fetchUserRoles = async () => {
     return await axios
-      .get("roles", 
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("roles", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setUserRoles(res);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const formik = useFormik({
@@ -130,28 +122,23 @@ const CreateUser = () => {
 
     validationSchema: YUP.object({
       firstName: YUP.string().required(
-        `${t('field_required')} ${t('please_enter_first_name')}`
+        `${t("field_required")} ${t("please_enter_first_name")}`
       ),
       middleName: YUP.string().required(
-        `${t('field_required')} ${t('please_enter_middle_name')}`
+        `${t("field_required")} ${t("please_enter_middle_name")}`
       ),
       lastName: YUP.string().required(
-        `${t('field_required')} ${t('please_enter_last_name')}`
+        `${t("field_required")} ${t("please_enter_last_name")}`
       ),
       mobileNumber: YUP.string()
-        .required(`${t('field_required')} ${t('please_enter_mobile_number')}`)
-        .phone(
-          "ET",
-          true,
-          `${t('invalid_phone_number')}`
-        ),
+        .required(`${t("field_required")} ${t("please_enter_mobile_number")}`)
+        .phone("ET", true, `${t("invalid_phone_number")}`),
       email: YUP.string()
-        .required(`${t('field_required')} ${t('please_enter_email_address')}`)
-        .email(`${t('invalid_email')}`),
-        roleName: YUP.string().required(
-        `${'field_required'} ${t('please_select_user_role')}`
+        .required(`${t("field_required")} ${t("please_enter_email_address")}`)
+        .email(`${t("invalid_email")}`),
+      roleName: YUP.string().required(
+        `${"field_required"} ${t("please_select_user_role")}`
       ),
-      // institutionID:YUP.string().required("This field is required. Please select Institution.")
     }),
 
     onSubmit: (values) => {
@@ -188,13 +175,13 @@ const CreateUser = () => {
     setServerSuccessMsg(null);
     setLoading(true);
     return await axios
-      .post("register", userData,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }} 
-      )
+      .post("register", userData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
@@ -213,7 +200,7 @@ const CreateUser = () => {
 
   return (
     <Box m="0" width={"95%"}>
-      <Header title={t('add_new_user')} subtitle={t('manage_users')} />
+      <Header title={t("add_new_user")} subtitle={t("manage_users")} />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -223,7 +210,7 @@ const CreateUser = () => {
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <TextField
-                label={`${t('first_name')} *`}
+                label={`${t("first_name")} *`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -242,7 +229,7 @@ const CreateUser = () => {
                 }
               />
               <TextField
-                label={`${t('mobile_number')}`}
+                label={`${t("mobile_number")}`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -261,10 +248,10 @@ const CreateUser = () => {
                 }
               />
               {userInfo ? (
-                userInfo.user.roles[0].name === "Super Admin" &&  
+                userInfo.user.roles[0].name === "Super Admin" &&
                 formik.values.roleName === "Regional Admin" ? (
                   <FormControl sx={{ minWidth: "100%", paddingBottom: "5px" }}>
-                    <InputLabel>{t('select_region')} *</InputLabel>
+                    <InputLabel>{t("select_region")} *</InputLabel>
                     <Select
                       labelId="region_id"
                       id="region_id"
@@ -355,7 +342,7 @@ const CreateUser = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label={`${t('middle_name')} *`}
+                label={`${t("middle_name")} *`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -374,7 +361,7 @@ const CreateUser = () => {
                 }
               />
               <TextField
-                label={`${t('email_address')}`}
+                label={`${t("email_address")}`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -391,11 +378,10 @@ const CreateUser = () => {
                 }
               />
 
-              {/* <Typography variant='body1' sx={{ paddingBottom:'10px' }}>User Role</Typography> */}
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label={`${t('last_name')} *`}
+                label={`${t("last_name")} *`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -415,7 +401,7 @@ const CreateUser = () => {
               />
 
               <FormControl sx={{ minWidth: "100%", paddingBottom: "30px" }}>
-                <InputLabel>{t('select_user_role')}</InputLabel>
+                <InputLabel>{t("select_user_role")}</InputLabel>
                 <Select
                   labelId="user_role"
                   size="small"
@@ -435,7 +421,10 @@ const CreateUser = () => {
                 >
                   {userRoles
                     ? userRoles.map((userRole) => (
-                        <MenuItem value={userRole.role.name} key={userRole.name}>
+                        <MenuItem
+                          value={userRole.role.name}
+                          key={userRole.name}
+                        >
                           {userRole.role.name}{" "}
                         </MenuItem>
                       ))
@@ -443,7 +432,9 @@ const CreateUser = () => {
                 </Select>
                 <FormHelperText>
                   {formik.touched.roleName && formik.errors.roleName ? (
-                    <span style={helperTextStyle}>{formik.errors.roleName}</span>
+                    <span style={helperTextStyle}>
+                      {formik.errors.roleName}
+                    </span>
                   ) : null}
                 </FormHelperText>
               </FormControl>
@@ -456,7 +447,7 @@ const CreateUser = () => {
                   sx={{ align: "right", textTransform: "none" }}
                   color="info"
                 >
-                  {t('save')}{" "}
+                  {t("save")}{" "}
                 </Button>
               </Grid>
             </Grid>

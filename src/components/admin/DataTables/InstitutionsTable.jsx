@@ -2,7 +2,6 @@ import {
   Alert,
   Box,
   Button,
-  Checkbox,
   Grid,
   LinearProgress,
   Paper,
@@ -24,21 +23,20 @@ import { InstitutionsDataContext } from "../../../contexts/InstitutionsDataConte
 import CreateInstitution from "../institutions/CreateInstitution";
 import EditInstitution from "../institutions/EditInstitution";
 import DeleteInstitutionDialog from "../institutions/DeleteInstitutionDialog";
-import RefreshIcon from '@mui/icons-material/Refresh';
+import RefreshIcon from "@mui/icons-material/Refresh";
 import { useTranslation } from "react-i18next";
 
 const InstitutionsTable = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const {t}=useTranslation();
+  const { t } = useTranslation();
   const {
     filteredInstitutions,
     searchInstitution,
     setSearchInstitution,
     institution,
     setInstitution,
-    institutions,
     showInstitutionAddForm,
     setShowInstitutionAddForm,
     showInstitutionEditForm,
@@ -49,11 +47,9 @@ const InstitutionsTable = () => {
     setOpenDialog,
     loading,
     requestCompleted,
-    setRequestCompleted,
     networkErrorMessage,
-    setNetworkErrorMessage,
     fetchInstitutions,
-    networkError
+    networkError,
   } = useContext(InstitutionsDataContext);
 
   const errorStyle = {
@@ -90,19 +86,19 @@ const InstitutionsTable = () => {
     setOpenDialog(true);
   };
 
-  const handleNetworkStatus=()=>{
+  const handleNetworkStatus = () => {
     fetchInstitutions();
-  }
+  };
 
   const columns = [
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('institution')}
+          {t("institution")}
         </Typography>
       ),
       selector: (row) => (
-        <Typography variant="body1">{`${row.name ? row.name:""}`}</Typography>
+        <Typography variant="body1">{`${row.name ? row.name : ""}`}</Typography>
       ),
       sortable: true,
     },
@@ -110,7 +106,7 @@ const InstitutionsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('institution_type')}
+          {t("institution_type")}
         </Typography>
       ),
       selector: (row) => (
@@ -122,7 +118,7 @@ const InstitutionsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('email_address')}
+          {t("email_address")}
         </Typography>
       ),
       selector: (row) => <Typography variant="body1">{row.email}</Typography>,
@@ -131,7 +127,7 @@ const InstitutionsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('telephone')}
+          {t("telephone")}
         </Typography>
       ),
       selector: (row) => (
@@ -142,7 +138,7 @@ const InstitutionsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('address')}
+          {t("address")}
         </Typography>
       ),
       selector: (row) => <Typography variant="body1">{row.address}</Typography>,
@@ -152,11 +148,13 @@ const InstitutionsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('region')}
+          {t("region")}
         </Typography>
       ),
       selector: (row) => (
-        <Typography variant="body1">{row.region ? row.region.name:""}</Typography>
+        <Typography variant="body1">
+          {row.region ? row.region.name : ""}
+        </Typography>
       ),
       sortable: true,
     },
@@ -175,7 +173,7 @@ const InstitutionsTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('actions')}
+          {t("actions")}
         </Typography>
       ),
       selector: (row) => {
@@ -209,10 +207,21 @@ const InstitutionsTable = () => {
   ];
 
   return (
-    <Box sx={{ width:{
-      xs:300, sm:500, md:700, lg:900, xl:1200
-    } }}>
-      <Header title={t('institutions_info')} subtitle={t('manage_institutions')} />
+    <Box
+      sx={{
+        width: {
+          xs: 300,
+          sm: 500,
+          md: 700,
+          lg: 900,
+          xl: 1200,
+        },
+      }}
+    >
+      <Header
+        title={t("institutions_info")}
+        subtitle={t("manage_institutions")}
+      />
       <Grid align="center" sx={{ paddingBottom: "5px", paddingTop: "5px" }}>
         <motion.span
           initial={{ opacity: 0 }}
@@ -236,9 +245,9 @@ const InstitutionsTable = () => {
           </Typography>
 
           <Typography variant="h1">
-            {networkError==="ERR_NETWORK" ? (
+            {networkError === "ERR_NETWORK" ? (
               <Alert severity="error" variant="outlined">
-                {t('network_error_message')}
+                {t("network_error_message")}
               </Alert>
             ) : null}
           </Typography>
@@ -271,31 +280,30 @@ const InstitutionsTable = () => {
           progressComponent={
             <Box mb="20px">
               {/* Display progress bar if the data prop value is empty */}
-              {
-                requestCompleted===1 && filteredInstitutions.length<=0 && networkErrorMessage!=="AxiosError" ? `${t('no_record')}`: (
-                  networkErrorMessage==="AxiosError" ? (
-                    <>
-                    <Typography
-                      variant="body1"
+              {requestCompleted === 1 &&
+              filteredInstitutions.length <= 0 &&
+              networkErrorMessage !== "AxiosError" ? (
+                `${t("no_record")}`
+              ) : networkErrorMessage === "AxiosError" ? (
+                <>
+                  <Typography variant="body1">
+                    {t("network_error_message")} &nbsp;
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      size="small"
+                      sx={{ textTransform: "none" }}
+                      onClick={handleNetworkStatus}
                     >
-                      {t('network_error_message')} &nbsp;
-                      <Button 
-                        variant="outlined"
-                        color="primary"
-                        size="small"
-                        sx={{ textTransform:'none' }}
-                        onClick={handleNetworkStatus}
-                      >
-                        {t('try_again')} <RefreshIcon />
-                      </Button>
-                    </Typography>
-                    </>
-                  ): `${t('please_wait')}`
-                )
-              }
+                      {t("try_again")} <RefreshIcon />
+                    </Button>
+                  </Typography>
+                </>
+              ) : (
+                `${t("please_wait")}`
+              )}
             </Box>
           }
-
           pagination
           selectableRowsHighlight
           subHeader
@@ -310,7 +318,7 @@ const InstitutionsTable = () => {
             >
               <Box width="30%">
                 <TextField
-                  label={`${t('search')}...`}
+                  label={`${t("search")}...`}
                   variant="outlined"
                   size="small"
                   color="info"
@@ -328,7 +336,7 @@ const InstitutionsTable = () => {
                     sx={{ textTransform: "none" }}
                     onClick={hideForm}
                   >
-                    <VisibilityOffIcon /> {t('hide_form')}
+                    <VisibilityOffIcon /> {t("hide_form")}
                   </Button>
                 ) : showInstitutionEditForm ? (
                   <Button
@@ -338,7 +346,7 @@ const InstitutionsTable = () => {
                     sx={{ textTransform: "none" }}
                     onClick={hideForm}
                   >
-                    <VisibilityOffIcon /> {t('hide_form')}
+                    <VisibilityOffIcon /> {t("hide_form")}
                   </Button>
                 ) : (
                   <Button
@@ -348,7 +356,7 @@ const InstitutionsTable = () => {
                     sx={{ textTransform: "none" }}
                     onClick={showAddInstitutionForm}
                   >
-                    <AddIcon /> {t('add_new_institution')}
+                    <AddIcon /> {t("add_new_institution")}
                   </Button>
                 )}
               </Box>

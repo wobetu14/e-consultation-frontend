@@ -1,23 +1,21 @@
-
-.document_list_container{
+.document_list_container {
   transition: all 1000ms;
 }
 
-.document_list_container:hover{
-
+.document_list_container:hover {
   color: inherit;
-  background-color: #D1D1D1;
+  background-color: #d1d1d1;
   cursor: pointer;
 }
 
-@media (max-width:550px) {
-  .display__container{
-      display: none;
+@media (max-width: 550px) {
+  .display__container {
+    display: none;
   }
 }
 
-@media (max-width:768px) {
-  .display__container{
-      display: none;
+@media (max-width: 768px) {
+  .display__container {
+    display: none;
   }
 }

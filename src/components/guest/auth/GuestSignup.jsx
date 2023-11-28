@@ -100,12 +100,13 @@ const GuestSignup = () => {
   const registerUser = async (userData) => {
     setLoading(true);
     return await axios
-      .post("signup", userData,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .post("signup", userData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
@@ -302,18 +303,6 @@ const GuestSignup = () => {
                     ) : null
                   }
                 />
-
-                {/* <FormControlLabel
-            control={
-              <Checkbox
-                name="accept_terms"
-                />
-            }
-            label='I accept the terms, conditions and privacy policy.'
-          />
-          <br/>
-          <a href="https://www.google.com" target={"blank"}>Terms, conditions and privacy policy</a> */}
-
                 <Box sx={{ textAlign: "right" }}>
                   <Button
                     type="submit"

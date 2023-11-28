@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react'
 import axios from '../../../axios/AxiosGlobal'
 import { motion } from 'framer-motion';
@@ -220,7 +219,6 @@ const InviteMoreDialog = ({
                 <Typography variant="subtitle1" fontWeight="600">
                     {t('invite_institutions')}
                 </Typography>
-                {/* <Stack spacing={2} > */}
             <Autocomplete
                 multiple
                 id="tags-standard"

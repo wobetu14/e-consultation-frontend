@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { Outlet } from "react-router-dom";
 
 import { ColorModeContext, useMode, tokens } from "../theme";
@@ -6,7 +6,6 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 
 import Topbar from "../components/admin/partials/global/Topbar";
 import Sidebar from "../components/admin/partials/global/Sidebar";
-import { UserContext } from "../contexts/UserContext";
 
 function App() {
   const [theme, colorMode] = useMode();

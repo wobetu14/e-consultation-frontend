@@ -4,15 +4,10 @@ import {
   Chip,
   Grid,
   Alert,
-  LinearProgress,
   CircularProgress,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import React, {
-  useEffect,
-  useState,
-  useContext,
-} from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "../../../axios/AxiosGlobal";
 import Header from "../AdminHeader";
 import { useTheme } from "@emotion/react";
@@ -49,22 +44,21 @@ const DraftApprovalRequest = () => {
     fontSize: "18px",
   };
 
-  const {userRole} =
-    useContext(UserContext);
+  const { userRole } = useContext(UserContext);
 
   const fetchDrafts = async () => {
     return await axios
-      .get("mydrafts", 
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("mydrafts", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setDraftsData(res.data.data);
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   useEffect(() => {
@@ -280,13 +274,13 @@ const SendApprovalRequest = ({
 }) => {
   const sendRequestForApproval = async () => {
     return await axios
-      .post(`request-for-comment/draft/${draft.id}`, 
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }}
-      )
+      .post(`request-for-comment/draft/${draft.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);

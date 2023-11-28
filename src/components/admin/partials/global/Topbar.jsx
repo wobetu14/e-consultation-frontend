@@ -3,11 +3,10 @@ import { Box, Button, IconButton, useTheme } from "@mui/material";
 import { ColorModeContext, tokens } from "../../../../theme";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import Logout from "../../../../Logout";
 import { useTranslation } from "react-i18next";
 import HomeIcon from "@mui/icons-material/Home";
-import CachedIcon from '@mui/icons-material/Cached';
+import CachedIcon from "@mui/icons-material/Cached";
 import { useNavigate } from "react-router-dom";
 import LanguageButton from "../../../../partials/LanguageButton";
 
@@ -16,11 +15,11 @@ const Topbar = () => {
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
   const { t } = useTranslation();
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
-  const reloadPage=()=>{
-    navigate(0)
-  }
+  const reloadPage = () => {
+    navigate(0);
+  };
 
   return (
     <Box display="flex" justifyContent="space-between" p={2}>
@@ -54,9 +53,6 @@ const Topbar = () => {
             <LightModeOutlinedIcon />
           )}
         </IconButton>
-        {/* <IconButton>
-          <PersonOutlinedIcon />
-        </IconButton> */}
       </Box>
     </Box>
   );

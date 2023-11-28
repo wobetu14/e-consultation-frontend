@@ -1,6 +1,5 @@
 import {
   Box,
-  LinearProgress,
   Paper,
   Table,
   TableBody,
@@ -117,10 +116,6 @@ const InstitutionInvitations = ({ documentDetail }) => {
                           : "Rejected"}
                       </Typography>
                     </TableCell>
-
-                    {/*   <TableCell>
-                <Typography variant="body1">{(InvitedInstitution.status && InvitedInstitution.status===0) ? "Pending":((InvitedInstitution.status && InvitedInstitution.status===1) ? "Accepted":"Rejected")}</Typography>
-              </TableCell> */}
                   </TableRow>
                 ))
             ) : (

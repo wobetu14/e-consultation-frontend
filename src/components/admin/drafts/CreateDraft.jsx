@@ -28,9 +28,9 @@ import { useTranslation } from "react-i18next";
  */
 const CreateDraft = () => {
   /**
-   * Create institutions variable to store list of institutions 
+   * Create institutions variable to store list of institutions
    * and allow the user select the name of the institution creating the draft.
-   * Actually this data may not be necessary since the institution can be automatically taken 
+   * Actually this data may not be necessary since the institution can be automatically taken
    * from the logged user information
    */
   const [institutions, setInstitutions] = useState(null);
@@ -42,39 +42,37 @@ const CreateDraft = () => {
   const [lawCategories, setLawCategories] = useState(null);
 
   /**
-   * Create sectors variable to store list of sectors and allow the user to specify 
+   * Create sectors variable to store list of sectors and allow the user to specify
    * the name of sectors the draft deals with
    */
   const [sectors, setSectors] = useState([]);
 
   /**
-   * Create tagLists variable and allow the user enter list of tags the draft document 
-   * mainly talks about. Specifiying tags related to topics in the draft content is 
+   * Create tagLists variable and allow the user enter list of tags the draft document
+   * mainly talks about. Specifiying tags related to topics in the draft content is
    * important for the document filtering and searching purposes
    */
   const [tagLists, setTagLists] = useState([]);
 
   /**
-   * Create variable to store list of selcted sector values from the Autocomplete TextField 
+   * Create variable to store list of selcted sector values from the Autocomplete TextField
    * value
    */
   const [selectedSectors, setSelectedSectors] = useState([]);
 
-  const {t}=useTranslation();
+  const { t } = useTranslation();
 
-  const inputFile=useRef(null);
+  const inputFile = useRef(null);
 
   /**
-   * Destructure and access variable from the DraftsDataContext context 
+   * Destructure and access variable from the DraftsDataContext context
    */
   const {
-    drafts,
     fetchDrafts,
     setServerErrorMsg,
     setServerSuccessMsg,
     setLoading,
-    networkError,
-    setNetworkError
+    setNetworkError,
   } = useContext(DraftsDataContext);
 
   const helperTextStyle = {
@@ -91,14 +89,14 @@ const CreateDraft = () => {
    * Fetch list of law categories on component load using the useEffect hook
    */
   useEffect(() => {
-   fetchLawCategories()
+    fetchLawCategories();
   }, []);
 
   /**
    * Fetch list of sectors on component load using the useEffect hook
    */
   useEffect(() => {
-    fetchSectors()
+    fetchSectors();
   }, []);
 
   /**
@@ -110,60 +108,57 @@ const CreateDraft = () => {
 
   const fetchInstitutions = async () => {
     return await axios
-      .get("institutions", 
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("institutions", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setInstitutions(res.data);
       })
-      .catch((error) => {
-     
-      });
+      .catch((error) => {});
   };
 
   const fetchLawCategories = async () => {
     return await axios
-      .get("law-categories",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("law-categories", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setLawCategories(res.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const fetchSectors = async () => {
     return await axios
-      .get("sectors", 
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("sectors", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setSectors(res.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   /**
    * Use formik object and collect form data
    */
   const formik = useFormik({
-    /** 
+    /**
      * Set the forms intial values
      */
     initialValues: {
@@ -195,31 +190,31 @@ const CreateDraft = () => {
 
     validationSchema: YUP.object({
       shortTitle: YUP.string().required(
-        `${t('field_required')} ${t('please_provide_short_title')}`
+        `${t("field_required")} ${t("please_provide_short_title")}`
       ),
 
       definition: YUP.string().required(
-        `${t('field_required')} ${t('please_provide_document_definition')}`
+        `${t("field_required")} ${t("please_provide_document_definition")}`
       ),
 
       lawCategoryId: YUP.string().required(
-        `${t('field_required')} ${t('please_provide_law_category')}`
+        `${t("field_required")} ${t("please_provide_law_category")}`
       ),
 
       file: YUP.mixed().required(
-        `${t('field_required')} ${t('please_choose_file_to_upload')}`
+        `${t("field_required")} ${t("please_choose_file_to_upload")}`
       ),
       isPrivate: YUP.number().required(
-        `${t('field_required')} ${t('please_provide_document_access')}`
+        `${t("field_required")} ${t("please_provide_document_access")}`
       ),
       summary: YUP.string().required(
-        `${t('field_required')} ${t('please_provide_document_summary')}`
+        `${t("field_required")} ${t("please_provide_document_summary")}`
       ),
     }),
 
     /**
-     * Update form data using onChanges methods of form fields and 
-     * collect the updated values for submission and then call a function definition to initiate API call 
+     * Update form data using onChanges methods of form fields and
+     * collect the updated values for submission and then call a function definition to initiate API call
      * creating the document record
      */
     onSubmit: (values) => {
@@ -267,22 +262,22 @@ const CreateDraft = () => {
     setServerSuccessMsg(null);
     setLoading(true);
     return await axios
-      .post("drafts", draftsData, 
-      { 
-        headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .post("drafts", draftsData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
         setNetworkError(null);
         formik.resetForm();
 
-        inputFile.current.value = ""; 
-        inputFile.current.type = "text"; 
-        inputFile.current.type = "file"; 
+        inputFile.current.value = "";
+        inputFile.current.type = "text";
+        inputFile.current.type = "file";
         setTagLists([]);
         fetchDrafts();
         setLoading(false);
@@ -300,17 +295,19 @@ const CreateDraft = () => {
      * Define form and fields to input draft detail information
      */
     <Box width={"95%"}>
-      <Header title={t('upload_draft_document')} subtitle="" />
+      <Header title={t("upload_draft_document")} subtitle="" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
       >
-        <form onSubmit={formik.handleSubmit}> {/* Create form and call the formik object upon form submit */}
+        <form onSubmit={formik.handleSubmit}>
+          {" "}
+          {/* Create form and call the formik object upon form submit */}
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <TextField
-                label={`${t('short_title')} *`}
+                label={`${t("short_title")} *`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -331,16 +328,16 @@ const CreateDraft = () => {
               />
 
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                {t('law_category')} *
+                {t("law_category")} *
               </Typography>
               <FormControl sx={{ minWidth: "100%", paddingBottom: "30px" }}>
-                <InputLabel>{t('select_law_category')} *</InputLabel>
+                <InputLabel>{t("select_law_category")} *</InputLabel>
                 <Select
-                  label={t('law_category')}
+                  label={t("law_category")}
                   labelId="law_category_Id"
                   id="law_category_Id"
                   size="small"
-                  placeholder={`${t('select_law_category')}`}
+                  placeholder={`${t("select_law_category")}`}
                   color="info"
                   name="lawCategoryId"
                   onClick={fetchLawCategories}
@@ -374,7 +371,7 @@ const CreateDraft = () => {
               </FormControl>
 
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                {t('economic_sector')}
+                {t("economic_sector")}
               </Typography>
               <Autocomplete
                 multiple
@@ -392,15 +389,15 @@ const CreateDraft = () => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label={t('select_economic_sectors')}
-                    placeholder={t('sectors')}
+                    label={t("select_economic_sectors")}
+                    placeholder={t("sectors")}
                     value={(option) => option.name}
                     color="info"
                   />
                 )}
               />
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                {t('document_access')} *
+                {t("document_access")} *
               </Typography>
               <RadioGroup
                 aria-labelledby="demo-controlled-radio-buttons-group"
@@ -412,12 +409,12 @@ const CreateDraft = () => {
                 <FormControlLabel
                   value="0"
                   control={<Radio />}
-                  label={t('public')}
+                  label={t("public")}
                 />
                 <FormControlLabel
                   value="1"
                   control={<Radio />}
-                  label={t('private')}
+                  label={t("private")}
                 />
                 {formik.touched.isPrivate && formik.errors.isPrivate ? (
                   <span style={helperTextStyle}>{formik.errors.isPrivate}</span>
@@ -425,7 +422,7 @@ const CreateDraft = () => {
               </RadioGroup>
 
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                {t('enter_tags')}
+                {t("enter_tags")}
               </Typography>
               <Autocomplete
                 multiple
@@ -440,7 +437,7 @@ const CreateDraft = () => {
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label={t('list_tags')}
+                    label={t("list_tags")}
                     name="tags"
                     value={tagLists.map((tag) => tag)}
                     color="info"
@@ -450,7 +447,7 @@ const CreateDraft = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label={t('legal_reference')}
+                label={t("legal_reference")}
                 variant="outlined"
                 size="small"
                 multiline
@@ -473,7 +470,7 @@ const CreateDraft = () => {
               />
 
               <TextField
-                label={`${t('definition')} *`}
+                label={`${t("definition")} *`}
                 variant="outlined"
                 size="small"
                 multiline
@@ -495,7 +492,7 @@ const CreateDraft = () => {
               />
 
               <TextField
-                label={t('scope')}
+                label={t("scope")}
                 variant="outlined"
                 size="small"
                 multiline
@@ -515,7 +512,7 @@ const CreateDraft = () => {
               />
 
               <TextField
-                label={t('main_provision')}
+                label={t("main_provision")}
                 variant="outlined"
                 size="small"
                 multiline
@@ -539,7 +536,7 @@ const CreateDraft = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label={`${t('summary')} *`}
+                label={`${t("summary")} *`}
                 variant="outlined"
                 size="small"
                 multiline
@@ -558,7 +555,7 @@ const CreateDraft = () => {
                 }
               />
               <TextField
-                label={t('amended_laws')}
+                label={t("amended_laws")}
                 variant="outlined"
                 size="small"
                 multiline
@@ -579,7 +576,7 @@ const CreateDraft = () => {
               />
 
               <TextField
-                label={t('repealed_laws')}
+                label={t("repealed_laws")}
                 variant="outlined"
                 size="small"
                 multiline
@@ -600,7 +597,7 @@ const CreateDraft = () => {
               />
 
               <TextField
-                label={t('transitory_provision')}
+                label={t("transitory_provision")}
                 variant="outlined"
                 size="small"
                 multiline
@@ -622,8 +619,8 @@ const CreateDraft = () => {
                 }
               />
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                <strong>{t('attachement_file')}: </strong>
-                {t('attach_draft_document_note')}
+                <strong>{t("attachement_file")}: </strong>
+                {t("attach_draft_document_note")}
               </Typography>
               <input
                 /* variant="outlined"
@@ -654,7 +651,7 @@ const CreateDraft = () => {
                   color="secondary"
                   elevation={10}
                 >
-                  {t('save')}{" "}
+                  {t("save")}{" "}
                 </Button>
               </Grid>
             </Grid>

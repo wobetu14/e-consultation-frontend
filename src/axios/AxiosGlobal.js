@@ -1,23 +1,20 @@
 import axios from "axios";
-import { useContext } from "react";
-import { UserContext } from "../contexts/UserContext";
 
 /**
- * Custom configuration for Axios http client package. 
- * Learn more about axios at https://axios-http.com/docs/intro 
- * 
+ * Custom configuration for Axios http client package.
+ * Learn more about axios at https://axios-http.com/docs/intro
+ *
  * Here we have customized the axios API by providing custom values for
  * baseURL, header (authorization, Accept data type) etc
  */
 
-
 const instance = axios.create({
   baseURL: "https://backend.e-consultation.gov.et/api/v1/",
-  headers:{
+  headers: {
     Authorization: `Bearer ${localStorage.getItem("token")}`,
     Accept: "application/json",
-    "Content-Type": "multipart/form-data"
-  }
+    "Content-Type": "multipart/form-data",
+  },
 });
 
 /**

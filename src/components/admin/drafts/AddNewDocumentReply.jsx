@@ -18,14 +18,13 @@ import SendIcon from "@mui/icons-material/Send";
 import { useFormik } from "formik";
 import axios from "../../../axios/AxiosGlobal";
 
-const AddNewDocumentReply = ({ 
-  comment, 
+const AddNewDocumentReply = ({
+  comment,
   reflections,
-
   fetchDocumentDetails,
   fetchDocumentSections,
   fetchDocumentComments,
- }) => {
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();
@@ -66,12 +65,13 @@ const AddNewDocumentReply = ({
 
   const replyDocComment = async (replyData) => {
     return await axios
-      .post("reply-general-comment", replyData, 
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .post("reply-general-comment", replyData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
@@ -79,7 +79,7 @@ const AddNewDocumentReply = ({
         fetchDocumentDetails();
         fetchDocumentSections();
         fetchDocumentComments();
-        
+
         formik.resetForm();
       })
       .catch((errors) => {

@@ -27,10 +27,9 @@ const Login = () => {
   const { t } = useTranslation();
 
   const navigate = useNavigate();
-  const {setUserInfo, setUserRole, setUserToken, userInfo } =
+  const { setUserInfo, setUserRole, setUserToken } =
     useContext(UserContext);
 
-  // const [loggedIn, setLoggedIn] = useState(false);
   const [serverError, setServerError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -63,11 +62,9 @@ const Login = () => {
           setServerError(res.data.message);
           setLoading(false);
         } else {
-          
-        if (res.status === 200 && res.data.token) {
-            // setLoggedIn(true);
+          if (res.status === 200 && res.data.token) {
             setServerError(null);
-            
+
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("userRole", res.data.user.roles[0].name);
             localStorage.setItem("userInfo", JSON.stringify(res.data));
@@ -76,27 +73,23 @@ const Login = () => {
             setUserToken(localStorage.getItem("token"));
             setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
 
-
-           /*  setUserInfo(JSON.stringify(res.data))
-            setUserToken(res.data.token);
-            setUserRole(res.data.user.roles[0].name) */
-
-            if(res.data.user.password_changed===null || res.data.user.password_changed===0){
-              navigate('/password_change_request')
-            }
-            else {
+            if (
+              res.data.user.password_changed === null ||
+              res.data.user.password_changed === 0
+            ) {
+              navigate("/password_change_request");
+            } else {
               if (localStorage.getItem("userRole") === "Commenter") {
                 navigate("/");
               } else {
                 navigate("/admin");
               }
             }
- 
-           } else {
+          } else {
             setServerError("Invalid email or password. Please try again.");
             setLoading(false);
           }
-        } 
+        }
       })
       .catch((errors) => {
         setServerError(errors.message);
@@ -148,7 +141,13 @@ const Login = () => {
               ) : null}
             </p>
 
-            {loading && <LinearProgress color="info" size="small" sx={{ marginBottom:"15px" }} />}
+            {loading && (
+              <LinearProgress
+                color="info"
+                size="small"
+                sx={{ marginBottom: "15px" }}
+              />
+            )}
           </Grid>
 
           <form onSubmit={formik.handleSubmit}>
@@ -183,15 +182,6 @@ const Login = () => {
             </Grid>
 
             <Grid sx={{ paddingBottom: "5px" }}>
-              {/*      <FormControlLabel
-              control={
-                <Checkbox
-                  name="checkeboxname"
-                  color='info'
-                  />
-              }
-              label={t('remember')}
-            /> */}
 
               <Button
                 type="submit"

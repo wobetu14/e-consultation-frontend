@@ -1,7 +1,4 @@
-import {
-  Typography,
-  useTheme,
-} from "@mui/material";
+import { Typography, useTheme } from "@mui/material";
 import { tokens } from "../../../theme";
 import { motion } from "framer-motion";
 
@@ -12,14 +9,14 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import RepliesToGeneralComments from "../../admin/drafts/RepliesToGeneralComments";
 
-const ReplyDocumentLevelComments = ({ 
-  comment, 
+const ReplyDocumentLevelComments = ({
+  comment,
   documentDetail,
 
   fetchDocumentDetails,
   fetchDocumentSections,
   fetchDocumentComments,
- }) => {
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -80,7 +77,6 @@ const ReplyDocumentLevelComments = ({
             documentDetail={documentDetail}
             comment={comment}
             reflections={comment.reflection_on_general_comments}
-
             fetchDocumentDetails={fetchDocumentDetails}
             fetchDocumentSections={fetchDocumentSections}
             fetchDocumentComments={fetchDocumentComments}

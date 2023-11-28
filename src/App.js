@@ -70,10 +70,10 @@ function App() {
   };
 
   /**
-   * Define components accessible only for admin level users. The type of users defined as 
+   * Define components accessible only for admin level users. The type of users defined as
    * 'Super Admin, Federal Admin, Federal Institutions Admin, Regional Admin,
    * Regional Institutions Admin, Approver and Uploader' can access the components defined as
-   * as children of <AdminElement /> component. Other user such as unregistered users and commenters 
+   * as children of <AdminElement /> component. Other user such as unregistered users and commenters
    * can not have access to this elememnt
    */
 
@@ -114,8 +114,12 @@ function App() {
   };
 
   return (
-    <ColorModeContext.Provider value={colorMode}> {/* Accessing context data for color definitions */}
-      <ThemeProvider theme={theme}> {/* Accessing app theme context data definitions */}
+    <ColorModeContext.Provider value={colorMode}>
+      {" "}
+      {/* Accessing context data for color definitions */}
+      <ThemeProvider theme={theme}>
+        {" "}
+        {/* Accessing app theme context data definitions */}
         <CssBaseline />
         <div className="App">
           <main className="content" display="flex">
@@ -127,7 +131,8 @@ function App() {
                    * Render publicly accessible elements / components
                    */
                   <PublicElement>
-                    <RootLayout /> {/* A layout component to render base and public app components */}
+                    <RootLayout />{" "}
+                    {/* A layout component to render base and public app components */}
                   </PublicElement>
                 }
               >
@@ -144,7 +149,10 @@ function App() {
                 <Route path="reset_password" element={<ResetPassword />} />
                 <Route path="create-account" element={<GuestSignup />} />
                 <Route path="user_profile" element={<UserProfile />} />
-                <Route path="password_change_request" element={<PasswordChangeRequest />} />
+                <Route
+                  path="password_change_request"
+                  element={<PasswordChangeRequest />}
+                />
                 <Route
                   path="activation/:token"
                   element={<AccountActivation />}
@@ -172,11 +180,11 @@ function App() {
                 />
               </Route>
 
-                <Route path="/commenter" element={<CommenterLayout />}>
+              <Route path="/commenter" element={<CommenterLayout />}>
                 <Route index element={<CommenterDashboard />} />
                 <Route path="assigned_drafts" element={<DraftAssignments />} />
                 <Route path="invited_drafts" element={<InvitedDrafts />} />
-                
+
                 <Route
                   path="draft_invitation_checkpoint"
                   element={<DraftInvitationCheckpoint />}
@@ -192,7 +200,7 @@ function App() {
                 <Route path="user_profile" element={<UserProfile />} />
               </Route>
 
-             {/* 
+              {/* 
                Route definitions for components under <AdminElement /> 
              */}
               <Route
@@ -251,13 +259,10 @@ function App() {
                   path="external_requests_preview/:id"
                   element={<ExternalRequestsPreview />}
                 />
-                <Route
-                  path="resource_center" 
-                  element={<ResourceCenter />}
-                />
+                <Route path="resource_center" element={<ResourceCenter />} />
 
                 <Route
-                  path="prepare_language_translation" 
+                  path="prepare_language_translation"
                   element={<PrepareTranslation />}
                 />
 

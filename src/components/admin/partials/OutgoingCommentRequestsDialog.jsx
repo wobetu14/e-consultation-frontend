@@ -33,7 +33,6 @@ const OutgoingCommentRequestsDialog = ({
   openDialog,
   setOpenDialog,
   showDialog,
-
   fetchDocumentDetails,
   fetchDocumentSections,
   fetchDocumentComments,
@@ -45,7 +44,7 @@ const OutgoingCommentRequestsDialog = ({
   const [institutions, setInstitutions] = useState([]);
   const [selectedInstitutions, setSelectedInstitutions] = useState([]);
 
-  const {t}=useTranslation()
+  const { t } = useTranslation();
 
   // Set list of email address for invitation
   const [peopleEmail, setPeopleEmail] = useState([]);
@@ -57,8 +56,8 @@ const OutgoingCommentRequestsDialog = ({
   const [myUsers, setMyUsers] = useState([]);
   const [repliersID, setRepliersID] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [networkError, setnetworkError]=useState(null);
-  
+  const [networkError, setnetworkError] = useState(null);
+
   const helperTextStyle = {
     color: "red",
     fontWeight: "400",
@@ -81,17 +80,17 @@ const OutgoingCommentRequestsDialog = ({
     getMyUsersID();
   }, [repliersEmail]);
 
-  useEffect(()=>{
+  useEffect(() => {
     getInstitutionsID();
-  }, [selectedInstitutions])
+  }, [selectedInstitutions]);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchInstitutions();
-  },[])
+  }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchMyUsers();
-  }, [])
+  }, []);
 
   const getMyUsersID = () => {
     if (repliersEmail.length > 0) {
@@ -111,31 +110,29 @@ const OutgoingCommentRequestsDialog = ({
 
   const fetchInstitutions = async () => {
     try {
-      const res = await axios.get("public/institutions",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }});
+      const res = await axios.get("public/institutions", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      });
       setInstitutions(res.data.data.data);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const fetchMyUsers = async () => {
     try {
-      const res = await axios.get(`commenters-per-institution`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }});
-      
+      const res = await axios.get(`commenters-per-institution`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
       setMyUsers(res.data.data);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const formikAcceptanceForm = useFormik({
@@ -184,12 +181,13 @@ const OutgoingCommentRequestsDialog = ({
     setServerSuccessMsg(null);
     setLoading(true);
     return await axios
-      .post(`approve-comment-opening`, requestData,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data"
-      }})
+      .post(`approve-comment-opening`, requestData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         fetchDocumentDetails();
         fetchDocumentSections();
@@ -197,8 +195,8 @@ const OutgoingCommentRequestsDialog = ({
 
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
-        setnetworkError(null)
-        setLoading(false)
+        setnetworkError(null);
+        setLoading(false);
         setOpenDialog(false);
       })
       .catch((errors) => {
@@ -260,7 +258,7 @@ const OutgoingCommentRequestsDialog = ({
             onSubmit={formikAcceptanceForm.handleSubmit}
           >
             <Typography variant="h5" fontWeight="600">
-              {t('set_opening_and_closing_dates')}
+              {t("set_opening_and_closing_dates")}
             </Typography>
             <TextField
               // label="Draft Openining Date"
@@ -285,7 +283,6 @@ const OutgoingCommentRequestsDialog = ({
               }
             />
             <TextField
-              // label="Draft Closing Date"
               type="datetime-local"
               variant="outlined"
               size="small"
@@ -308,7 +305,7 @@ const OutgoingCommentRequestsDialog = ({
             />
 
             <TextField
-              label={`${t('write_remark')} (${t('not_mandatory')})`}
+              label={`${t("write_remark")} (${t("not_mandatory")})`}
               variant="outlined"
               size="small"
               fullWidth
@@ -320,21 +317,9 @@ const OutgoingCommentRequestsDialog = ({
               value={formikAcceptanceForm.values.acceptanceRemark}
               onBlur={formikAcceptanceForm.handleBlur}
               onChange={formikAcceptanceForm.handleChange}
-              // helperText={formikAcceptanceForm.touched.acceptanceRemark && formikAcceptanceForm.errors.acceptanceRemark ? <span style={helperTextStyle}>{formikAcceptanceForm.errors.acceptanceRemark}</span>:null}
             />
-
-            {/*    <Button 
-                        variant="contained" color='secondary'
-                        size='small'
-                        type="submit"
-                        sx={{ textTransform:"none" }}
-                    >
-                        <Typography variant="body2">
-                            Accept and Open Document
-                        </Typography>
-                    </Button> */}
             <Typography variant="subtitle1" fontWeight="600">
-              {t('assign_repliers')}
+              {t("assign_repliers")}
             </Typography>
 
             <Autocomplete
@@ -354,22 +339,16 @@ const OutgoingCommentRequestsDialog = ({
                 <TextField
                   {...params}
                   variant="outlined"
-                  label={t('select_repliers')}
+                  label={t("select_repliers")}
                   value={(option) => option}
                   color="info"
                 />
               )}
             />
 
-            {/* </form>
-
-            
-            
-            <form onSubmit={formikInviteInstitutionForm.handleSubmit} style={{ paddingBottom:"30px" }}> */}
             <Typography variant="subtitle1" fontWeight="600">
-              {t('invite_institutions')}
+              {t("invite_institutions")}
             </Typography>
-            {/* <Stack spacing={2} > */}
             <Autocomplete
               multiple
               id="tags-standard"
@@ -385,8 +364,8 @@ const OutgoingCommentRequestsDialog = ({
                 <TextField
                   {...params}
                   variant="outlined"
-                  label={t('select_institutions')}
-                  placeholder={t('institutions')}
+                  label={t("select_institutions")}
+                  placeholder={t("institutions")}
                   value={(option) => option.name}
                   color="info"
                 />
@@ -394,7 +373,7 @@ const OutgoingCommentRequestsDialog = ({
             />
 
             <TextField
-              label={`${t('write_remark')} (${t('not_mandatory')})`}
+              label={`${t("write_remark")} (${t("not_mandatory")})`}
               variant="outlined"
               size="small"
               fullWidth
@@ -406,17 +385,11 @@ const OutgoingCommentRequestsDialog = ({
               value={formikAcceptanceForm.values.institutionMessage}
               onBlur={formikAcceptanceForm.handleBlur}
               onChange={formikAcceptanceForm.handleChange}
-              // helperText={formik.touched.shortTitle && formik.errors.shortTitle ? <span style={helperTextStyle}>{formik.errors.shortTitle}</span>:null}
             />
 
-            {/* </Stack> */}
-            {/* </form>
-
-        <form onSubmit={formikInvitePeopleForm.handleSubmit}> */}
-            <Typography variant="subtitle1" fontWeight="600">
-              {t('invite_people')}
+            <Typography variant="subtitle1" fontWeight="600"> 
+              {t("invite_people")}
             </Typography>
-            {/* <Stack spacing={2} sx={{ width: 500 }}> */}
             <Autocomplete
               multiple
               id="tags-standard"
@@ -431,7 +404,7 @@ const OutgoingCommentRequestsDialog = ({
                 <TextField
                   {...params}
                   variant="outlined"
-                  label={t('enter_email_address')}
+                  label={t("enter_email_address")}
                   value={(option) => option}
                   color="info"
                 />
@@ -439,7 +412,7 @@ const OutgoingCommentRequestsDialog = ({
             />
 
             <TextField
-              label={`${t('write_remark')} (${t('not_mandatory')})`}
+              label={`${t("write_remark")} (${t("not_mandatory")})`}
               variant="outlined"
               size="small"
               fullWidth
@@ -468,7 +441,7 @@ const OutgoingCommentRequestsDialog = ({
                 onClick={acceptCommentOpening}
               >
                 <Typography variant="body2">
-                  {t('publish_draft_for_comment')}
+                  {t("publish_draft_for_comment")}
                 </Typography>
               </Button>
             </Box>
@@ -482,7 +455,7 @@ const OutgoingCommentRequestsDialog = ({
             color="info"
             sx={{ textTransform: "none" }}
           >
-            <Typography variant="body2">{t('cancel')}</Typography>
+            <Typography variant="body2">{t("cancel")}</Typography>
           </Button>
         </DialogActions>
       </DialogContent>

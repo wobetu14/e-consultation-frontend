@@ -9,7 +9,7 @@ export const RegionsDataProvider = (props) => {
   const [searchRegion, setSearchRegion] = useState("");
   const [region, setRegion] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [requestCompleted, setRequestCompleted]=useState(0);
+  const [requestCompleted, setRequestCompleted] = useState(0);
 
   const [showRegionAddForm, setShowRegionAddForm] = useState(false);
   const [showRegionEditForm, setShowRegionEditForm] = useState(false);
@@ -18,39 +18,40 @@ export const RegionsDataProvider = (props) => {
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
 
   const [openDialog, setOpenDialog] = useState(false);
-  const [networkErrorMessage, setNetworkErrorMessage]=useState(null);
-  const [networkError, setNetworkError]=useState(null);
+  const [networkErrorMessage, setNetworkErrorMessage] = useState(null);
+  const [networkError, setNetworkError] = useState(null);
 
   useEffect(() => {
-    fetchRegions()
+    fetchRegions();
   }, []);
 
   const fetchRegions = async () => {
     try {
-      const res = await axios.get("regions", 
-      { 
-        headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }});
+      const res = await axios.get("regions", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      });
       setRegions(res.data.data.data);
       setFilteredRegions(res.data.data.data);
       setRequestCompleted(1);
-      setNetworkErrorMessage(null)
+      setNetworkErrorMessage(null);
     } catch (error) {
-      setNetworkErrorMessage(error.name)
+      setNetworkErrorMessage(error.name);
     }
   };
 
   const deleteRegion = async (regionID) => {
     return await axios
-      .delete(`regions/${regionID}`, 
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .delete(`regions/${regionID}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
@@ -94,13 +95,13 @@ export const RegionsDataProvider = (props) => {
         deleteRegion: deleteRegion,
         loading: loading,
         setLoading: setLoading,
-        requestCompleted:requestCompleted,
-        setRequestCompleted:setRequestCompleted,
-        networkErrorMessage:networkErrorMessage,
-        setNetworkErrorMessage:setNetworkErrorMessage,
-        fetchRegions:fetchRegions,
-        networkError:networkError,
-        setNetworkError:setNetworkError
+        requestCompleted: requestCompleted,
+        setRequestCompleted: setRequestCompleted,
+        networkErrorMessage: networkErrorMessage,
+        setNetworkErrorMessage: setNetworkErrorMessage,
+        fetchRegions: fetchRegions,
+        networkError: networkError,
+        setNetworkError: setNetworkError,
       }}
     >
       {props.children}

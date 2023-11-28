@@ -2,8 +2,6 @@ import {
   Alert,
   Box,
   Button,
-  Checkbox,
-  CircularProgress,
   Grid,
   LinearProgress,
   Paper,
@@ -25,21 +23,19 @@ import EditUser from "../users/EditUser";
 import { UsersDataContext } from "../../../contexts/UsersDataContext";
 import { motion } from "framer-motion";
 import DeleteUserDialog from "../../../partials/DeleteUserDialog";
-import { UserContext } from "../../../contexts/UserContext";
-import RefreshIcon from '@mui/icons-material/Refresh';
-import CheckIcon from '@mui/icons-material/Check';
+import RefreshIcon from "@mui/icons-material/Refresh";
+import CheckIcon from "@mui/icons-material/Check";
 import { useTranslation } from "react-i18next";
 
 const UsersTable = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { userInfo, userRole, userToken, setUserInfo, setUserRole, setUserToken } = useContext(UserContext);
-  const {t} = useTranslation();
+
+  const { t } = useTranslation();
   const {
     user,
     setUser,
     users,
-    setUsers,
     fetchUsers,
     filteredUsers,
     searchUser,
@@ -54,13 +50,9 @@ const UsersTable = () => {
     setOpenDialog,
     loading,
     requestCompleted,
-    setRequestCompleted,
     networkErrorMessage,
     networkError,
-    setNetworkError
   } = useContext(UsersDataContext);
-
-
 
   const errorStyle = {
     color: "red",
@@ -96,19 +88,22 @@ const UsersTable = () => {
     setOpenDialog(true);
   };
 
-  const handleNetworkStatus=()=>{
+  const handleNetworkStatus = () => {
     fetchUsers();
-  }
+  };
 
   const columns = [
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('full_name')}
+          {t("full_name")}
         </Typography>
       ),
       selector: (row) => (
-        <Typography variant="body1" key={row.id}>{`${row.first_name} ${row.middle_name}`}</Typography>
+        <Typography
+          variant="body1"
+          key={row.id}
+        >{`${row.first_name} ${row.middle_name}`}</Typography>
       ),
       sortable: true,
     },
@@ -116,42 +111,52 @@ const UsersTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('mobile')}
+          {t("mobile")}
         </Typography>
       ),
       selector: (row) => (
-        <Typography variant="body1" key={row.id}>{row.mobile_number}</Typography>
+        <Typography variant="body1" key={row.id}>
+          {row.mobile_number}
+        </Typography>
       ),
       sortable: true,
     },
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('institution')}
+          {t("institution")}
         </Typography>
       ),
       selector: (row) => (
-        <Typography variant="body1" key={row.id}>{row.institution ? row.institution:""}</Typography>
+        <Typography variant="body1" key={row.id}>
+          {row.institution ? row.institution : ""}
+        </Typography>
       ),
       sortable: true,
     },
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('region')}
+          {t("region")}
         </Typography>
       ),
-      selector: (row) => <Typography variant="body1" key={row.id}>{row.region ? row.region:""}</Typography>,
+      selector: (row) => (
+        <Typography variant="body1" key={row.id}>
+          {row.region ? row.region : ""}
+        </Typography>
+      ),
       sortable: true,
     },
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('created_by')}
+          {t("created_by")}
         </Typography>
       ),
       selector: (row) => (
-        <Typography variant="body1" key={row.id}>{row.created_by}</Typography>
+        <Typography variant="body1" key={row.id}>
+          {row.created_by}
+        </Typography>
       ),
       sortable: true,
     },
@@ -159,7 +164,7 @@ const UsersTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('role')}
+          {t("role")}
         </Typography>
       ),
       selector: (row) =>
@@ -172,7 +177,7 @@ const UsersTable = () => {
     {
       name: (
         <Typography variant="h5" fontWeight="600">
-          {t('actions')}
+          {t("actions")}
         </Typography>
       ),
       selector: (row) => {
@@ -206,10 +211,19 @@ const UsersTable = () => {
   ];
 
   return (
-    <Box m="0 20px" sx={{ width:{
-      xs:300, sm:500, md:700, lg:900, xl:1200
-    } }}>
-      <Header title={t('users')} subtitle={t('manage_users')} />
+    <Box
+      m="0 20px"
+      sx={{
+        width: {
+          xs: 300,
+          sm: 500,
+          md: 700,
+          lg: 900,
+          xl: 1200,
+        },
+      }}
+    >
+      <Header title={t("users")} subtitle={t("manage_users")} />
 
       <Grid align="center" sx={{ paddingBottom: "5px", paddingTop: "5px" }}>
         <motion.span
@@ -219,16 +233,20 @@ const UsersTable = () => {
         >
           <Typography variant="body1">
             {serverSuccessMsg ? (
-              <Alert icon={<CheckIcon fontSize="inherit" />} severity="success" style={successStyle} >
+              <Alert
+                icon={<CheckIcon fontSize="inherit" />}
+                severity="success"
+                style={successStyle}
+              >
                 {serverSuccessMsg}
               </Alert>
             ) : null}
           </Typography>
 
           <Typography variant="h1">
-            {networkError==="ERR_NETWORK" ? (
+            {networkError === "ERR_NETWORK" ? (
               <Alert severity="error" variant="outlined">
-                {t('network_error_message')}
+                {t("network_error_message")}
               </Alert>
             ) : null}
           </Typography>
@@ -246,10 +264,10 @@ const UsersTable = () => {
       </Grid>
       {openDialog && (
         <DeleteUserDialog
-          title={`${t('deleting_user')}...`}
-          text={`${t('you_are_deleting_user')} ${
+          title={`${t("deleting_user")}...`}
+          text={`${t("you_are_deleting_user")} ${
             user ? user.first_name + " " + user.middle_name : ""
-          }. ${t('are_you_sure')}`}
+          }. ${t("are_you_sure")}`}
         />
       )}
 
@@ -266,28 +284,28 @@ const UsersTable = () => {
           progressComponent={
             <Box mb="20px">
               {/* Display progress bar if the data prop value is empty */}
-              {
-                requestCompleted===1 && filteredUsers.length<=0 && networkErrorMessage!=="AxiosError" ? `${t('no_record')}`: (
-                  networkErrorMessage==="AxiosError" ? (
-                    <>
-                    <Typography
-                      variant="body1"
+              {requestCompleted === 1 &&
+              filteredUsers.length <= 0 &&
+              networkErrorMessage !== "AxiosError" ? (
+                `${t("no_record")}`
+              ) : networkErrorMessage === "AxiosError" ? (
+                <>
+                  <Typography variant="body1">
+                    {t("network_error_message")} &nbsp;
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      size="small"
+                      sx={{ textTransform: "none" }}
+                      onClick={handleNetworkStatus}
                     >
-                      {t('network_error_message')} &nbsp;
-                      <Button 
-                        variant="outlined"
-                        color="primary"
-                        size="small"
-                        sx={{ textTransform:'none' }}
-                        onClick={handleNetworkStatus}
-                      >
-                        {t('try_again')} <RefreshIcon />
-                      </Button>
-                    </Typography>
-                    </>
-                  ): `${t('please_wait')}...`
-                )
-              }
+                      {t("try_again")} <RefreshIcon />
+                    </Button>
+                  </Typography>
+                </>
+              ) : (
+                `${t("please_wait")}...`
+              )}
             </Box>
           }
           pagination
@@ -304,7 +322,7 @@ const UsersTable = () => {
             >
               <Box width="30%">
                 <TextField
-                  label={`${t('search')}...`}
+                  label={`${t("search")}...`}
                   variant="outlined"
                   size="small"
                   color="info"
@@ -322,7 +340,7 @@ const UsersTable = () => {
                     sx={{ textTransform: "none" }}
                     onClick={hideForm}
                   >
-                    <VisibilityOffIcon fontSize="small" /> {t('hide_form')}
+                    <VisibilityOffIcon fontSize="small" /> {t("hide_form")}
                   </Button>
                 ) : showUserEditForm ? (
                   <Button
@@ -332,7 +350,7 @@ const UsersTable = () => {
                     sx={{ textTransform: "none" }}
                     onClick={hideForm}
                   >
-                    <VisibilityOffIcon /> {t('hide_form')}
+                    <VisibilityOffIcon /> {t("hide_form")}
                   </Button>
                 ) : (
                   <Button
@@ -342,7 +360,7 @@ const UsersTable = () => {
                     sx={{ textTransform: "none" }}
                     onClick={showAddUserForm}
                   >
-                    <AddIcon /> {t('add_new_user')}
+                    <AddIcon /> {t("add_new_user")}
                   </Button>
                 )}
               </Box>

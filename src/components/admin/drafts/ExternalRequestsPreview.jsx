@@ -56,24 +56,28 @@ const ExternalRequestsPreview = () => {
   }, []);
 
   const fetchDocumentDetails = async () => {
-    return await axios.get(`drafts/${params.id}`, 
-    {headers:{
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-      Accept: "application/json;",
-      "Content-Type": "multipart/form-data"
-    }}).then((response) => {
-      setDocumentDetail(response.data.data);
-    });
+    return await axios
+      .get(`drafts/${params.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        setDocumentDetail(response.data.data);
+      });
   };
 
   const fetchDocumentSections = async () => {
     return await axios
-      .get(`draft/${params.id}/draft-sections`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`draft/${params.id}/draft-sections`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
         setDocumentSections(response.data.data);
       })
@@ -84,12 +88,13 @@ const ExternalRequestsPreview = () => {
 
   const fetchDocumentComments = async () => {
     return await axios
-      .get(`draft/${params.id}/general-comments`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`draft/${params.id}/general-comments`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
         setDocumentComments(response.data.data);
       })
@@ -127,7 +132,6 @@ const ExternalRequestsPreview = () => {
         justifyContent="end"
         sx={{ marginRight: "20px" }}
       >
-        {/* Actions on the document */}
         {documentDetail && documentDetail.draft_status.name === "Pending" ? (
           <Chip
             label={`Status: ${documentDetail.draft_status.name}`}
@@ -238,8 +242,6 @@ const ExternalRequestsPreview = () => {
               }}
             >
               <Grid item xs={3}>
-                {/* <Typography variant="h4">Articles</Typography> */}
-
                 <ListItemButton onClick={handleArticlesCollapse}>
                   <ListItemText
                     primary={
@@ -262,7 +264,6 @@ const ExternalRequestsPreview = () => {
                     <Box>Content unavailable</Box>
                   )}
                 </Collapse>
-                {/* </ul> */}
               </Grid>
               <Grid item xs={7}>
                 {documentSections ? (

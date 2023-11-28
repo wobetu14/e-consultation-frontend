@@ -28,7 +28,7 @@ const EditUser = () => {
   const [regions, setRegions] = useState(null);
   const [userRoles, setUserRoles] = useState(null);
 
-  const {t} = useTranslation()
+  const { t } = useTranslation();
 
   // User context
   const { userInfo, userRole } = useContext(UserContext);
@@ -41,8 +41,7 @@ const EditUser = () => {
     setServerErrorMsg,
     setServerSuccessMsg,
     setLoading,
-    networkError,
-    setNetworkError
+    setNetworkError,
   } = useContext(UsersDataContext);
 
   const helperTextStyle = {
@@ -65,53 +64,50 @@ const EditUser = () => {
 
   const fetchRegions = async () => {
     return await axios
-      .get("regions", 
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("regions", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setRegions(res.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const fetchInstitutions = async () => {
     return await axios
-      .get("institutions",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("institutions", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setInstitutions(res.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const fetchUserRoles = async () => {
     return await axios
-      .get("roles",
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get("roles", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => res.data.data)
       .then((res) => {
         setUserRoles(res);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
   const formik = useFormik({
@@ -152,16 +148,17 @@ const EditUser = () => {
     setServerSuccessMsg(null);
     setLoading(true);
     try {
-      const res = await axios.post(`users/${user.id}`, userData,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }});
+      const res = await axios.post(`users/${user.id}`, userData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      });
       setServerSuccessMsg(res.data.message);
       setServerErrorMsg(null);
       setShowUserEditForm(false);
-      setNetworkError(null)
+      setNetworkError(null);
       fetchUsers();
       setLoading(false);
     } catch (error) {
@@ -174,7 +171,7 @@ const EditUser = () => {
 
   return (
     <Box m="0" width={"95%"}>
-      <Header title={t('edit_user')} subtitle="" />
+      <Header title={t("edit_user")} subtitle="" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -184,7 +181,7 @@ const EditUser = () => {
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <TextField
-                label={`${t('first_name')}`}
+                label={`${t("first_name")}`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -203,7 +200,7 @@ const EditUser = () => {
                 }
               />
               <TextField
-                label={`${t('mobile_number')}`}
+                label={`${t("mobile_number")}`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -225,7 +222,7 @@ const EditUser = () => {
                 userInfo.user.roles[0].name === "Super Admin" &&
                 formik.values.roleID === 4 ? (
                   <FormControl sx={{ minWidth: "100%", paddingBottom: "5px" }}>
-                    <InputLabel>{t('region')}</InputLabel>
+                    <InputLabel>{t("region")}</InputLabel>
                     <Select
                       labelId="region_id"
                       id="region_id"
@@ -275,7 +272,7 @@ const EditUser = () => {
                 ""
               ) : (
                 <FormControl sx={{ minWidth: "100%", paddingBottom: "5px" }}>
-                  <InputLabel>{t('institution')}</InputLabel>
+                  <InputLabel>{t("institution")}</InputLabel>
                   <Select
                     labelId="institution_id"
                     id="institution_id"
@@ -314,7 +311,7 @@ const EditUser = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label={`${t('middle_name')} *`}
+                label={`${t("middle_name")} *`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -333,7 +330,7 @@ const EditUser = () => {
                 }
               />
               <TextField
-                label={`${t('email_address')}`}
+                label={`${t("email_address")}`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -352,7 +349,7 @@ const EditUser = () => {
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label={`${t('last_name')}`}
+                label={`${t("last_name")}`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -372,7 +369,7 @@ const EditUser = () => {
               />
 
               <FormControl sx={{ minWidth: "100%", paddingBottom: "30px" }}>
-                <InputLabel>{t('select_user_role')}</InputLabel>
+                <InputLabel>{t("select_user_role")}</InputLabel>
                 <Select
                   labelId="user_role"
                   size="small"
@@ -417,7 +414,7 @@ const EditUser = () => {
                   }}
                   color="info"
                 >
-                  {t('save_changes')}{" "}
+                  {t("save_changes")}{" "}
                 </Button>
               </Grid>
             </Grid>

@@ -19,7 +19,6 @@ const AdminIndex = () => {
 
   return (
     <Box m="20px">
-      {/* HEADER */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
 
@@ -39,14 +38,12 @@ const AdminIndex = () => {
         </Box>
       </Box>
 
-      {/* GRID & CHARTS */}
       <Box
         display="grid"
         gridTemplateColumns="repeat(12, 1fr)"
         gridAutoRows="140px"
         gap="20px"
       >
-        {/* ROW 1 */}
         <Box
           gridColumn="span 3"
           backgroundColor={colors.primary[200]}
@@ -124,7 +121,6 @@ const AdminIndex = () => {
           />
         </Box>
 
-        {/* ROW 2 */}
         <Box
           gridColumn="span 8"
           gridRow="span 2"
@@ -210,7 +206,7 @@ const AdminIndex = () => {
                 p="5px 10px"
                 borderRadius="4px"
               >
-                ${transaction.cost}
+                {transaction.cost}
               </Box>
             </Box>
           ))}

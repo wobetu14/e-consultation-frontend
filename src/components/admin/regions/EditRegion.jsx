@@ -14,21 +14,20 @@ const EditRegion = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const {t}=useTranslation();
+  const { t } = useTranslation();
 
   // User context
   const { userInfo } = useContext(UserContext);
-  
-  const { 
-    region, 
+
+  const {
+    region,
     fetchRegions,
-    setServerErrorMsg, 
-    setServerSuccessMsg, 
+    setServerErrorMsg,
+    setServerSuccessMsg,
     setShowRegionEditForm,
     setLoading,
-    setNetworkError
-   } =
-    useContext(RegionsDataContext);
+    setNetworkError,
+  } = useContext(RegionsDataContext);
 
   const helperTextStyle = {
     color: "red",
@@ -59,12 +58,13 @@ const EditRegion = () => {
     setServerSuccessMsg(null);
     setLoading(true);
     return await axios
-      .post(`regions/${region.id}`, regionData,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .post(`regions/${region.id}`, regionData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
@@ -83,7 +83,7 @@ const EditRegion = () => {
 
   return (
     <Box width={"95%"}>
-      <Header title={t('update_region_info')} subtitle="" />
+      <Header title={t("update_region_info")} subtitle="" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -93,7 +93,7 @@ const EditRegion = () => {
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <TextField
-                label={`${t('region_name')} *`}
+                label={`${t("region_name")} *`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -125,7 +125,7 @@ const EditRegion = () => {
                   }}
                   color="info"
                 >
-                  {t('save_changes')}
+                  {t("save_changes")}
                 </Button>
               </Grid>
             </Grid>

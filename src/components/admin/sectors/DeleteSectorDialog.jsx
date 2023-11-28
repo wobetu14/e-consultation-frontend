@@ -18,15 +18,11 @@ const DeleteSectorDialog = ({ title, text }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const {t}=useTranslation();
+  const { t } = useTranslation();
 
   // SectorsDataContext
-  const {
-    sector,
-    openDialog,
-    setOpenDialog,
-    deleteSector,
-  } = useContext(SectorsDataContext);
+  const { sector, openDialog, setOpenDialog, deleteSector } =
+    useContext(SectorsDataContext);
   return (
     <>
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
@@ -48,7 +44,7 @@ const DeleteSectorDialog = ({ title, text }) => {
             size="small"
             sx={{ textTransform: "none" }}
           >
-            {t('cancel')}
+            {t("cancel")}
           </Button>
           <Button
             onClick={() => deleteSector(sector.id)}
@@ -60,7 +56,7 @@ const DeleteSectorDialog = ({ title, text }) => {
               textTransform: "none",
             }}
           >
-            {t('delete')}
+            {t("delete")}
           </Button>
         </DialogActions>
       </Dialog>

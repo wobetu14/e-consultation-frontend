@@ -9,18 +9,15 @@ import { motion } from "framer-motion";
 import { RegionsDataContext } from "../../../contexts/RegionsDataContext";
 import { useTranslation } from "react-i18next";
 
-
 const CreateRegion = () => {
-  const {t}=useTranslation();
-  const { 
-    setServerErrorMsg, 
-    setServerSuccessMsg, 
+  const { t } = useTranslation();
+  const {
+    setServerErrorMsg,
+    setServerSuccessMsg,
     setLoading,
-    networkError,
-    setNetworkError, 
-    fetchRegions
-  } =
-    useContext(RegionsDataContext);
+    setNetworkError,
+    fetchRegions,
+  } = useContext(RegionsDataContext);
 
   const helperTextStyle = {
     color: "red",
@@ -36,7 +33,7 @@ const CreateRegion = () => {
 
     validationSchema: YUP.object({
       regionName: YUP.string().required(
-        `${t('field_required')}${t('please_enter_region_name')}`
+        `${t("field_required")}${t("please_enter_region_name")}`
       ),
     }),
 
@@ -56,17 +53,17 @@ const CreateRegion = () => {
     setServerSuccessMsg(null);
     setLoading(true);
     return await axios
-      .post("regions", regionData, 
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .post("regions", regionData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
-        
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
-        setNetworkError(null)
+        setNetworkError(null);
         setLoading(false);
         fetchRegions();
         formik.resetForm();
@@ -74,25 +71,24 @@ const CreateRegion = () => {
       .catch((errors) => {
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
-        setNetworkError(errors.code)
+        setNetworkError(errors.code);
         setLoading(false);
       });
   };
 
   return (
     <Box width={"95%"}>
-      <Header title={t('add_new_region')} subtitle="" />
+      <Header title={t("add_new_region")} subtitle="" />
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
       >
-
         <form onSubmit={formik.handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <TextField
-                label={`${t('region_name')} *`}
+                label={`${t("region_name")} *`}
                 variant="outlined"
                 size="small"
                 fullWidth
@@ -119,7 +115,7 @@ const CreateRegion = () => {
                   sx={{ align: "right", textTransform: "none" }}
                   color="secondary"
                 >
-                  {t('save')}{" "}
+                  {t("save")}{" "}
                 </Button>
               </Grid>
             </Grid>

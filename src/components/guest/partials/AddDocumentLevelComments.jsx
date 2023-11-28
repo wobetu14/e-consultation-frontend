@@ -23,7 +23,7 @@ import { UserContext } from "../../../contexts/UserContext";
 /**
  * Create a coponent to allow user add new document level comments / general comments
  */
-const AddDocumentLevelComments = ({ 
+const AddDocumentLevelComments = ({
   documentID,
 
   fetchDocumentDetails,
@@ -35,7 +35,7 @@ const AddDocumentLevelComments = ({
   const { t } = useTranslation();
 
   /**
-   * Create variables to handle response messages coming from the server. 
+   * Create variables to handle response messages coming from the server.
    * serverSuccessMsg is to handle success message if the API successfully handle the request
    * while serverErrorMsg is to handle error messages if the API couldn't not be successfull
    */
@@ -49,7 +49,7 @@ const AddDocumentLevelComments = ({
    * Inline CSS contants to format server response message.
    * This style constants are created to format values of either serverErrorMsg or serverSuccessMsg.
    * Note that, this constant definitions are available on almost every component of this application.
-   */ 
+   */
 
   const errorStyle = {
     color: "red",
@@ -66,12 +66,12 @@ const AddDocumentLevelComments = ({
 
   /**
    * Here we have built a formik object. What is formik? It is a group react components to easily handle form data.
-   * In this project, we have used formik package to handle most of our form processing tasks. 
-   * Read more about formik at: https://formik.org/docs/tutorial 
+   * In this project, we have used formik package to handle most of our form processing tasks.
+   * Read more about formik at: https://formik.org/docs/tutorial
    */
 
   /**
-   * Create formik object and setup initial values as key:value pairs. 
+   * Create formik object and setup initial values as key:value pairs.
    */
   const formik = useFormik({
     /**
@@ -87,8 +87,8 @@ const AddDocumentLevelComments = ({
     },
 
     /**
-     * Aggregate form data to be passed to the API call on form submit call the functions that defines the API request. 
-     * This form data are updates from the initial values. 
+     * Aggregate form data to be passed to the API call on form submit call the functions that defines the API request.
+     * This form data are updates from the initial values.
      * Here we have aggregated form data, make a function call (AddComment) that defines API calls to add general comments
      */
     onSubmit: (values) => {
@@ -100,7 +100,7 @@ const AddDocumentLevelComments = ({
         created_by: values.createdBy,
       };
 
-      // Function call 
+      // Function call
       addComment(documentCommentData);
     },
   });
@@ -108,21 +108,21 @@ const AddDocumentLevelComments = ({
   // Function definition to define API calls to add new general comment.
   const addComment = async (documentCommentData) => {
     return await axios
-      .post("general-comments", documentCommentData,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .post("general-comments", documentCommentData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
-        
         setServerSuccessMsg(res.data.success);
         setServerErrorMsg(null);
 
         fetchDocumentDetails();
         fetchDocumentSections();
         fetchDocumentComments();
-        
+
         formik.resetForm();
       })
       .catch((errors) => {

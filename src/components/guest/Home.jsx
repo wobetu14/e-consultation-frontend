@@ -7,16 +7,15 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import {tokens } from "../../theme";
+import { tokens } from "../../theme";
 import SearchIcon from "@mui/icons-material/Search";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import Footer from "../../partials/Footer";
 import DocumentDisplay from "./partials/DocumentDisplay";
 import axios from "../../axios/AxiosGlobal";
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../../contexts/UserContext";
-// import './Home.css'
+import { useEffect, useState } from "react";
+
 
 // Define home component
 const Home = () => {
@@ -31,7 +30,6 @@ const Home = () => {
    */
   const { t } = useTranslation();
   // User context
-  const {userRole, setUserRole, userInfo, userToken, setUserToken}=useContext(UserContext);
 
   // Define variable for retwrieving and setting document data
   const [drafts, setDrafts] = useState(null);
@@ -42,39 +40,37 @@ const Home = () => {
   // define variable for setting 'loading' state while app is in progress requesting API data
   const [loading, setLoading] = useState(false);
 
-  // Define variable for setting search results when a user input items 
+  // Define variable for setting search results when a user input items
   // in the 'Search documents...' TextField to search draft documents
   const [search, setSearch] = useState("");
 
   // Setup pagination for fetched drafts data
   const [pageCount, setPageCount] = useState(0);
 
-  const [networkError, setNetworkError]=useState(null);
-
+  const [networkError, setNetworkError] = useState(null);
 
   // Method for managing page to page navigation for drafts pagination
   const handlePageChange = async (e, page) => {
     return await axios
-      .get(`drafts?page=${page}`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`drafts?page=${page}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setDrafts(res.data.data.data);
       })
-      .catch((error) => {
-        
-      });
+      .catch((error) => {});
   };
 
-  // Define variables to 
+  // Define variables to
   const [totalDrafts, setTotalDrafts] = useState(0);
 
   /**
    * Fetch drafts data from the API. Here the partial API endpoint is 'drafts'.
-   * The baseURL for all API endpoints is defined under AxiosGlobal.js file. So, 
+   * The baseURL for all API endpoints is defined under AxiosGlobal.js file. So,
    * when we say axios.get('endpoint'), the axios refers to the custom axios definitions under
    * AxiosGlobal.js file. Note that we have used Axios package, the most popular http client
    * to communicate with APi data and the custom definition is available at AxiosGlobal.js file
@@ -82,13 +78,13 @@ const Home = () => {
   const fetchDrafts = async () => {
     setNetworkError(null);
     return await axios
-      .get(`drafts`,
-      { 
-        headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`drafts`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setDrafts(res.data.data.data);
         setUnfilteredDrafts(res.data.data.data);
@@ -101,7 +97,7 @@ const Home = () => {
   };
 
   /**
-   * Call to the fetchDrafts() function defintion on useEffect hook to enable the app 
+   * Call to the fetchDrafts() function defintion on useEffect hook to enable the app
    * start requesting API on page loading event.
    * The useEffect hook is the most important hook in react and used to trigger code execution
    * on page launch
@@ -112,12 +108,12 @@ const Home = () => {
 
   // Count no of pages dynamically created for the fetched draft data
   useEffect(() => {
-    setPageCount(Math.ceil(parseInt(totalDrafts) / 10))
+    setPageCount(Math.ceil(parseInt(totalDrafts) / 10));
   }, []);
 
   /**
-   * Implementation for searchin drafts docs using the 'searchBox' Textfield. 
-   * Searching request is triggered on the onChange event of the TextField so that 
+   * Implementation for searchin drafts docs using the 'searchBox' Textfield.
+   * Searching request is triggered on the onChange event of the TextField so that
    * We can perform live search for the draft docs
    */
   const searchDocs = async (e) => {
@@ -126,18 +122,17 @@ const Home = () => {
     setSearch(searchValue);
     if (searchValue) {
       await axios
-        .get(`drafts?short_title=${searchValue}`,
-        {headers:{
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          Accept: "application/json;",
-          "Content-Type": "multipart/form-data"
-        }})
+        .get(`drafts?short_title=${searchValue}`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json;",
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((response) => {
           setDrafts(response.data.data.data);
         })
-        .catch((e) => {
-          
-        });
+        .catch((e) => {});
     }
   };
 
@@ -229,7 +224,7 @@ const Home = () => {
           </Grid>
         </Box>
 
-      {/* 
+        {/* 
         Pass the fetched draft data into the next child component as props for easily rendering. 
       */}
         <Box sx={{ marginTop: "50px" }}>

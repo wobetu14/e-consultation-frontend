@@ -13,15 +13,14 @@ import ReplyIcon from "@mui/icons-material/Reply";
 import AddNewDocumentReply from "./AddNewDocumentReply";
 import { UserContext } from "../../../contexts/UserContext";
 
-const RepliesToGeneralComments = ({ 
-  reflections, 
-  comment, 
+const RepliesToGeneralComments = ({
+  reflections,
+  comment,
   documentDetail,
-
   fetchDocumentDetails,
   fetchDocumentSections,
   fetchDocumentComments,
- }) => {
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();
@@ -46,12 +45,16 @@ const RepliesToGeneralComments = ({
           onClick={() => setShowReplies(!showReplies)}
         >
           <ReplyIcon color="secondary" fontSize="small" />
-          {t("replies")} ({reflections ? reflections.filter((reflection) => {
-                  return (
-                    parseInt(reflection.commented_by) ===
-                    parseInt(userInfo.user.id)
-                  );
-                }).length : ""})
+          {t("replies")} (
+          {reflections
+            ? reflections.filter((reflection) => {
+                return (
+                  parseInt(reflection.commented_by) ===
+                  parseInt(userInfo.user.id)
+                );
+              }).length
+            : ""}
+          )
         </Button>
       </Box>
 
@@ -64,63 +67,64 @@ const RepliesToGeneralComments = ({
           >
             <List sx={{ width: "100%" }}>
               {reflections
-                ? reflections.filter((reflection) => {
-                  return (
-                    parseInt(reflection.commented_by) ===
-                    parseInt(userInfo.user.id)
-                  );
-                }).map((reflection) => (
-                    <>
-                      <ListItem alignItems="flex-center" key={reflection.id}>
-                        <ListItemAvatar>
-                          <Avatar
-                            alt="User"
-                            size="large"
-                            src="/static/images/avatar/1.jpg"
+                ? reflections
+                    .filter((reflection) => {
+                      return (
+                        parseInt(reflection.commented_by) ===
+                        parseInt(userInfo.user.id)
+                      );
+                    })
+                    .map((reflection) => (
+                      <>
+                        <ListItem alignItems="flex-center" key={reflection.id}>
+                          <ListItemAvatar>
+                            <Avatar
+                              alt="User"
+                              size="large"
+                              src="/static/images/avatar/1.jpg"
+                            />
+                          </ListItemAvatar>
+                          <ListItemText
+                            sx={{
+                              backgroundColor: colors.grey[400],
+                              borderRadius: "15px",
+                              padding: "10px",
+                            }}
+                            primary={
+                              <>
+                                <Typography variant="h5" fontWeight="600">
+                                  {reflection.replier.first_name +
+                                    " " +
+                                    reflection.replier.middle_name}
+                                </Typography>
+                              </>
+                            }
+                            secondary={
+                              <>
+                                <Typography
+                                  sx={{ display: "inline" }}
+                                  component="span"
+                                  variant="body1"
+                                  color="text.primary"
+                                >
+                                  {reflection.message}
+                                </Typography>
+                              </>
+                            }
                           />
-                        </ListItemAvatar>
-                        <ListItemText
-                          sx={{
-                            backgroundColor: colors.grey[400],
-                            borderRadius: "15px",
-                            padding: "10px",
-                          }}
-                          primary={
-                            <>
-                              <Typography variant="h5" fontWeight="600">
-                                {reflection.replier.first_name +
-                                  " " +
-                                  reflection.replier.middle_name}
-                              </Typography>
-                            </>
-                          }
-                          secondary={
-                            <>
-                              <Typography
-                                sx={{ display: "inline" }}
-                                component="span"
-                                variant="body1"
-                                color="text.primary"
-                              >
-                                {reflection.message}
-                              </Typography>
-                            </>
-                          }
-                        />
-                      </ListItem>
-                    </>
-                  ))
+                        </ListItem>
+                      </>
+                    ))
                 : ""}
             </List>
-            {documentDetail && (documentDetail.draft_status.name === "Open") ? (
+            {documentDetail && documentDetail.draft_status.name === "Open" ? (
               <>
-                <AddNewDocumentReply 
-                comment={comment}
-
-                fetchDocumentDetails={fetchDocumentDetails}
-                fetchDocumentSections={fetchDocumentSections}
-                fetchDocumentComments={fetchDocumentComments}
-                 />
+                <AddNewDocumentReply
+                  comment={comment}
+                  fetchDocumentDetails={fetchDocumentDetails}
+                  fetchDocumentSections={fetchDocumentSections}
+                  fetchDocumentComments={fetchDocumentComments}
+                />
               </>
             ) : (
               ""

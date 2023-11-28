@@ -18,7 +18,7 @@ const DeleteRegionDialog = ({ title, text }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  const {t}=useTranslation();
+  const { t } = useTranslation();
 
   // RegionsDataContext
   const { region, openDialog, setOpenDialog, deleteRegion } =
@@ -44,7 +44,7 @@ const DeleteRegionDialog = ({ title, text }) => {
             size="small"
             sx={{ textTransform: "none" }}
           >
-            {t('cancel')}
+            {t("cancel")}
           </Button>
           <Button
             onClick={() => deleteRegion(region.id)}
@@ -56,7 +56,7 @@ const DeleteRegionDialog = ({ title, text }) => {
               textTransform: "none",
             }}
           >
-            {t('delete')}
+            {t("delete")}
           </Button>
         </DialogActions>
       </Dialog>

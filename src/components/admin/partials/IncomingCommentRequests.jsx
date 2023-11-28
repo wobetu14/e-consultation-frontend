@@ -1,10 +1,6 @@
 import { Typography, Button, Grid, Alert } from "@mui/material";
 import { Box } from "@mui/system";
-import React, {
-  useEffect,
-  useState,
-  useContext,
-} from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "../../../axios/AxiosGlobal";
 import { useTheme } from "@emotion/react";
 import { tokens } from "../../../theme";
@@ -21,16 +17,16 @@ import { UserContext } from "../../../contexts/UserContext";
 import AcceptExternalRequestDialog from "../drafts/external_requests/AcceptExternalRequestDialog";
 import RejectExternalRequest from "../drafts/external_requests/RejectExternalRequest";
 import AssignCommenters from "../drafts/external_requests/AssignCommenters";
-import RefreshIcon from '@mui/icons-material/Refresh';
+import RefreshIcon from "@mui/icons-material/Refresh";
 import { useTranslation } from "react-i18next";
 
-const IncomingCommentRequests = ({loading, setLoading}) => {
+const IncomingCommentRequests = ({ loading, setLoading }) => {
   const theme = useTheme();
 
   const colors = tokens(theme.palette.mode);
   const [incomingCommentData, setIncomingCommentData] = useState(null);
 
-  const {t}=useTranslation();
+  const { t } = useTranslation();
 
   // Hide and show dialogs
   const [openExternalAcceptanceDialog, setOpenExternalAcceptanceDialog] =
@@ -43,10 +39,10 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
   const [serverErrorMsg, setServerErrorMsg] = useState(null);
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
 
-  const [requestID, setRequestID]=useState(null);
-  const [requestDocumentTitle, setRequestDocumentTitle]=useState(null);
+  const [requestID, setRequestID] = useState(null);
+  const [requestDocumentTitle, setRequestDocumentTitle] = useState(null);
 
-  const [networkError, setNetworkError]=useState(null);
+  const [networkError, setNetworkError] = useState(null);
 
   const errorStyle = {
     color: "red",
@@ -60,8 +56,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
     fontSize: "18px",
   };
 
-  const { userInfo, userRole} =
-    useContext(UserContext);
+  const { userInfo, userRole } = useContext(UserContext);
 
   const showExternalAcceptanceDialog = (reqID, reqTitle) => {
     setRequestID(reqID);
@@ -86,23 +81,23 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
     return await axios
       .get(
         `comment-request?commenter_institution_id=${userInfo.user.institution_id}`,
-        { 
-          headers:{
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          Accept: "application/json;",
-          "Content-Type": "multipart/form-data"
-        }}
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json;",
+            "Content-Type": "multipart/form-data",
+          },
+        }
       )
       .then((res) => res.data.data)
       .then((res) => {
-        
         setIncomingCommentData(res);
-        setNetworkError(null)
-        setLoading(true)
+        setNetworkError(null);
+        setLoading(true);
       })
       .catch((error) => {
         setNetworkError(error.name);
-        setLoading(false)
+        setLoading(false);
       });
   };
 
@@ -110,9 +105,9 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
     incomingCommentRequests();
   }, []);
 
-  const handleNetworkStatus=()=>{
+  const handleNetworkStatus = () => {
     incomingCommentRequests();
-  }
+  };
 
   return (
     <Box>
@@ -148,10 +143,10 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
           variant="h5"
           sx={{ fontWeight: "600", color: colors.primary[200] }}
         >
-          {t('incoming_comment_requests')}
+          {t("incoming_comment_requests")}
         </Typography>
         <Typography variant="body1" sx={{ color: "#000" }}>
-          {t('incoming_request_for_comment_from_other_institutions')}
+          {t("incoming_request_for_comment_from_other_institutions")}
         </Typography>
       </Paper>
 
@@ -165,7 +160,7 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
               {userRole === "Approver" ? (
                 <TableCell>
                   <Typography variant="h5" fontWeight={600}>
-                    {t('from')} ({t('institution')})
+                    {t("from")} ({t("institution")})
                   </Typography>
                 </TableCell>
               ) : (
@@ -173,189 +168,197 @@ const IncomingCommentRequests = ({loading, setLoading}) => {
               )}
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  {t('short_title')}
+                  {t("short_title")}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="h5" fontWeight={600}>
-                  {t('acceptance_status')}
+                  {t("acceptance_status")}
                 </Typography>
               </TableCell>
               <TableCell colSpan={4}>
                 <Typography variant="h5" fontWeight={600}>
-                  {t('actions')}
+                  {t("actions")}
                 </Typography>
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {incomingCommentData!==null
-              ? incomingCommentData.map((incommingData) => (
-                  <TableRow
-                    key={incommingData.id}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell>
-                      <Typography variant="body1">
-                        {incommingData.requester_institution_name}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="body1">
-                        {incommingData.draft_title}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="body1">
-                        {incommingData.status === 0
-                          ? "Pending"
-                          : incommingData.status === 1
-                          ? "Accepted"
-                          : "Rejected"}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        size="small"
-                        variant="contained"
-                        color="primary"
-                        href={`/admin/external_request_details/${incommingData.draft_id}`}
-                        sx={{ textTransform: "none", marginRight: "5px" }}
-                      >
-                        {t('detail')}
-                      </Button>
-
-                      {incommingData.status === 0 ? (
-                        <>
-                          <Button
-                            size="small"
-                            variant="contained"
-                            onClick={()=>showExternalAcceptanceDialog(incommingData.id, incommingData.draft_title)}
-                            sx={{
-                              textTransform: "none",
-                              marginRight: "5px",
-                              backgroundColor: colors.successColor[200],
-                              color: colors.grey[300],
-                            }}
-                          >
-                            {t('accept')}
-                          </Button>
-
-                          <Button
-                            size="small"
-                            variant="contained"
-                            onClick={()=>showExternalRejectionDialog(incommingData.id, incommingData.draft_title)}
-                            sx={{
-                              textTransform: "none",
-                              marginRight: "5px",
-                              backgroundColor: colors.dangerColor[200],
-                              color: colors.grey[300],
-                            }}
-                          >
-                            {t('reject')}
-                          </Button>
-                        </>
-                      ) : incommingData.status === 1 ? (
-                        <>
-                          <Button
-                            size="small"
-                            variant="contained"
-                            color="info"
-                            onClick={()=>showAssignCommenterDialog(incommingData.id, incommingData.draft_title)}
-                            sx={{ textTransform: "none", marginRight: "5px" }}
-                          >
-                            {t('assign_commenters')}
-                          </Button>
-                        </>
-                      ) : (
-                        ""
-                      )}
-                      {openExternalAcceptanceDialog && (
-                        <AcceptExternalRequestDialog
-                          key={incommingData.id}
-                          requestID={requestID}
-                          requestTitle={requestDocumentTitle}
-                          incomingCommentRequests={incomingCommentRequests}
-
-                          serverSuccessMsg={serverSuccessMsg}
-                          serverErrorMsg={serverErrorMsg}
-                          setServerSuccessMsg={setServerSuccessMsg}
-                          setServerErrorMsg={setServerErrorMsg}
-                          openExternalAcceptanceDialog={
-                            openExternalAcceptanceDialog
-                          }
-                          setOpenExternalAcceptanceDialog={
-                            setOpenExternalAcceptanceDialog
-                          }
-                          title={t('accept_incoming_request')}
-                        />
-                      )}
-
-                      {openExternalRejectionDialog && (
-                        <RejectExternalRequest
-                          key={incommingData.id}
-                          requestID={requestID}
-                          requestTitle={requestDocumentTitle}
-                          incomingCommentRequests={incomingCommentRequests}
-
-                          serverSuccessMsg={serverSuccessMsg}
-                          serverErrorMsg={serverErrorMsg}
-                          setServerSuccessMsg={setServerSuccessMsg}
-                          setServerErrorMsg={setServerErrorMsg}
-                          openExternalRejectionDialog={
-                            openExternalRejectionDialog
-                          }
-                          setOpenExternalRejectionDialog={
-                            setOpenExternalRejectionDialog
-                          }
-                          title={t('reject_incoming_request')}
-                        />
-                      )}
-                      {openAssignCommenterDialog && (
-                        <AssignCommenters
-                          key={incommingData.id}
-                          requestID={requestID}
-                          requestTitle={requestDocumentTitle}
-                          incomingCommentRequests={incomingCommentRequests}
-
-                          serverSuccessMsg={serverSuccessMsg}
-                          serverErrorMsg={serverErrorMsg}
-                          setServerSuccessMsg={setServerSuccessMsg}
-                          setServerErrorMsg={setServerErrorMsg}
-                          openAssignCommenterDialog={openAssignCommenterDialog}
-                          setOpenAssignCommenterDialog={
-                            setOpenAssignCommenterDialog
-                          }
-                          title={t('assign_more_commenters')}
-                        />
-                      )}
-                    </TableCell>
-                  </TableRow>
-                ))
-              : networkError!==null ? (
-                <Typography
-                variant="body1"
+            {incomingCommentData !== null ? (
+              incomingCommentData.map((incommingData) => (
+                <TableRow
+                  key={incommingData.id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                {t('network_error_message')} &nbsp;
-                  <Button 
-                    variant="outlined"
-                    color="primary"
-                    size="small"
-                    sx={{ textTransform:'none' }}
-                    onClick={handleNetworkStatus}
-                  >
-                    {t('try_again')} <RefreshIcon />
-                  </Button>
-              </Typography> 
-               ):
-              (
-                    // <CircularProgress color="secondary" />
-
+                  <TableCell>
                     <Typography variant="body1">
-                      {`${t('please_wait')}...`}
+                      {incommingData.requester_institution_name}
                     </Typography>
-  
-              )}
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="body1">
+                      {incommingData.draft_title}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="body1">
+                      {incommingData.status === 0
+                        ? "Pending"
+                        : incommingData.status === 1
+                        ? "Accepted"
+                        : "Rejected"}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      color="primary"
+                      href={`/admin/external_request_details/${incommingData.draft_id}`}
+                      sx={{ textTransform: "none", marginRight: "5px" }}
+                    >
+                      {t("detail")}
+                    </Button>
+
+                    {incommingData.status === 0 ? (
+                      <>
+                        <Button
+                          size="small"
+                          variant="contained"
+                          onClick={() =>
+                            showExternalAcceptanceDialog(
+                              incommingData.id,
+                              incommingData.draft_title
+                            )
+                          }
+                          sx={{
+                            textTransform: "none",
+                            marginRight: "5px",
+                            backgroundColor: colors.successColor[200],
+                            color: colors.grey[300],
+                          }}
+                        >
+                          {t("accept")}
+                        </Button>
+
+                        <Button
+                          size="small"
+                          variant="contained"
+                          onClick={() =>
+                            showExternalRejectionDialog(
+                              incommingData.id,
+                              incommingData.draft_title
+                            )
+                          }
+                          sx={{
+                            textTransform: "none",
+                            marginRight: "5px",
+                            backgroundColor: colors.dangerColor[200],
+                            color: colors.grey[300],
+                          }}
+                        >
+                          {t("reject")}
+                        </Button>
+                      </>
+                    ) : incommingData.status === 1 ? (
+                      <>
+                        <Button
+                          size="small"
+                          variant="contained"
+                          color="info"
+                          onClick={() =>
+                            showAssignCommenterDialog(
+                              incommingData.id,
+                              incommingData.draft_title
+                            )
+                          }
+                          sx={{ textTransform: "none", marginRight: "5px" }}
+                        >
+                          {t("assign_commenters")}
+                        </Button>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                    {openExternalAcceptanceDialog && (
+                      <AcceptExternalRequestDialog
+                        key={incommingData.id}
+                        requestID={requestID}
+                        requestTitle={requestDocumentTitle}
+                        incomingCommentRequests={incomingCommentRequests}
+                        serverSuccessMsg={serverSuccessMsg}
+                        serverErrorMsg={serverErrorMsg}
+                        setServerSuccessMsg={setServerSuccessMsg}
+                        setServerErrorMsg={setServerErrorMsg}
+                        openExternalAcceptanceDialog={
+                          openExternalAcceptanceDialog
+                        }
+                        setOpenExternalAcceptanceDialog={
+                          setOpenExternalAcceptanceDialog
+                        }
+                        title={t("accept_incoming_request")}
+                      />
+                    )}
+
+                    {openExternalRejectionDialog && (
+                      <RejectExternalRequest
+                        key={incommingData.id}
+                        requestID={requestID}
+                        requestTitle={requestDocumentTitle}
+                        incomingCommentRequests={incomingCommentRequests}
+                        serverSuccessMsg={serverSuccessMsg}
+                        serverErrorMsg={serverErrorMsg}
+                        setServerSuccessMsg={setServerSuccessMsg}
+                        setServerErrorMsg={setServerErrorMsg}
+                        openExternalRejectionDialog={
+                          openExternalRejectionDialog
+                        }
+                        setOpenExternalRejectionDialog={
+                          setOpenExternalRejectionDialog
+                        }
+                        title={t("reject_incoming_request")}
+                      />
+                    )}
+                    {openAssignCommenterDialog && (
+                      <AssignCommenters
+                        key={incommingData.id}
+                        requestID={requestID}
+                        requestTitle={requestDocumentTitle}
+                        incomingCommentRequests={incomingCommentRequests}
+                        serverSuccessMsg={serverSuccessMsg}
+                        serverErrorMsg={serverErrorMsg}
+                        setServerSuccessMsg={setServerSuccessMsg}
+                        setServerErrorMsg={setServerErrorMsg}
+                        openAssignCommenterDialog={openAssignCommenterDialog}
+                        setOpenAssignCommenterDialog={
+                          setOpenAssignCommenterDialog
+                        }
+                        title={t("assign_more_commenters")}
+                      />
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : networkError !== null ? (
+              <Typography variant="body1">
+                {t("network_error_message")} &nbsp;
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  size="small"
+                  sx={{ textTransform: "none" }}
+                  onClick={handleNetworkStatus}
+                >
+                  {t("try_again")} <RefreshIcon />
+                </Button>
+              </Typography>
+            ) : (
+              // <CircularProgress color="secondary" />
+
+              <Typography variant="body1">
+                {`${t("please_wait")}...`}
+              </Typography>
+            )}
           </TableBody>
         </Table>
       </TableContainer>

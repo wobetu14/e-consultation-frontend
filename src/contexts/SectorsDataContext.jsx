@@ -9,7 +9,7 @@ export const SectorsDataProvider = (props) => {
   const [searchSector, setSearchSector] = useState("");
   const [sector, setSector] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [requestCompleted, setRequestCompleted]=useState(0);
+  const [requestCompleted, setRequestCompleted] = useState(0);
 
   const [showSectorAddForm, setShowSectorAddForm] = useState(false);
   const [showSectorEditForm, setShowSectorEditForm] = useState(false);
@@ -18,40 +18,42 @@ export const SectorsDataProvider = (props) => {
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
 
   const [openDialog, setOpenDialog] = useState(false);
-  const [networkErrorMessage, setNetworkErrorMessage]=useState(null);
-  const [networkError, setNetworkError]=useState(null);
+  const [networkErrorMessage, setNetworkErrorMessage] = useState(null);
+  const [networkError, setNetworkError] = useState(null);
 
   useEffect(() => {
     fetchSectors();
   }, []);
 
   const fetchSectors = async () => {
-    setNetworkErrorMessage(null)
+    setNetworkErrorMessage(null);
     try {
-      const res = await axios.get("sectors", 
-      { timeout:"5000",
-        headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }});
+      const res = await axios.get("sectors", {
+        timeout: "5000",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      });
       setSectors(res.data.data.data);
       setFilteredSectors(res.data.data.data);
-      setNetworkErrorMessage(null)
+      setNetworkErrorMessage(null);
       setRequestCompleted(1);
     } catch (error) {
-      setNetworkErrorMessage(error.name)
+      setNetworkErrorMessage(error.name);
     }
   };
 
   const deleteSector = async (sectorID) => {
     return await axios
-      .delete(`sectors/${sectorID}`, 
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .delete(`sectors/${sectorID}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
@@ -99,13 +101,12 @@ export const SectorsDataProvider = (props) => {
         fetchSectors: fetchSectors,
         loading: loading,
         setLoading: setLoading,
-        requestCompleted:requestCompleted,
-        setRequestCompleted:setRequestCompleted,
-        networkErrorMessage:networkErrorMessage,
-        setNetworkErrorMessage:setNetworkErrorMessage,
-        fetchSectors:fetchSectors, 
-        networkError:networkError,
-        setNetworkError:setNetworkError
+        requestCompleted: requestCompleted,
+        setRequestCompleted: setRequestCompleted,
+        networkErrorMessage: networkErrorMessage,
+        setNetworkErrorMessage: setNetworkErrorMessage,
+        networkError: networkError,
+        setNetworkError: setNetworkError,
       }}
     >
       {props.children}

@@ -467,8 +467,6 @@ const CommentReflections = () => {
               }}
             >
               <Grid item xs={3}>
-                {/* <Typography variant="h4">Articles</Typography> */}
-
                 <ListItemButton onClick={handleArticlesCollapse}>
                   <ListItemText
                     primary={
@@ -958,9 +956,6 @@ const CommentReflections = () => {
                     ) : (
                       <Box>No comments</Box>
                     )}
-                    {/* (userRole==="Commenter") && documentDetail && documentDetail.draft_status.name==="Open" ? (
-                      <AddDocumentLevelComments documentID={documentDetail ? documentDetail.id : params.id} />
-                    ):"" */}
                   </Paper>
                 </Collapse>
               </Grid>

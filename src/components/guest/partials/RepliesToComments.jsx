@@ -14,9 +14,9 @@ import { UserContext } from "../../../contexts/UserContext";
 import AddNewReflection from "../../admin/drafts/AddNewReflection";
 import ReplyIcon from "@mui/icons-material/Reply";
 
-const RepliesToComments = ({ 
-  reflections, 
-  comment, 
+const RepliesToComments = ({
+  reflections,
+  comment,
   documentDetail,
 
   fetchDocumentDetails,
@@ -120,13 +120,13 @@ const RepliesToComments = ({
                 : ""}
             </List>
             <>
-              {documentDetail && (documentDetail.draft_status.name === "Open") ? (
-                <AddNewReflection comment={comment} 
-
-                fetchDocumentDetails={fetchDocumentDetails}
-                fetchDocumentSections={fetchDocumentSections}
-                fetchDocumentComments={fetchDocumentComments}
-                 />
+              {documentDetail && documentDetail.draft_status.name === "Open" ? (
+                <AddNewReflection
+                  comment={comment}
+                  fetchDocumentDetails={fetchDocumentDetails}
+                  fetchDocumentSections={fetchDocumentSections}
+                  fetchDocumentComments={fetchDocumentComments}
+                />
               ) : (
                 ""
               )}

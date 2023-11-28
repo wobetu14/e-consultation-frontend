@@ -18,7 +18,7 @@ import {
   LinearProgress,
 } from "@mui/material";
 
-import { Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import { tokens } from "../../../../theme";
 import { useTranslation } from "react-i18next";
 
@@ -26,7 +26,6 @@ const AcceptExternalRequestDialog = ({
   requestID,
   requestTitle,
   incomingCommentRequests,
-  // requestDetail,
   serverSuccessMsg,
   serverErrorMsg,
   setServerSuccessMsg,
@@ -42,9 +41,9 @@ const AcceptExternalRequestDialog = ({
   const [myUsers, setMyUsers] = useState([]);
   const [repliersID, setRepliersID] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [networkError, setNetworkError]=useState(null);
+  const [networkError, setNetworkError] = useState(null);
 
-  const {t}=useTranslation();
+  const { t } = useTranslation();
 
   const errorStyle = {
     color: "red",
@@ -58,18 +57,17 @@ const AcceptExternalRequestDialog = ({
     fontSize: "18px",
   };
 
-
-  const closeDialog=()=>{
+  const closeDialog = () => {
     setOpenExternalAcceptanceDialog(false);
-  }
+  };
 
   React.useEffect(() => {
     getMyUsersID();
   }, [repliersEmail]);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchMyUsers();
-  }, [])
+  }, []);
 
   const getMyUsersID = () => {
     if (repliersEmail.length > 0) {
@@ -81,17 +79,16 @@ const AcceptExternalRequestDialog = ({
 
   const fetchMyUsers = async () => {
     try {
-      const res = await axios.get(`commenters-per-institution`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }});
-      
+      const res = await axios.get(`commenters-per-institution`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
       setMyUsers(res.data.data);
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const formikAcceptanceForm = useFormik({
@@ -119,17 +116,18 @@ const AcceptExternalRequestDialog = ({
     setNetworkError(null);
     setLoading(true);
     return await axios
-      .post(`assign-commenters`, acceptanceData, 
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json",
-        "Content-Type": "multipart/form-data"
-      }})
+      .post(`assign-commenters`, acceptanceData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         incomingCommentRequests();
         setServerErrorMsg(null);
-        setNetworkError(null)
+        setNetworkError(null);
         setOpenExternalAcceptanceDialog(false);
         formikAcceptanceForm.resetForm();
         setLoading(false);
@@ -138,10 +136,8 @@ const AcceptExternalRequestDialog = ({
         setServerErrorMsg(errors.response.data.message);
         setServerSuccessMsg(null);
         setNetworkError(null);
-        // setOpenExternalAcceptanceDialog(false)
       });
   };
-
 
   return (
     <Dialog key={requestID} open={openExternalAcceptanceDialog} fullWidth>
@@ -169,7 +165,7 @@ const AcceptExternalRequestDialog = ({
               <Typography variant="h1">
                 {networkError ? (
                   <Alert severity="success" style={successStyle}>
-                    {t('network_error_message')}
+                    {t("network_error_message")}
                   </Alert>
                 ) : null}
               </Typography>
@@ -190,7 +186,7 @@ const AcceptExternalRequestDialog = ({
             onSubmit={formikAcceptanceForm.handleSubmit}
           >
             <TextField
-              label={`${t('write_acceptance_message')} (${t('not_mandatory')})`}
+              label={`${t("write_acceptance_message")} (${t("not_mandatory")})`}
               variant="outlined"
               size="small"
               fullWidth
@@ -205,7 +201,7 @@ const AcceptExternalRequestDialog = ({
             />
 
             <Typography variant="subtitle1" fontWeight="600">
-              {t('assign_commenters')}
+              {t("assign_commenters")}
             </Typography>
             <Autocomplete
               multiple
@@ -224,7 +220,7 @@ const AcceptExternalRequestDialog = ({
                 <TextField
                   {...params}
                   variant="outlined"
-                  label={t('select_commenters')}
+                  label={t("select_commenters")}
                   color="info"
                   value={(option) => option}
                 />
@@ -244,7 +240,9 @@ const AcceptExternalRequestDialog = ({
                   color: colors[300],
                 }}
               >
-                <Typography variant="body2">{`${t('accept')} ${t('and')} ${t('close')}`}</Typography>
+                <Typography variant="body2">{`${t("accept")} ${t("and")} ${t(
+                  "close"
+                )}`}</Typography>
               </Button>
             </Box>
           </form>
@@ -257,7 +255,7 @@ const AcceptExternalRequestDialog = ({
             color="secondary"
             sx={{ textTransform: "none" }}
           >
-            <Typography variant="body2">{t('cancel')}</Typography>
+            <Typography variant="body2">{t("cancel")}</Typography>
           </Button>
         </DialogActions>
       </DialogContent>
