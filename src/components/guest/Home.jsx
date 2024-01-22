@@ -29,15 +29,14 @@ const Home = () => {
    * Destructure the {t} object variable from useTranslation() hook
    */
   const { t } = useTranslation();
-  // User context
 
-  // Define variable for retwrieving and setting document data
+  // Define variable for retrieving and setting document data
   const [drafts, setDrafts] = useState(null);
 
   // Define variables for filtering drafts data
   const [unfilteredDrafts, setUnfilteredDrafts] = useState(null);
 
-  // define variable for setting 'loading' state while app is in progress requesting API data
+  // Define variable for setting 'loading' state while app is in progress requesting API data
   const [loading, setLoading] = useState(false);
 
   // Define variable for setting search results when a user input items
@@ -65,14 +64,14 @@ const Home = () => {
       .catch((error) => {});
   };
 
-  // Define variables to
+  // Define variables to count total number of drafts which is used to setup pagination
   const [totalDrafts, setTotalDrafts] = useState(0);
 
   /**
    * Fetch drafts data from the API. Here the partial API endpoint is 'drafts'.
    * The baseURL for all API endpoints is defined under AxiosGlobal.js file. So,
    * when we say axios.get('endpoint'), the axios refers to the custom axios definitions under
-   * AxiosGlobal.js file. Note that we have used Axios package, the most popular http client
+   * AxiosGlobal.js file. Note that we have used Axios package; the most popular http client
    * to communicate with APi data and the custom definition is available at AxiosGlobal.js file
    */
   const fetchDrafts = async () => {
@@ -106,7 +105,7 @@ const Home = () => {
     fetchDrafts();
   }, []);
 
-  // Count no of pages dynamically created for the fetched draft data
+  // Count number of pages dynamically created for the fetched draft data
   useEffect(() => {
     setPageCount(Math.ceil(parseInt(totalDrafts) / 10));
   }, []);
@@ -166,7 +165,8 @@ const Home = () => {
               The translation library is defined for each language on public/locales directory where 
               each language dictionary is defined for using separate translation JSON file.
               The translation can be accessed using {t('key')}. 
-              For example {t('fdre)} will be translated into 'Federal Democratic Republic of Ethiopia' 
+              For example {t('fdre)} will be translated into 'Federal Democratic Republic of Ethiopia' in English 
+              or "የኢትዮጵያ ፊዴራላዊ ዴሞክራሲያዊ ሪፐብሊክ መንግስት" in Amharic. 
              */}
             <Grid>
               <Typography variant="h4" sx={{ fontWeight: "600" }}>

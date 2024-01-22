@@ -26,20 +26,54 @@ import ChangePassword from "./ChangePassword";
 import EditProfileForm from "./EditProfileForm";
 import { useTranslation } from "react-i18next";
 
+/**
+ * This component is used to render the user profile for logged in users along with important actions 
+ * such as edit profile and change password
+ */
+
+/**
+ * Create a functional component named "UserProfile()"
+ */
 const UserProfile = () => {
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  /**
+   * Create state used to hide and show the 'edit profile' form
+   */
   const [showProfileForm, setShowProfileForm] = useState(false);
+
+  /**
+   * Access the userInfo and setUserInfo data and methods from the UserContext Context API
+   */
   const { userInfo, setUserInfo } = useContext(UserContext);
   const [usersData, setUsersData] = useState(null);
+
 
   const [institutions, setInstitutions] = useState(null);
   const [userRoles, setUserRoles] = useState(null);
 
+  /**
+   * Create state used to show and hide the 'change password' form
+   */
   const [openListItem, setOpenListItem] = useState(false);
+
+    /**
+   * Create state to store the progress of an API call. This is usefull to display a progressbar. 
+   * If it is loading value is true, the system will display progress bar to indicate the request is being processed.
+   * And if it is false, Progressbar will disapear to indicate request processing is completed.
+   */
   const [loading, setLoading] = useState(false);
+
+  /**
+   * Create state to store error messages coming from results of API calls
+   */
   const [networkError, setNetworkError] = useState(null);
 
+    /**
+   * Destructure translation object from i18next internationalization API using the useTranslation() hook
+   */
   const { t } = useTranslation();
 
   const handleOpenListItem = () => {
@@ -49,36 +83,59 @@ const UserProfile = () => {
   const [serverErrorMsg, setServerErrorMsg] = useState(null);
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
 
+  /**
+   * CSS style object to mark error messages
+   */
   const errorStyle = {
     color: "red",
     fontWeight: "400",
     fontSize: "18px",
   };
 
+  /**
+   * CSS style object to mark success messages
+   */
   const successStyle = {
     color: "green",
     fontWeight: "400",
     fontSize: "18px",
   };
 
+  /**
+   * CSS style object to mark helper information for form-validation messages
+   */
   const helperTextStyle = {
     color: "red",
     fontWeight: "400",
     fontSize: "15px",
   };
 
+  /**
+   * Method call inside the useEffect hook to fetch institutions data
+   */
   useEffect(() => {
     fetchInstitutions();
   }, []);
 
+  /**
+   * Method call inside the useEffect hook to fetch user roles data
+   */
   useEffect(() => {
     fetchUserRoles();
   }, []);
 
+  /**
+   * Method call inside the useEffect hook to fetch user's profile data
+   */
   useEffect(() => {
     fetchUser();
   }, []);
 
+  /**
+   * Method definition to fetch institutions data. It is API call to the server
+   * @returns listOfInstitutions - List of institutions, if API call completes successfully
+   * @returns exceptionMessage - Error message if API call fails to complete
+   */
   const fetchInstitutions = async () => {
     return await axios
       .get("institutions", {
@@ -95,6 +152,11 @@ const UserProfile = () => {
       .catch((error) => {});
   };
 
+  /**
+   * Method definition to fetch user roles of the logged in user roles. This is an API call the server 
+   * @returns listOfRoles - List user roles of the logged in user, if the API call completes succesfully
+   * @returns exception - Error message if the API call fails to complete
+   */
   const fetchUserRoles = async () => {
     return await axios
       .get("roles", {
@@ -111,6 +173,11 @@ const UserProfile = () => {
       .catch((error) => {});
   };
 
+  /**
+   * Method definition to fetch the detail info of the logged in user. This is an API call to the server
+   * @returns useDetailInfo - Detail users meta data if the API call completed successfully 
+   * @returns exception -  Error message if the API call fails to complete
+   */
   const fetchUser = async () => {
     return await axios
       .get(`users/${userInfo.user.id}`, {
@@ -128,7 +195,13 @@ const UserProfile = () => {
   };
 
   return (
+    /**
+     * Create the user profile UI component
+     */
     <Box m="0 20px" width={"95%"}>
+      {/**
+       * Display heading text
+       */}
       <Header title={t("user_profile")} subtitle={t("manage_profile")} />
       <Grid align="center" sx={{ paddingBottom: "15px", paddingTop: "15px" }}>
         <motion.span
@@ -136,6 +209,9 @@ const UserProfile = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
+          {/**
+           * Render success message if there is any
+           */}
           <Typography variant="h1">
             {serverSuccessMsg ? (
               <Alert severity="success" style={successStyle}>
@@ -144,6 +220,9 @@ const UserProfile = () => {
             ) : null}
           </Typography>
 
+          {/**
+           * Render error message if there is any
+           */}
           <Typography variant="h1">
             {serverErrorMsg ? (
               <Alert severity="error" style={errorStyle}>
@@ -152,6 +231,9 @@ const UserProfile = () => {
             ) : null}
           </Typography>
 
+          {/**
+           * Display http network communication error if there is any
+           */}
           <Typography variant="h1">
             {networkError === "ERR_NETWORK" ? (
               <Alert severity="success" style={successStyle}>
@@ -161,6 +243,9 @@ const UserProfile = () => {
             ) : null}
           </Typography>
 
+          {/**
+           * Display progressbar if the value of loading is true
+           */}
           <Typography variant="h1">
             {loading ? <LinearProgress color="info" /> : null}
           </Typography>
@@ -172,11 +257,17 @@ const UserProfile = () => {
             <Paper elevation={1} sx={{ padding: "20px" }}>
               <Grid container spacing={2}>
                 <Grid item xs={4}>
+                  {/**
+                   * Display full name. Include label followed by value
+                   */}
                   <Typography variant="h5" sx={{ fontWeight: "600" }}>
                     {t("full_name")}
                   </Typography>
                 </Grid>
                 <Grid item xs={8}>
+                  {/**
+                   * Extract userData value and display values such as first_name, middle_name, last_name as follows
+                   */}
                   <Typography variant="h5">
                     {usersData
                       ? usersData.first_name +
@@ -253,6 +344,9 @@ const UserProfile = () => {
                   </Typography>
                 </Grid>
                 <Grid item xs={8}>
+                  {/**
+                   * Create a button to toggle between showing and hiding the EditForm component
+                   */}
                   <Button
                     variant="contained"
                     color="secondary"
@@ -260,6 +354,10 @@ const UserProfile = () => {
                     elevation={2}
                     onClick={() => setShowProfileForm(!showProfileForm)}
                   >
+                    {/**
+                     * Show difference icons based on whether the edit form is hidden or not. If is not-hidden
+                     * show visibilityOffIcon. Otherwise, show the EditIcon
+                     */}
                     {showProfileForm ? (
                       <>
                         <VisibilityOffIcon /> &nbsp; Hide form
@@ -304,6 +402,9 @@ const UserProfile = () => {
         </Grid>
       </Grid>
 
+      {/**
+       * Render EditProfileForm if the showProfileForm state is true. 
+       */}
       {showProfileForm && (
         <EditProfileForm
           usersData={usersData}

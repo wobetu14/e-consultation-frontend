@@ -73,7 +73,7 @@ function App() {
    * Define components accessible only for admin level users. The type of users defined as
    * 'Super Admin, Federal Admin, Federal Institutions Admin, Regional Admin,
    * Regional Institutions Admin, Approver and Uploader' can access the components defined as
-   * as children of <AdminElement /> component. Other user such as unregistered users and commenters
+   * as children of <AdminElement /> component. Other users such as unregistered users and commenters
    * can not have access to this elememnt
    */
 
@@ -180,6 +180,9 @@ function App() {
                 />
               </Route>
 
+              {/**
+               * Route definitions for components under <CommenterLayout />
+               */}
               <Route path="/commenter" element={<CommenterLayout />}>
                 <Route index element={<CommenterDashboard />} />
                 <Route path="assigned_drafts" element={<DraftAssignments />} />
@@ -213,7 +216,7 @@ function App() {
               >
                 {/* 
                   Route definitions for components under <AdminElement /> components
-                  i.e. Route definitions for childrens of <AdminElement /> component
+                  i.e. Route definitions for children of <AdminElement /> component
                  */}
                 <Route index element={<Dashboard />} />
                 <Route path="users" element={<Users />} />

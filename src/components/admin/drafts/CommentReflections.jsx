@@ -31,6 +31,14 @@ import { UserContext } from "../../../contexts/UserContext";
 import ReplyFeedbacks from "./ReplyFeedbacks";
 import ReplyDocumentLevelComments from "./ReplyDocumentLevelComments";
 
+/**
+ * This component is used to render the daft document detail info and its content tree 
+ * along with its comments provided. This component is exactly the same as the 
+ * <DocumentDetailView /> component. The only difference of this component is, it is
+ * accessible only by comment repliers. Please read the comment documentations on 
+ * <DocumentDetailView />
+ */
+
 const CommentReflections = () => {
   const params = useParams();
   const [documentDetail, setDocumentDetail] = useState(null);

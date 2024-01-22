@@ -24,15 +24,32 @@ import { UserContext } from "../../../contexts/UserContext";
 import { DraftsDataContext } from "../../../contexts/DraftsDataContext";
 import { useTranslation } from "react-i18next";
 
+/**
+ * Create a functional component named 'EditDraft'
+ */
 const EditDraft = () => {
+
+  /**
+   * Create important variables such as things to set theme color, language, user login infomration
+   */
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  /**
+   * Destructure translation object from useTranslation hook of i18next language library
+   */
   const { t } = useTranslation();
 
-  // User context
+  /**
+   * Destructure the 'userInfo' variable from UserContext to get access to 
+   * logged in user's information
+   */
   const { userInfo } = useContext(UserContext);
 
+/**
+ * Destructure variables from DraftsDataContext to access data and methods 
+ * related to the current draft document
+ */
   const {
     draft,
     fetchDrafts,
@@ -43,6 +60,10 @@ const EditDraft = () => {
     setNetworkError,
   } = useContext(DraftsDataContext);
 
+  /**
+   * Create variables to access and store data related to institutions,
+   * law categories, sectors, document access types, tags etc
+   */
   const [institutions, setInstitutions] = useState(null);
   const [lawCategories, setLawCategories] = useState(null);
   const [sectors, setSectors] = useState(draft.sector);
@@ -51,6 +72,10 @@ const EditDraft = () => {
   );
 
   const [tagLists, setTagLists] = useState([]);
+
+  /**
+   * Create variable to store value of sector data selected by user from a dropdown list
+   */
   const [selectedSectors, setSelectedSectors] = useState([]);
 
   const helperTextStyle = {
@@ -59,22 +84,43 @@ const EditDraft = () => {
     fontSize: "15px",
   };
 
+  /**
+   * Method call to retrieve institutions data from an API call. 
+   * The results are used to populate option value dropdown list
+   */
   useEffect(() => {
     fetchInstitutions();
   }, []);
+
+  /**
+   * Method call to retrieve law categories data from an API call. 
+   * The results are use to populate option value of a drop down list
+   */
 
   useEffect(() => {
     fetchLawCategories();
   }, []);
 
+  /**
+   * Method call to retrieve sectors data from API call. 
+   * The results are used to populate option value of a dropdown list
+   */
   useEffect(() => {
     fetchSectors();
   }, []);
 
+  /**
+   * Method call to retrieve drafts data in which the definition is available from 
+   * DraftsDataContext. This data is used to fill the initial form fields for the selected 
+   * draft and make it ready for updating.
+   */
   useEffect(() => {
     fetchDrafts();
   }, []);
 
+  /**
+   * Method definition for fetching institutions data from the API
+   */
   const fetchInstitutions = async () => {
     return await axios
       .get("institutions", {
@@ -91,6 +137,9 @@ const EditDraft = () => {
       .catch((error) => {});
   };
 
+  /**
+   * Method definition for fetching law categories data from the API
+   */
   const fetchLawCategories = async () => {
     return await axios
       .get("law-categories", {
@@ -107,6 +156,9 @@ const EditDraft = () => {
       .catch((error) => {});
   };
 
+  /**
+   * Method definition for fetching sectors data from the API
+   */
   const fetchSectors = async () => {
     return await axios
       .get("sectors", {
@@ -123,6 +175,10 @@ const EditDraft = () => {
       .catch((error) => {});
   };
 
+  /**
+   * Defining intial values of form fields using formik library. Read more about formik 
+   * library to understand how it works at https://formik.org/ 
+   */
   const formik = useFormik({
     initialValues: {
       institutionID: draft ? draft.institution.id : "",
@@ -145,6 +201,9 @@ const EditDraft = () => {
       updatedBy: userInfo.user.updated_by,
     },
 
+    /**
+     * Collected updated values from the form upon submission and prepare it for input for the API call
+     */
     onSubmit: (values) => {
       const draftsData = {
         institution_id: values.institutionID,
@@ -185,6 +244,9 @@ const EditDraft = () => {
     },
   });
 
+  /**
+   * Method definition to execute API call to commit an update of drafts data on the database
+   */
   const updateDraftDocument = async (draftsData) => {
     setNetworkError(null);
     setServerErrorMsg(null);
@@ -217,6 +279,9 @@ const EditDraft = () => {
 
   return (
     <Box width={"95%"}>
+      {/**
+       * Define for used to update drafts information
+        */}
       <Header title={t("update_draft_info")} subtitle="" />
       <motion.span
         initial={{ opacity: 0 }}

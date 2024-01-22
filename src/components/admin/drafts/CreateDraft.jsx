@@ -23,13 +23,13 @@ import { motion } from "framer-motion";
 import { DraftsDataContext } from "../../../contexts/DraftsDataContext";
 import { useTranslation } from "react-i18next";
 
-/**
- * Create a functional component named CreateDraft
- */
+/* This component is used to create or upload a new draft document. */
+
+/* Create a functional component named CreateDraft */
 const CreateDraft = () => {
   /**
    * Create institutions variable to store list of institutions
-   * and allow the user select the name of the institution creating the draft.
+   * and allow the user select the name of the institution that the draft belongs to.
    * Actually this data may not be necessary since the institution can be automatically taken
    * from the logged user information
    */
@@ -81,6 +81,9 @@ const CreateDraft = () => {
     fontSize: "15px",
   };
 
+  /**
+   * Call a method used to fetch institutions with the useEffect hook
+   */
   useEffect(() => {
     fetchInstitutions();
   }, []);
@@ -106,6 +109,10 @@ const CreateDraft = () => {
     fetchDrafts();
   }, []);
 
+  /**
+   * Method definition for fetching institutions info from the backend
+   */
+
   const fetchInstitutions = async () => {
     return await axios
       .get("institutions", {
@@ -122,6 +129,10 @@ const CreateDraft = () => {
       .catch((error) => {});
   };
 
+  /**
+   * Method definition for loading law categories info from the backend
+   */
+
   const fetchLawCategories = async () => {
     return await axios
       .get("law-categories", {
@@ -137,6 +148,10 @@ const CreateDraft = () => {
       })
       .catch((error) => {});
   };
+
+  /**
+   * Method definition for loading sectors info from the backend
+   */
 
   const fetchSectors = async () => {
     return await axios
@@ -155,11 +170,11 @@ const CreateDraft = () => {
   };
 
   /**
-   * Use formik object and collect form data
+   * Use formik object to collect form data. Create a new formik object and initialize values
    */
   const formik = useFormik({
     /**
-     * Set the forms intial values
+     * Set intial values corresponding to form fields
      */
     initialValues: {
       shortTitle: "",
@@ -186,6 +201,8 @@ const CreateDraft = () => {
 
     /**
      * Validate form fields using formik and YUP validation packages
+     * You can refer information about formik and YUP libraries on https://formik.org/
+     * and https://www.npmjs.com/package/yup
      */
 
     validationSchema: YUP.object({
@@ -213,8 +230,9 @@ const CreateDraft = () => {
     }),
 
     /**
-     * Update form data using onChanges methods of form fields and
-     * collect the updated values for submission and then call a function definition to initiate API call
+     * Update initial values of variables corresponding to form fields against 
+     * form input data using onChange methods of form fields and collect the updated 
+     * values for submission and then call a function definition to initiate API call
      * creating the document record
      */
     onSubmit: (values) => {
@@ -247,7 +265,7 @@ const CreateDraft = () => {
       };
 
       /**
-       * Create method call and intitiate to create new draft document record in the database
+       * Create method call that intitiates to create new document record in the database
        */
       createDraftDocument(draftsData);
     },
@@ -301,9 +319,9 @@ const CreateDraft = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
       >
+        {/* Create form and call the formik object upon form submit */}
         <form onSubmit={formik.handleSubmit}>
           {" "}
-          {/* Create form and call the formik object upon form submit */}
           <Grid container spacing={2}>
             <Grid item xs={4}>
               <TextField
@@ -623,10 +641,6 @@ const CreateDraft = () => {
                 {t("attach_draft_document_note")}
               </Typography>
               <input
-                /* variant="outlined"
-                fullWidth
-                sx={{ paddingBottom: "20px" }}
-                color="info" */
                 type="file"
                 name="file"
                 required
@@ -642,6 +656,9 @@ const CreateDraft = () => {
                 }
               />
 
+            {/**
+             * Create a submit button used to submit form data
+             */}
               <Grid sx={{ paddingBottom: "20px" }} align="right">
                 <Button
                   type="submit"

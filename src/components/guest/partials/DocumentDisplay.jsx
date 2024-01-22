@@ -65,7 +65,7 @@ const DocumentDisplay = ({
         </Box>
 
         {/* 
-  Trigger loading view based the value of loading variable value. It is true the loading... 
+  Trigger loading view based on the value of loading variable value. If it is true, the loading... 
   components will be displayed. waiting for drafts data value to be non-empty. 
   If draft value is empty the loading value is true and vice versa. 
   The loading variable is used to track results from search and filter document features.  
@@ -91,6 +91,7 @@ const DocumentDisplay = ({
             </Link>
           ))
         ) : networkError === "AxiosError" ? (
+          // Display error info to the user if there is an exception in an http axios request. 
           <Typography variant="body1">
             Your internet connection may be unstable. You can &nbsp;
             <Button

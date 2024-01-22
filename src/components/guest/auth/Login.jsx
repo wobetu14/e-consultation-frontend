@@ -56,7 +56,7 @@ const Login = () => {
   const userLogin = async (userData) => {
     setLoading(true);
     return await axios
-      .post("https://backend.e-consultation.gov.et/api/v1/login", userData)
+      .post("http://backend.e-consultation.gov.et/api/v1/login", userData)
       .then((res) => {
         if (res.status !== 200) {
           setServerError(res.data.message);

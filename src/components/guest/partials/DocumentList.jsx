@@ -15,9 +15,9 @@ import "./DocumentDisplay.css";
 
 /**
  * This component renders list of draft documents and some meta info with a clickable feature to view the complete infomration
- * and content of the document so that use can read and comment on the draft document.
+ * and content of the document so that user can read and comment on the draft document.
  *
- * The drafts meta info is passed from Home then DocumentDisplay components and here we will create HTML to render the document.
+ * The drafts meta info is passed from Home --> then DocumentDisplay components and here we will create HTML to render the document.
  */
 
 const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
@@ -83,6 +83,9 @@ const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
                         />
                       ) : draft.draft_status.name === "Open" &&
                         parseInt(draft.comment_closed) === 1 ? (
+                          /**
+                           * If the document status is still 'Open' but the commenting deadline is passed, display as 'Closed for comment"
+                           */
                         <Chip
                           label="Closed for Comment"
                           size="small"
@@ -97,6 +100,10 @@ const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
                       )}
 
                       {draft.draft_status.name === "Closed" ? (
+                        /**
+                         * If the document status is closed, commenting is also disabled. At this time display the status as 
+                         * 'Consultation ended'
+                         */
                         <Chip
                           label="Consultation ended"
                           size="small"
@@ -109,6 +116,10 @@ const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
                       ) : (
                         ""
                       )}
+
+                      {/**
+                       * Display draft closing date or commenting deadline date if the draft status is 'Open'
+                       */}
 
                       {/* Display draft closing date if the draft status is "Open" */}
                       {draft.draft_status.name === "Open" &&

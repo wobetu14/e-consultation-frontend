@@ -57,6 +57,9 @@ const DocumentsFilters = ({
   const [institutionID, setInstitutionID] = useState(0);
   const [institutions, setInstitutions] = useState(null);
 
+  /**
+   * Declare variables to set draft status used to filter document based on opening status
+   */
   const [draftStatusName, setDraftStatusName] = useState("");
 
   /**
@@ -129,8 +132,7 @@ const DocumentsFilters = ({
 
   /**
    * Create useEffect hook to fetch list of institutions upon page load and use it to render
-   * list of institutions with a dropdown box. This code style works for sectors as well as
-   * written below followed by this institutions snippet as well.
+   * list of institutions with a dropdown box. This code style works for sectors as well
    */
 
   useEffect(() => {

@@ -10,6 +10,16 @@ import InviteMoreDialog from "../../admin/drafts/InviteMoreDialog";
 import AssignMoreRepliersDialog from "./AssignMoreRepliersDialog";
 import { useTranslation } from "react-i18next";
 
+/**
+ * This component is a child component of <DraftMetaInfo /> component. 
+ * It is used to define action buttons to execute actions on the draft document. 
+ * This includes actions such as "Accept draft opening", "Reject Draft Opening", 
+ * "Assign Replier", "Invite People and Institutions", "End Consultation"
+ */
+
+/**
+ * Create a functional component named "DraftActions".
+ */
 const DraftActions = ({
   draftID,
   documentDetail,
@@ -26,19 +36,38 @@ const DraftActions = ({
   loading,
   setLoading,
 }) => {
+  /**
+   * Create variable for opening dialog box for draft "Accept", "Reject", "Invite", "Assign Replier" operation.
+   * This variables are booleand variables with a default value "false" and when it is true, a dialog box will be opened.
+   * For example when user clicks "Accept" button, the "openDialog" value will be true and hence, a dialog box to 
+   * accept and open the draft document for commenting will be displayed so that user can set values and open the document
+   * for comment.
+   */
   const [openDialog, setOpenDialog] = useState(false);
   const [openRejectionDialog, setOpenRejectionDialog] = useState(false);
   const [openInviteDialog, setOpenInviteDialog] = useState(false);
   const [openAssignRepliersDialog, setOpenAssignRepliersDialog] =
     useState(false);
 
+    /**
+     * Accessing role name of the logged in user from the UserContext
+     */
   const { userRole } = useContext(UserContext);
 
+  /**
+   * Access application level variables such as theme and color
+   */
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+  /**
+   * Access translation object from the useTranslation hook of i18next React language translation (localization) library
+   */
   const { t } = useTranslation();
 
+  /**
+   * Method definition for an API call to close commenting or to "End Consultation"
+   */
   const closeCommenting = async (draftID) => {
     setLoading(true);
     setServerErrorMsg(null);
@@ -69,12 +98,22 @@ const DraftActions = ({
 
   return (
     <Box>
+      {/**
+       * UI definition for action buttons
+       */}
       <Stack
         direction="row"
         spacing={1}
         justifyContent="end"
         sx={{ marginRight: "20px" }}
       >
+        {/**
+         * Render the <AcceptApprovalRequest /> and <RejectApprovalRequest /> component if the role of the logged in user is
+         * "Approver"
+         * and the status of the document is "Requested". 
+         * The <AcceptApprovalRequest /> is a simple button definition whose implementation is located 
+         * at the bottom of this file. 
+         */}
         {userRole === "Approver" ? (
           documentDetail && documentDetail.draft_status.name === "Requested" ? (
             <>
@@ -107,7 +146,11 @@ const DraftActions = ({
                 fetchDocumentComments={fetchDocumentComments}
               />
             </>
+
           ) : documentDetail.draft_status.name === "Open" ? (
+            /**
+             * Show or render <InviteCommenters /> and <AssignReplier /> components if the user role is "Approver" and request status is "Open"
+             */
             <>
               <InviteCommenters
                 draftID={draftID}
@@ -138,6 +181,9 @@ const DraftActions = ({
                 fetchDocumentComments={fetchDocumentComments}
               />
 
+            {/**
+             * Button definition for close commenting or to end consultation
+             */}
               <Button
                 size="small"
                 variant="contained"
@@ -157,6 +203,9 @@ const DraftActions = ({
             ""
           )
         ) : userRole === "Uploader" ? (
+          /**
+           * Render <SendApprovalRequest /> component if user role is "Uploader" and request status is "Pending"
+           */
           documentDetail && documentDetail.draft_status.name === "Pending" ? (
             <>
               <SendApprovalRequest
@@ -178,11 +227,22 @@ const DraftActions = ({
 
 export default DraftActions;
 
+/**
+ * Implementation for <SendApprovalRequest /> or to send document opening request
+ * @param {*} documentDetail - Prop for document detail info 
+ * @param {*} setServerSuccessMsg - Prop method to set server success message 
+ * @param {*} setServerErrorMsg - Prop method to set server error message
+ * @returns 
+ */
 const SendApprovalRequest = ({
   documentDetail,
   setServerSuccessMsg,
   setServerErrorMsg,
 }) => {
+  /**
+   * 
+   * @returns server success or error message
+   */
   const sendOpeningRequest = async () => {
     return await axios
       .post(`request-for-comment/draft/${documentDetail.id}`, {
@@ -204,6 +264,9 @@ const SendApprovalRequest = ({
 
   return (
     <>
+    {/**
+     * Button definition for sending opening request
+     */}
       <Button
         variant="contained"
         color="secondary"
@@ -217,6 +280,10 @@ const SendApprovalRequest = ({
   );
 };
 
+/**
+ * Implementation for <AcceptApprovalRequest /> component to accept the 
+ * opening request coming from the Uploader user role
+ */
 const AcceptApprovalRequest = ({
   draftID,
   documentDetail,
@@ -233,11 +300,18 @@ const AcceptApprovalRequest = ({
   fetchDocumentComments,
 }) => {
   const showDialog = () => {
+    /**
+     * Set openDialog variable to true so that upon clicking, the dialog box to approve opening of th document 
+     * will be shown 
+     */
     setOpenDialog(true);
   };
 
   return (
     <>
+    {/**
+     * Button definition to "Accept" the opening request
+     */}
       <Button
         size="small"
         variant="contained"
@@ -248,6 +322,10 @@ const AcceptApprovalRequest = ({
         {t("accept")}
       </Button>
 
+     {/**
+      * Display / show document opening dialog box (acceptance dialog box). Note that the naming here is not 
+      * similar to the function of the component but it is meant to be a dialog box to accepting opening request.
+      */}
       {openDialog && (
         <OutgoingCommentRequestsDialog
           draftID={draftID}
@@ -270,6 +348,11 @@ const AcceptApprovalRequest = ({
   );
 };
 
+/**
+ * Implementation for <RejectApprovalRequest /> to reject the document opening
+ * @param {*} param0 
+ * @returns 
+ */
 const RejectApprovalRequest = ({
   draftID,
   documentDetail,
@@ -286,11 +369,17 @@ const RejectApprovalRequest = ({
   fetchDocumentComments,
 }) => {
   const showRejectionDialog = () => {
+     /** Set openRejectDialog variable to true so that upon clicking, the dialog box to reject opening of th document 
+     * will be shown 
+     */
     setOpenRejectionDialog(true);
   };
 
   return (
     <>
+    {/**
+     * Button definition to "Reject" the opening request
+     */}
       <Button
         size="small"
         variant="contained"
@@ -301,6 +390,9 @@ const RejectApprovalRequest = ({
         {t("reject")}
       </Button>
 
+     {/**
+      * Display / show document rejection dialog box. 
+      */}
       {openRejectionDialog && (
         <DraftOpeningRejectionDialog
           draftID={draftID}
@@ -323,6 +415,12 @@ const RejectApprovalRequest = ({
   );
 };
 
+
+/**
+ * Implementation for <InviteCommenters /> component to invite individual commenters and institutions
+ * @param {*} param0 
+ * @returns 
+ */
 const InviteCommenters = ({
   draftID,
   documentDetail,
@@ -335,11 +433,17 @@ const InviteCommenters = ({
   t,
 }) => {
   const showInviteDialog = () => {
+    /**
+     * Set openInviteDialog to true so that upon clicking, a dialog box for sending invitation will be dispaled
+     */
     setOpenInviteDialog(true);
   };
 
   return (
     <>
+    {/**
+     * Button definition for sending an invite
+     */}
       <Button
         size="small"
         variant="contained"
@@ -352,6 +456,10 @@ const InviteCommenters = ({
 
       {openInviteDialog && (
         <>
+        {/**
+         * Show <InviteMoreDialog /> component if the value of openInviteDialog is true so that user can send invitation 
+         * via the dialog box
+         */}
           <InviteMoreDialog
             draftID={draftID}
             key={documentDetail.id}
@@ -370,6 +478,12 @@ const InviteCommenters = ({
   );
 };
 
+/**
+ * Implementation for <AssignRepliers /> component to assign comment 
+ * repliers to reply to comments provided on the document
+ * @param {*} param0 
+ * @returns 
+ */
 const AssignRepliers = ({
   draftID,
   documentDetail,
@@ -382,11 +496,17 @@ const AssignRepliers = ({
   t,
 }) => {
   const showAssignRepliersDialog = async () => {
+    /**
+     * Set <openAssignRepliersDialog /> variable to true so that upon clicking the repliers dialog will be shown
+     */
     setOpenAssignRepliersDialog(true);
   };
 
   return (
     <>
+    {/**
+     * Button definition to assign repliers 
+     */}
       <Button
         size="small"
         variant="contained"
@@ -398,6 +518,11 @@ const AssignRepliers = ({
       </Button>
 
       {openAssignRepliersDialog && (
+
+        /**
+         * Show <AssignMoreRepliersDialog /> component if the value of openAssignRepliersDialog is true 
+         * so that user can complete assign operation
+         */
         <AssignMoreRepliersDialog
           draftID={draftID}
           key={documentDetail.id}

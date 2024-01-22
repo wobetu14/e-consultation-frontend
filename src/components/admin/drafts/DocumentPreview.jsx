@@ -27,6 +27,12 @@ import DocumentLevelComments from "../../guest/partials/DocumentLevelComments";
 import { UserContext } from "../../../contexts/UserContext";
 import SectionFeedbackPreview from "../previews/SectionFeedbackPreview";
 
+/**
+ * This component is used to render the contents of the draft document as a readable document tree. 
+ * The component is available to Uploader and Approver user roles so that they can use it to preview
+ * the document and make important decesion such as "Accept" or "Reject" the document opening
+ * @returns 
+ */
 const DocumentPreview = () => {
   // Create variable to retrieve data from the page url using useParams() hook
   const params = useParams();
@@ -48,8 +54,16 @@ const DocumentPreview = () => {
   // access the logged in user information from the UserContext definition
   const { userInfo } = useContext(UserContext);
 
+  /**
+   * Access the app theme and color mode definitions using the useThem() hook
+   */
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  /**
+   * Destructure the translation object from the i18next internationalization using the 
+   * useTranslation() hook
+   */
   const { t } = useTranslation();
 
   // General comments collapse functionality to collapse and release the general commments component

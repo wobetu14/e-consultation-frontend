@@ -15,20 +15,49 @@ import { useParams } from "react-router-dom";
 import { UserContext } from "../../../contexts/UserContext";
 import { useTranslation } from "react-i18next";
 
+/**
+ * This component is used to list / display list of institutional invitations. i.e. List of institutions who are invited 
+ * to provide consultations on this specific document and its acceptance status
+ * @param {*} documentDetail - DocumentDetail prop that contain draft documents meta data info 
+ * @returns 
+ */
+
 const InstitutionInvitations = ({ documentDetail }) => {
+  /**
+   * Create state hook variable and method to store list of invited institutions
+   */
   const [invitedInstitutions, setInvitedInstitutions] = useState(null);
+
+  /**
+   * Create variable to access and store URL params data using the useParams hook
+   */
   const params = useParams();
 
+  /**
+   * Destructure translation object from the i18next internationalization library using the useTranslation hook
+   */
   const {t}=useTranslation();
 
-  // User context
+  /**
+   * Destructure or access user information from the context - UserContext 
+   * @param {*} userInfo - User Information such as id, first_name, middle_name, last_name, region, institution etc
+   * @param {*} userRole - User Role such as ['Super Admin', 'Federal Admin', 'Regional Admin' etc]
+   */
   const { userInfo, userRole } =
     useContext(UserContext);
 
+  /**
+   * Call a method that defines an API call that fetches list of institutions using the useEffect hook
+   */
   useEffect(() => {
     fetchInvitedInstitutions();
   }, []);
 
+  /**
+   * Method definition that implements API call that fetches a list of institutions
+   * @returns listOfInstitutions - If API call is success; returns listOfInstitutions object
+   * @returns exceptions - If API call fails; returns error message
+   */
   const fetchInvitedInstitutions = async () => {
     return await axios
       .get(
@@ -48,10 +77,20 @@ const InstitutionInvitations = ({ documentDetail }) => {
   };
 
   return (
+    /**
+     * Create UI to render the listOfInstitutions response data with data table
+     */
     <Box m="0 20px" width={"95%"}>
+      {/**
+       * Display table heading information / title
+       */}
       <Typography variant="h5" fontWeight="600">
         {t('invitations_to_institutions')}
       </Typography>
+
+      {/**
+       * Create table data. The table data is created using Material UI library
+       */}
       <TableContainer
         component={Paper}
         sx={{ marginTop: "10px", marginBottom: "20px" }}
@@ -81,6 +120,10 @@ const InstitutionInvitations = ({ documentDetail }) => {
             </TableRow>
           </TableHead>
           <TableBody>
+            {/**
+             * Extract and render invitedInstitutions data using the map method and using the TableRow 
+             * table row object from the material UI. Filter out if there is null value for commenter institution name
+             */}
             {invitedInstitutions ? (
               invitedInstitutions
                 .filter((institution) => {

@@ -29,6 +29,11 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   );
 };
 
+/**
+ * This component is used to render menu and menu items specific to commenter user roles.
+ * This component is accessible inside commenter dashboard
+ */
+
 const CommenterSidebar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);

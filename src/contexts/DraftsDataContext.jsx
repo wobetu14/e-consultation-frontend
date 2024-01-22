@@ -20,7 +20,7 @@ export const DraftsDataContext = createContext(null);
  */
 export const DraftsDataProvider = (props) => {
   /**
-   * This all variable are prvided as values and will be available to all child components of the drafts context
+   * This all variables are provided as values and will be available to all child components of the drafts context
    */
   const [drafts, setDrafts] = useState([]);
   const [filteredDrafts, setFilteredDrafts] = useState([]);
@@ -119,7 +119,7 @@ export const DraftsDataProvider = (props) => {
   return (
     /**
      * Create a provider to the above context and pass all variables and methods so that they can be accessible for child components
-     * Note that, the same pattern is used to create and manage data context for other mojar CRUD operarion of this application;
+     * Note that, the same pattern is used to create and manage data context for other major CRUD operarion of this application;
      * such as regions, institutions, sectors and users. So, the documentation we have made on this file will apply to other
      * contexts with the same pattern
      */

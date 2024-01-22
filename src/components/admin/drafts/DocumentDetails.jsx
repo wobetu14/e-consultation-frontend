@@ -26,22 +26,60 @@ import InstitutionInvitations from "./InstitutionInvitations";
 import CommentRepliers from "./CommentRepliers";
 import { useTranslation } from "react-i18next";
 
+/**
+ * This component is used to see detail information of the documnet along with action buttons to 
+ * "Accept", "Reject" etc that allows to "Accept" or "Reject" the document 
+ */
+
+/**
+ * Create a functional component named "DocumentDetails"
+ */
 const DocumentDetails = () => {
+  /**
+   * Create a variable "params" used to access value from the useParams hook. The useParams hook is used to 
+   * access parameter values from the page URL
+   */
   const params = useParams();
+
+  /**
+   * Create variable to store values about the document, its section comments as well as document level comments
+   */
   const [documentDetail, setDocumentDetail] = useState(null);
   const [documentSections, setDocumentSections] = useState(null);
   const [documentComments, setDocumentComments] = useState(null);
 
+  /**
+   * Access theme object from the useTheme user defined hook
+   */
   const theme = useTheme();
+
+  /**
+   * Access color mode for dark and light themes.
+   */
   const colors = tokens(theme.palette.mode);
 
+  /**
+   * Create variable to store and access error and success information 
+   * of https request and response results
+   */
   const [serverErrorMsg, setServerErrorMsg] = useState(null);
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
 
+  /**
+   * Create variable to show a progressbar to indicate whether the 
+   * http request is completed or not
+   */
   const [loading, setLoading] = useState(false);
 
+  /**
+   * Destructure and access the translation object from the useTranslation hook 
+   * from the i18next internationalization library.
+   */
   const { t } = useTranslation();
 
+  /**
+   * Create CSS style to markup the error and success message information
+   */
   const errorStyle = {
     color: "red",
     fontWeight: "400",
@@ -54,25 +92,45 @@ const DocumentDetails = () => {
     fontSize: "18px",
   };
 
-  // Menu collapse functionality
+  /**
+   * Create a variable used in a toggle button used to show and hide the document preview. 
+   * This functionality is used to show or hide the document content is the user wants to preview 
+   * it used to decide before going to take action. The initial value for this variable is false, means, 
+   * it is hidden by default.
+   */
   const [previewOpen, setPreviewOpen] = React.useState(false);
 
+  /**
+   * a method to toggle the preview button
+   */
   const handlePreviewCollapse = () => {
     setPreviewOpen(!previewOpen);
   };
 
+  /**
+   * Method call to fetch document details with the useEffect hook
+   */
   useEffect(() => {
     fetchDocumentDetails();
   }, []);
 
+  /**
+   * A method call to fetch document sections with their comments with the useEffect hook
+   */
   useEffect(() => {
     fetchDocumentSections();
   }, []);
 
+  /**
+   * Method call to fetch document level comments with the useEffect hook
+   */
   useEffect(() => {
     fetchDocumentComments();
   }, []);
 
+  /**
+   * Method definition for "fetchDocumentDetails" which is an API call to fetch document detail info
+   */
   const fetchDocumentDetails = async () => {
     return await axios
       .get(`drafts/${params.id}`, {
@@ -87,6 +145,9 @@ const DocumentDetails = () => {
       });
   };
 
+  /**
+   * Method definition for "fetchDocumentSection" which is an API call to fetch document sections
+   */
   const fetchDocumentSections = async () => {
     return await axios
       .get(`draft/${params.id}/draft-sections`, {
@@ -104,6 +165,9 @@ const DocumentDetails = () => {
       });
   };
 
+  /**
+   * Method definition for "fetchDocumentComments" which is an API call to fetch document level comments
+   */
   const fetchDocumentComments = async () => {
     return await axios
       .get(`draft/${params.id}/general-comments`, {
@@ -122,13 +186,23 @@ const DocumentDetails = () => {
   };
 
   return (
+    /**
+     * Create the document details UI. Start with a Box component as parent
+     */
     <Box m="0 20">
+
+      {/**
+       * Create a Grid and render information related to messages that show success, errors or network exceptions
+       */}
       <Grid align="center" sx={{ paddingBottom: "5px", paddingTop: "5px" }}>
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
+          {/**
+           * Render server success message
+           */}
           <Typography variant="h1">
             {serverSuccessMsg ? (
               <Alert severity="success" style={successStyle}>
@@ -137,6 +211,9 @@ const DocumentDetails = () => {
             ) : null}
           </Typography>
 
+          {/**
+           * Render server error message
+           */}
           <Typography variant="h1">
             {serverErrorMsg ? (
               <Alert severity="error" style={errorStyle}>
@@ -145,12 +222,21 @@ const DocumentDetails = () => {
             ) : null}
           </Typography>
 
+          {/**
+           * Render the loading progressbar indicator
+           */}
           <Typography variant="h1">
             {loading && <LinearProgress size="small" color="info" />}
           </Typography>
         </motion.span>
       </Grid>
 
+      {/**
+       * Render a child component called "DraftMetaInfo". This componet displays the drafts meta information 
+       * such as short title, summary, description, onpening and closing dates, document access, download link etc.
+       * You can see the detail documention available in the file named "DraftMetaInfo.jsx", read it there for 
+       * a better understanding
+       */}
       <DraftMetaInfo
         documentDetail={documentDetail}
         setDocumentDetail={setDocumentDetail}
@@ -165,6 +251,9 @@ const DocumentDetails = () => {
         setLoading={setLoading}
       />
 
+{/** 
+ * A collapsable list item button used to hide and show the document content for preview
+ */}
       <ListItemButton
         onClick={handlePreviewCollapse}
         color="secondary"
@@ -207,6 +296,10 @@ const DocumentDetails = () => {
         unmountOnExit
         sx={{ marginLeft: "30px", marginRight: "30px" }}
       >
+        {/**
+         * Render the DocumentPreview component inside the "Collapse" component of the Material UI collapse component.
+         * The DocumentPreview component is the component used to render the document content
+         */}
         <DocumentPreview
           documentDetail={documentDetail}
           setDocumentDetail={setDocumentDetail}
@@ -221,10 +314,21 @@ const DocumentDetails = () => {
       </Collapse>
 
       <>
+      {/**
+       * Render InstitutionInvitations component which is a definition to render list of invited institutions to 
+       * provide their consultation on the current document
+       */}
         <InstitutionInvitations documentDetail={documentDetail} />
 
+        {/**
+         * Render CommentRepliers component which is a definition to render list of users assigned to provide replies to 
+         * comments provided by commenters
+         */}
         <CommentRepliers documentDetail={documentDetail} />
 
+        {/**
+         * Render PersonalInvitations component which is a definition to render list of emails to which individual invitations sent
+         */}
         <PersonalInvitations documentDetail={documentDetail} />
       </>
     </Box>

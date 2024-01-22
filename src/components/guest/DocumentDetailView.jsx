@@ -30,6 +30,12 @@ import AddDocumentLevelComments from "./partials/AddDocumentLevelComments";
 import { FileDownload } from "@mui/icons-material";
 import { UserContext } from "../../contexts/UserContext";
 
+/**
+ * This component will be executed when user clicks a document list card from 'DocumentList.jsx' component. 
+ * That means, from list of public document displayed on the homepage, when the user clicks on of them,
+ * the detail infomation of the document will be displayed along with its contents with a full navigation
+ */
+
 const DocumentDetailView = () => {
   // Create variable to retrieve data from the page url using useParams() hook
   const params = useParams();
@@ -52,8 +58,16 @@ const DocumentDetailView = () => {
   // access the logged in user information from the UserContext definition
   const { userInfo, userRole } = useContext(UserContext);
 
+  /**
+   * Access the global styling information or theme from theme.js and use it
+   * to setup the look and feel of the page and its internal components such as color.
+   */
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  /**
+   * Access translation object
+   */
   const { t } = useTranslation();
 
   // Menu collapse functionality to collapse and release the table of contents use to navigate the document
@@ -74,7 +88,7 @@ const DocumentDetailView = () => {
   };
 
   /**
-   * Create useEffect hook and call a function the implements
+   * Create useEffect hook and call a function that implements
    * an API call to fetch documentDetails, documentSections and documentComments data
    */
 
@@ -144,7 +158,10 @@ const DocumentDetailView = () => {
      */
     <Box sx={{ backgroundColor: colors.grey[200] }}>
       {" "}
-      {/* Box to to render the documents meta info */}
+      
+      {/**
+       * Box to render the document's meta info
+      */}
       <Box
         sx={{
           backgroundColor: "#255B7E",
@@ -1013,7 +1030,7 @@ const DocumentDetailView = () => {
                     )}
                     {/* 
                       Render AddDocumentLevelComment component and allow user to provide comment 
-                      if he his user role is 'commenter, and documentDetail value is not emprty 
+                      if his user role is 'commenter, and documentDetail value is not empty 
                       and draft status name is 'Open' 
                     */}
                     {userRole === "Commenter" &&

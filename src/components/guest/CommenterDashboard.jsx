@@ -5,6 +5,12 @@ import { UserContext } from "../../contexts/UserContext";
 import axios from "../../axios/AxiosGlobal";
 import UserProfile from "../admin/users/UserProfile";
 
+/**
+ * This component is used to Create the commenter's dashboard UI. Here the commenter can access 
+ * tools such as list of draft documents assigned to reply for comments, invited drafts to comment 
+ * assigned by the institution and list of personally invited drafts to comment
+ * @returns 
+ */
 const CommenterDashboard = () => {
   const { userInfo } = useContext(UserContext);
   const [drafts, setDrafts] = useState(null);

@@ -12,6 +12,26 @@ import { useParams } from "react-router-dom";
 import { tokens } from "../../../theme";
 import DraftActions from "./DraftActions";
 
+/**
+ * This component is used to render the drafts meta information 
+ * along with action buttons with a sub-component (DraftActions). 
+ * It receives the following values as a props from its parent component
+ * (DocumentDetails)
+ * @param {*} documentDetail - Variable to store whole all attributes of the document returned from the http request
+ * @param {*} setDocumentDetail - Setter method to set the draft meta data into documentDetail object 
+ * @param {*} serverErrorMsg -  Variable to store server error information coming from the server
+ * @param {*} serverSuccessMsg -  Variable to store success information coming from the server
+ * @param {*} setServerErrorMsg -  Setter method to store the server error information into serverErrorMessage
+ * @param {*} setServerSuccessMsg -  Setter method to store the server success information into serverSuccessMessage
+ * @param {*} fetchDocumentDetails -  A method to handle fetching document info from the server
+ * @param {*} fetchDocumentSections -  A method to handle fetching document sections from the server
+ * @param {*} fetchDocumentComments -  A method to handle fetching document comments from the server
+ * @param {boolean} loading -  Variable to store boolean value that is used to show an indicator whether 
+ *  request is completed or not
+ * @param {*} setLoading -  Setter method to set value to the loading value
+ * @returns 
+ */
+
 const DraftMetaInfo = ({
   documentDetail,
   setDocumentDetail,
@@ -26,15 +46,38 @@ const DraftMetaInfo = ({
   loading,
   setLoading
 }) => {
+
+  /**
+   * Create params variable to access url parameteres with the useParams hook 
+   * so that we can access the documents ID from the URL and hence we can
+   * query the document detail info using the ID as a selector
+   */
   const params = useParams();
 
+  /**
+   * Destructure and access the translation object from the useTranslation hook 
+   * from the i18next internationalization library.
+   */
   const {t}=useTranslation();
 
+  /**
+   * Access theme object from the useTheme user defined hook
+   */
   const theme = useTheme();
+
+  /**
+   * Access color mode for dark and light themes.
+   */
   const colors = tokens(theme.palette.mode);
 
   return (
+    /**
+     * Create UI for rendering documentDetails, sections and document comments. Enclose the UI with Box element of Material UI
+     */
     <Box>
+      {/**
+       * Render documentDetails data
+       */}
       <Box sx={{ marginBottom: "30px", padding: "40px" }}>
         {documentDetail ? (
           <Grid container>
@@ -48,12 +91,18 @@ const DraftMetaInfo = ({
                   color: colors.primary[200],
                 }}
               >
+                {/**
+                 * Render document title with h3 Typography
+                 */}
                 {documentDetail.short_title}
               </Typography>
               <Typography
                 variant="h5"
                 sx={{ paddingBottom: "30px", textAlign: "justify" }}
               >
+                {/**
+                 * Render document summary with h5 Typography
+                 */}
                 {documentDetail.summary}
               </Typography>
 
@@ -70,6 +119,9 @@ const DraftMetaInfo = ({
               </Typography>
 
               <Grid container spacing={1}>
+                {/**
+                 * Render document meta data attributes such as institution name, law category, draft status, opening and closing date 
+                 */}
                 <Grid item xs={6} md={6}>
                   <strong>{t('institution')}</strong>
                 </Grid>
@@ -248,6 +300,12 @@ const DraftMetaInfo = ({
             </Grid>
 
             <Grid item xs={4}>
+              {/**
+               * Render DraftActions component. This component is used to access or display 
+               * action buttons to perform on the document such as to "Accept / Reject" opening request,
+               * to send invitations to people and institutions and to close or end the consultation.
+               * Go to DraftActions sub-component to understand more.
+               */}
               <DraftActions
                 draftID={params.id}
                 documentDetail={documentDetail}
@@ -267,6 +325,9 @@ const DraftMetaInfo = ({
             </Grid>
           </Grid>
         ) : (
+          /**
+           * Show progressbar to indicate the http request is under progress to render the draft meta information
+           */
           <CircularProgress color="secondary" />
         )}
       </Box>

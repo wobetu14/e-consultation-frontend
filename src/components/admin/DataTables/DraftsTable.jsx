@@ -34,7 +34,7 @@ import { useTranslation } from "react-i18next";
  */
 
 /**
- * Create DraftsTable component
+ * Create functional component named 'DraftsTable'
  */
 const DraftsTable = () => {
   const theme = useTheme();
@@ -43,7 +43,7 @@ const DraftsTable = () => {
   const { t } = useTranslation();
 
   /**
-   * Destructure important data from the Drafts Data Context. Note that we are going to destructure only
+   * Destructure important data from the DraftsDataContext. Note that we are going to destructure only
    * the variables we are going to use in this child component
    */
   const {
@@ -80,7 +80,7 @@ const DraftsTable = () => {
   };
 
   /**
-   * Show / Hide Add User Form
+   * Show / Hide 'Add User' Form
    * These two methods are used to show and hide forms to add and edit drafts data.
    * The hide / show functionalies are triggered upon click event of buttons available on the top right corner
    * of the drafts data table
@@ -106,7 +106,9 @@ const DraftsTable = () => {
    */
   const deleteDraftDialog = (draftRow) => {
     setDraft(draftRow);
-    // Set openDialog variable to true to show the delete dialog
+    /**
+     * Set openDialog variable to true to show the delete dialog
+     */
     setOpenDialog(true);
   };
 
@@ -209,6 +211,9 @@ const DraftsTable = () => {
       selector: (row) => {
         return (
           <Stack spacing={0} direction="row">
+            {/**
+             * Create a button, when clicked, used to trigger an "Edit Draft" form. 
+             */}
             <Button
               variant="Link"
               size="small"
@@ -219,6 +224,9 @@ const DraftsTable = () => {
             >
               <ModeEditIcon fontSize="small" color="secondary" />
             </Button>
+            {/**
+             * Create a button, when clicked, will trigger a "Delete Draft" dialog box.
+             */}
             <Button
               variant="Link"
               size="small"
@@ -261,8 +269,9 @@ const DraftsTable = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          {/* 
-            Display response message resulted from the API call. Sucess or error messages
+          {/**
+           * Display response message resulted from the API call; success or error messages.
+           * This messages are triggered when we submit a form to add, update, edit or delete drafts data            
            */}
           <Typography variant="h1">
             {serverSuccessMsg ? (
@@ -280,6 +289,9 @@ const DraftsTable = () => {
             ) : null}
           </Typography>
 
+          {/**
+           * Display error message if network related exception happened in loading or submitting information to the server
+           */}
           <Typography variant="h1">
             {networkError === "ERR_NETWORK" ? (
               <Alert severity="error" variant="outlined">
@@ -322,7 +334,9 @@ const DraftsTable = () => {
 
       {showDraftEditForm && <EditDraft />}{" "}
 
-      {/* Show <EditDraft /> component if the showDraftEditForm value is true */}
+      {/**
+       * Show <EditDraft /> component if the showDraftEditForm value is true 
+       */}
       
       <Paper elevation={1} sx={{ marginTop: "10px", marginBottom: "350px" }}>
         {/* 
@@ -333,10 +347,11 @@ const DraftsTable = () => {
           columns={columns} /* Define columns from columns object definition */
           data={
             filteredDrafts
-          } /* define the data props value from filteredDrafts*/
+          } /* Define the data props value from filteredDrafts*/
           pagination /* Use table pagination */
           selectableRowsHighlight
-          subHeader /* Create sub header to add other table components such as filter TextField and Add / Edit drafts button */
+          subHeader 
+          /* Create sub header to add other table components such as filter TextField and Add / Edit drafts button */
           progressPending={
             filteredDrafts.length <= 0
           } /* Display pending progress bar if the length of filteredDrafts array is less or equals to 0 */
@@ -391,7 +406,11 @@ const DraftsTable = () => {
                 />
               </Box>
               <Box>
-                {/* Show add drafts form and a button to show and hide the draft form */}
+                {/**
+                 * Create a button to hide a form used to add new draft if the value of 
+                 * the variable 'showDraftAddForm' is true. This button is a toggle button to hide and show
+                 * a "Create Draft" form.
+                 */}
                 {showDraftAddForm ? (
                   <Button
                     variant="contained"
@@ -402,8 +421,13 @@ const DraftsTable = () => {
                   >
                     <VisibilityOffIcon /> {t("hide_form")}
                   </Button>
-                ) : /* Show edit drafts form and a button to hide and show the edit draft form */
-                /* Note that toggling between add form and edit form is vice versa. */
+                ) : 
+                
+                /**
+                 * Create a button to hide a form used to edit the selected draft info, if the value of 
+                 * the variable "showDraftEditForm" is true. This button is a toggle button to hide and show 
+                 * a "Edit Draft" form.
+                 */
                 showDraftEditForm ? (
                   <Button
                     variant="contained"
@@ -415,6 +439,11 @@ const DraftsTable = () => {
                     <VisibilityOffIcon /> {t("hide_form")}
                   </Button>
                 ) : (
+                  /**
+                   * Create a button labeled "Add new draft" and when clicked will show the "Add new Draft" button.
+                   * This button will be shown only if the variables "showDraftEditForm" and "showAddDraftFrom" 
+                   * set to false
+                   */
                   <Button
                     variant="contained"
                     size="small"

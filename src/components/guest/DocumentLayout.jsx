@@ -5,6 +5,11 @@ import Topbar from "../../partials/main-menu/Topbar";
 import { tokens, useMode } from "../../theme";
 import Footer from "../../partials/Footer";
 
+/**
+ * This component is a layout component used to render <DocumentDetailView /> 
+ * and <CommentReflections /> components
+ * @returns 
+ */
 const DocumentLayout = () => {
   const [theme, colorMode] = useMode();
   const colors = tokens(theme.palette.mode);

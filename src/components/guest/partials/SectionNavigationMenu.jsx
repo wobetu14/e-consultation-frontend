@@ -5,7 +5,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
-import { Typography, useTheme } from "@mui/material";
+import { Tooltip, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../../theme";
 
 const SectionNavigationMenu = ({ section, paddingValue }) => {
@@ -32,9 +32,11 @@ const SectionNavigationMenu = ({ section, paddingValue }) => {
                   style={{ textDecoration: "none", color: colors.primary[300] }}
                   onClick={() => changeSelectedColor(section.id)}
                 >
-                  <Typography variant="subtitle1">
-                    {section.section_title}
-                  </Typography>
+                  <Tooltip title={section.section_title}>
+                    <Typography variant="subtitle1">
+                      {section.section_title.substring(0,25)}...
+                    </Typography>
+                  </Tooltip>
                 </a>
               </>
             }
