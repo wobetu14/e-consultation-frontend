@@ -54,19 +54,21 @@ const colors=tokens(theme.palette.mode)
         {
             networkError!==null ? (
               <>
-                <Typography variant="h5" fontWeight={600}>
-                  Couldn't logout. Please try again.
+                <Typography variant="h5">
+                  Couldn't logout. &nbsp;
                   <Button
                     onClick={logout}
-                    color="secondary"
+                    variant="outlined"
+                    color="primary"
+                    size="small"
                     sx={{ textTransform: "none" }}
                   >
-                  <RefreshIcon fontSize="small" />
+                  Try again <RefreshIcon fontSize="small" />
                 </Button>
                 </Typography>
               </>
             ):(
-              <Typography variant="h5" fontWeight="600">
+              <Typography variant="h5">
                 {title}... 
               </Typography>
             )

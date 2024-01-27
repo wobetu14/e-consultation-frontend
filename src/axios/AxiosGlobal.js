@@ -9,7 +9,7 @@ import axios from "axios";
  */
 
 const instance = axios.create({
-  baseURL: "http://backend.e-consultation.gov.et/api/v1/",
+  baseURL: "https://backend.e-consultation.gov.et/api/v1/",
   headers: {
     Authorization: `Bearer ${localStorage.getItem("token")}`,
     Accept: "application/json",
@@ -20,5 +20,5 @@ const instance = axios.create({
 /**
  * Define root URL for accessing resources from the server side such as files, images and server-side generated reports
  */
-export const rootURL = "http://backend.e-consultation.gov.et/api/v1/";
+export const rootURL = "https://backend.e-consultation.gov.et/api/v1/";
 export default instance;
