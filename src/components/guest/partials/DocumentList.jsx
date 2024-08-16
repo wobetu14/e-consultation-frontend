@@ -30,7 +30,7 @@ const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
       {/* Create list componet inside a Paper from Material UI for display draft info. */}
       <Paper
         elevation={1}
-        sx={{ backgroundColor: colors.grey[200], marginBottom: "20px" }}
+        sx={{ /* backgroundColor: colors.grey[200], */ marginBottom: "20px" }}
         className="document_list_container"
       >
         <List elevation={1} sx={{ width: "100%" }}>

@@ -120,7 +120,18 @@ const PasswordChangeRequest = () => {
   };
 
   return (
-    <Box sx={{ marginTop: "100px" }}>
+    <Box
+      sx={{
+        marginTop: "100px",
+        margin: {
+          xs: "0 20px",
+          sm: "0 50px",
+          md: "0 200px",
+          lg: "0 300px",
+          xl: "0 500px",
+        },
+      }}
+    >
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -131,8 +142,13 @@ const PasswordChangeRequest = () => {
           sx={{
             padding: "20px",
             margin: "20px auto",
-            width: "500px",
-            backgroundColor: colors.grey[200],
+            width: {
+              md: "400px",
+              lg: "500px",
+              xl: "500px",
+            },
+            // width: "500px",
+            // backgroundColor: colors.grey[200],
           }}
         >
           <Grid align="center">

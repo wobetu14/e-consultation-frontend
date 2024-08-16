@@ -76,7 +76,7 @@ const SectionFeedbackPreview = ({ comments, section, documentDetail }) => {
                       <ListItem
                         alignItems="flex-center"
                         key={comment.id}
-                        sx={{ height: "75px" }}
+                        sx={{ height: "auto" }}
                       >
                         <ListItemAvatar>
                           <Avatar
@@ -136,7 +136,8 @@ const SectionFeedbackPreview = ({ comments, section, documentDetail }) => {
                                 variant="body1"
                                 color="text.primary"
                               >
-                                {comment.section_comment}
+                                <span dangerouslySetInnerHTML={{ __html:comment.section_comment }} />
+                                {/* {comment.section_comment} */}
                               </Typography>
                             </>
                           }

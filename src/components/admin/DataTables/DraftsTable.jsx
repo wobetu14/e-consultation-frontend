@@ -212,7 +212,7 @@ const DraftsTable = () => {
         return (
           <Stack spacing={0} direction="row">
             {/**
-             * Create a button, when clicked, used to trigger an "Edit Draft" form. 
+             * Create a button, when clicked, used to trigger an "Edit Draft" form.
              */}
             <Button
               variant="Link"
@@ -232,6 +232,7 @@ const DraftsTable = () => {
               size="small"
               sx={{ textTransform: "none" }}
               onClick={() => deleteDraftDialog(row)}
+              disabled={true}
             >
               <DeleteIcon
                 fontSize="small"
@@ -271,7 +272,7 @@ const DraftsTable = () => {
         >
           {/**
            * Display response message resulted from the API call; success or error messages.
-           * This messages are triggered when we submit a form to add, update, edit or delete drafts data            
+           * This messages are triggered when we submit a form to add, update, edit or delete drafts data
            */}
           <Typography variant="h1">
             {serverSuccessMsg ? (
@@ -329,15 +330,11 @@ const DraftsTable = () => {
         />
       )}
       {showDraftAddForm && <CreateDraft />}{" "}
-
       {/* Show <CreateDraft /> component if showDraftAddForm value is true */}
-
       {showDraftEditForm && <EditDraft />}{" "}
-
       {/**
-       * Show <EditDraft /> component if the showDraftEditForm value is true 
+       * Show <EditDraft /> component if the showDraftEditForm value is true
        */}
-      
       <Paper elevation={1} sx={{ marginTop: "10px", marginBottom: "350px" }}>
         {/* 
           Render the data table. <DataTable /> component is a built in data table from react-data-table-component.
@@ -350,7 +347,7 @@ const DraftsTable = () => {
           } /* Define the data props value from filteredDrafts*/
           pagination /* Use table pagination */
           selectableRowsHighlight
-          subHeader 
+          subHeader
           /* Create sub header to add other table components such as filter TextField and Add / Edit drafts button */
           progressPending={
             filteredDrafts.length <= 0
@@ -407,7 +404,7 @@ const DraftsTable = () => {
               </Box>
               <Box>
                 {/**
-                 * Create a button to hide a form used to add new draft if the value of 
+                 * Create a button to hide a form used to add new draft if the value of
                  * the variable 'showDraftAddForm' is true. This button is a toggle button to hide and show
                  * a "Create Draft" form.
                  */}
@@ -421,11 +418,9 @@ const DraftsTable = () => {
                   >
                     <VisibilityOffIcon /> {t("hide_form")}
                   </Button>
-                ) : 
-                
-                /**
-                 * Create a button to hide a form used to edit the selected draft info, if the value of 
-                 * the variable "showDraftEditForm" is true. This button is a toggle button to hide and show 
+                ) : /**
+                 * Create a button to hide a form used to edit the selected draft info, if the value of
+                 * the variable "showDraftEditForm" is true. This button is a toggle button to hide and show
                  * a "Edit Draft" form.
                  */
                 showDraftEditForm ? (
@@ -441,7 +436,7 @@ const DraftsTable = () => {
                 ) : (
                   /**
                    * Create a button labeled "Add new draft" and when clicked will show the "Add new Draft" button.
-                   * This button will be shown only if the variables "showDraftEditForm" and "showAddDraftFrom" 
+                   * This button will be shown only if the variables "showDraftEditForm" and "showAddDraftFrom"
                    * set to false
                    */
                   <Button

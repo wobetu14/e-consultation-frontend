@@ -27,7 +27,7 @@ import EditProfileForm from "./EditProfileForm";
 import { useTranslation } from "react-i18next";
 
 /**
- * This component is used to render the user profile for logged in users along with important actions 
+ * This component is used to render the user profile for logged in users along with important actions
  * such as edit profile and change password
  */
 
@@ -35,7 +35,6 @@ import { useTranslation } from "react-i18next";
  * Create a functional component named "UserProfile()"
  */
 const UserProfile = () => {
-
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -50,7 +49,6 @@ const UserProfile = () => {
   const { userInfo, setUserInfo } = useContext(UserContext);
   const [usersData, setUsersData] = useState(null);
 
-
   const [institutions, setInstitutions] = useState(null);
   const [userRoles, setUserRoles] = useState(null);
 
@@ -59,8 +57,8 @@ const UserProfile = () => {
    */
   const [openListItem, setOpenListItem] = useState(false);
 
-    /**
-   * Create state to store the progress of an API call. This is usefull to display a progressbar. 
+  /**
+   * Create state to store the progress of an API call. This is usefull to display a progressbar.
    * If it is loading value is true, the system will display progress bar to indicate the request is being processed.
    * And if it is false, Progressbar will disapear to indicate request processing is completed.
    */
@@ -71,7 +69,7 @@ const UserProfile = () => {
    */
   const [networkError, setNetworkError] = useState(null);
 
-    /**
+  /**
    * Destructure translation object from i18next internationalization API using the useTranslation() hook
    */
   const { t } = useTranslation();
@@ -153,7 +151,7 @@ const UserProfile = () => {
   };
 
   /**
-   * Method definition to fetch user roles of the logged in user roles. This is an API call the server 
+   * Method definition to fetch user roles of the logged in user roles. This is an API call the server
    * @returns listOfRoles - List user roles of the logged in user, if the API call completes succesfully
    * @returns exception - Error message if the API call fails to complete
    */
@@ -175,7 +173,7 @@ const UserProfile = () => {
 
   /**
    * Method definition to fetch the detail info of the logged in user. This is an API call to the server
-   * @returns useDetailInfo - Detail users meta data if the API call completed successfully 
+   * @returns useDetailInfo - Detail users meta data if the API call completed successfully
    * @returns exception -  Error message if the API call fails to complete
    */
   const fetchUser = async () => {
@@ -403,7 +401,7 @@ const UserProfile = () => {
       </Grid>
 
       {/**
-       * Render EditProfileForm if the showProfileForm state is true. 
+       * Render EditProfileForm if the showProfileForm state is true.
        */}
       {showProfileForm && (
         <EditProfileForm

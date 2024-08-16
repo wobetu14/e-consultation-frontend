@@ -73,9 +73,11 @@ const DraftInvitationCheckpoint = ({ draftID }) => {
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("userRole", res.data.user.roles[0].name);
             localStorage.setItem("userInfo", JSON.stringify(res.data));
+
             setUserRole(localStorage.getItem("userRole"));
             setUserToken(localStorage.getItem("token"));
             setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+
             if (localStorage.getItem("userRole") === "Commenter") {
               navigate(`/draft/${draftID}`);
             }

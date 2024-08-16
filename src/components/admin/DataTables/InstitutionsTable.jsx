@@ -194,6 +194,7 @@ const InstitutionsTable = () => {
               size="small"
               sx={{ textTransform: "none" }}
               onClick={() => deleteInstitutionDialog(row)}
+              disabled={true}
             >
               <DeleteIcon
                 fontSize="small"

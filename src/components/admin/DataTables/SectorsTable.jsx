@@ -165,6 +165,7 @@ const SectorsTable = () => {
               size="small"
               sx={{ textTransform: "none" }}
               onClick={() => deleteSectorDialog(row)}
+              disabled={true}
             >
               <DeleteIcon
                 fontSize="small"

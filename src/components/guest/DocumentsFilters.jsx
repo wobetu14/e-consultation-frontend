@@ -274,7 +274,7 @@ const DocumentsFilters = ({
      */
     <Paper
       elevation={1}
-      sx={{ backgroundColor: colors.grey[200], padding: "15px" }}
+      sx={{ /* backgroundColor: colors.grey[200], */ padding: "15px" }}
     >
       {/* <form> */}
       <Box marginBottom="15px">
@@ -375,7 +375,7 @@ const DocumentsFilters = ({
         </RadioGroup>
       </Box>
 
-      <Box marginBottom="15px">
+      {/* <Box marginBottom="15px">
         <Typography variant="h6" fontWeight={600}>
           {t("economic_sector")}
         </Typography>
@@ -398,7 +398,7 @@ const DocumentsFilters = ({
             />
           )}
         />
-      </Box>
+      </Box> */}
     </Paper>
   );
 };

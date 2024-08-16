@@ -10,6 +10,8 @@ import {
   useTheme,
 } from "@mui/material";
 import { tokens } from "../../../../theme";
+import { useState } from "react";
+import axios from '../../../../axios/AxiosGlobal';
 
 const DeleteCommentDialog = ({
   title,
@@ -17,9 +19,57 @@ const DeleteCommentDialog = ({
   commentID,
   openDeleteDialog,
   setOpenDeleteDialog,
+
+  fetchDocumentDetails,
+  fetchDocumentSections,
+  fetchDocumentComments,
+
+  serverErrorMsg,
+  serverSuccessMsg,
+  networkError,
+  loading,
+  networkErrorMessag,
+  setServerErrorMsg,
+  setServerSuccessMsg,
+  setNetworkError,
+  setLoading,
+  setNetworkErrorMessage,
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const deleteComment = async (commentID) => {
+    setNetworkError(null);
+    setServerErrorMsg(null);
+    setServerSuccessMsg(null);
+    setLoading(true);
+    return await axios
+      .delete(`comments/${commentID}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        setServerSuccessMsg(res.data.message);
+        setServerErrorMsg(null);
+        setNetworkError(null);
+        setLoading(false);
+        setOpenDeleteDialog(false);
+
+        fetchDocumentDetails();
+        fetchDocumentSections();
+        fetchDocumentComments();
+      })
+      .catch((errors) => {
+        setServerErrorMsg(errors.response.data.message);
+        setServerSuccessMsg(null);
+        setNetworkError(errors.code);
+        setLoading(false);
+      });
+  };
+
   return (
     <>
       <Dialog
@@ -47,6 +97,7 @@ const DeleteCommentDialog = ({
             Cancel
           </Button>
           <Button
+            onClick={() => deleteComment(commentID)}
             variant="contained"
             size="small"
             sx={{

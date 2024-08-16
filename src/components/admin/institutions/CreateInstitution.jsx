@@ -177,11 +177,7 @@ const CreateInstitution = () => {
 
       telephone: YUP.string()
         .required(`${t("field_required")}${t("please_enter_mobile_number")}`)
-        .phone(
-          "ET",
-          true,
-          `${t("invalid_phone_number")}`
-        ),
+        .phone("ET", true, `${t("invalid_phone_number")}`),
       email: YUP.string()
         .required(`${t("field_required")}${t("please_enter_email_address")}`)
         .email(`${t("invalid_email")}`),

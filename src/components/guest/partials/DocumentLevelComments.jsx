@@ -8,8 +8,16 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import PublicRepliesToGeneralComments from "./PublicRepliesToGeneralComments";
+import ManageComment from "./ManageComment";
 
-const DocumentLevelComments = ({ comment }) => {
+const DocumentLevelComments = ({
+  comment,
+  section,
+  documentDetail,
+  fetchDocumentDetails,
+  fetchDocumentSections,
+  fetchDocumentComments,
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -24,7 +32,7 @@ const DocumentLevelComments = ({ comment }) => {
           <ListItem
             alignItems="flex-center"
             key={comment.id}
-            sx={{ height: "40px" }}
+            sx={{ height: "auto" }}
           >
             <ListItemAvatar>
               <Avatar
@@ -40,17 +48,33 @@ const DocumentLevelComments = ({ comment }) => {
                 padding: "10px",
               }}
               primary={
-                <>
-                  <Typography variant="h5" fontWeight="600">
-                    {comment.commenter
-                      ? `${
-                          comment.commenter.first_name +
-                          " " +
-                          comment.commenter.middle_name
-                        }`
-                      : "Anonymous"}
-                  </Typography>
-                </>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <div>
+                    <Typography variant="h5" fontWeight="600">
+                      {comment.commenter
+                        ? `${
+                            comment.commenter.first_name +
+                            " " +
+                            comment.commenter.middle_name
+                          }`
+                        : "Anonymous"}
+                    </Typography>
+                  </div>
+                  <div>
+                    <ManageComment
+                      commentID={comment.id}
+                      commentText={comment.general_comment}
+                      fetchDocumentDetails={fetchDocumentDetails}
+                      fetchDocumentSections={fetchDocumentSections}
+                      fetchDocumentComments={fetchDocumentComments}
+                    />
+                  </div>
+                </div>
               }
               secondary={
                 <>

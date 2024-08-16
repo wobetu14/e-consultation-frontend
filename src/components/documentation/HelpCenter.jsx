@@ -13,7 +13,7 @@ const HelpCenter = () => {
   const colors = tokens(theme.palette.mode);
   return (
     <>
-      <Box margin="0 110px">
+      <Box>
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -22,12 +22,22 @@ const HelpCenter = () => {
           <Grid
             container
             sx={{
-              paddingTop: "50px",
+              paddingTop: "100px",
               display: "flex",
               justifyContent: "space-between",
             }}
           >
-            <Box margin="0px 200px">
+            <Box
+              sx={{
+                margin: {
+                  xs: "0 20px",
+                  sm: "0 20px",
+                  md: "0 100px",
+                  lg: "0 250px",
+                  xl: "0 300px",
+                },
+              }}
+            >
               <Typography
                 variant="h3"
                 sx={{

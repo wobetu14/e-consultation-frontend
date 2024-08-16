@@ -31,7 +31,7 @@ const ReplyDocumentLevelComments = ({
           <ListItem
             alignItems="flex-center"
             key={comment.id}
-            sx={{ height: "40px" }}
+            sx={{ height: "auto" }}
           >
             <ListItemAvatar>
               <Avatar

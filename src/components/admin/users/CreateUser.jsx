@@ -7,6 +7,7 @@ import {
   Select,
   FormHelperText,
   MenuItem,
+  Autocomplete,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useFormik } from "formik";
@@ -23,8 +24,10 @@ import { useTranslation } from "react-i18next";
 const CreateUser = () => {
   const [institutions, setInstitutions] = useState(null);
   const [regions, setRegions] = useState(null);
-  const [userRoles, setUserRoles] = useState(null);
+  const [userRoles, setUserRoles] = useState([]);
   const { t } = useTranslation();
+
+  const [selectedRoles, setSelectedRoles] = useState([]);
 
   // User context
   const { userInfo, userRole } = useContext(UserContext);
@@ -43,6 +46,7 @@ const CreateUser = () => {
     fontWeight: "400",
     fontSize: "15px",
   };
+
 
   useEffect(() => {
     fetchInstitutions();
@@ -113,7 +117,7 @@ const CreateUser = () => {
       email: "",
       password: "",
       confirmPassword: "",
-      roleName: "",
+      roles: [],
       regionID: userInfo ? userInfo.user.region_id : "",
       institutionID: "",
       createdBy: userInfo ? userInfo.user.id : "",
@@ -136,9 +140,9 @@ const CreateUser = () => {
       email: YUP.string()
         .required(`${t("field_required")} ${t("please_enter_email_address")}`)
         .email(`${t("invalid_email")}`),
-      roleName: YUP.string().required(
+      /* roleName: YUP.string().required(
         `${"field_required"} ${t("please_select_user_role")}`
-      ),
+      ), */
     }),
 
     onSubmit: (values) => {
@@ -158,7 +162,10 @@ const CreateUser = () => {
           values.lastName
         ).toLocaleLowerCase(),
         email: values.email,
-        roles: values.roleName,
+        roles:
+          selectedRoles.length > 0
+            ? selectedRoles.map((selectedRole) => selectedRole.role.name)
+            : [],
         created_by: values.createdBy,
         updated_by: values.updatedBy,
         region_id: values.regionID,
@@ -249,7 +256,7 @@ const CreateUser = () => {
               />
               {userInfo ? (
                 userInfo.user.roles[0].name === "Super Admin" &&
-                formik.values.roleName === "Regional Admin" ? (
+                selectedRoles.some((selectedRole)=>selectedRole.role.name==="Regional Admin") ? (
                   <FormControl sx={{ minWidth: "100%", paddingBottom: "5px" }}>
                     <InputLabel>{t("select_region")} *</InputLabel>
                     <Select
@@ -257,7 +264,8 @@ const CreateUser = () => {
                       id="region_id"
                       size="small"
                       color="info"
-                      name="regionID"
+                        name="regionID"
+                        required
                       value={formik.values.regionID}
                       onChange={formik.handleChange}
                       onClick={fetchRegions}
@@ -308,7 +316,8 @@ const CreateUser = () => {
                     id="institution_id"
                     size="small"
                     color="info"
-                    name="institutionID"
+                      name="institutionID"
+                      required
                     onClick={fetchInstitutions}
                     value={formik.values.institutionID}
                     onChange={formik.handleChange}
@@ -377,7 +386,6 @@ const CreateUser = () => {
                   ) : null
                 }
               />
-
             </Grid>
             <Grid item xs={4}>
               <TextField
@@ -401,20 +409,43 @@ const CreateUser = () => {
               />
 
               <FormControl sx={{ minWidth: "100%", paddingBottom: "30px" }}>
-                <InputLabel>{t("select_user_role")}</InputLabel>
-                <Select
-                  labelId="user_role"
-                  size="small"
-                  id="user_role"
+                {/* <InputLabel>{t("select_user_role")}</InputLabel> */}
+
+                <Autocomplete
+                  multiple
+                  label="Tags"
+                  id="roles"
+                  autoSelect
                   color="info"
-                  name="roleName"
+                  size="small"
+                  sx={{ paddingBottom: "10px" }}
+                  options={userRoles}
+                  getOptionLabel={(option) => option.role.name}
                   onClick={fetchUserRoles}
-                  value={formik.values.roleName}
-                  onChange={formik.handleChange}
+                  onChange={(e, value) => {setSelectedRoles(value); console.log(selectedRoles)}}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={t("select_user_role")}
+                      value={(option) => option}
+                      color="info"
+                    />
+                  )}
+                />
+
+                {/* <Select
+                  labelId="user_roles"
+                  size="small"
+                  id="user_roles"
+                  color="info"
+                  name="roles"
+                  onClick={fetchUserRoles}
+                  value={formik.values.roles}
+                  onChange={(e, value) => setSelectedRoles(value)}
                   helperText={
-                    formik.touched.roleName && formik.errors.roleName ? (
+                    formik.touched.roles && formik.errors.roles ? (
                       <span style={helperTextStyle}>
-                        {formik.errors.roleName}
+                        {formik.errors.roles}
                       </span>
                     ) : null
                   }
@@ -429,12 +460,10 @@ const CreateUser = () => {
                         </MenuItem>
                       ))
                     : null}
-                </Select>
+                </Select> */}
                 <FormHelperText>
-                  {formik.touched.roleName && formik.errors.roleName ? (
-                    <span style={helperTextStyle}>
-                      {formik.errors.roleName}
-                    </span>
+                  {formik.touched.roles && formik.errors.roles ? (
+                    <span style={helperTextStyle}>{formik.errors.roles}</span>
                   ) : null}
                 </FormHelperText>
               </FormControl>

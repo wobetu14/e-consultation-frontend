@@ -120,18 +120,30 @@ const GuestSignup = () => {
   };
 
   return (
-    <Box sx={{ backgroundColor: colors.grey[200] }}>
+    <Box
+      sx={{
+        backgroundColor: colors.grey[200],
+        marginTop:"100px",
+        margin: {
+          xs: "0 20px",
+          sm: "0 50px",
+          md: "0 200px",
+          lg: "0 300px",
+          xl: "0 500px",
+        },
+      }}
+    >
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
       >
         <Paper
-          elevation={0}
+          elevation={1}
           sx={{
             padding: "15px",
-            margin: "30px 100px",
-            backgroundColor: colors.grey[200],
+            marginTop: "30px",
+            // backgroundColor: colors.grey[200],
           }}
         >
           <Grid container spacing={2}>
@@ -147,7 +159,7 @@ const GuestSignup = () => {
             </Typography>
           </Grid>
 
-          <Grid container spacing={2} sx={{ marginLeft: "5px" }}>
+          <Grid container spacing={2} sx={{ paddingLeft: "15px", paddingRight:"5px"}}>
             <p>
               {serverSuccessMsg ? (
                 <Alert severity="success" style={successStyle}>
@@ -168,12 +180,13 @@ const GuestSignup = () => {
 
           <form onSubmit={formik.handleSubmit}>
             <Grid container spacing={10}>
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <TextField
                   label={t("first_name") + "*"}
                   variant="outlined"
                   placeholder={t("enter_first_name")}
                   fullWidth
+                  size="small"
                   sx={{ paddingBottom: "25px" }}
                   color="info"
                   name="firstName"
@@ -192,6 +205,7 @@ const GuestSignup = () => {
                   variant="outlined"
                   placeholder={t("enter_middle_name")}
                   fullWidth
+                  size="small"
                   sx={{ paddingBottom: "25px" }}
                   color="info"
                   name="middleName"
@@ -210,6 +224,7 @@ const GuestSignup = () => {
                   variant="outlined"
                   placeholder={t("enter_last_name")}
                   fullWidth
+                  size="small"
                   sx={{ paddingBottom: "25px" }}
                   color="info"
                   name="lastName"
@@ -228,6 +243,7 @@ const GuestSignup = () => {
                   variant="outlined"
                   placeholder={t("enter_email_address")}
                   fullWidth
+                  size="small"
                   sx={{ paddingBottom: "25px" }}
                   color="info"
                   name="email"
@@ -240,13 +256,14 @@ const GuestSignup = () => {
                     ) : null
                   }
                 />
-              </Grid>
-              <Grid item xs={6}>
+                {/* </Grid> */}
+                {/* <Grid item xs={6}> */}
                 <TextField
                   label={t("mobile_number") + "*"}
                   variant="outlined"
                   placeholder={t("enter_mobile_number")}
                   fullWidth
+                  size="small"
                   sx={{ paddingBottom: "25px" }}
                   color="info"
                   name="mobileNumber"
@@ -269,6 +286,7 @@ const GuestSignup = () => {
                   variant="outlined"
                   placeholder={t("enter_password")}
                   fullWidth
+                  size="small"
                   sx={{ paddingBottom: "25px" }}
                   color="info"
                   name="password"
@@ -288,6 +306,7 @@ const GuestSignup = () => {
                   variant="outlined"
                   placeholder={t("confirm_password")}
                   fullWidth
+                  size="small"
                   sx={{ paddingBottom: "25px" }}
                   color="info"
                   name="confirmPassword"
@@ -307,6 +326,7 @@ const GuestSignup = () => {
                   <Button
                     type="submit"
                     variant="outlined"
+                    size="small"
                     sx={{
                       backgroundColor: colors.brandColor[200],
                       color: colors.grey[300],

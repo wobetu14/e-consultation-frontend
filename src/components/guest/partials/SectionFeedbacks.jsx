@@ -31,9 +31,6 @@ const SectionFeedbacks = ({
 
   const [showFeedbacks, setShowFeedbacks] = useState(false);
 
-  const [openEditDialog, setOpenEditDialog] = useState(false);
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-
   // User context
   const { userInfo, userRole, userToken } = useContext(UserContext);
 
@@ -62,7 +59,7 @@ const SectionFeedbacks = ({
         </Button>
       </Box>
       {showFeedbacks && (
-        <Box sx={{ padding: "10px", borderRadius: "15px" }}>
+        <Box sx={{ borderRadius: "15px" }}>
           <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -105,7 +102,7 @@ const SectionFeedbacks = ({
                         <ListItem
                           alignItems="flex-center"
                           key={comment.id}
-                          sx={{ height: "75px" }}
+                          sx={{ height: "auto" }}
                         >
                           <ListItemAvatar>
                             <Avatar
@@ -119,6 +116,7 @@ const SectionFeedbacks = ({
                               backgroundColor: colors.grey[200],
                               borderRadius: "15px",
                               padding: "10px",
+                              height: "auto",
                             }}
                             primary={
                               <div
@@ -140,10 +138,6 @@ const SectionFeedbacks = ({
                                 </div>
                                 <div>
                                   <ManageComment
-                                    openDeleteDialog={openDeleteDialog}
-                                    setOpenDeleteDialog={setOpenDeleteDialog}
-                                    openEditDialog={openEditDialog}
-                                    setOpenEditDialog={setOpenEditDialog}
                                     commentID={comment.id}
                                     commentText={comment.section_comment}
                                     fetchDocumentDetails={fetchDocumentDetails}
@@ -160,12 +154,20 @@ const SectionFeedbacks = ({
                             secondary={
                               <>
                                 <Typography
-                                  sx={{ display: "inline" }}
+                                  sx={{
+                                    display: "inline",
+                                    textAlign: "justify",
+                                  }}
                                   component="span"
                                   variant="body1"
                                   color="text.primary"
                                 >
-                                  {comment.section_comment}
+                                  <span
+                                    dangerouslySetInnerHTML={{
+                                      __html: comment.section_comment,
+                                    }}
+                                  />
+                                  {/* {comment.section_comment} */}
                                 </Typography>
                               </>
                             }
@@ -205,16 +207,6 @@ const SectionFeedbacks = ({
               )
             ) : (
               ""
-            )}
-
-            {openDeleteDialog && (
-              <DeleteCommentDialog
-                fetchDocumentDetails={fetchDocumentDetails}
-                fetchDocumentSections={fetchDocumentSections}
-                fetchDocumentComments={fetchDocumentComments}
-                title="Deleting comment"
-                text="You are about to delete this comment. Are you sure?"
-              />
             )}
           </motion.span>
         </Box>

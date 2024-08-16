@@ -140,6 +140,7 @@ const RegionsTable = () => {
               size="small"
               sx={{ textTransform: "none" }}
               onClick={() => deleteRegionDialog(row)}
+              disabled={true}
             >
               <DeleteIcon
                 fontSize="small"

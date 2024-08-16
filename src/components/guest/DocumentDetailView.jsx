@@ -156,18 +156,36 @@ const DocumentDetailView = () => {
     /**
      * Create UI to render the document meta information, document content and comments and replies
      */
-    <Box sx={{ backgroundColor: colors.grey[200] }}>
+    <Box
+      sx={{
+        backgroundColor: colors.grey[200],
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       {" "}
-      
       {/**
        * Box to render the document's meta info
-      */}
+       */}
       <Box
         sx={{
           backgroundColor: "#255B7E",
           marginBottom: "30px",
-          paddingRight: "80px",
-          paddingLeft: "80px",
+          paddingRight: {
+            xs: "10px",
+            sm: "10px",
+            md: "20px",
+            lg: "80px",
+            xl: "80px",
+          },
+
+          paddingLeft: {
+            xs: "10px",
+            sm: "10px",
+            md: "20px",
+            lg: "80px",
+            xl: "80px",
+          },
           paddingBottom: "40px",
           paddingTop: "40px",
         }}
@@ -210,34 +228,50 @@ const DocumentDetailView = () => {
               </Typography>
 
               <Grid container spacing={1}>
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("institution")}</strong>
                   </Typography>
                 </Grid>
-                <Grid item xs={6} md={6} sx={{ color: "white" }}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  md={6}
+                  lg={6}
+                  xl={6}
+                  sx={{ color: "white" }}
+                >
                   {documentDetail.institution
                     ? documentDetail.institution.name
                     : null}
                 </Grid>
 
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("law_category")}</strong>
                   </Typography>
                 </Grid>
-                <Grid item xs={6} md={6} sx={{ color: "white" }}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  md={6}
+                  lg={6}
+                  xl={6}
+                  sx={{ color: "white" }}
+                >
                   {documentDetail.law_category
                     ? documentDetail.law_category.name
                     : null}
                 </Grid>
 
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("status")}</strong>
                   </Typography>
                 </Grid>
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   {documentDetail &&
                   documentDetail.draft_status.name === "Pending" ? (
                     <Chip
@@ -312,7 +346,7 @@ const DocumentDetailView = () => {
                   )}
                 </Grid>
 
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("draft_opening_date")}</strong>
                   </Typography>
@@ -332,12 +366,12 @@ const DocumentDetailView = () => {
                   />
                 </Grid>
 
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("draft_closing_date")}</strong>
                   </Typography>
                 </Grid>
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Chip
                     label={
                       documentDetail.comment_closing_date
@@ -352,32 +386,48 @@ const DocumentDetailView = () => {
                   />
                 </Grid>
 
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("base_legal_reference")}</strong>
                   </Typography>
                 </Grid>
-                <Grid item xs={6} md={6} sx={{ color: "white" }}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  md={6}
+                  lg={6}
+                  xl={6}
+                  sx={{ color: "white" }}
+                >
                   {documentDetail.base_legal_reference
                     ? documentDetail.base_legal_reference
                     : null}
                 </Grid>
 
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("legal_definition")}</strong>
                   </Typography>
                 </Grid>
-                <Grid item xs={6} md={6} sx={{ color: "white" }}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  md={6}
+                  lg={6}
+                  xl={6}
+                  sx={{ color: "white" }}
+                >
                   {documentDetail.definition ? documentDetail.definition : null}
                 </Grid>
 
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("document_file")}</strong>
                   </Typography>
                 </Grid>
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Button
                     href={documentDetail.file}
                     variant="contained"
@@ -399,7 +449,7 @@ const DocumentDetailView = () => {
               </Grid>
             </Grid>
 
-            <Grid item xs={3}>
+            <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
               {documentDetail.draft_status.name === "Closed" ? (
                 <Paper
                   elevation={1}
@@ -454,7 +504,11 @@ const DocumentDetailView = () => {
           <CircularProgress color="secondary" />
         )}
       </Box>
-      <Box sx={{ backgroundColor: colors.grey[200] }}>
+      <Box
+        sx={{
+          backgroundColor: colors.grey[200],
+        }}
+      >
         {" "}
         {/* Create Box to render document content */}
         <motion.span
@@ -464,8 +518,20 @@ const DocumentDetailView = () => {
         >
           <Box
             sx={{
-              marginRight: "30px",
-              marginLeft: "30px",
+              marginRight: {
+                xs: "10px",
+                sm: "10px",
+                md: "20px",
+                lg: "30px",
+                xl: "30px",
+              },
+              marginLeft: {
+                xs: "10px",
+                sm: "10px",
+                md: "20px",
+                lg: "30px",
+                xl: "30px",
+              },
               paddingBottom: "30px",
             }}
           >
@@ -474,8 +540,22 @@ const DocumentDetailView = () => {
               spacing={2}
               sx={{
                 paddingTop: "30px",
-                display: "flex",
+                // display: "flex",
                 justifyContent: "space-between",
+                display: {
+                  xs: "flex", // Display as flex on extra-small screens
+                  sm: "flex", // Display as flex on small screens
+                  md: "flex", // Display as flex on medium screens
+                  lg: "flex", // Display as flex on large screens
+                  xl: "flex", // Display as flex on extra-large screens
+                },
+                flexDirection: {
+                  xs: "column", // Column direction on extra-small screens
+                  sm: "column", // Column direction on small screens
+                  md: "row", // Row direction on medium screens
+                  lg: "row", // Row direction on large screens
+                  xl: "row", // Row direction on extra-large screens
+                },
               }}
             >
               <Grid item xs={12} md={12}>
@@ -493,14 +573,28 @@ const DocumentDetailView = () => {
             </Grid>
             <Grid
               container
-              spacing={2}
+              spacing={1}
               sx={{
                 paddingTop: "30px",
                 display: "flex",
                 justifyContent: "space-between",
               }}
             >
-              <Grid item xs={3}>
+              <Grid
+                item
+                md={3}
+                lg={3}
+                xl={3}
+                sx={{
+                  display: {
+                    xs: "none",
+                    sm: "none",
+                    md: "none",
+                    lg: "block",
+                    xl: "block",
+                  },
+                }}
+              >
                 {/* Create a a collapsable list to render the table of contents 
                 based on the documents section tile  */}
                 <ListItemButton onClick={handleArticlesCollapse}>
@@ -598,14 +692,12 @@ const DocumentDetailView = () => {
                       </>
                     ))
                   ) : (
-                    <Box>
-                      
-                    </Box>
+                    <Box></Box>
                   )}
                 </Collapse>
                 {/* </ul> */}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={12} md={7} lg={6} xl={6}>
                 {documentSections ? (
                   documentSections.map((section) => (
                     <Card
@@ -617,7 +709,7 @@ const DocumentDetailView = () => {
                         <Box
                           id={section.id}
                           sx={{
-                            padding: "20px",
+                            padding: "5px",
                           }}
                         >
                           <Typography
@@ -628,13 +720,23 @@ const DocumentDetailView = () => {
                               marginBottom: "30px",
                             }}
                           >
-                            {section.section_title}
+                            <span
+                              dangerouslySetInnerHTML={{
+                                __html: section.section_title,
+                              }}
+                            ></span>
+                            {/* {section.section_title} */}
                           </Typography>
                           <Typography
                             variant="body1"
                             sx={{ textAlign: "justify", lineSpacing: "45px" }}
                           >
-                            {section.section_body}
+                            <span
+                              dangerouslySetInnerHTML={{
+                                __html: section.section_body,
+                              }}
+                            ></span>
+                            {/* {section.section_body} */}
                           </Typography>
 
                           {userRole === "Commenter" && (
@@ -657,7 +759,7 @@ const DocumentDetailView = () => {
                                 <Box
                                   id={sectionChild1.id}
                                   sx={{
-                                    padding: "20px",
+                                    padding: "5px",
                                   }}
                                 >
                                   <Typography
@@ -667,7 +769,12 @@ const DocumentDetailView = () => {
                                       textAlign: "center",
                                     }}
                                   >
-                                    {sectionChild1.section_title}
+                                    <span
+                                      dangerouslySetInnerHTML={{
+                                        __html: sectionChild1.section_title,
+                                      }}
+                                    ></span>
+                                    {/* {sectionChild1.section_title} */}
                                   </Typography>
                                   <Typography
                                     variant="body1"
@@ -677,7 +784,12 @@ const DocumentDetailView = () => {
                                       marginBottom: "30px",
                                     }}
                                   >
-                                    {sectionChild1.section_body}
+                                    <span
+                                      dangerouslySetInnerHTML={{
+                                        __html: sectionChild1.section_body,
+                                      }}
+                                    ></span>
+                                    {/* {sectionChild1.section_body} */}
                                   </Typography>
 
                                   {userRole === "Commenter" && (
@@ -703,7 +815,7 @@ const DocumentDetailView = () => {
                                         <>
                                           <Box
                                             id={sectionChild1Sub1.id}
-                                            sx={{ padding: "20px" }}
+                                            sx={{ padding: "5px" }}
                                           >
                                             <Typography
                                               variant="h4"
@@ -712,7 +824,14 @@ const DocumentDetailView = () => {
                                                 textAlign: "center",
                                               }}
                                             >
-                                              {sectionChild1Sub1.section_title}
+                                              <span
+                                                dangerouslySetInnerHTML={{
+                                                  __html:
+                                                    sectionChild1Sub1.section_title,
+                                                }}
+                                              />
+
+                                              {/* {sectionChild1Sub1.section_title} */}
                                             </Typography>
                                             <Typography
                                               variant="body1"
@@ -722,7 +841,13 @@ const DocumentDetailView = () => {
                                                 marginBottom: "30px",
                                               }}
                                             >
-                                              {sectionChild1Sub1.section_body}
+                                              <span
+                                                dangerouslySetInnerHTML={{
+                                                  __html:
+                                                    sectionChild1Sub1.section_body,
+                                                }}
+                                              />
+                                              {/* {sectionChild1Sub1.section_body} */}
                                             </Typography>
                                             {userRole === "Commenter" && (
                                               <SectionFeedbacks
@@ -751,7 +876,7 @@ const DocumentDetailView = () => {
                                                       id={
                                                         sectionChild1Sub1Sub1.id
                                                       }
-                                                      sx={{ padding: "20px" }}
+                                                      sx={{ padding: "5px" }}
                                                     >
                                                       <Typography
                                                         variant="h4"
@@ -760,8 +885,14 @@ const DocumentDetailView = () => {
                                                           textAlign: "center",
                                                         }}
                                                       >
+                                                        <span
+                                                          dangerouslySetInnerHTML={{
+                                                            __html:
+                                                              sectionChild1Sub1Sub1.section_title,
+                                                          }}
+                                                        />
                                                         {
-                                                          sectionChild1Sub1Sub1.section_title
+                                                          // sectionChild1Sub1Sub1.section_title
                                                         }
                                                       </Typography>
                                                       <Typography
@@ -772,8 +903,14 @@ const DocumentDetailView = () => {
                                                           marginBottom: "30px",
                                                         }}
                                                       >
+                                                        <span
+                                                          dangerouslySetInnerHTML={{
+                                                            __html:
+                                                              sectionChild1Sub1Sub1.section_body,
+                                                          }}
+                                                        />
                                                         {
-                                                          sectionChild1Sub1Sub1.section_body
+                                                          // sectionChild1Sub1Sub1.section_body
                                                         }
                                                       </Typography>
                                                       {userRole ===
@@ -813,7 +950,7 @@ const DocumentDetailView = () => {
                                                                 }
                                                                 sx={{
                                                                   padding:
-                                                                    "20px",
+                                                                    "5px",
                                                                 }}
                                                               >
                                                                 <Typography
@@ -824,8 +961,14 @@ const DocumentDetailView = () => {
                                                                       "center",
                                                                   }}
                                                                 >
+                                                                  <span
+                                                                    dangerouslySetInnerHTML={{
+                                                                      __html:
+                                                                        sectionChild1Sub1Sub1Sub1.section_title,
+                                                                    }}
+                                                                  />
                                                                   {
-                                                                    sectionChild1Sub1Sub1Sub1.section_title
+                                                                    // sectionChild1Sub1Sub1Sub1.section_title
                                                                   }
                                                                 </Typography>
                                                                 <Typography
@@ -839,8 +982,14 @@ const DocumentDetailView = () => {
                                                                       "30px",
                                                                   }}
                                                                 >
+                                                                  <span
+                                                                    dangerouslySetInnerHTML={{
+                                                                      __html:
+                                                                        sectionChild1Sub1Sub1Sub1.section_body,
+                                                                    }}
+                                                                  />
                                                                   {
-                                                                    sectionChild1Sub1Sub1Sub1.section_body
+                                                                    // sectionChild1Sub1Sub1Sub1.section_body
                                                                   }
                                                                 </Typography>
 
@@ -882,7 +1031,7 @@ const DocumentDetailView = () => {
                                                                           }
                                                                           sx={{
                                                                             padding:
-                                                                              "20px",
+                                                                              "5px",
                                                                           }}
                                                                         >
                                                                           <Typography
@@ -893,8 +1042,14 @@ const DocumentDetailView = () => {
                                                                                 "center",
                                                                             }}
                                                                           >
+                                                                            <span
+                                                                              dangerouslySetInnerHTML={{
+                                                                                __html:
+                                                                                  sectionChild1Sub1Sub1Sub1Sub1.section_title,
+                                                                              }}
+                                                                            />
                                                                             {
-                                                                              sectionChild1Sub1Sub1Sub1Sub1.section_title
+                                                                              // sectionChild1Sub1Sub1Sub1Sub1.section_title
                                                                             }
                                                                           </Typography>
                                                                           <Typography
@@ -908,8 +1063,14 @@ const DocumentDetailView = () => {
                                                                                 "30px",
                                                                             }}
                                                                           >
+                                                                            <span
+                                                                              dangerouslySetInnerHTML={{
+                                                                                __html:
+                                                                                  sectionChild1Sub1Sub1Sub1Sub1.section_body,
+                                                                              }}
+                                                                            />
                                                                             {
-                                                                              sectionChild1Sub1Sub1Sub1Sub1.section_body
+                                                                              // sectionChild1Sub1Sub1Sub1Sub1.section_body
                                                                             }
                                                                           </Typography>
                                                                           {userRole ===
@@ -959,42 +1120,58 @@ const DocumentDetailView = () => {
                     </Card>
                   ))
                 ) : (
-                  <Box>
-                    
-                  </Box>
+                  <Box></Box>
                 )}
               </Grid>
-              <Grid item xs={3}>
-                <ListItemButton onClick={handleCommentsCollapse}>
-                  <ListItemText
-                    primary={
-                      userRole === "Commenter" &&
-                      documentDetail &&
-                      documentDetail.draft_status.name === "Open" ? (
-                        <>
-                          <Typography variant="h5" fontWeight="600">
-                            {t("general_comments")} (
-                            {documentComments &&
-                              userInfo &&
-                              documentComments.filter((comment) => {
-                                return (
-                                  parseInt(
-                                    comment.commenter
-                                      ? comment.commenter.id
-                                      : ""
-                                  ) === parseInt(userInfo.user.id)
-                                );
-                              }).length}
-                            )
-                          </Typography>
-                        </>
-                      ) : (
-                        ""
-                      )
-                    }
-                  />
-                  {commentsOpen ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
+              <Grid
+                item
+                xs={12}
+                sm={12}
+                md={5}
+                lg={3}
+                xl={3}
+                sx={{
+                  display: {
+                    xs: "block",
+                    sm: "block",
+                    md: "block",
+                    lg: "block",
+                    xl: "block",
+                  }
+                }}
+              >
+                {userRole && (
+                  <ListItemButton onClick={handleCommentsCollapse}>
+                    <ListItemText
+                      primary={
+                        userRole === "Commenter" &&
+                        documentDetail &&
+                        documentDetail.draft_status.name === "Open" ? (
+                          <>
+                            <Typography variant="h5" fontWeight="600">
+                              {t("general_comments")} (
+                              {documentComments &&
+                                userInfo &&
+                                documentComments.filter((comment) => {
+                                  return (
+                                    parseInt(
+                                      comment.commenter
+                                        ? comment.commenter.id
+                                        : ""
+                                    ) === parseInt(userInfo.user.id)
+                                  );
+                                }).length}
+                              )
+                            </Typography>
+                          </>
+                        ) : (
+                          ""
+                        )
+                      }
+                    />
+                    {commentsOpen ? <ExpandLess /> : <ExpandMore />}
+                  </ListItemButton>
+                )}
                 <Collapse in={commentsOpen} timeout="auto" unmountOnExit>
                   <Paper
                     elevation={1}

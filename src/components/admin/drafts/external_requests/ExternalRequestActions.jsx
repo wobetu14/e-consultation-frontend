@@ -1,10 +1,4 @@
-import {
-  Box,
-  Typography,
-  useTheme,
-  Button,
-  
-} from "@mui/material";
+import { Box, Typography, useTheme, Button } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
@@ -29,11 +23,7 @@ const ExternalRequestActions = ({
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();
 
-  return (
-    <Box>
-      
-    </Box>
-  );
+  return <Box></Box>;
 };
 
 export default ExternalRequestActions;
@@ -53,12 +43,13 @@ const AcceptCommentInvitation = ({
 
   const acceptInvitation = async () => {
     return await axios
-      .post(`approve-comment-opening/draft/${documentDetail.id}`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .post(`approve-comment-opening/draft/${documentDetail.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);
@@ -114,12 +105,13 @@ const RejectCommentInvitation = ({
 
   const rejectCommentOpening = async () => {
     return await axios
-      .post(`request-rejection/draft/${documentDetail.id}`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .post(`request-rejection/draft/${documentDetail.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((res) => {
         setServerSuccessMsg(res.data.message);
         setServerErrorMsg(null);

@@ -14,6 +14,7 @@ import UserProfile from "./users/UserProfile";
 import "./Dashboard.css";
 import { useTranslation } from "react-i18next";
 
+
 const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -219,7 +220,7 @@ const Dashboard = () => {
 
       {userRole === "Uploader" ? (
         <Box sx={{ marginTop: "100px", marginBottom: "50px" }}>
-          {parseInt(userInfo.user.institutionModel[0].can_create_draft) ===
+          {userInfo && parseInt(userInfo.user.institutionModel[0].can_create_draft) ===
           1 ? (
             <Drafts />
           ) : (

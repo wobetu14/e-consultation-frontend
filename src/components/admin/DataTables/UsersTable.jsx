@@ -198,6 +198,7 @@ const UsersTable = () => {
               size="small"
               sx={{ textTransform: "none" }}
               onClick={() => deleteUserDialog(row)}
+              disabled={true}
             >
               <DeleteIcon
                 fontSize="small"

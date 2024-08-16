@@ -48,13 +48,36 @@ const DocumentDisplay = ({
   return (
     <Box
       sx={{
-        margin: "0px 50px",
+        margin: {
+          xs: "8px", // 8px margin on extra-small screens
+          sm: "16px", // 16px margin on small screens
+          md: "24px", // 24px margin on medium screens
+          lg: "32px", // 32px margin on large screens
+          xl: "40px", // 40px margin on extra-large screens
+        },
         display: "flex",
         justifyContent: "space-between",
         flexDirection: "row",
       }}
     >
-      <Box sx={{ width: "70%", marginRight: "20px" }}>
+      <Box
+        sx={{
+          width: {
+            xs: "100%",
+            sm: "100%",
+            md: "70%",
+            lg: "70%",
+            xl: "70%",
+          },
+          marginRight: {
+            xs: "0px", // 8px horizontal margin on extra-small screens
+            sm: "0px", // 16px horizontal margin on small screens
+            md: "20px", // 24px horizontal margin on medium screens
+            lg: "20px", // 32px horizontal margin on large screens
+            xl: "20px", // 40px horizontal margin on extra-large screens
+          },
+        }}
+      >
         <Box width="100%" sx={{ marginBottom: "10px" }}>
           <Typography
             variant="h4"
@@ -91,7 +114,7 @@ const DocumentDisplay = ({
             </Link>
           ))
         ) : networkError === "AxiosError" ? (
-          // Display error info to the user if there is an exception in an http axios request. 
+          // Display error info to the user if there is an exception in an http axios request.
           <Typography variant="body1">
             Your internet connection may be unstable. You can &nbsp;
             <Button
@@ -114,32 +137,50 @@ const DocumentDisplay = ({
         )}
       </Box>
 
-      <Box sx={{ width: "30%" }}>
-        <Hidden mdDown implementation="css">
-          <Box width="100%" sx={{ marginBottom: "10px" }}>
-            <Typography
-              variant="h4"
-              sx={{ fontWeight: "500", color: colors.headerText[100] }}
-            >
-              {t("filter_documents")}
-            </Typography>
-          </Box>
+      <Box
+        sx={{
+          width: {
+            xs: "0",
+            sm: "0",
+            md: "30%",
+            lg: "30%",
+            xl: "30%",
+          },
 
-          {/* Render DocumentFilters compnent and pass drafts and related data as props */}
+          display: {
+            xs: "none",
+            sm: "none",
+            md: "block",
+            lg: "block",
+            xl: "block",
+          },
+        }}
+      >
+        {/* <Hidden mdDown implementation="css"> */}
+        <Box width="100%" sx={{ marginBottom: "10px" }}>
+          <Typography
+            variant="h4"
+            sx={{ fontWeight: "500", color: colors.headerText[100] }}
+          >
+            {t("filter_documents")}
+          </Typography>
+        </Box>
 
-          <DocumentsFilters
-            drafts={drafts}
-            setDrafts={(d) => setDrafts(d)}
-            unfilteredDrafts={unfilteredDrafts}
-            setUnfilteredDrafts={setUnfilteredDrafts}
-            totalDrafts={totalDrafts}
-            setTotalDrafts={setTotalDrafts}
-            pageCount={setPageCount}
-            setPageCount={setPageCount}
-            loading={loading}
-            setLoading={setLoading}
-          />
-        </Hidden>
+        {/* Render DocumentFilters compnent and pass drafts and related data as props */}
+
+        <DocumentsFilters
+          drafts={drafts}
+          setDrafts={(d) => setDrafts(d)}
+          unfilteredDrafts={unfilteredDrafts}
+          setUnfilteredDrafts={setUnfilteredDrafts}
+          totalDrafts={totalDrafts}
+          setTotalDrafts={setTotalDrafts}
+          pageCount={setPageCount}
+          setPageCount={setPageCount}
+          loading={loading}
+          setLoading={setLoading}
+        />
+        {/* </Hidden> */}
       </Box>
     </Box>
   );

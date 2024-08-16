@@ -53,7 +53,7 @@ const PublicCommentReplies = ({
               {reflections
                 ? reflections.map((reflection) => (
                     <>
-                      <ListItem alignItems="flex-center" key={reflection.id}>
+                      <ListItem alignItems="flex-center" key={reflection.id} sx={{ height:'auto' }}> 
                         <ListItemAvatar>
                           <Avatar
                             alt="User"
@@ -84,7 +84,8 @@ const PublicCommentReplies = ({
                                 variant="body1"
                                 color="text.primary"
                               >
-                                {reflection.message}
+                                <span dangerouslySetInnerHTML={{ __html:reflection.message }} />
+                                {/* {reflection.message} */}
                               </Typography>
                             </>
                           }

@@ -7,7 +7,7 @@ import DrawerComp from "./Drawer";
 
 import  LightModeOutlinedIcon  from '@mui/icons-material/LightModeOutlined';
 import  DarkModeOutlinedIcon  from '@mui/icons-material/DarkModeOutlined';
-import {Link, NavLink, useNavigate } from "react-router-dom";
+import {Link, useLocation, useNavigate } from "react-router-dom";
 import LanguageButton from "../LanguageButton";
 
 import { useTranslation } from 'react-i18next';
@@ -16,6 +16,8 @@ import Logout from "../../Logout";
 
 const Topbar = ({menuItems}) => {
   const { t } = useTranslation()
+
+  const { pathname } = useLocation();
 
   // User ContextData
   const {userRole, setUserRole, userInfo, userToken, setUserToken}=useContext(UserContext);
@@ -28,7 +30,7 @@ const Topbar = ({menuItems}) => {
     const isMatch=useMediaQuery(theme.breakpoints.down('md'))
 
     // Indicate which tab is selected
-    const [tabValue, setTabValue]=useState(0);
+    const [tabValue, setTabValue]=useState(pathname);
 
     // Navigate to Sign In page
     const navigate=useNavigate()
@@ -52,10 +54,10 @@ const Topbar = ({menuItems}) => {
        backgroundColor:colors.warningColor[300], 
        zIndex:2 }}>
           <Grid container>
-            <Grid item xs={10}>
+            <Grid item xs={0} sm={0} md={10} lg={10} xl={10}>
             
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
                 <Box display="flex">
                     <IconButton onClick={colorMode.toggleColorMode} /* sx={{ color:colors.grey[400] }} */>
                         {theme.palette.mode==="dark" ? (
@@ -97,7 +99,8 @@ const Topbar = ({menuItems}) => {
                               key={id} 
                               label={t(linkText)} 
                               to={to}
-                              component={Link}
+                                component={Link}
+                                value={to}
                               />
                             ))
                         }
@@ -109,7 +112,7 @@ const Topbar = ({menuItems}) => {
                             (userToken!==null && userToken!==undefined && userRole!=null && userRole!==undefined ) ?  (
                                 <>
                                   <Typography variant='h5' sx={{ fontWeight:"600", color:colors.successColor[100] }}>
-                                    {userInfo.user.first_name + " " + userInfo.user.middle_name} &nbsp;
+                                    {userInfo ? (userInfo.user.first_name + " " + userInfo.user.middle_name):(null)} &nbsp;
                                     {
                                       userRole==='Commenter' ? 
                                       (

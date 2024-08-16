@@ -26,6 +26,7 @@ import InstitutionInvitations from "./InstitutionInvitations";
 import CommentRepliers from "./CommentRepliers";
 import { useTranslation } from "react-i18next";
 
+
 /**
  * This component is used to see detail information of the documnet along with action buttons to 
  * "Accept", "Reject" etc that allows to "Accept" or "Reject" the document 

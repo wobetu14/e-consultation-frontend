@@ -20,24 +20,24 @@ const Logout = () => {
 
   const logout = async () => {
     setLogoutLoading(true);
-    return await axios.post('logout', null,
+    /* return await axios.post('logout', null,
     {headers:{
       Authorization: `Bearer ${localStorage.getItem("token")}`,
       Accept: "application/json;",
       "Content-Type": "multipart/form-data"
     }})
-    .then((res)=>{
+    .then((res)=>{ */
     setLogoutLoading(false)
     localStorage.clear();
     setUserToken(null);
     setUserRole(null);
     setUserInfo(null);
     navigate("/");
-    }  
+    /* }  
   ).catch((error)=>{
     setLogoutLoading(true);
     setNetworkError(error.code);
-  })
+  }) */
   };
   return (
     <>

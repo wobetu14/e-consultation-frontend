@@ -28,10 +28,10 @@ import { UserContext } from "../../../contexts/UserContext";
 import SectionFeedbackPreview from "../previews/SectionFeedbackPreview";
 
 /**
- * This component is used to render the contents of the draft document as a readable document tree. 
+ * This component is used to render the contents of the draft document as a readable document tree.
  * The component is available to Uploader and Approver user roles so that they can use it to preview
  * the document and make important decesion such as "Accept" or "Reject" the document opening
- * @returns 
+ * @returns
  */
 const DocumentPreview = () => {
   // Create variable to retrieve data from the page url using useParams() hook
@@ -61,7 +61,7 @@ const DocumentPreview = () => {
   const colors = tokens(theme.palette.mode);
 
   /**
-   * Destructure the translation object from the i18next internationalization using the 
+   * Destructure the translation object from the i18next internationalization using the
    * useTranslation() hook
    */
   const { t } = useTranslation();
@@ -235,13 +235,23 @@ const DocumentPreview = () => {
                               marginBottom: "30px",
                             }}
                           >
-                            {section.section_title}
+                            <span
+                              dangerouslySetInnerHTML={{
+                                __html: section.section_title,
+                              }}
+                            />
+                            {/* {section.section_title} */}
                           </Typography>
                           <Typography
                             variant="body1"
                             sx={{ textAlign: "justify", lineSpacing: "45px" }}
                           >
-                            {section.section_body}
+                            <span
+                              dangerouslySetInnerHTML={{
+                                __html: section.section_body,
+                              }}
+                            />
+                            {/* {section.section_body} */}
                           </Typography>
 
                           <SectionFeedbackPreview
@@ -269,7 +279,12 @@ const DocumentPreview = () => {
                                       textAlign: "center",
                                     }}
                                   >
-                                    {sectionChild1.section_title}
+                                    <span
+                                      dangerouslySetInnerHTML={{
+                                        __html: sectionChild1.section_title,
+                                      }}
+                                    />
+                                    {/* {sectionChild1.section_title} */}
                                   </Typography>
                                   <Typography
                                     variant="body1"
@@ -279,7 +294,12 @@ const DocumentPreview = () => {
                                       marginBottom: "30px",
                                     }}
                                   >
-                                    {sectionChild1.section_body}
+                                    <span
+                                      dangerouslySetInnerHTML={{
+                                        __html: sectionChild1.section_body,
+                                      }}
+                                    />
+                                    {/* {sectionChild1.section_body} */}
                                   </Typography>
 
                                   <SectionFeedbackPreview
@@ -303,7 +323,13 @@ const DocumentPreview = () => {
                                                 textAlign: "center",
                                               }}
                                             >
-                                              {sectionChild1Sub1.section_title}
+                                              <span
+                                                dangerouslySetInnerHTML={{
+                                                  __html:
+                                                    sectionChild1Sub1.section_title,
+                                                }}
+                                              />
+                                              {/* {sectionChild1Sub1.section_title} */}
                                             </Typography>
                                             <Typography
                                               variant="body1"
@@ -313,7 +339,13 @@ const DocumentPreview = () => {
                                                 marginBottom: "30px",
                                               }}
                                             >
-                                              {sectionChild1Sub1.section_body}
+                                              <span
+                                                dangerouslySetInnerHTML={{
+                                                  __html:
+                                                    sectionChild1Sub1.section_body,
+                                                }}
+                                              />
+                                              {/* {sectionChild1Sub1.section_body} */}
                                             </Typography>
 
                                             <SectionFeedbackPreview
@@ -341,8 +373,14 @@ const DocumentPreview = () => {
                                                           textAlign: "center",
                                                         }}
                                                       >
+                                                        <span
+                                                          dangerouslySetInnerHTML={{
+                                                            __html:
+                                                              sectionChild1Sub1Sub1.section_title,
+                                                          }}
+                                                        />
                                                         {
-                                                          sectionChild1Sub1Sub1.section_title
+                                                          // sectionChild1Sub1Sub1.section_title
                                                         }
                                                       </Typography>
                                                       <Typography
@@ -353,8 +391,14 @@ const DocumentPreview = () => {
                                                           marginBottom: "30px",
                                                         }}
                                                       >
+                                                        <span
+                                                          dangerouslySetInnerHTML={{
+                                                            __html:
+                                                              sectionChild1Sub1Sub1.section_body,
+                                                          }}
+                                                        />
                                                         {
-                                                          sectionChild1Sub1Sub1.section_body
+                                                          // sectionChild1Sub1Sub1.section_body
                                                         }
                                                       </Typography>
 
@@ -394,8 +438,14 @@ const DocumentPreview = () => {
                                                                       "center",
                                                                   }}
                                                                 >
+                                                                  <span
+                                                                    dangerouslySetInnerHTML={{
+                                                                      __html:
+                                                                        sectionChild1Sub1Sub1Sub1.section_title,
+                                                                    }}
+                                                                  />
                                                                   {
-                                                                    sectionChild1Sub1Sub1Sub1.section_title
+                                                                    // sectionChild1Sub1Sub1Sub1.section_title
                                                                   }
                                                                 </Typography>
                                                                 <Typography
@@ -409,8 +459,14 @@ const DocumentPreview = () => {
                                                                       "30px",
                                                                   }}
                                                                 >
+                                                                  <span
+                                                                    dangerouslySetInnerHTML={{
+                                                                      __html:
+                                                                        sectionChild1Sub1Sub1Sub1.section_body,
+                                                                    }}
+                                                                  />
                                                                   {
-                                                                    sectionChild1Sub1Sub1Sub1.section_body
+                                                                    // sectionChild1Sub1Sub1Sub1.section_body
                                                                   }
                                                                 </Typography>
 
@@ -451,8 +507,14 @@ const DocumentPreview = () => {
                                                                                 "center",
                                                                             }}
                                                                           >
+                                                                            <span
+                                                                              dangerouslySetInnerHTML={{
+                                                                                __html:
+                                                                                  sectionChild1Sub1Sub1Sub1Sub1.section_title,
+                                                                              }}
+                                                                            />
                                                                             {
-                                                                              sectionChild1Sub1Sub1Sub1Sub1.section_title
+                                                                              // sectionChild1Sub1Sub1Sub1Sub1.section_title
                                                                             }
                                                                           </Typography>
                                                                           <Typography
@@ -466,8 +528,14 @@ const DocumentPreview = () => {
                                                                                 "30px",
                                                                             }}
                                                                           >
+                                                                            <span
+                                                                              dangerouslySetInnerHTML={{
+                                                                                __html:
+                                                                                  sectionChild1Sub1Sub1Sub1Sub1.section_body,
+                                                                              }}
+                                                                            />
                                                                             {
-                                                                              sectionChild1Sub1Sub1Sub1Sub1.section_body
+                                                                              // sectionChild1Sub1Sub1Sub1Sub1.section_body
                                                                             }
                                                                           </Typography>
 

@@ -32,10 +32,10 @@ import ReplyFeedbacks from "./ReplyFeedbacks";
 import ReplyDocumentLevelComments from "./ReplyDocumentLevelComments";
 
 /**
- * This component is used to render the daft document detail info and its content tree 
- * along with its comments provided. This component is exactly the same as the 
+ * This component is used to render the daft document detail info and its content tree
+ * along with its comments provided. This component is exactly the same as the
  * <DocumentDetailView /> component. The only difference of this component is, it is
- * accessible only by comment repliers. Please read the comment documentations on 
+ * accessible only by comment repliers. Please read the comment documentations on
  * <DocumentDetailView />
  */
 
@@ -81,24 +81,28 @@ const CommentReflections = () => {
   }, []);
 
   const fetchDocumentDetails = async () => {
-    return await axios.get(`drafts/${params.id}`,
-    {headers:{
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-      Accept: "application/json;",
-      "Content-Type": "multipart/form-data"
-    }}).then((response) => {
-      setDocumentDetail(response.data.data);
-    });
+    return await axios
+      .get(`drafts/${params.id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        setDocumentDetail(response.data.data);
+      });
   };
 
   const fetchDocumentSections = async () => {
     return await axios
-      .get(`draft/${params.id}/draft-sections`,
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`draft/${params.id}/draft-sections`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
         setDocumentSections(response.data.data);
       })
@@ -109,12 +113,13 @@ const CommentReflections = () => {
 
   const fetchDocumentComments = async () => {
     return await axios
-      .get(`draft/${params.id}/general-comments`, 
-      {headers:{
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-        Accept: "application/json;",
-        "Content-Type": "multipart/form-data"
-      }})
+      .get(`draft/${params.id}/general-comments`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
         setDocumentComments(response.data.data);
       })
@@ -124,13 +129,32 @@ const CommentReflections = () => {
   };
 
   return (
-    <Box sx={{ backgroundColor: colors.grey[200] }}>
+    <Box
+      sx={{
+        backgroundColor: colors.grey[200],
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <Box
         sx={{
           backgroundColor: "#255B7E",
           marginBottom: "30px",
-          paddingRight: "80px",
-          paddingLeft: "80px",
+          paddingRight: {
+            xs: "10px",
+            sm: "10px",
+            md: "20px",
+            lg: "80px",
+            xl: "80px",
+          },
+
+          paddingLeft: {
+            xs: "10px",
+            sm: "10px",
+            md: "20px",
+            lg: "80px",
+            xl: "80px",
+          },
           paddingBottom: "40px",
           paddingTop: "40px",
         }}
@@ -173,34 +197,49 @@ const CommentReflections = () => {
               </Typography>
 
               <Grid container spacing={1}>
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("institution")}</strong>
                   </Typography>
                 </Grid>
-                <Grid item xs={6} md={6} sx={{ color: "white" }}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  md={6}
+                  lg={6}
+                  xl={6}
+                  sx={{ color: "white" }}
+                >
                   {documentDetail.institution
                     ? documentDetail.institution.name
                     : null}
                 </Grid>
 
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("law_category")}</strong>
                   </Typography>
                 </Grid>
-                <Grid item xs={6} md={6} sx={{ color: "white" }}>
+                <Grid
+                  itemxs={12}
+                  sm={12}
+                  md={6}
+                  lg={6}
+                  xl={6}
+                  sx={{ color: "white" }}
+                >
                   {documentDetail.law_category
                     ? documentDetail.law_category.name
                     : null}
                 </Grid>
 
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("status")}</strong>
                   </Typography>
                 </Grid>
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   {documentDetail &&
                   documentDetail.draft_status.name === "Pending" ? (
                     <Chip
@@ -230,7 +269,8 @@ const CommentReflections = () => {
                   )}
 
                   {documentDetail &&
-                  documentDetail.draft_status.name === "Open" && parseInt(documentDetail.comment_closed)===0 ? (
+                  documentDetail.draft_status.name === "Open" &&
+                  parseInt(documentDetail.comment_closed) === 0 ? (
                     <Chip
                       label="Open for Comment"
                       size="small"
@@ -244,7 +284,8 @@ const CommentReflections = () => {
                   )}
 
                   {documentDetail &&
-                  documentDetail.draft_status.name === "Open" && parseInt(documentDetail.comment_closed)===1 ? (
+                  documentDetail.draft_status.name === "Open" &&
+                  parseInt(documentDetail.comment_closed) === 1 ? (
                     <Chip
                       label="Closed for comment"
                       size="small"
@@ -271,29 +312,30 @@ const CommentReflections = () => {
                     ""
                   )}
 
-                    <span style={{ color:"white" }}>&nbsp; &nbsp;</span>
+                  <span style={{ color: "white" }}>&nbsp; &nbsp;</span>
 
-                    {
-                        documentDetail && documentDetail.draft_status.name==="Closed" ? (
-                          <Chip
-                          label="Consultation ended"
-                          size="small"
-                          sx={{
-                            backgroundColor: colors.secondary[100],
-                            color: colors.grey[500],
-                            marginRight: "5px",
-                          }}
-                        />
-                        ):""
-                      }
+                  {documentDetail &&
+                  documentDetail.draft_status.name === "Closed" ? (
+                    <Chip
+                      label="Consultation ended"
+                      size="small"
+                      sx={{
+                        backgroundColor: colors.secondary[100],
+                        color: colors.grey[500],
+                        marginRight: "5px",
+                      }}
+                    />
+                  ) : (
+                    ""
+                  )}
                 </Grid>
 
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("draft_opening_date")}</strong>
                   </Typography>
                 </Grid>
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Chip
                     label={
                       documentDetail.comment_opening_date
@@ -308,12 +350,12 @@ const CommentReflections = () => {
                   />
                 </Grid>
 
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("draft_closing_date")}</strong>
                   </Typography>
                 </Grid>
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Chip
                     label={
                       documentDetail.comment_closing_date
@@ -328,32 +370,48 @@ const CommentReflections = () => {
                   />
                 </Grid>
 
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("base_legal_reference")}</strong>
                   </Typography>
                 </Grid>
-                <Grid item xs={6} md={6} sx={{ color: "white" }}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  md={6}
+                  lg={6}
+                  xl={6}
+                  sx={{ color: "white" }}
+                >
                   {documentDetail.base_legal_reference
                     ? documentDetail.base_legal_reference
                     : null}
                 </Grid>
 
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("legal_definition")}</strong>
                   </Typography>
                 </Grid>
-                <Grid item xs={6} md={6} sx={{ color: "white" }}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  md={6}
+                  lg={6}
+                  xl={6}
+                  sx={{ color: "white" }}
+                >
                   {documentDetail.definition ? documentDetail.definition : null}
                 </Grid>
 
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("document_file")}</strong>
                   </Typography>
                 </Grid>
-                <Grid item xs={6} md={6}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Button
                     href={documentDetail.file}
                     variant="contained"
@@ -375,7 +433,7 @@ const CommentReflections = () => {
               </Grid>
             </Grid>
 
-            <Grid item xs={3}>
+            <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
               {documentDetail.draft_status.name === "Closed" ? (
                 <Paper
                   elevation={1}
@@ -438,8 +496,20 @@ const CommentReflections = () => {
         >
           <Box
             sx={{
-              marginRight: "30px",
-              marginLeft: "30px",
+              marginRight: {
+                xs: "10px",
+                sm: "10px",
+                md: "20px",
+                lg: "30px",
+                xl: "30px",
+              },
+              marginLeft: {
+                xs: "10px",
+                sm: "10px",
+                md: "20px",
+                lg: "30px",
+                xl: "30px",
+              },
               paddingBottom: "30px",
             }}
           >
@@ -474,7 +544,21 @@ const CommentReflections = () => {
                 justifyContent: "space-between",
               }}
             >
-              <Grid item xs={3}>
+              <Grid
+                item
+                md={3}
+                lg={3}
+                xl={3}
+                sx={{
+                  display: {
+                    xs: "none",
+                    sm: "none",
+                    md: "none",
+                    lg: "block",
+                    xl: "block",
+                  },
+                }}
+              >
                 <ListItemButton onClick={handleArticlesCollapse}>
                   <ListItemText
                     primary={
@@ -582,14 +666,12 @@ const CommentReflections = () => {
                       </>
                     ))
                   ) : (
-                    <Box>
-                      {""}
-                    </Box>
+                    <Box>{""}</Box>
                   )}
                 </Collapse>
                 {/* </ul> */}
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={12} sm={12} md={7} lg={6} xl={6}>
                 {documentSections ? (
                   documentSections.map((section) => (
                     <Card
@@ -601,7 +683,7 @@ const CommentReflections = () => {
                         <Box
                           id={section.id}
                           sx={{
-                            padding: "20px",
+                            padding: "10px",
                           }} /* onMouseOver={()=>showComments(section.id)} onMouseOut={()=>hideComments(section.id)} */
                         >
                           <Typography
@@ -612,13 +694,23 @@ const CommentReflections = () => {
                               marginBottom: "30px",
                             }}
                           >
-                            {section.section_title}
+                            <span
+                              dangerouslySetInnerHTML={{
+                                __html: section.section_title,
+                              }}
+                            />
+                            {/* {section.section_title} */}
                           </Typography>
                           <Typography
                             variant="body1"
                             sx={{ textAlign: "justify", lineSpacing: "45px" }}
                           >
-                            {section.section_body}
+                            <span
+                              dangerouslySetInnerHTML={{
+                                __html: section.section_body,
+                              }}
+                            />
+                            {/* {section.section_body} */}
                           </Typography>
 
                           {userRole === "Commenter" && (
@@ -626,7 +718,6 @@ const CommentReflections = () => {
                               documentDetail={documentDetail}
                               comments={section.comments}
                               section={section}
-
                               fetchDocumentDetails={fetchDocumentDetails}
                               fetchDocumentSections={fetchDocumentSections}
                               fetchDocumentComments={fetchDocumentComments}
@@ -649,7 +740,12 @@ const CommentReflections = () => {
                                       textAlign: "center",
                                     }}
                                   >
-                                    {sectionChild1.section_title}
+                                    <span
+                                      dangerouslySetInnerHTML={{
+                                        __html: sectionChild1.section_title,
+                                      }}
+                                    />
+                                    {/* {sectionChild1.section_title} */}
                                   </Typography>
                                   <Typography
                                     variant="body1"
@@ -659,7 +755,12 @@ const CommentReflections = () => {
                                       marginBottom: "30px",
                                     }}
                                   >
-                                    {sectionChild1.section_body}
+                                    <span
+                                      dangerouslySetInnerHTML={{
+                                        __html: sectionChild1.section_body,
+                                      }}
+                                    />
+                                    {/* {sectionChild1.section_body} */}
                                   </Typography>
 
                                   {
@@ -669,10 +770,15 @@ const CommentReflections = () => {
                                         documentDetail={documentDetail}
                                         comments={sectionChild1.comments}
                                         section={sectionChild1}
-
-                                        fetchDocumentDetails={fetchDocumentDetails}
-                                        fetchDocumentSections={fetchDocumentSections}
-                                        fetchDocumentComments={fetchDocumentComments}
+                                        fetchDocumentDetails={
+                                          fetchDocumentDetails
+                                        }
+                                        fetchDocumentSections={
+                                          fetchDocumentSections
+                                        }
+                                        fetchDocumentComments={
+                                          fetchDocumentComments
+                                        }
                                       />
                                     )
                                   }
@@ -692,7 +798,13 @@ const CommentReflections = () => {
                                                 textAlign: "center",
                                               }}
                                             >
-                                              {sectionChild1Sub1.section_title}
+                                              <span
+                                                dangerouslySetInnerHTML={{
+                                                  __html:
+                                                    sectionChild1Sub1.section_title,
+                                                }}
+                                              />
+                                              {/* {sectionChild1Sub1.section_title} */}
                                             </Typography>
                                             <Typography
                                               variant="body1"
@@ -702,7 +814,13 @@ const CommentReflections = () => {
                                                 marginBottom: "30px",
                                               }}
                                             >
-                                              {sectionChild1Sub1.section_body}
+                                              <span
+                                                dangerouslySetInnerHTML={{
+                                                  __html:
+                                                    sectionChild1Sub1.section_body,
+                                                }}
+                                              />
+                                              {/* {sectionChild1Sub1.section_body} */}
                                             </Typography>
                                             {userRole === "Commenter" && (
                                               <ReplyFeedbacks
@@ -711,10 +829,15 @@ const CommentReflections = () => {
                                                   sectionChild1Sub1.comments
                                                 }
                                                 section={sectionChild1Sub1}
-
-                                                fetchDocumentDetails={fetchDocumentDetails}
-                                                fetchDocumentSections={fetchDocumentSections}
-                                                fetchDocumentComments={fetchDocumentComments}
+                                                fetchDocumentDetails={
+                                                  fetchDocumentDetails
+                                                }
+                                                fetchDocumentSections={
+                                                  fetchDocumentSections
+                                                }
+                                                fetchDocumentComments={
+                                                  fetchDocumentComments
+                                                }
                                               />
                                             )}
                                           </Box>
@@ -735,8 +858,14 @@ const CommentReflections = () => {
                                                           textAlign: "center",
                                                         }}
                                                       >
+                                                        <span
+                                                          dangerouslySetInnerHTML={{
+                                                            __html:
+                                                              sectionChild1Sub1Sub1.section_title,
+                                                          }}
+                                                        />
                                                         {
-                                                          sectionChild1Sub1Sub1.section_title
+                                                          // sectionChild1Sub1Sub1.section_title
                                                         }
                                                       </Typography>
                                                       <Typography
@@ -747,8 +876,14 @@ const CommentReflections = () => {
                                                           marginBottom: "30px",
                                                         }}
                                                       >
+                                                        <span
+                                                          dangerouslySetInnerHTML={{
+                                                            __html:
+                                                              sectionChild1Sub1Sub1.section_body,
+                                                          }}
+                                                        />
                                                         {
-                                                          sectionChild1Sub1Sub1.section_body
+                                                          // sectionChild1Sub1Sub1.section_body
                                                         }
                                                       </Typography>
                                                       {userRole ===
@@ -763,10 +898,15 @@ const CommentReflections = () => {
                                                           section={
                                                             sectionChild1Sub1Sub1
                                                           }
-
-                                                          fetchDocumentDetails={fetchDocumentDetails}
-                                                          fetchDocumentSections={fetchDocumentSections}
-                                                          fetchDocumentComments={fetchDocumentComments}
+                                                          fetchDocumentDetails={
+                                                            fetchDocumentDetails
+                                                          }
+                                                          fetchDocumentSections={
+                                                            fetchDocumentSections
+                                                          }
+                                                          fetchDocumentComments={
+                                                            fetchDocumentComments
+                                                          }
                                                         />
                                                       )}
                                                     </Box>
@@ -794,8 +934,14 @@ const CommentReflections = () => {
                                                                       "center",
                                                                   }}
                                                                 >
+                                                                  <span
+                                                                    dangerouslySetInnerHTML={{
+                                                                      __html:
+                                                                        sectionChild1Sub1Sub1Sub1.section_title,
+                                                                    }}
+                                                                  />
                                                                   {
-                                                                    sectionChild1Sub1Sub1Sub1.section_title
+                                                                    // sectionChild1Sub1Sub1Sub1.section_title
                                                                   }
                                                                 </Typography>
                                                                 <Typography
@@ -809,8 +955,14 @@ const CommentReflections = () => {
                                                                       "30px",
                                                                   }}
                                                                 >
+                                                                  <span
+                                                                    dangerouslySetInnerHTML={{
+                                                                      __html:
+                                                                        sectionChild1Sub1Sub1Sub1.section_body,
+                                                                    }}
+                                                                  />
                                                                   {
-                                                                    sectionChild1Sub1Sub1Sub1.section_body
+                                                                    // sectionChild1Sub1Sub1Sub1.section_body
                                                                   }
                                                                 </Typography>
 
@@ -826,10 +978,15 @@ const CommentReflections = () => {
                                                                     section={
                                                                       sectionChild1Sub1Sub1Sub1
                                                                     }
-
-                                                                    fetchDocumentDetails={fetchDocumentDetails}
-                                                                    fetchDocumentSections={fetchDocumentSections}
-                                                                    fetchDocumentComments={fetchDocumentComments}
+                                                                    fetchDocumentDetails={
+                                                                      fetchDocumentDetails
+                                                                    }
+                                                                    fetchDocumentSections={
+                                                                      fetchDocumentSections
+                                                                    }
+                                                                    fetchDocumentComments={
+                                                                      fetchDocumentComments
+                                                                    }
                                                                   />
                                                                 )}
                                                               </Box>
@@ -858,8 +1015,14 @@ const CommentReflections = () => {
                                                                                 "center",
                                                                             }}
                                                                           >
+                                                                            <span
+                                                                              dangerouslySetInnerHTML={{
+                                                                                __html:
+                                                                                  sectionChild1Sub1Sub1Sub1Sub1.section_title,
+                                                                              }}
+                                                                            />
                                                                             {
-                                                                              sectionChild1Sub1Sub1Sub1Sub1.section_title
+                                                                              // sectionChild1Sub1Sub1Sub1Sub1.section_title
                                                                             }
                                                                           </Typography>
                                                                           <Typography
@@ -873,8 +1036,14 @@ const CommentReflections = () => {
                                                                                 "30px",
                                                                             }}
                                                                           >
+                                                                            <span
+                                                                              dangerouslySetInnerHTML={{
+                                                                                __html:
+                                                                                  sectionChild1Sub1Sub1Sub1Sub1.section_body,
+                                                                              }}
+                                                                            />
                                                                             {
-                                                                              sectionChild1Sub1Sub1Sub1Sub1.section_body
+                                                                              // sectionChild1Sub1Sub1Sub1Sub1.section_body
                                                                             }
                                                                           </Typography>
                                                                           {userRole ===
@@ -889,10 +1058,15 @@ const CommentReflections = () => {
                                                                               section={
                                                                                 sectionChild1Sub1Sub1Sub1Sub1
                                                                               }
-
-                                                                              fetchDocumentDetails={fetchDocumentDetails}
-                                                                              fetchDocumentSections={fetchDocumentSections}
-                                                                              fetchDocumentComments={fetchDocumentComments}
+                                                                              fetchDocumentDetails={
+                                                                                fetchDocumentDetails
+                                                                              }
+                                                                              fetchDocumentSections={
+                                                                                fetchDocumentSections
+                                                                              }
+                                                                              fetchDocumentComments={
+                                                                                fetchDocumentComments
+                                                                              }
                                                                             />
                                                                           )}
                                                                         </Box>
@@ -919,26 +1093,40 @@ const CommentReflections = () => {
                     </Card>
                   ))
                 ) : (
-                  <Box>
-                    {""}
-                  </Box>
+                  <Box>{""}</Box>
                 )}
               </Grid>
-              <Grid item xs={3}>
-                <ListItemButton onClick={handleCommentsCollapse}>
-                  <ListItemText
-                    primary={
-                      <Typography variant="h5" fontWeight="600">
-                        {t("general_comments")} (
-                        {documentComments &&
-                          userInfo &&
-                          documentComments.length}
-                        )
-                      </Typography>
-                    }
-                  />
-                  {commentsOpen ? <ExpandLess /> : <ExpandMore />}
-                </ListItemButton>
+              <Grid
+                item
+                md={5}
+                lg={3}
+                xl={3}
+                sx={{
+                  display: {
+                    xs: "none",
+                    sm: "none",
+                    md: "block",
+                    lg: "block",
+                    xl: "block",
+                  },
+                }}
+              >
+                {userRole && (
+                  <ListItemButton onClick={handleCommentsCollapse}>
+                    <ListItemText
+                      primary={
+                        <Typography variant="h5" fontWeight="600">
+                          {t("general_comments")} (
+                          {documentComments &&
+                            userInfo &&
+                            documentComments.length}
+                          )
+                        </Typography>
+                      }
+                    />
+                    {commentsOpen ? <ExpandLess /> : <ExpandMore />}
+                  </ListItemButton>
+                )}
                 <Collapse in={commentsOpen} timeout="auto" unmountOnExit>
                   <Paper
                     elevation={1}
@@ -955,7 +1143,6 @@ const CommentReflections = () => {
                         <ReplyDocumentLevelComments
                           documentDetail={documentDetail}
                           comment={comment}
-
                           fetchDocumentDetails={fetchDocumentDetails}
                           fetchDocumentSections={fetchDocumentSections}
                           fetchDocumentComments={fetchDocumentComments}

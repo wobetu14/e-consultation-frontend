@@ -77,7 +77,8 @@ const PublicRepliesToGeneralComments = ({ reflections, comment }) => {
                                 variant="body1"
                                 color="text.primary"
                               >
-                                {reflection.message}
+                                <span dangerouslySetInnerHTML={{ __html:reflection.message }} />
+                                {/* {reflection.message} */}
                               </Typography>
                             </>
                           }

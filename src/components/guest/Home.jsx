@@ -16,7 +16,6 @@ import DocumentDisplay from "./partials/DocumentDisplay";
 import axios from "../../axios/AxiosGlobal";
 import { useEffect, useState } from "react";
 
-
 // Define home component
 const Home = () => {
   /**
@@ -185,8 +184,8 @@ const Home = () => {
                 justifyContent: "space-between",
               }}
             >
-              <Grid item xs={3}></Grid>
-              <Grid item xs={6}>
+              <Grid item xs={0} sm={0} md={0} lg={3} xl={3}></Grid>
+              <Grid item xs={12} sm={12} md={8} lg={6} xl={6}>
                 <Paper
                   elevation={1}
                   sx={{
@@ -219,7 +218,7 @@ const Home = () => {
                   ></SearchIcon>
                 </Paper>
               </Grid>
-              <Grid item xs={3}></Grid>
+              <Grid item xs={0} sm={0} md={0} lg={3} xl={3}></Grid>
             </Grid>
           </Grid>
         </Box>

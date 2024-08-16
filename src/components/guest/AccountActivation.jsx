@@ -69,6 +69,7 @@ const AccountActivation = () => {
         setActivation(true);
         setLoggedIn(true);
         setServerError(null);
+
         localStorage.setItem("token", res.data.data.token);
         localStorage.setItem("userRole", res.data.data.user.roles[0].name);
         localStorage.setItem("userInfo", JSON.stringify(res.data.data));
@@ -76,6 +77,7 @@ const AccountActivation = () => {
         setUserRole(localStorage.getItem("userRole"));
         setUserToken(localStorage.getItem("token"));
         setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+
         navigate("/");
       })
       .catch((errors) => {

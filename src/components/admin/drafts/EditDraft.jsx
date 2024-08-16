@@ -28,7 +28,6 @@ import { useTranslation } from "react-i18next";
  * Create a functional component named 'EditDraft'
  */
 const EditDraft = () => {
-
   /**
    * Create important variables such as things to set theme color, language, user login infomration
    */
@@ -41,15 +40,15 @@ const EditDraft = () => {
   const { t } = useTranslation();
 
   /**
-   * Destructure the 'userInfo' variable from UserContext to get access to 
+   * Destructure the 'userInfo' variable from UserContext to get access to
    * logged in user's information
    */
   const { userInfo } = useContext(UserContext);
 
-/**
- * Destructure variables from DraftsDataContext to access data and methods 
- * related to the current draft document
- */
+  /**
+   * Destructure variables from DraftsDataContext to access data and methods
+   * related to the current draft document
+   */
   const {
     draft,
     fetchDrafts,
@@ -85,7 +84,7 @@ const EditDraft = () => {
   };
 
   /**
-   * Method call to retrieve institutions data from an API call. 
+   * Method call to retrieve institutions data from an API call.
    * The results are used to populate option value dropdown list
    */
   useEffect(() => {
@@ -93,7 +92,7 @@ const EditDraft = () => {
   }, []);
 
   /**
-   * Method call to retrieve law categories data from an API call. 
+   * Method call to retrieve law categories data from an API call.
    * The results are use to populate option value of a drop down list
    */
 
@@ -102,7 +101,7 @@ const EditDraft = () => {
   }, []);
 
   /**
-   * Method call to retrieve sectors data from API call. 
+   * Method call to retrieve sectors data from API call.
    * The results are used to populate option value of a dropdown list
    */
   useEffect(() => {
@@ -110,8 +109,8 @@ const EditDraft = () => {
   }, []);
 
   /**
-   * Method call to retrieve drafts data in which the definition is available from 
-   * DraftsDataContext. This data is used to fill the initial form fields for the selected 
+   * Method call to retrieve drafts data in which the definition is available from
+   * DraftsDataContext. This data is used to fill the initial form fields for the selected
    * draft and make it ready for updating.
    */
   useEffect(() => {
@@ -176,8 +175,8 @@ const EditDraft = () => {
   };
 
   /**
-   * Defining intial values of form fields using formik library. Read more about formik 
-   * library to understand how it works at https://formik.org/ 
+   * Defining intial values of form fields using formik library. Read more about formik
+   * library to understand how it works at https://formik.org/
    */
   const formik = useFormik({
     initialValues: {
@@ -281,7 +280,7 @@ const EditDraft = () => {
     <Box width={"95%"}>
       {/**
        * Define for used to update drafts information
-        */}
+       */}
       <Header title={t("update_draft_info")} subtitle="" />
       <motion.span
         initial={{ opacity: 0 }}

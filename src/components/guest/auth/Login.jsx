@@ -21,6 +21,7 @@ import { motion } from "framer-motion";
 import { UserContext } from "../../../contexts/UserContext";
 import { useTranslation } from "react-i18next";
 
+
 const Login = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -65,6 +66,9 @@ const Login = () => {
           if (res.status === 200 && res.data.token) {
             setServerError(null);
 
+           
+            const expirationTime = new Date(new Date().getTime() + 60 * 60 * 1000);
+
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("userRole", res.data.user.roles[0].name);
             localStorage.setItem("userInfo", JSON.stringify(res.data));
@@ -98,7 +102,18 @@ const Login = () => {
   };
 
   return (
-    <Box sx={{ marginTop: "100px" }}>
+    <Box
+      sx={{
+        marginTop: "100px",
+        margin: {
+          xs: "0 20px",
+          sm: "0 50px",
+          md: "0 200px",
+          lg: "0 300px",
+          xl: "0 500px",
+        },
+      }}
+    >
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -109,8 +124,12 @@ const Login = () => {
           sx={{
             padding: "20px",
             margin: "20px auto",
-            width: "400px",
-            backgroundColor: colors.grey[200],
+            width: {
+              md: "400px",
+              lg: "500px",
+              xl: "500px",
+            },
+            // backgroundColor: colors.grey[200],
           }}
         >
           <Grid align="center">
@@ -126,7 +145,7 @@ const Login = () => {
             </Avatar>
             <Typography
               variant="h5"
-              sx={{ fontWeight: 400, paddingBottom: "20px" }}
+              sx={{ fontWeight: 600, paddingBottom: "20px" }}
             >
               {t("sign_in")}
             </Typography>
@@ -182,7 +201,6 @@ const Login = () => {
             </Grid>
 
             <Grid sx={{ paddingBottom: "5px" }}>
-
               <Button
                 type="submit"
                 variant="contained"

@@ -9,6 +9,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import CachedIcon from "@mui/icons-material/Cached";
 import { useNavigate } from "react-router-dom";
 import LanguageButton from "../../../../partials/LanguageButton";
+import ChangeAccess from "../../../guest/auth/ChangeAccess";
 
 const Topbar = () => {
   const theme = useTheme();
@@ -44,6 +45,8 @@ const Topbar = () => {
         </Button>
 
         <LanguageButton />
+
+        <ChangeAccess />
 
         <Logout />
         <IconButton onClick={colorMode.toggleColorMode}>

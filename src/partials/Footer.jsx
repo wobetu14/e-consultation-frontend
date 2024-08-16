@@ -32,13 +32,31 @@ const Footer = () => {
         zIndex: 0,
         position: "bottom",
         marginTop: "100px",
-        width:'100%',
-        left:0,
-        bottom:0,
+        width: "100%",
+        left: 0,
+        bottom: 0,
       }}
     >
-      <Grid container>
-        <Grid item xs={5}>
+      <Grid
+        container
+        sx={{
+          display: {
+            xs: "flex", // Hide on extra-small screens
+            sm: "flex", // Display as flex on small screens
+            md: "flex", // Display as flex on medium screens
+            lg: "flex", // Display as flex on large screens
+            xl: "flex", // Display as flex on extra-large screens
+          },
+          flexDirection: {
+            xs: "column", // Column direction on extra-small screens
+            sm: "column", // Column direction on small screens
+            md: "row", // Row direction on medium screens
+            lg: "row", // Row direction on large screens
+            xl: "row", // Row direction on extra-large screens
+          },
+        }}
+      >
+        <Grid item xs={12} sm={12} md={5} lg={5} xl={5}>
           <Box
             sx={{
               paddingRight: "20px",
@@ -59,13 +77,28 @@ const Footer = () => {
             </Typography>
           </Box>
         </Grid>
-        <Grid item xs={4}>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={4}
+          lg={4}
+          xl={4}
+        >
           <Typography
             variant="h4"
             sx={{
               paddingTop: "30px",
               fontWeight: 500,
               color: colors.headerText[100],
+              width: {
+                xs: "100%", // 100% width on extra-small screens
+                sm: "100%", // 75% width on small screens
+              },
+              textAlign: {
+                xs: "center",
+                sm: "center",
+              },
             }}
           >
             {t("address")}
@@ -76,33 +109,32 @@ const Footer = () => {
               height: "30vh",
               paddingRight: "25px",
               marginRight: "20px",
+              textAlign: {
+                xs: "center",
+                sm: "center",
+              },
             }}
           >
-
             <Typography variant="h5" sx={{ fontWeight: 500 }}>
-              <BusinessIcon 
-                sx={{ color:colors.primary[100] }}
-               />
-              &nbsp; {t('ministry_of_justice')}
+              <BusinessIcon sx={{ color: colors.primary[100] }} />
+              &nbsp; {t("ministry_of_justice")}
             </Typography>
 
             <br />
             <Typography variant="h5" sx={{ fontWeight: 500 }}>
-              <LocationOnIcon 
-                sx={{ color:colors.primary[100] }}
-               />
-              &nbsp; {t('physical_address')}
+              <LocationOnIcon sx={{ color: colors.primary[100] }} />
+              &nbsp; {t("physical_address")}
             </Typography>
 
             <br />
             <Typography variant="h5" sx={{ fontWeight: 500 }}>
-              <EmailIcon sx={{ color:colors.primary[100] }}/>
+              <EmailIcon sx={{ color: colors.primary[100] }} />
               &nbsp; info@eag.gov.et
             </Typography>
             <br />
 
             <Typography variant="h5" sx={{ fontWeight: 500 }}>
-              <PhoneIcon sx={{ color:colors.primary[100] }}/>
+              <PhoneIcon sx={{ color: colors.primary[100] }} />
               &nbsp; +251 11 551 5099
             </Typography>
             <br />
@@ -110,13 +142,17 @@ const Footer = () => {
             <br />
           </Box>
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
           <Typography
             variant="h4"
             sx={{
               paddingTop: "30px",
               fontWeight: 500,
               color: colors.headerText[100],
+              textAlign: {
+                xs: "center",
+                sm: "center",
+              },
             }}
           >
             {t("social_media")}
@@ -127,6 +163,10 @@ const Footer = () => {
               // height:"50vh",
               paddingRight: "25px",
               marginRight: "20px",
+              textAlign: {
+                xs: "center",
+                sm: "center",
+              },
             }}
           >
             {/* <Typography variant='h1' sx={{ fontWeight:600 }}> */}
@@ -166,45 +206,63 @@ const Footer = () => {
               // height:"50vh",
               paddingRight: "25px",
               marginRight: "20px",
+              textAlign: {
+                xs: "center",
+                sm: "center",
+              },
             }}
           >
-              <Typography variant="h5" 
+            <Typography
+              variant="h5"
               sx={{
-                  paddingTop: "15px",
-                  fontWeight: 500,
-                  color: colors.headerText[100]
-                }}
-                >
-                <a href="https://www.giz.de/en/html/index.html" 
-                target="_blank" rel="noreferrer" 
-                style={{ textDecoration:"none", color:colors.primary[200] }}>
-                  Developed by <strong>GIZ International Services</strong>
-                </a>
-              </Typography>
-              <a href="https://www.giz.de/en/html/index.html" 
-                target="_blank" rel="noreferrer" 
-                style={{ textDecoration:"none", color:colors.primary[200] }}
-                >
-                <img src={GIZLogo} alt="" />
-              </a>
-
-              <Typography variant="h5" 
-               sx={{
                 paddingTop: "15px",
                 fontWeight: 500,
-                color: colors.headerText[100]
+                color: colors.headerText[100],
               }}
+            >
+              <a
+                href="https://www.giz.de/en/html/index.html"
+                target="_blank"
+                rel="noreferrer"
+                style={{ textDecoration: "none", color: colors.primary[200] }}
               >
-                <a href="https://www.eeas.europa.eu/delegations/ethiopia_en" 
-                  target="_blank" rel="noreferrer" 
-                  style={{ textDecoration:"none", color:colors.primary[200] }}>
-                  Funded by the <strong>European Union</strong>
-                </a>
-              </Typography>
-              
-              <a href="https://www.eeas.europa.eu/delegations/ethiopia_en" target="_blank" rel="noreferrer">
-                <img src={EULogo} alt="" />
+                Developed by <strong>GIZ International Services</strong>
               </a>
+            </Typography>
+            <a
+              href="https://www.giz.de/en/html/index.html"
+              target="_blank"
+              rel="noreferrer"
+              style={{ textDecoration: "none", color: colors.primary[200] }}
+            >
+              <img src={GIZLogo} alt="" />
+            </a>
+
+            <Typography
+              variant="h5"
+              sx={{
+                paddingTop: "15px",
+                fontWeight: 500,
+                color: colors.headerText[100],
+              }}
+            >
+              <a
+                href="https://www.eeas.europa.eu/delegations/ethiopia_en"
+                target="_blank"
+                rel="noreferrer"
+                style={{ textDecoration: "none", color: colors.primary[200] }}
+              >
+                Funded by the <strong>European Union</strong>
+              </a>
+            </Typography>
+
+            <a
+              href="https://www.eeas.europa.eu/delegations/ethiopia_en"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <img src={EULogo} alt="" />
+            </a>
           </Box>
         </Grid>
       </Grid>
@@ -216,8 +274,8 @@ const Footer = () => {
             padding: "25px",
             backgroundColor: colors.primary[200],
             width: "100%",
-            display:"flex",
-            justifyContent:"space-between"
+            display: "flex",
+            justifyContent: "space-between",
           }}
         >
           <Typography variant="h6" sx={{ fontWeight: 600, color: "white" }}>
