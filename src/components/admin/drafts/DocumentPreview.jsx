@@ -254,11 +254,13 @@ const DocumentPreview = () => {
                             {/* {section.section_body} */}
                           </Typography>
 
-                          <SectionFeedbackPreview
-                            documentDetail={documentDetail}
-                            comments={section.comments}
-                            section={section}
-                          />
+                          {section.section_body.length > 0 && (
+                            <SectionFeedbackPreview
+                              documentDetail={documentDetail}
+                              comments={section.comments}
+                              section={section}
+                            />
+                          )}
                         </Box>
                         {/* 
                           Check if the document section has also a sub child section and render / display it, if it has 
@@ -302,11 +304,13 @@ const DocumentPreview = () => {
                                     {/* {sectionChild1.section_body} */}
                                   </Typography>
 
-                                  <SectionFeedbackPreview
-                                    documentDetail={documentDetail}
-                                    comments={sectionChild1.comments}
-                                    section={sectionChild1}
-                                  />
+                                  {sectionChild1.section_body.length > 0 && (
+                                    <SectionFeedbackPreview
+                                      documentDetail={documentDetail}
+                                      comments={sectionChild1.comments}
+                                      section={sectionChild1}
+                                    />
+                                  )}
                                 </Box>
                                 {sectionChild1.children.length > 0
                                   ? sectionChild1.children.map(
@@ -348,13 +352,16 @@ const DocumentPreview = () => {
                                               {/* {sectionChild1Sub1.section_body} */}
                                             </Typography>
 
-                                            <SectionFeedbackPreview
-                                              documentDetail={documentDetail}
-                                              comments={
-                                                sectionChild1Sub1.comments
-                                              }
-                                              section={sectionChild1Sub1}
-                                            />
+                                            {sectionChild1Sub1.section_body
+                                              .length > 0 && (
+                                              <SectionFeedbackPreview
+                                                documentDetail={documentDetail}
+                                                comments={
+                                                  sectionChild1Sub1.comments
+                                                }
+                                                section={sectionChild1Sub1}
+                                              />
+                                            )}
                                           </Box>
                                           {sectionChild1Sub1.children.length > 0
                                             ? sectionChild1Sub1.children.map(
@@ -402,17 +409,21 @@ const DocumentPreview = () => {
                                                         }
                                                       </Typography>
 
-                                                      <SectionFeedbackPreview
-                                                        documentDetail={
-                                                          documentDetail
-                                                        }
-                                                        comments={
-                                                          sectionChild1Sub1Sub1.comments
-                                                        }
-                                                        section={
-                                                          sectionChild1Sub1Sub1
-                                                        }
-                                                      />
+                                                      {sectionChild1Sub1Sub1
+                                                        .section_body.length >
+                                                        0 && (
+                                                        <SectionFeedbackPreview
+                                                          documentDetail={
+                                                            documentDetail
+                                                          }
+                                                          comments={
+                                                            sectionChild1Sub1Sub1.comments
+                                                          }
+                                                          section={
+                                                            sectionChild1Sub1Sub1
+                                                          }
+                                                        />
+                                                      )}
                                                     </Box>
                                                     {sectionChild1Sub1Sub1
                                                       .children.length > 0
@@ -470,17 +481,22 @@ const DocumentPreview = () => {
                                                                   }
                                                                 </Typography>
 
-                                                                <SectionFeedbackPreview
-                                                                  documentDetail={
-                                                                    documentDetail
-                                                                  }
-                                                                  comments={
-                                                                    sectionChild1Sub1Sub1Sub1.comments
-                                                                  }
-                                                                  section={
-                                                                    sectionChild1Sub1Sub1Sub1
-                                                                  }
-                                                                />
+                                                                {sectionChild1Sub1Sub1Sub1
+                                                                  .section_body
+                                                                  .length >
+                                                                  0 && (
+                                                                  <SectionFeedbackPreview
+                                                                    documentDetail={
+                                                                      documentDetail
+                                                                    }
+                                                                    comments={
+                                                                      sectionChild1Sub1Sub1Sub1.comments
+                                                                    }
+                                                                    section={
+                                                                      sectionChild1Sub1Sub1Sub1
+                                                                    }
+                                                                  />
+                                                                )}
                                                               </Box>
                                                               {sectionChild1Sub1Sub1Sub1
                                                                 .children
@@ -539,17 +555,22 @@ const DocumentPreview = () => {
                                                                             }
                                                                           </Typography>
 
-                                                                          <SectionFeedbackPreview
-                                                                            documentDetail={
-                                                                              documentDetail
-                                                                            }
-                                                                            comments={
-                                                                              sectionChild1Sub1Sub1Sub1Sub1.comments
-                                                                            }
-                                                                            section={
-                                                                              sectionChild1Sub1Sub1Sub1Sub1
-                                                                            }
-                                                                          />
+                                                                          {sectionChild1Sub1Sub1Sub1Sub1
+                                                                            .section_body
+                                                                            .length >
+                                                                            0 && (
+                                                                            <SectionFeedbackPreview
+                                                                              documentDetail={
+                                                                                documentDetail
+                                                                              }
+                                                                              comments={
+                                                                                sectionChild1Sub1Sub1Sub1Sub1.comments
+                                                                              }
+                                                                              section={
+                                                                                sectionChild1Sub1Sub1Sub1Sub1
+                                                                              }
+                                                                            />
+                                                                          )}
                                                                         </Box>
                                                                       </>
                                                                     )

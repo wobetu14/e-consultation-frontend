@@ -181,7 +181,7 @@ const CommentReflections = () => {
                   color: "white",
                 }}
               >
-                {documentDetail.summary}
+                {`${documentDetail.summary.slice(0, 400)} ...`}
               </Typography>
 
               <Typography
@@ -385,7 +385,7 @@ const CommentReflections = () => {
                   sx={{ color: "white" }}
                 >
                   {documentDetail.base_legal_reference
-                    ? documentDetail.base_legal_reference
+                    ? `${documentDetail.base_legal_reference.slice(0, 50)} ...`
                     : null}
                 </Grid>
 
@@ -403,7 +403,7 @@ const CommentReflections = () => {
                   xl={6}
                   sx={{ color: "white" }}
                 >
-                  {documentDetail.definition ? documentDetail.definition : null}
+                  {documentDetail.definition ? `${documentDetail.definition.slice(0, 50)} ...` : null}
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
@@ -713,7 +713,7 @@ const CommentReflections = () => {
                             {/* {section.section_body} */}
                           </Typography>
 
-                          {userRole === "Commenter" && (
+                          {(userRole === "Commenter" && section.section_body.length>0) && (
                             <ReplyFeedbacks
                               documentDetail={documentDetail}
                               comments={section.comments}
@@ -764,8 +764,8 @@ const CommentReflections = () => {
                                   </Typography>
 
                                   {
-                                    /* commentsVisible && sectionID===sectionChild1.id &&  */ userRole ===
-                                      "Commenter" && (
+                                    (userRole ===
+                                      "Commenter" && sectionChild1.section_body.length>0 )&& (
                                       <ReplyFeedbacks
                                         documentDetail={documentDetail}
                                         comments={sectionChild1.comments}
@@ -822,7 +822,7 @@ const CommentReflections = () => {
                                               />
                                               {/* {sectionChild1Sub1.section_body} */}
                                             </Typography>
-                                            {userRole === "Commenter" && (
+                                            {(userRole === "Commenter" && sectionChild1Sub1.section_body.length>0) &&  (
                                               <ReplyFeedbacks
                                                 documentDetail={documentDetail}
                                                 comments={
@@ -886,8 +886,8 @@ const CommentReflections = () => {
                                                           // sectionChild1Sub1Sub1.section_body
                                                         }
                                                       </Typography>
-                                                      {userRole ===
-                                                        "Commenter" && (
+                                                      {(userRole ===
+                                                        "Commenter" && sectionChild1Sub1Sub1.section_body.length>0) && (
                                                         <ReplyFeedbacks
                                                           documentDetail={
                                                             documentDetail
@@ -966,8 +966,8 @@ const CommentReflections = () => {
                                                                   }
                                                                 </Typography>
 
-                                                                {userRole ===
-                                                                  "Commenter" && (
+                                                                {(userRole ===
+                                                                  "Commenter" && sectionChild1Sub1Sub1Sub1.section_body.length>0) && (
                                                                   <ReplyFeedbacks
                                                                     documentDetail={
                                                                       documentDetail
@@ -1046,8 +1046,8 @@ const CommentReflections = () => {
                                                                               // sectionChild1Sub1Sub1Sub1Sub1.section_body
                                                                             }
                                                                           </Typography>
-                                                                          {userRole ===
-                                                                            "Commenter" && (
+                                                                          {(userRole ===
+                                                                            "Commenter" && sectionChild1Sub1Sub1Sub1Sub1.section_body.length>0) && (
                                                                             <ReplyFeedbacks
                                                                               documentDetail={
                                                                                 documentDetail

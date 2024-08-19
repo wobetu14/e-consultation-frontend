@@ -212,7 +212,7 @@ const DocumentDetailView = () => {
                   color: "white",
                 }}
               >
-                {documentDetail.summary}
+                {`${documentDetail.summary.slice(0, 400)} ...`}
               </Typography>
 
               <Typography
@@ -401,7 +401,7 @@ const DocumentDetailView = () => {
                   sx={{ color: "white" }}
                 >
                   {documentDetail.base_legal_reference
-                    ? documentDetail.base_legal_reference
+                    ? `${documentDetail.base_legal_reference.slice(0, 50)} ...`
                     : null}
                 </Grid>
 
@@ -419,7 +419,9 @@ const DocumentDetailView = () => {
                   xl={6}
                   sx={{ color: "white" }}
                 >
-                  {documentDetail.definition ? documentDetail.definition : null}
+                  {documentDetail.definition
+                    ? `${documentDetail.definition.slice(0, 50)} ...`
+                    : null}
                 </Grid>
 
                 <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
@@ -739,16 +741,17 @@ const DocumentDetailView = () => {
                             {/* {section.section_body} */}
                           </Typography>
 
-                          {userRole === "Commenter" && (
-                            <SectionFeedbacks
-                              documentDetail={documentDetail}
-                              comments={section.comments}
-                              section={section}
-                              fetchDocumentDetails={fetchDocumentDetails}
-                              fetchDocumentSections={fetchDocumentSections}
-                              fetchDocumentComments={fetchDocumentComments}
-                            />
-                          )}
+                          {userRole === "Commenter" &&
+                            section.section_body.length > 0 && (
+                              <SectionFeedbacks
+                                documentDetail={documentDetail}
+                                comments={section.comments}
+                                section={section}
+                                fetchDocumentDetails={fetchDocumentDetails}
+                                fetchDocumentSections={fetchDocumentSections}
+                                fetchDocumentComments={fetchDocumentComments}
+                              />
+                            )}
                         </Box>
                         {/* 
                           Check if the document section has also a sub child section and render / display it, if it has 
@@ -792,22 +795,23 @@ const DocumentDetailView = () => {
                                     {/* {sectionChild1.section_body} */}
                                   </Typography>
 
-                                  {userRole === "Commenter" && (
-                                    <SectionFeedbacks
-                                      documentDetail={documentDetail}
-                                      comments={sectionChild1.comments}
-                                      section={sectionChild1}
-                                      fetchDocumentDetails={
-                                        fetchDocumentDetails
-                                      }
-                                      fetchDocumentSections={
-                                        fetchDocumentSections
-                                      }
-                                      fetchDocumentComments={
-                                        fetchDocumentComments
-                                      }
-                                    />
-                                  )}
+                                  {userRole === "Commenter" &&
+                                    sectionChild1.section_body.length > 0 && (
+                                      <SectionFeedbacks
+                                        documentDetail={documentDetail}
+                                        comments={sectionChild1.comments}
+                                        section={sectionChild1}
+                                        fetchDocumentDetails={
+                                          fetchDocumentDetails
+                                        }
+                                        fetchDocumentSections={
+                                          fetchDocumentSections
+                                        }
+                                        fetchDocumentComments={
+                                          fetchDocumentComments
+                                        }
+                                      />
+                                    )}
                                 </Box>
                                 {sectionChild1.children.length > 0
                                   ? sectionChild1.children.map(
@@ -849,24 +853,28 @@ const DocumentDetailView = () => {
                                               />
                                               {/* {sectionChild1Sub1.section_body} */}
                                             </Typography>
-                                            {userRole === "Commenter" && (
-                                              <SectionFeedbacks
-                                                documentDetail={documentDetail}
-                                                comments={
-                                                  sectionChild1Sub1.comments
-                                                }
-                                                section={sectionChild1Sub1}
-                                                fetchDocumentDetails={
-                                                  fetchDocumentDetails
-                                                }
-                                                fetchDocumentSections={
-                                                  fetchDocumentSections
-                                                }
-                                                fetchDocumentComments={
-                                                  fetchDocumentComments
-                                                }
-                                              />
-                                            )}
+                                            {userRole === "Commenter" &&
+                                              sectionChild1Sub1.section_body
+                                                .length > 0 && (
+                                                <SectionFeedbacks
+                                                  documentDetail={
+                                                    documentDetail
+                                                  }
+                                                  comments={
+                                                    sectionChild1Sub1.comments
+                                                  }
+                                                  section={sectionChild1Sub1}
+                                                  fetchDocumentDetails={
+                                                    fetchDocumentDetails
+                                                  }
+                                                  fetchDocumentSections={
+                                                    fetchDocumentSections
+                                                  }
+                                                  fetchDocumentComments={
+                                                    fetchDocumentComments
+                                                  }
+                                                />
+                                              )}
                                           </Box>
                                           {sectionChild1Sub1.children.length > 0
                                             ? sectionChild1Sub1.children.map(
@@ -914,28 +922,31 @@ const DocumentDetailView = () => {
                                                         }
                                                       </Typography>
                                                       {userRole ===
-                                                        "Commenter" && (
-                                                        <SectionFeedbacks
-                                                          documentDetail={
-                                                            documentDetail
-                                                          }
-                                                          comments={
-                                                            sectionChild1Sub1Sub1.comments
-                                                          }
-                                                          section={
-                                                            sectionChild1Sub1Sub1
-                                                          }
-                                                          fetchDocumentDetails={
-                                                            fetchDocumentDetails
-                                                          }
-                                                          fetchDocumentSections={
-                                                            fetchDocumentSections
-                                                          }
-                                                          fetchDocumentComments={
-                                                            fetchDocumentComments
-                                                          }
-                                                        />
-                                                      )}
+                                                        "Commenter" &&
+                                                        sectionChild1Sub1Sub1
+                                                          .section_body.length >
+                                                          0 && (
+                                                          <SectionFeedbacks
+                                                            documentDetail={
+                                                              documentDetail
+                                                            }
+                                                            comments={
+                                                              sectionChild1Sub1Sub1.comments
+                                                            }
+                                                            section={
+                                                              sectionChild1Sub1Sub1
+                                                            }
+                                                            fetchDocumentDetails={
+                                                              fetchDocumentDetails
+                                                            }
+                                                            fetchDocumentSections={
+                                                              fetchDocumentSections
+                                                            }
+                                                            fetchDocumentComments={
+                                                              fetchDocumentComments
+                                                            }
+                                                          />
+                                                        )}
                                                     </Box>
                                                     {sectionChild1Sub1Sub1
                                                       .children.length > 0
@@ -993,8 +1004,13 @@ const DocumentDetailView = () => {
                                                                   }
                                                                 </Typography>
 
-                                                                {userRole ===
-                                                                  "Commenter" && (
+                                                                {(
+                                                                  userRole ===
+                                                                    "Commenter" &&
+                                                                  sectionChild1Sub1Sub1Sub1
+                                                                    .section_body
+                                                                    .length > 0
+                                                                )(
                                                                   <SectionFeedbacks
                                                                     documentDetail={
                                                                       documentDetail
@@ -1073,29 +1089,30 @@ const DocumentDetailView = () => {
                                                                               // sectionChild1Sub1Sub1Sub1Sub1.section_body
                                                                             }
                                                                           </Typography>
-                                                                          {userRole ===
-                                                                            "Commenter" && (
-                                                                            <SectionFeedbacks
-                                                                              documentDetail={
-                                                                                documentDetail
-                                                                              }
-                                                                              comments={
-                                                                                sectionChild1Sub1Sub1Sub1Sub1.comments
-                                                                              }
-                                                                              section={
-                                                                                sectionChild1Sub1Sub1Sub1Sub1
-                                                                              }
-                                                                              fetchDocumentDetails={
-                                                                                fetchDocumentDetails
-                                                                              }
-                                                                              fetchDocumentSections={
-                                                                                fetchDocumentSections
-                                                                              }
-                                                                              fetchDocumentComments={
-                                                                                fetchDocumentComments
-                                                                              }
-                                                                            />
-                                                                          )}
+                                                                          {(userRole ===
+                                                                            "Commenter" &&
+                                                                            sectionChild1Sub1Sub1Sub1Sub1.section_body.length>0) && (
+                                                                              <SectionFeedbacks
+                                                                                documentDetail={
+                                                                                  documentDetail
+                                                                                }
+                                                                                comments={
+                                                                                  sectionChild1Sub1Sub1Sub1Sub1.comments
+                                                                                }
+                                                                                section={
+                                                                                  sectionChild1Sub1Sub1Sub1Sub1
+                                                                                }
+                                                                                fetchDocumentDetails={
+                                                                                  fetchDocumentDetails
+                                                                                }
+                                                                                fetchDocumentSections={
+                                                                                  fetchDocumentSections
+                                                                                }
+                                                                                fetchDocumentComments={
+                                                                                  fetchDocumentComments
+                                                                                }
+                                                                              />
+                                                                            )}
                                                                         </Box>
                                                                       </>
                                                                     )
@@ -1137,7 +1154,7 @@ const DocumentDetailView = () => {
                     md: "block",
                     lg: "block",
                     xl: "block",
-                  }
+                  },
                 }}
               >
                 {userRole && (

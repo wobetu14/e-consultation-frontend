@@ -103,7 +103,7 @@ const DraftMetaInfo = ({
                 {/**
                  * Render document summary with h5 Typography
                  */}
-                {documentDetail.summary}
+                {`${documentDetail.summary.slice(0, 400)} ...`}
               </Typography>
 
               <Typography
@@ -270,7 +270,7 @@ const DraftMetaInfo = ({
                 </Grid>
                 <Grid item xs={6} md={6}>
                   {documentDetail.base_legal_reference
-                    ? documentDetail.base_legal_reference
+                    ? `${documentDetail.base_legal_reference.slice(0, 50)} ...`
                     : null}
                 </Grid>
 
@@ -278,7 +278,7 @@ const DraftMetaInfo = ({
                   <strong>{t('definition')}</strong>
                 </Grid>
                 <Grid item xs={6} md={6}>
-                  {documentDetail.definition ? documentDetail.definition : null}
+                  {documentDetail.definition ? `${documentDetail.definition.slice(0, 50)} ...` : null}
                 </Grid>
 
                 <Grid item xs={6} md={6}>
