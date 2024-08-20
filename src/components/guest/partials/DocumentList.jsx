@@ -60,7 +60,7 @@ const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
                     color="text.primary"
                   >
                     {/* Access the draft summary info */}
-                    {draft.summary}
+                    {`${draft.summary.slice(0, 300)} ...`}
                   </Typography>
 
                   <Stack direction="row" spacing={1}>
