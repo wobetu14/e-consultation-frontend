@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { tokens } from "../../../theme";
 import { useTranslation } from "react-i18next";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -51,6 +51,8 @@ const AddDocumentLevelComments = ({
    * Note that, this constant definitions are available on almost every component of this application.
    */
 
+  const inputFile = useRef(null);
+
   const errorStyle = {
     color: "red",
     fontWeight: "400",
@@ -63,6 +65,12 @@ const AddDocumentLevelComments = ({
     fontWeight: "400",
     fontSize: "18px",
   };
+
+   const helperTextStyle = {
+     color: "red",
+     fontWeight: "400",
+     fontSize: "15px",
+   };
 
   /**
    * Here we have built a formik object. What is formik? It is a group react components to easily handle form data.
@@ -81,6 +89,7 @@ const AddDocumentLevelComments = ({
     initialValues: {
       draftID: documentID,
       generalComment: "",
+      file: null,
       commentedBy: userInfo ? userInfo.user.id : "",
       commentingTeam: 1,
       createdBy: userInfo ? userInfo.user.id : "",
@@ -95,6 +104,7 @@ const AddDocumentLevelComments = ({
       const documentCommentData = {
         draft_id: values.draftID,
         general_comment: values.generalComment,
+        file: values.file,
         commented_by: values.commentedBy,
         commenting_team: values.commentingTeam,
         created_by: values.createdBy,
@@ -175,6 +185,37 @@ const AddDocumentLevelComments = ({
                   >
                     <SendIcon />
                   </Button>
+                </>
+              }
+            />
+          </ListItem>
+
+          <ListItem sx={{ marginLeft: "60px" }}>
+            <ListItemText
+              primary={
+                <>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{ paddingBottom: "10px" }}
+                  >
+                    {t("attachement_file")} (optional): &nbsp;
+                    <input
+                      type="file"
+                      name="file"
+                      ref={inputFile}
+                      onBlur={formik.handleBlur}
+                      onChange={(e) => {
+                        formik.setFieldValue("file", e.target.files[0]);
+                      }}
+                      helperText={
+                        formik.touched.file && formik.errors.file ? (
+                          <span style={helperTextStyle}>
+                            {formik.touched.file}
+                          </span>
+                        ) : null
+                      }
+                    />
+                  </Typography>
                 </>
               }
             />

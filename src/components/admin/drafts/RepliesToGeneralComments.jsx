@@ -13,6 +13,8 @@ import ReplyIcon from "@mui/icons-material/Reply";
 import AddNewDocumentReply from "./AddNewDocumentReply";
 import { UserContext } from "../../../contexts/UserContext";
 import ManageComment from "../../guest/partials/ManageComment";
+import ManageCommentReflections from "../../guest/partials/ManageCommentReflections";
+import { FileDownload } from "@mui/icons-material";
 
 const RepliesToGeneralComments = ({
   reflections,
@@ -110,9 +112,10 @@ const RepliesToGeneralComments = ({
                                   </Typography>
                                 </div>
                                 <div>
-                                  <ManageComment
+                                  <ManageCommentReflections
                                     commentID={reflection.id}
                                     commentText={reflection.message}
+                                    documentDetail={documentDetail}
                                     fetchDocumentDetails={fetchDocumentDetails}
                                     fetchDocumentSections={
                                       fetchDocumentSections
@@ -136,8 +139,25 @@ const RepliesToGeneralComments = ({
                                     dangerouslySetInnerHTML={{
                                       __html: reflection.message,
                                     }}
-                                  />
-                                  {/* {reflection.message} */}
+                                  />{" "}
+                                  <span>
+                                    <Button
+                                      href={
+                                        reflection.file
+                                      }
+                                      variant="outlined"
+                                      color="secondary"
+                                      target="_blank"
+                                      size="small"
+                                      sx={{
+                                        textTransform: "none",
+                                        borderRadius: "10px 10px",
+                                        padding: 0,
+                                      }}
+                                    >
+                                      <FileDownload fontSize="small" /> File
+                                    </Button>
+                                  </span>
                                 </Typography>
                               </>
                             }

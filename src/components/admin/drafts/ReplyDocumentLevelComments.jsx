@@ -1,4 +1,4 @@
-import { Typography, useTheme } from "@mui/material";
+import { Button, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../../theme";
 import { motion } from "framer-motion";
 
@@ -8,6 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import RepliesToGeneralComments from "../../admin/drafts/RepliesToGeneralComments";
+import { FileDownload } from "@mui/icons-material";
 
 const ReplyDocumentLevelComments = ({
   comment,

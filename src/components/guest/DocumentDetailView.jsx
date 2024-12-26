@@ -22,6 +22,7 @@ import { tokens } from "../../theme";
 import { motion } from "framer-motion";
 import SectionFeedbacks from "./partials/SectionFeedbacks";
 import SectionNavigationMenu from "./partials/SectionNavigationMenu";
+import dateFormat from "dateformat";
 
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
@@ -39,6 +40,8 @@ import { UserContext } from "../../contexts/UserContext";
 const DocumentDetailView = () => {
   // Create variable to retrieve data from the page url using useParams() hook
   const params = useParams();
+
+  const ethiopicDate = require("ethiopic-date");
 
   /**
    * Create documentDetail, documentSections, and documentComments to handle document information
@@ -204,7 +207,7 @@ const DocumentDetailView = () => {
               >
                 {documentDetail.short_title}
               </Typography>
-              <Typography
+              {/* <Typography
                 variant="body1"
                 sx={{
                   paddingBottom: "30px",
@@ -213,7 +216,7 @@ const DocumentDetailView = () => {
                 }}
               >
                 {`${documentDetail.summary.slice(0, 400)} ...`}
-              </Typography>
+              </Typography> */}
 
               <Typography
                 variant="h4"
@@ -355,7 +358,14 @@ const DocumentDetailView = () => {
                   <Chip
                     label={
                       documentDetail.comment_opening_date
-                        ? documentDetail.comment_opening_date
+                        ? localStorage.getItem("i18nextLng") === "en"
+                          ? dateFormat(
+                              documentDetail.comment_opening_date,
+                              "dddd, mmmm dS, yyyy, h:MM:ss TT"
+                            )
+                          : ethiopicDate.convert(
+                              documentDetail.comment_opening_date
+                            )
                         : "Unavailable"
                     }
                     size="small"
@@ -375,7 +385,14 @@ const DocumentDetailView = () => {
                   <Chip
                     label={
                       documentDetail.comment_closing_date
-                        ? documentDetail.comment_closing_date
+                        ? localStorage.getItem("i18nextLng") === "en"
+                          ? dateFormat(
+                              documentDetail.comment_closing_date,
+                              "dddd, mmmm dS, yyyy, h:MM:ss TT"
+                            )
+                          : ethiopicDate.convert(
+                              documentDetail.comment_closing_date
+                            )
                         : "Unavailable"
                     }
                     size="small"
@@ -386,7 +403,7 @@ const DocumentDetailView = () => {
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                {/*   <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("base_legal_reference")}</strong>
                   </Typography>
@@ -403,9 +420,9 @@ const DocumentDetailView = () => {
                   {documentDetail.base_legal_reference
                     ? `${documentDetail.base_legal_reference.slice(0, 50)} ...`
                     : null}
-                </Grid>
+                </Grid> */}
 
-                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                {/* <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("legal_definition")}</strong>
                   </Typography>
@@ -422,7 +439,7 @@ const DocumentDetailView = () => {
                   {documentDetail.definition
                     ? `${documentDetail.definition.slice(0, 50)} ...`
                     : null}
-                </Grid>
+                </Grid> */}
 
                 <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
@@ -452,7 +469,7 @@ const DocumentDetailView = () => {
             </Grid>
 
             <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
-              {documentDetail.draft_status.name === "Closed" ? (
+              {/* {documentDetail.draft_status.name === "Closed" ? (
                 <Paper
                   elevation={1}
                   sx={{
@@ -498,7 +515,7 @@ const DocumentDetailView = () => {
                 </Paper>
               ) : (
                 ""
-              )}
+              )} */}
             </Grid>
           </Grid>
         ) : (
@@ -1089,9 +1106,12 @@ const DocumentDetailView = () => {
                                                                               // sectionChild1Sub1Sub1Sub1Sub1.section_body
                                                                             }
                                                                           </Typography>
-                                                                          {(userRole ===
+                                                                          {userRole ===
                                                                             "Commenter" &&
-                                                                            sectionChild1Sub1Sub1Sub1Sub1.section_body.length>0) && (
+                                                                            sectionChild1Sub1Sub1Sub1Sub1
+                                                                              .section_body
+                                                                              .length >
+                                                                              0 && (
                                                                               <SectionFeedbacks
                                                                                 documentDetail={
                                                                                   documentDetail
@@ -1213,6 +1233,7 @@ const DocumentDetailView = () => {
                           /* Render the generel comments component if there is documentComments has value */
                           <DocumentLevelComments
                             comment={comment}
+                            documentDetail={documentDetail}
                             fetchDocumentDetails={fetchDocumentDetails}
                             fetchDocumentSections={fetchDocumentSections}
                             fetchDocumentComments={fetchDocumentComments}
@@ -1235,6 +1256,7 @@ const DocumentDetailView = () => {
                         documentID={
                           documentDetail ? documentDetail.id : params.id
                         }
+                        documentDetail={documentDetail}
                         fetchDocumentDetails={fetchDocumentDetails}
                         fetchDocumentSections={fetchDocumentSections}
                         fetchDocumentComments={fetchDocumentComments}

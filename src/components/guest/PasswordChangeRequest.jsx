@@ -11,19 +11,28 @@ import { Box } from "@mui/system";
 import { useFormik } from "formik";
 import * as YUP from "yup";
 import "yup-phone";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
 import { useTheme } from "@emotion/react";
 import { tokens } from "../../theme";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { UserContext } from "../../contexts/UserContext";
+import { ChangePasswordRequestContext } from "../../contexts/ChangePasswordChangeContext";
 
 const PasswordChangeRequest = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const { userInfo, setUserInfo, setUserRole, setUserToken } = useContext(UserContext);
+  const {enforcePasswordChange, setEnforcePasswordChange} = useContext(ChangePasswordRequestContext);
+
+  const { passwordChanged, hello } = location || {}
 
   const [serverErrorMsg, setServerErrorMsg] = useState(null);
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
@@ -48,6 +57,44 @@ const PasswordChangeRequest = () => {
     fontSize: "15px",
   };
 
+  const newLogin = async (newLoginData) => {
+    setLoading(true);
+    return await axios
+      .post("https://backend.e-consultation.gov.et/api/v1/login", newLoginData)
+      .then((res) => {
+        if (res.status !== 200) {
+          // setServerError(res.data.message);
+          setLoading(false);
+        } else {
+          if (res.status === 200 && res.data.token) {
+            // setServerError(null);
+            const expirationTime = new Date(new Date().getTime() + 60 * 60 * 1000);
+
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("userRole", res.data.user.roles[0].name);
+            localStorage.setItem("userInfo", JSON.stringify(res.data));
+
+            setUserRole(localStorage.getItem("userRole"));
+            setUserToken(localStorage.getItem("token"));
+            setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
+            setEnforcePasswordChange(false);
+              if (localStorage.getItem("userRole") === "Commenter") {
+                navigate("/");
+              } else {
+                navigate("/admin");
+              }
+          } else {
+            // setServerError("Invalid email or password. Please try again.");
+            setLoading(false);
+          }
+        }
+      })
+      .catch((errors) => {
+        // setServerError(errors.message);
+        setLoading(false);
+      });
+  }
+
   const formikChangePassword = useFormik({
     initialValues: {
       oldPassword: "",
@@ -59,9 +106,12 @@ const PasswordChangeRequest = () => {
       oldPassword: YUP.string().required(
         "This field is required. Please enter your old password."
       ),
-      newPassword: YUP.string().required(
-        "This field is required. Please enter your new password."
-      ),
+      newPassword: YUP.string()
+        .required("This field is required. Please enter your new password.")
+        .matches(
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+          "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Character"
+        ),
       confirmPassword: YUP.string()
         .required(
           "This field is required. Please re-enter password to confirm."
@@ -79,11 +129,16 @@ const PasswordChangeRequest = () => {
         confirm_password: values.confirmPassword,
       };
 
-      changePassword(userData);
+      const newLoginData = {
+        email: userInfo.user.email,
+        password: values.newPassword,
+      };
+
+      changePassword(userData, newLoginData);
     },
   });
 
-  const changePassword = async (userData) => {
+  const changePassword = async (userData, newLoginData) => {
     setLoading(true);
     return await axios
       .post("change-password", userData, {
@@ -99,8 +154,10 @@ const PasswordChangeRequest = () => {
         formikChangePassword.resetForm();
         setLoading(false);
         if (localStorage.getItem("userRole") === "Commenter") {
+          newLogin(newLoginData)
           navigate("/");
         } else {
+          newLogin(newLoginData);
           navigate("/admin");
         }
       })
@@ -262,6 +319,9 @@ const PasswordChangeRequest = () => {
                 <Typography variant="body1">Change Password</Typography>
               </Button>
 
+              <Typography variant="h1">{passwordChanged}</Typography>
+              <Typography variant="h1">{hello}</Typography>
+              {/* 
               <Button
                 onClick={handleURLRedirection}
                 variant="text"
@@ -269,7 +329,7 @@ const PasswordChangeRequest = () => {
                 sx={{ textTransform: "none" }}
               >
                 <Typography variant="body1">Skip</Typography>
-              </Button>
+              </Button> */}
             </Grid>
           </form>
         </Paper>

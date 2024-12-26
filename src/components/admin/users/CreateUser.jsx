@@ -24,10 +24,10 @@ import { useTranslation } from "react-i18next";
 const CreateUser = () => {
   const [institutions, setInstitutions] = useState(null);
   const [regions, setRegions] = useState(null);
-  const [userRoles, setUserRoles] = useState([]);
+ 
   const { t } = useTranslation();
 
-  const [selectedRoles, setSelectedRoles] = useState([]);
+   const [selectedRoles, setSelectedRoles] = useState([]);
 
   // User context
   const { userInfo, userRole } = useContext(UserContext);
@@ -39,6 +39,9 @@ const CreateUser = () => {
     setServerSuccessMsg,
     setLoading,
     setNetworkError,
+    userRoles,
+    setUserRoles,
+    fetchUserRoles,
   } = useContext(UsersDataContext);
 
   const helperTextStyle = {
@@ -50,10 +53,6 @@ const CreateUser = () => {
 
   useEffect(() => {
     fetchInstitutions();
-  }, []);
-
-  useEffect(() => {
-    fetchUserRoles();
   }, []);
 
   useEffect(() => {
@@ -92,21 +91,7 @@ const CreateUser = () => {
       .catch((error) => {});
   };
 
-  const fetchUserRoles = async () => {
-    return await axios
-      .get("roles", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          Accept: "application/json;",
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => res.data.data)
-      .then((res) => {
-        setUserRoles(res);
-      })
-      .catch((error) => {});
-  };
+
 
   const formik = useFormik({
     initialValues: {
@@ -214,7 +199,16 @@ const CreateUser = () => {
         transition={{ duration: 0.3 }}
       >
         <form onSubmit={formik.handleSubmit}>
-          <Grid container spacing={2}>
+          <Grid
+            container
+            spacing={2}
+            sx={{
+              border: `1px solid #000`,
+              padding: "5px",
+              marginLeft: "20px",
+              borderRadius: "5px 5px",
+            }}
+          >
             <Grid item xs={4}>
               <TextField
                 label={`${t("first_name")} *`}
@@ -256,7 +250,9 @@ const CreateUser = () => {
               />
               {userInfo ? (
                 userInfo.user.roles[0].name === "Super Admin" &&
-                selectedRoles.some((selectedRole)=>selectedRole.role.name==="Regional Admin") ? (
+                selectedRoles.some(
+                  (selectedRole) => selectedRole.role.name === "Regional Admin"
+                ) ? (
                   <FormControl sx={{ minWidth: "100%", paddingBottom: "5px" }}>
                     <InputLabel>{t("select_region")} *</InputLabel>
                     <Select
@@ -264,8 +260,8 @@ const CreateUser = () => {
                       id="region_id"
                       size="small"
                       color="info"
-                        name="regionID"
-                        required
+                      name="regionID"
+                      required
                       value={formik.values.regionID}
                       onChange={formik.handleChange}
                       onClick={fetchRegions}
@@ -316,8 +312,8 @@ const CreateUser = () => {
                     id="institution_id"
                     size="small"
                     color="info"
-                      name="institutionID"
-                      required
+                    name="institutionID"
+                    required
                     onClick={fetchInstitutions}
                     value={formik.values.institutionID}
                     onChange={formik.handleChange}
@@ -422,7 +418,9 @@ const CreateUser = () => {
                   options={userRoles}
                   getOptionLabel={(option) => option.role.name}
                   onClick={fetchUserRoles}
-                  onChange={(e, value) => {setSelectedRoles(value); console.log(selectedRoles)}}
+                  onChange={(e, value) => {
+                    setSelectedRoles(value);
+                  }}
                   renderInput={(params) => (
                     <TextField
                       {...params}

@@ -10,6 +10,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ReplyIcon from "@mui/icons-material/Reply";
+import { FileDownload } from "@mui/icons-material";
 
 const PublicCommentReplies = ({
   reflections,
@@ -53,7 +54,11 @@ const PublicCommentReplies = ({
               {reflections
                 ? reflections.map((reflection) => (
                     <>
-                      <ListItem alignItems="flex-center" key={reflection.id} sx={{ height:'auto' }}> 
+                      <ListItem
+                        alignItems="flex-center"
+                        key={reflection.id}
+                        sx={{ height: "auto" }}
+                      >
                         <ListItemAvatar>
                           <Avatar
                             alt="User"
@@ -84,8 +89,29 @@ const PublicCommentReplies = ({
                                 variant="body1"
                                 color="text.primary"
                               >
-                                <span dangerouslySetInnerHTML={{ __html:reflection.message }} />
-                                {/* {reflection.message} */}
+                                <span
+                                  dangerouslySetInnerHTML={{
+                                    __html: reflection.message,
+                                  }}
+                                />{" "}
+                                <span>
+                                  <Button
+                                    href={
+                                      reflection.file
+                                    }
+                                    variant="outlined"
+                                    color="secondary"
+                                    target="_blank"
+                                    size="small"
+                                    sx={{
+                                      textTransform: "none",
+                                      borderRadius: "10px 10px",
+                                      padding: 0,
+                                    }}
+                                  >
+                                    <FileDownload fontSize="small" /> File
+                                  </Button>
+                                </span>
                               </Typography>
                             </>
                           }

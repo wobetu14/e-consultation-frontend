@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { tokens } from "../../../theme";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -32,6 +32,8 @@ const AddNewDocumentReply = ({
   const [serverErrorMsg, setServerErrorMsg] = useState(null);
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
 
+    const inputFile = useRef(null);
+
   const errorStyle = {
     color: "red",
     fontWeight: "400",
@@ -44,6 +46,12 @@ const AddNewDocumentReply = ({
     fontWeight: "400",
     fontSize: "18px",
   };
+
+     const helperTextStyle = {
+       color: "red",
+       fontWeight: "400",
+       fontSize: "15px",
+     };
 
   const formik = useFormik({
     initialValues: {
@@ -132,6 +140,37 @@ const AddNewDocumentReply = ({
                   >
                     <SendIcon />
                   </Button>
+                </>
+              }
+            />
+          </ListItem>
+
+          <ListItem sx={{ marginLeft: "60px" }}>
+            <ListItemText
+              primary={
+                <>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{ paddingBottom: "10px" }}
+                  >
+                    {t("attachement_file")} (optional): &nbsp;
+                    <input
+                      type="file"
+                      name="file"
+                      ref={inputFile}
+                      onBlur={formik.handleBlur}
+                      onChange={(e) => {
+                        formik.setFieldValue("file", e.target.files[0]);
+                      }}
+                      helperText={
+                        formik.touched.file && formik.errors.file ? (
+                          <span style={helperTextStyle}>
+                            {formik.touched.file}
+                          </span>
+                        ) : null
+                      }
+                    />
+                  </Typography>
                 </>
               }
             />

@@ -87,13 +87,13 @@ const EditCommentDialog = ({
       setOpenEditDialog(false);
       setNetworkError(null);
       setLoading(false);
-      setAnchorEl(null);
+      // setAnchorEl(null);
     } catch (error) {
       setServerErrorMsg(error);
       setServerSuccessMsg(null);
       setNetworkError(error.code);
       setLoading(false);
-      setAnchorEl(null);
+      // setAnchorEl(null);
     }
   };
 

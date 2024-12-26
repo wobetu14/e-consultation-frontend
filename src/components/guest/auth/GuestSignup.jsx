@@ -41,9 +41,7 @@ const GuestSignup = () => {
     initialValues: {
       firstName: "",
       middleName: "",
-      lastName: "",
       email: "",
-      mobileNumber: "",
       password: "",
       confirmPassword: "",
       roles: 8,
@@ -57,19 +55,9 @@ const GuestSignup = () => {
       middleName: YUP.string().required(
         "This field is required. Please enter your father name."
       ),
-      lastName: YUP.string().required(
-        "This field is required. Please enter your grand father name."
-      ),
       email: YUP.string()
         .email("Invalid email. Please enter a correct email address.")
         .required("This field is required. Please enter email address."),
-      mobileNumber: YUP.string()
-        .required("This field is required. Please enter mobile number.")
-        .phone(
-          "ET",
-          true,
-          "Invalid phone number. Use +251, or 251 or 09... etc. Note: phone numbers starting with 07 are invalid for the time being."
-        ),
       password: YUP.string().required(
         "This field is required. Please enter password."
       ),
@@ -84,8 +72,6 @@ const GuestSignup = () => {
       const userData = {
         first_name: values.firstName,
         middle_name: values.middleName,
-        last_name: values.lastName,
-        mobile_number: values.mobileNumber,
         email: values.email,
         password: values.password,
         confirm_password: values.confirmPassword,
@@ -123,7 +109,7 @@ const GuestSignup = () => {
     <Box
       sx={{
         backgroundColor: colors.grey[200],
-        marginTop:"100px",
+        marginTop: "100px",
         margin: {
           xs: "0 20px",
           sm: "0 50px",
@@ -159,7 +145,11 @@ const GuestSignup = () => {
             </Typography>
           </Grid>
 
-          <Grid container spacing={2} sx={{ paddingLeft: "15px", paddingRight:"5px"}}>
+          <Grid
+            container
+            spacing={2}
+            sx={{ paddingLeft: "15px", paddingRight: "5px" }}
+          >
             <p>
               {serverSuccessMsg ? (
                 <Alert severity="success" style={successStyle}>
@@ -209,31 +199,12 @@ const GuestSignup = () => {
                   sx={{ paddingBottom: "25px" }}
                   color="info"
                   name="middleName"
-                  value={formik.values.fatherName}
+                  value={formik.values.middleName}
                   onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
                   helperText={
                     formik.touched.middleName && formik.errors.middleName ? (
                       <span style={errorStyle}>{formik.errors.middleName}</span>
-                    ) : null
-                  }
-                />
-
-                <TextField
-                  label={t("last_name") + "*"}
-                  variant="outlined"
-                  placeholder={t("enter_last_name")}
-                  fullWidth
-                  size="small"
-                  sx={{ paddingBottom: "25px" }}
-                  color="info"
-                  name="lastName"
-                  value={formik.values.grandFatherName}
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  helperText={
-                    formik.touched.lastName && formik.errors.lastName ? (
-                      <span style={errorStyle}>{formik.errors.lastName}</span>
                     ) : null
                   }
                 />
@@ -258,27 +229,6 @@ const GuestSignup = () => {
                 />
                 {/* </Grid> */}
                 {/* <Grid item xs={6}> */}
-                <TextField
-                  label={t("mobile_number") + "*"}
-                  variant="outlined"
-                  placeholder={t("enter_mobile_number")}
-                  fullWidth
-                  size="small"
-                  sx={{ paddingBottom: "25px" }}
-                  color="info"
-                  name="mobileNumber"
-                  value={formik.values.mobileNumber}
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  helperText={
-                    formik.touched.mobileNumber &&
-                    formik.errors.mobileNumber ? (
-                      <span style={errorStyle}>
-                        {formik.errors.mobileNumber}
-                      </span>
-                    ) : null
-                  }
-                />
 
                 <TextField
                   label={t("password") + "*"}
@@ -311,7 +261,7 @@ const GuestSignup = () => {
                   color="info"
                   name="confirmPassword"
                   value={formik.values.confirmPassword}
-                  onBlur={formik.touched}
+                  onBlur={formik.handleBlur}
                   onChange={formik.handleChange}
                   helperText={
                     formik.touched.confirmPassword &&

@@ -263,11 +263,11 @@ const DraftApprovalRequest = () => {
                       {draft.short_title.substr(0, 30)}
                     </Typography>
                   </TableCell>
-                  <TableCell>
+                  {/* <TableCell>
                     <Typography variant="body1">
                       {draft.summary.substr(0, 20)}...
                     </Typography>
-                  </TableCell>
+                  </TableCell> */}
 
                   {/**
                    * Add a column and display document status (either "New", "Requested", "Rejected")

@@ -207,7 +207,12 @@ const DocumentDetails = () => {
           <Typography variant="h1">
             {serverSuccessMsg ? (
               <Alert severity="success" style={successStyle}>
-                {serverSuccessMsg}
+                <span
+                  dangerouslySetInnerHTML={{ 
+                    __html:serverSuccessMsg
+                   }}
+                />
+                {/* {serverSuccessMsg} */}
               </Alert>
             ) : null}
           </Typography>

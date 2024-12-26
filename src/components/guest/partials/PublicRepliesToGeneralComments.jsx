@@ -9,6 +9,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ReplyIcon from "@mui/icons-material/Reply";
+import { FileDownload } from "@mui/icons-material";
 
 const PublicRepliesToGeneralComments = ({ reflections, comment }) => {
   const theme = useTheme();
@@ -77,8 +78,27 @@ const PublicRepliesToGeneralComments = ({ reflections, comment }) => {
                                 variant="body1"
                                 color="text.primary"
                               >
-                                <span dangerouslySetInnerHTML={{ __html:reflection.message }} />
-                                {/* {reflection.message} */}
+                                <span
+                                  dangerouslySetInnerHTML={{
+                                    __html: reflection.message,
+                                  }}
+                                />{" "}
+                                <span>
+                                  <Button
+                                    href={reflection.file}
+                                    variant="outlined"
+                                    color="secondary"
+                                    target="_blank"
+                                    size="small"
+                                    sx={{
+                                      textTransform: "none",
+                                      borderRadius: "10px 10px",
+                                      padding: 0,
+                                    }}
+                                  >
+                                    <FileDownload fontSize="small" /> File
+                                  </Button>
+                                </span>
                               </Typography>
                             </>
                           }

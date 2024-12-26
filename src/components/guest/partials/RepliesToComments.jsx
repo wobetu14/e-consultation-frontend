@@ -14,6 +14,8 @@ import { UserContext } from "../../../contexts/UserContext";
 import AddNewReflection from "../../admin/drafts/AddNewReflection";
 import ReplyIcon from "@mui/icons-material/Reply";
 import ManageComment from './ManageComment';
+import ManageCommentReflections from "./ManageCommentReflections";
+import { FileDownload } from "@mui/icons-material";
 
 const RepliesToComments = ({
   reflections,
@@ -108,9 +110,10 @@ const RepliesToComments = ({
                                     </Typography>
                                   </div>
                                   <div>
-                                    <ManageComment
+                                    <ManageCommentReflections
                                       commentID={reflection.id}
-                                      commentText={reflection.message}
+                                    commentText={reflection.message}
+                                    documentDetail={documentDetail}
                                       fetchDocumentDetails={
                                         fetchDocumentDetails
                                       }
@@ -137,7 +140,25 @@ const RepliesToComments = ({
                                       __html: reflection.message,
                                     }}
                                   />
-                                  {/* {reflection.message} */}
+                                  {" "}
+                                    <span>
+                                      <Button
+                                        href={
+                                          reflection.file
+                                        }
+                                        variant="outlined"
+                                        color="secondary"
+                                        target="_blank"
+                                        size="small"
+                                        sx={{
+                                          textTransform: "none",
+                                          borderRadius: "10px 10px",
+                                          padding: 0,
+                                        }}
+                                      >
+                                        <FileDownload fontSize="small" /> File
+                                      </Button>
+                                    </span>
                                 </Typography>
                               </>
                             }

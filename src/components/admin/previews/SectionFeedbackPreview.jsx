@@ -1,4 +1,4 @@
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import { Box, Button, Chip, Typography, useTheme } from "@mui/material";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import { tokens } from "../../../theme";
 import { useTranslation } from "react-i18next";
@@ -15,6 +15,7 @@ import Avatar from "@mui/material/Avatar";
 import { UserContext } from "../../../contexts/UserContext";
 import ManageComment from "../../guest/partials/ManageComment";
 import DeleteCommentDialog from "../../guest/partials/Manage_Comments/DeleteCommentDialog";
+import { FileDownload } from "@mui/icons-material";
 
 const SectionFeedbackPreview = ({ comments, section, documentDetail }) => {
   const theme = useTheme();
@@ -99,21 +100,31 @@ const SectionFeedbackPreview = ({ comments, section, documentDetail }) => {
                               }}
                             >
                               <div>
-                                <Typography variant="h5" fontWeight="600">
-                                  {comment.commenter
-                                    ? `${
-                                        comment.commenter.first_name +
-                                        " " +
-                                        comment.commenter.middle_name +
-                                        " "
-                                      }`
-                                    : "Anonymous"}
-
-                                  {comment.commenter
-                                    ? "( " +
-                                      comment.commenter.institution_name +
-                                      " )"
-                                    : ""}
+                                <Typography variant="h5">
+                                  <strong>
+                                    {comment.commenter
+                                      ? `${
+                                          comment.commenter.first_name +
+                                          " " +
+                                          comment.commenter.middle_name +
+                                          " "
+                                        }`
+                                      : "Anonymous"}
+                                  </strong>
+                                  {" "}
+                                  {comment.commenter.institution_name ? (
+                                    <Chip
+                                      label={comment.commenter.institution_name}
+                                      size="small"
+                                      color="info"
+                                    />
+                                  ) : (
+                                    <Chip
+                                      label={` Public user `}
+                                      size="small"
+                                      color="info"
+                                    />
+                                  )}
                                 </Typography>
                               </div>
                               <div>
@@ -136,8 +147,32 @@ const SectionFeedbackPreview = ({ comments, section, documentDetail }) => {
                                 variant="body1"
                                 color="text.primary"
                               >
-                                <span dangerouslySetInnerHTML={{ __html:comment.section_comment }} />
-                                {/* {comment.section_comment} */}
+                                <span
+                                  dangerouslySetInnerHTML={{
+                                    __html: comment.section_comment,
+                                  }}
+                                />{" "}
+                                <span>
+                                  {comment.attachments &&
+                                  comment.attachments.length > 0 ? (
+                                    <Button
+                                      href={comment.attachments[0].file}
+                                      variant="outlined"
+                                      color="secondary"
+                                      target="_blank"
+                                      size="small"
+                                      sx={{
+                                        textTransform: "none",
+                                        borderRadius: "10px 10px",
+                                        padding: 0,
+                                      }}
+                                    >
+                                      <FileDownload fontSize="small" /> File
+                                    </Button>
+                                  ) : (
+                                    <>{""}</>
+                                  )}
+                                </span>
                               </Typography>
                             </>
                           }

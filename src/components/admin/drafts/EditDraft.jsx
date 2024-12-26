@@ -288,7 +288,16 @@ const EditDraft = () => {
         transition={{ duration: 0.3 }}
       >
         <form onSubmit={formik.handleSubmit}>
-          <Grid container spacing={2}>
+          <Grid
+            container
+            spacing={2}
+            sx={{
+              border: `1px solid #000`,
+              padding: "5px",
+              marginLeft: "20px",
+              borderRadius: "5px 5px",
+            }}
+          >
             <Grid item xs={4}>
               <TextField
                 label={t("short_title")}
@@ -374,6 +383,28 @@ const EditDraft = () => {
                   />
                 )}
               /> */}
+
+              {/* <Autocomplete
+                multiple
+                id="tags-standard"
+                freeSolo
+                autoSelect
+                color="info"
+                sx={{ paddingBottom: "10px" }}
+                options={tagLists}
+                getOptionLabel={(option) => option}
+                onChange={(e, value) => setTagLists(value)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="List of tags"
+                    name="tags"
+                    value={draft ? draft.tags : ""}
+                  />
+                )}
+              /> */}
+            </Grid>
+            <Grid item xs={4}>
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
                 {t("document_access")}
               </Typography>
@@ -398,28 +429,7 @@ const EditDraft = () => {
                 />
               </RadioGroup>
 
-              {/* <Autocomplete
-                multiple
-                id="tags-standard"
-                freeSolo
-                autoSelect
-                color="info"
-                sx={{ paddingBottom: "10px" }}
-                options={tagLists}
-                getOptionLabel={(option) => option}
-                onChange={(e, value) => setTagLists(value)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="List of tags"
-                    name="tags"
-                    value={draft ? draft.tags : ""}
-                  />
-                )}
-              /> */}
-            </Grid>
-            <Grid item xs={4}>
-              <TextField
+              {/* <TextField
                 label={t("legal_reference")}
                 variant="outlined"
                 size="small"
@@ -505,11 +515,11 @@ const EditDraft = () => {
                     </span>
                   ) : null
                 }
-              />
+              /> */}
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label={t("summary")}
+                label={t("short_description")}
                 variant="outlined"
                 size="small"
                 multiline
@@ -527,7 +537,7 @@ const EditDraft = () => {
                   ) : null
                 }
               />
-              <TextField
+              {/*<TextField
                 label={t("amended_laws")}
                 variant="outlined"
                 size="small"
@@ -590,7 +600,7 @@ const EditDraft = () => {
                     </span>
                   ) : null
                 }
-              />
+              /> */}
 
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
                 <strong>{t("attachement_file")} : </strong>

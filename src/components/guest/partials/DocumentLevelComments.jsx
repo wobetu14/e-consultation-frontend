@@ -1,4 +1,4 @@
-import { Typography, useTheme } from "@mui/material";
+import { Button, Chip, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../../theme";
 import { motion } from "framer-motion";
 
@@ -9,11 +9,13 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import PublicRepliesToGeneralComments from "./PublicRepliesToGeneralComments";
 import ManageComment from "./ManageComment";
+import { FileDownload } from "@mui/icons-material";
 
 const DocumentLevelComments = ({
   comment,
   section,
   documentDetail,
+  draftStatus,
   fetchDocumentDetails,
   fetchDocumentSections,
   fetchDocumentComments,
@@ -55,20 +57,30 @@ const DocumentLevelComments = ({
                   }}
                 >
                   <div>
-                    <Typography variant="h5" fontWeight="600">
+                    <Typography variant="h5">
                       {comment.commenter
                         ? `${
                             comment.commenter.first_name +
                             " " +
                             comment.commenter.middle_name
                           }`
-                        : "Anonymous"}
+                        : "Anonymous"}{" "}
+                      {comment.commenter.institution_name ? (
+                        "( " + comment.commenter.institution_name + " )"
+                      ) : (
+                        <Chip
+                          label={` Public User `}
+                          size="small"
+                          color="info"
+                        />
+                      )}
                     </Typography>
                   </div>
                   <div>
                     <ManageComment
                       commentID={comment.id}
                       commentText={comment.general_comment}
+                      documentDetail={documentDetail}
                       fetchDocumentDetails={fetchDocumentDetails}
                       fetchDocumentSections={fetchDocumentSections}
                       fetchDocumentComments={fetchDocumentComments}
@@ -84,7 +96,27 @@ const DocumentLevelComments = ({
                     variant="body1"
                     color="text.primary"
                   >
-                    {comment.general_comment}
+                    {comment.general_comment}{" "}
+                    <span>
+                      {comment.file ? (
+                        <Button
+                          href={comment.file}
+                          variant="outlined"
+                          color="secondary"
+                          target="_blank"
+                          size="small"
+                          sx={{
+                            textTransform: "none",
+                            borderRadius: "10px 10px",
+                            padding: 0,
+                          }}
+                        >
+                          <FileDownload fontSize="small" /> File
+                        </Button>
+                      ) : (
+                        <>{null}</>
+                      )}
+                    </span>
                   </Typography>
                 </>
               }

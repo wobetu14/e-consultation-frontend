@@ -5,7 +5,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import DeleteCommentDialog from "./Manage_Comments/DeleteCommentDialog";
 import EditCommentDialog from "./Manage_Comments/EditCommentDialog";
 
-const ManageComment = ({
+const ManageCommentReflections = ({
   commentID,
   commentText,
   documentDetail,
@@ -42,34 +42,34 @@ const ManageComment = ({
 
   return (
     <div>
-      {documentDetail.draft_status.name === "Open" && (
-        <>
-      <MoreHorizIcon
-        fontSize="small"
-        sx={{ cursor: "pointer" }}
-        onClick={handleClick}
-      />
-      <Menu
-        id="demo-positioned-menu"
-        aria-labelledby="demo-positioned-button"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-      >
-            <MenuItem onClick={handleCommentEditDialog}>Edit</MenuItem>
-            <MenuItem onClick={handleCommentDeleteDialog}>Delete</MenuItem>
-          </Menu>
-          
+      {(documentDetail.draft_status.name === "Open" ||
+        documentDetail.draft_status.name === "Closed") && (
+          <>
+            <MoreHorizIcon
+              fontSize="small"
+              sx={{ cursor: "pointer" }}
+              onClick={handleClick}
+            />
+            <Menu
+              id="demo-positioned-menu"
+              aria-labelledby="demo-positioned-button"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+            >
+              <MenuItem onClick={handleCommentEditDialog}>Edit</MenuItem>
+              <MenuItem onClick={handleCommentDeleteDialog}>Delete</MenuItem>
+            </Menu>
           </>
-      )}
+        )}
 
       {openDeleteDialog && (
         <DeleteCommentDialog
@@ -123,4 +123,4 @@ const ManageComment = ({
   );
 };
 
-export default ManageComment;
+export default ManageCommentReflections;

@@ -21,6 +21,7 @@ import {
 import { tokens } from "../../../theme";
 import { useFormik } from "formik";
 import { useTranslation } from "react-i18next";
+import { EtCalendar } from "et-calendar-react";
 
 const OutgoingCommentRequestsDialog = ({
   draftID,
@@ -49,7 +50,7 @@ const OutgoingCommentRequestsDialog = ({
   // Set list of email address for invitation
   const [peopleEmail, setPeopleEmail] = useState([]);
 
-  const [instIDs, setInsIDs] = useState([]);
+  const [instIDs, setInsIDs] = useState([1]);
 
   const [repliersEmail, setRepliersEmail] = useState([]);
 
@@ -57,6 +58,18 @@ const OutgoingCommentRequestsDialog = ({
   const [repliersID, setRepliersID] = useState([]);
   const [loading, setLoading] = useState(false);
   const [networkError, setnetworkError] = useState(null);
+
+  // State for draftOpeningDate and draftClosingDate
+/*   const [selectedOpeningDate, setSelectedOpeningDate] = useState('');
+  const [selectedClosingDate, setSelectedClosingDate] = useState('');
+
+  const handleDraftOpeningDate = (e) => {
+    setSelectedOpeningDate(e)
+  }
+
+  const handleDraftClosingDate = (e) => {
+    setSelectedClosingDate(e);
+  } */
 
   const helperTextStyle = {
     color: "red",
@@ -146,8 +159,8 @@ const OutgoingCommentRequestsDialog = ({
       personalMessage:
         "Dear Sir / Madam, We kindly invite you to review this draft documnet. We are so happy if you can go through it and provide your comments as soon as possible.",
 
-      draftOpeningDate: "",
-      draftClosingDate: "",
+      draftOpeningDate: '',
+      draftClosingDate: '',
       acceptanceRemark:
         "Draft opening request is accepted. The document is now open for commenting.",
     },
@@ -260,6 +273,28 @@ const OutgoingCommentRequestsDialog = ({
             <Typography variant="h5" fontWeight="600">
               {t("set_opening_and_closing_dates")}
             </Typography>
+            {/* <br />
+            <EtCalendar
+              name="draftOpeningDate"
+              rows={4}
+              value={selectedOpeningDate}
+              onChange={handleDraftOpeningDate}
+              calendarType={true}
+              lang={"am"}
+              fullWidth={true}
+            />
+            &nbsp; &nbsp;
+            <EtCalendar
+              name="draftClosingDate"
+              rows={4}
+              value={selectedClosingDate}
+              onChange={handleDraftClosingDate}
+              calendarType={true}
+              lang={"am"}
+              fullWidth={true}
+            />
+            <br />
+            <br /> */}
             <TextField
               // label="Draft Openining Date"
               type="datetime-local"
@@ -303,7 +338,6 @@ const OutgoingCommentRequestsDialog = ({
                 ) : null
               }
             />
-
             <TextField
               label={`${t("write_remark")} (${t("not_mandatory")})`}
               variant="outlined"
@@ -321,7 +355,6 @@ const OutgoingCommentRequestsDialog = ({
             <Typography variant="subtitle1" fontWeight="600">
               {t("assign_repliers")}
             </Typography>
-
             <Autocomplete
               multiple
               id="tags-standard"
@@ -345,7 +378,6 @@ const OutgoingCommentRequestsDialog = ({
                 />
               )}
             />
-
             <Typography variant="subtitle1" fontWeight="600">
               {t("invite_institutions")}
             </Typography>
@@ -356,7 +388,7 @@ const OutgoingCommentRequestsDialog = ({
               autoSelect
               color="info"
               sx={{ paddingBottom: "10px" }}
-              options={institutions}
+              options={institutions.filter((institution) => institution.id!==1)}
               getOptionLabel={(option) => option.name}
               onChange={(e, value) => setSelectedInstitutions(value)}
               onClick={fetchInstitutions}
@@ -371,7 +403,6 @@ const OutgoingCommentRequestsDialog = ({
                 />
               )}
             />
-
             <TextField
               label={`${t("write_remark")} (${t("not_mandatory")})`}
               variant="outlined"
@@ -386,8 +417,7 @@ const OutgoingCommentRequestsDialog = ({
               onBlur={formikAcceptanceForm.handleBlur}
               onChange={formikAcceptanceForm.handleChange}
             />
-
-            <Typography variant="subtitle1" fontWeight="600"> 
+            <Typography variant="subtitle1" fontWeight="600">
               {t("invite_people")}
             </Typography>
             <Autocomplete
@@ -410,7 +440,6 @@ const OutgoingCommentRequestsDialog = ({
                 />
               )}
             />
-
             <TextField
               label={`${t("write_remark")} (${t("not_mandatory")})`}
               variant="outlined"
@@ -425,7 +454,6 @@ const OutgoingCommentRequestsDialog = ({
               onBlur={formikAcceptanceForm.handleBlur}
               onChange={formikAcceptanceForm.handleChange}
             />
-
             <Box>
               <Button
                 size="small"

@@ -12,8 +12,9 @@ import {
   RadioGroup,
   Radio,
   Autocomplete,
+  useTheme,
 } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box, color } from "@mui/system";
 import { useFormik } from "formik";
 import * as YUP from "yup";
 import { useState, useEffect, useContext, useRef } from "react";
@@ -22,11 +23,14 @@ import axios from "../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
 import { DraftsDataContext } from "../../../contexts/DraftsDataContext";
 import { useTranslation } from "react-i18next";
+import { tokens } from "../../../theme";
 
 /* This component is used to create or upload a new draft document. */
 
 /* Create a functional component named CreateDraft */
 const CreateDraft = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   /**
    * Create institutions variable to store list of institutions
    * and allow the user select the name of the institution that the draft belongs to.
@@ -210,10 +214,6 @@ const CreateDraft = () => {
         `${t("field_required")} ${t("please_provide_short_title")}`
       ),
 
-      definition: YUP.string().required(
-        `${t("field_required")} ${t("please_provide_document_definition")}`
-      ),
-
       lawCategoryId: YUP.string().required(
         `${t("field_required")} ${t("please_provide_law_category")}`
       ),
@@ -224,14 +224,14 @@ const CreateDraft = () => {
       isPrivate: YUP.number().required(
         `${t("field_required")} ${t("please_provide_document_access")}`
       ),
-      summary: YUP.string().required(
+      /*       summary: YUP.string().required(
         `${t("field_required")} ${t("please_provide_document_summary")}`
-      ),
+      ), */
     }),
 
     /**
-     * Update initial values of variables corresponding to form fields against 
-     * form input data using onChange methods of form fields and collect the updated 
+     * Update initial values of variables corresponding to form fields against
+     * form input data using onChange methods of form fields and collect the updated
      * values for submission and then call a function definition to initiate API call
      * creating the document record
      */
@@ -322,7 +322,17 @@ const CreateDraft = () => {
         {/* Create form and call the formik object upon form submit */}
         <form onSubmit={formik.handleSubmit}>
           {" "}
-          <Grid container spacing={2}>
+          <Grid
+            container
+            spacing={2}
+            sx={{
+              border: `1px solid #000`,
+              padding: "5px",
+              marginLeft: "20px",
+              // backgroundColor: colors.grey[200],
+              borderRadius: "5px 5px",
+            }}
+          >
             <Grid item xs={4}>
               <TextField
                 label={`${t("short_title")} *`}
@@ -388,10 +398,10 @@ const CreateDraft = () => {
                 </FormHelperText>
               </FormControl>
 
-              <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
+              {/*  <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
                 {t("economic_sector")}
-              </Typography>
-              <Autocomplete
+              </Typography> */}
+              {/* <Autocomplete
                 multiple
                 label="Tags"
                 id="tags-standard"
@@ -413,7 +423,33 @@ const CreateDraft = () => {
                     color="info"
                   />
                 )}
-              />
+              /> */}
+
+              {/* <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
+                {t("enter_tags")}
+              </Typography>
+              <Autocomplete
+                multiple
+                id="taglists"
+                freeSolo
+                autoSelect
+                color="info"
+                sx={{ paddingBottom: "10px" }}
+                options={tagLists}
+                getOptionLabel={(option) => option}
+                onChange={(e, value) => setTagLists(value)}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label={t("list_tags")}
+                    name="tags"
+                    value={tagLists.map((tag) => tag)}
+                    color="info"
+                  />
+                )}
+              /> */}
+            </Grid>
+            <Grid item xs={4}>
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
                 {t("document_access")} *
               </Typography>
@@ -439,32 +475,7 @@ const CreateDraft = () => {
                 ) : null}
               </RadioGroup>
 
-              <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
-                {t("enter_tags")}
-              </Typography>
-              <Autocomplete
-                multiple
-                id="taglists"
-                freeSolo
-                autoSelect
-                color="info"
-                sx={{ paddingBottom: "10px" }}
-                options={tagLists}
-                getOptionLabel={(option) => option}
-                onChange={(e, value) => setTagLists(value)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label={t("list_tags")}
-                    name="tags"
-                    value={tagLists.map((tag) => tag)}
-                    color="info"
-                  />
-                )}
-              />
-            </Grid>
-            <Grid item xs={4}>
-              <TextField
+              {/* <TextField
                 label={t("legal_reference")}
                 variant="outlined"
                 size="small"
@@ -550,11 +561,11 @@ const CreateDraft = () => {
                     </span>
                   ) : null
                 }
-              />
+              /> */}
             </Grid>
             <Grid item xs={4}>
               <TextField
-                label={`${t("summary")} *`}
+                label={`${t("short_description")}`}
                 variant="outlined"
                 size="small"
                 multiline
@@ -572,7 +583,7 @@ const CreateDraft = () => {
                   ) : null
                 }
               />
-              <TextField
+              {/* <TextField
                 label={t("amended_laws")}
                 variant="outlined"
                 size="small"
@@ -635,7 +646,8 @@ const CreateDraft = () => {
                     </span>
                   ) : null
                 }
-              />
+              /> */}
+
               <Typography variant="body1" sx={{ paddingBottom: "10px" }}>
                 <strong>{t("attachement_file")}: </strong>
                 {t("attach_draft_document_note")}
@@ -656,9 +668,9 @@ const CreateDraft = () => {
                 }
               />
 
-            {/**
-             * Create a submit button used to submit form data
-             */}
+              {/**
+               * Create a submit button used to submit form data
+               */}
               <Grid sx={{ paddingBottom: "20px" }} align="right">
                 <Button
                   type="submit"

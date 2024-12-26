@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { tokens } from "../../../theme";
 import { useTranslation } from "react-i18next";
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -19,7 +19,7 @@ import { useFormik } from "formik";
 import axios from "../../../axios/AxiosGlobal";
 import { UserContext } from "../../../contexts/UserContext";
 
-const SectionFeedbacks = ({
+const AddSectionComment = ({
   section,
   documentDetail,
   comments,
@@ -38,6 +38,8 @@ const SectionFeedbacks = ({
   // User context
   const { userInfo } = useContext(UserContext);
 
+  const inputFile = useRef(null);
+
   const errorStyle = {
     color: "red",
     fontWeight: "400",
@@ -51,10 +53,18 @@ const SectionFeedbacks = ({
     fontSize: "18px",
   };
 
+  const helperTextStyle = {
+    color: "red",
+    fontWeight: "400",
+    fontSize: "15px",
+  };
+
   const formik = useFormik({
     initialValues: {
       sectionID: section.id,
       sectionComment: "",
+      file: null,
+      label:'file name',
       commentedBy: userInfo ? userInfo.user.id : "",
       commentingTeam: 1,
       createdBy: userInfo ? userInfo.user.id : "",
@@ -64,6 +74,8 @@ const SectionFeedbacks = ({
       const sectionCommentData = {
         section_id: values.sectionID,
         section_comment: values.sectionComment,
+        file: values.file,
+        label:values.label,
         commented_by: values.commentedBy,
         commenting_team: values.commentingTeam,
         created_by: userInfo ? userInfo.user.id : "",
@@ -83,6 +95,7 @@ const SectionFeedbacks = ({
         },
       })
       .then((res) => {
+        console.log(sectionCommentData);
         setServerSuccessMsg(res.data.success);
         setServerErrorMsg(null);
 
@@ -136,12 +149,46 @@ const SectionFeedbacks = ({
                     variant="text"
                     type="submit"
                     color="info"
-                    size="large"
+                    size="medium"
                     elevation={0}
                     disabled={formik.values.sectionComment === ""}
+                    sx={{
+                      position: "top",
+                    }}
                   >
                     <SendIcon />
                   </Button>
+                </>
+              }
+            />
+          </ListItem>
+
+          <ListItem sx={{ marginLeft: "60px" }}>
+            <ListItemText
+              primary={
+                <>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{ paddingBottom: "10px" }}
+                  >
+                    {t("attachement_file")} (optional): &nbsp;
+                    <input
+                      type="file"
+                      name="file"
+                      ref={inputFile}
+                      onBlur={formik.handleBlur}
+                      onChange={(e) => {
+                        formik.setFieldValue("file", e.target.files[0]);
+                      }}
+                      helperText={
+                        formik.touched.file && formik.errors.file ? (
+                          <span style={helperTextStyle}>
+                            {formik.touched.file}
+                          </span>
+                        ) : null
+                      }
+                    />
+                  </Typography>
                 </>
               }
             />
@@ -176,4 +223,4 @@ const SectionFeedbacks = ({
   );
 };
 
-export default SectionFeedbacks;
+export default AddSectionComment;

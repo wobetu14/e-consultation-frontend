@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -48,6 +48,8 @@ import HelpCenter from "./components/documentation/HelpCenter";
 import ResourceCenter from "./components/documentation/admin_documentation/ResourceCenter";
 import PasswordChangeRequest from "./components/guest/PasswordChangeRequest";
 import PrepareTranslation from "./components/documentation/admin_documentation/PrepareTranslation";
+import { ChangePasswordRequestContext } from "./contexts/ChangePasswordChangeContext";
+import CommentsReport from "./components/admin/reports/CommentsReport";
 
 function App() {
   /**
@@ -56,16 +58,31 @@ function App() {
    */
   const [theme, colorMode] = useMode();
 
+  const { userInfo } = useContext(UserContext);
+
+  const {enforcePasswordChange} = useContext(ChangePasswordRequestContext);
+
   /**
    * Access user's role from users context which has been defined on UserContext.jsx file
    */
   const { userRole } = useContext(UserContext);
+
+  // Check user password change status information and enforce to change it
+
+  const PasswordChangeRequestLayout = ({ children }) => {
+    if (enforcePasswordChange) {
+      return <PasswordChangeRequest />;
+    }
+  };
 
   /**
    * Define access to components visible to all public users whether they are registered or not.
    * Everyone can access components defined as children of <PublicElement /> component
    */
   const PublicElement = ({ children }) => {
+    if (enforcePasswordChange) {
+      return <PasswordChangeRequest />;
+    }
     return <>{children}</>;
   };
 
@@ -78,6 +95,9 @@ function App() {
    */
 
   const AdminElement = ({ children }) => {
+    if (enforcePasswordChange) {
+      return <PasswordChangeRequest />;
+    }
     if (
       userRole === "Super Admin" ||
       userRole === "Federal Admin" ||
@@ -102,6 +122,9 @@ function App() {
    */
 
   const Uploaders = ({ children }) => {
+    if (enforcePasswordChange) {
+      return <PasswordChangeRequest />;
+    }
     if (userRole === "Uploaders") {
       return <>{children}</>;
     } else {
@@ -124,6 +147,14 @@ function App() {
         <div className="App">
           <main className="content" display="flex">
             <Routes>
+              <Route
+                path="/password_change_request"
+                element={
+                  <PasswordChangeRequestLayout>
+                    <PasswordChangeRequest />
+                  </PasswordChangeRequestLayout>
+                }
+              />
               <Route
                 path="/"
                 element={
@@ -149,10 +180,7 @@ function App() {
                 <Route path="reset_password" element={<ResetPassword />} />
                 <Route path="create-account" element={<GuestSignup />} />
                 <Route path="user_profile" element={<UserProfile />} />
-                <Route
-                  path="password_change_request"
-                  element={<PasswordChangeRequest />}
-                />
+
                 <Route
                   path="activation/:token"
                   element={<AccountActivation />}
@@ -242,6 +270,9 @@ function App() {
                     </Uploaders>
                   }
                 />
+
+                <Route path="comments_report/:id" element={<CommentsReport />} />
+
                 <Route
                   path="draft_approval_request"
                   element={<DraftApprovalRequest />}

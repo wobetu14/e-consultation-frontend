@@ -92,7 +92,16 @@ const CreateSector = () => {
         transition={{ duration: 0.3 }}
       >
         <form onSubmit={formik.handleSubmit}>
-          <Grid container spacing={1}>
+          <Grid
+            container
+            spacing={1}
+            sx={{
+              border: `1px solid #000`,
+              padding: "5px",
+              marginLeft: "20px",
+              borderRadius: "5px 5px",
+            }}
+          >
             <Grid item xs={5}>
               <TextField
                 label={`${t("name_of_economic_sector")} *`}

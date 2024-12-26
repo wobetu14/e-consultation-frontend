@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
 import { tokens } from "../../../theme";
 import DraftActions from "./DraftActions";
+import dateFormat from "dateformat";
 
 /**
  * This component is used to render the drafts meta information 
@@ -54,6 +55,8 @@ const DraftMetaInfo = ({
    */
   const params = useParams();
 
+  const ethiopicDate = require("ethiopic-date");
+
   /**
    * Destructure and access the translation object from the useTranslation hook 
    * from the i18next internationalization library.
@@ -96,15 +99,12 @@ const DraftMetaInfo = ({
                  */}
                 {documentDetail.short_title}
               </Typography>
-              <Typography
+             {/*  <Typography
                 variant="h5"
                 sx={{ paddingBottom: "30px", textAlign: "justify" }}
               >
-                {/**
-                 * Render document summary with h5 Typography
-                 */}
                 {`${documentDetail.summary.slice(0, 400)} ...`}
-              </Typography>
+              </Typography> */}
 
               <Typography
                 variant="h4"
@@ -115,15 +115,15 @@ const DraftMetaInfo = ({
                   color: colors.primary[200],
                 }}
               >
-                {t('document_details')}
+                {t("document_details")}
               </Typography>
 
               <Grid container spacing={1}>
                 {/**
-                 * Render document meta data attributes such as institution name, law category, draft status, opening and closing date 
+                 * Render document meta data attributes such as institution name, law category, draft status, opening and closing date
                  */}
                 <Grid item xs={6} md={6}>
-                  <strong>{t('institution')}</strong>
+                  <strong>{t("institution")}</strong>
                 </Grid>
                 <Grid item xs={6} md={6}>
                   {documentDetail.institution
@@ -132,7 +132,7 @@ const DraftMetaInfo = ({
                 </Grid>
 
                 <Grid item xs={6} md={6}>
-                  <strong>{t('law_category')}</strong>
+                  <strong>{t("law_category")}</strong>
                 </Grid>
                 <Grid item xs={6} md={6}>
                   {documentDetail.law_category
@@ -141,7 +141,7 @@ const DraftMetaInfo = ({
                 </Grid>
 
                 <Grid item xs={6} md={6}>
-                  <strong>{t('draft_status')}</strong>
+                  <strong>{t("draft_status")}</strong>
                 </Grid>
                 <Grid item xs={6} md={6}>
                   {documentDetail &&
@@ -187,7 +187,8 @@ const DraftMetaInfo = ({
                   )}
 
                   {documentDetail &&
-                  documentDetail.draft_status.name === "Open" && parseInt(documentDetail.comment_closed)===0 ? (
+                  documentDetail.draft_status.name === "Open" &&
+                  parseInt(documentDetail.comment_closed) === 0 ? (
                     <Chip
                       label="Open for comment"
                       size="small"
@@ -201,7 +202,8 @@ const DraftMetaInfo = ({
                   )}
 
                   {documentDetail &&
-                  documentDetail.draft_status.name === "Open" && parseInt(documentDetail.comment_closed)===1 ? (
+                  documentDetail.draft_status.name === "Open" &&
+                  parseInt(documentDetail.comment_closed) === 1 ? (
                     <Chip
                       label="Closed for comment"
                       size="small"
@@ -213,30 +215,38 @@ const DraftMetaInfo = ({
                   ) : (
                     ""
                   )}
-                  
-                    {
-                        documentDetail && documentDetail.draft_status.name==="Closed" ? (
-                          <Chip
-                          label="Consultation ended"
-                          size="small"
-                          sx={{
-                            backgroundColor: colors.secondary[100],
-                            color: colors.grey[500],
-                            marginRight: "5px",
-                          }}
-                        />
-                        ):""
-                      }
+
+                  {documentDetail &&
+                  documentDetail.draft_status.name === "Closed" ? (
+                    <Chip
+                      label="Consultation ended"
+                      size="small"
+                      sx={{
+                        backgroundColor: colors.secondary[100],
+                        color: colors.grey[500],
+                        marginRight: "5px",
+                      }}
+                    />
+                  ) : (
+                    ""
+                  )}
                 </Grid>
 
                 <Grid item xs={6} md={6}>
-                  <strong>{t('draft_opening_date')}</strong>
+                  <strong>{t("draft_opening_date")}</strong>
                 </Grid>
                 <Grid item xs={6} md={6}>
                   <Chip
                     label={
                       documentDetail.comment_opening_date
-                        ? documentDetail.comment_opening_date
+                        ? localStorage.getItem("i18nextLng") === "en"
+                            ? dateFormat(
+                                documentDetail.comment_opening_date,
+                                "dddd, mmmm dS, yyyy, h:MM:ss TT"
+                              )
+                            : ethiopicDate.convert(
+                                documentDetail.comment_opening_date
+                              )
                         : "Unavailable"
                     }
                     size="small"
@@ -248,13 +258,20 @@ const DraftMetaInfo = ({
                 </Grid>
 
                 <Grid item xs={6} md={6}>
-                  <strong>{t('draft_closing_date')}</strong>
+                  <strong>{t("draft_closing_date")}</strong>
                 </Grid>
                 <Grid item xs={6} md={6}>
                   <Chip
                     label={
                       documentDetail.comment_closing_date
-                        ? documentDetail.comment_closing_date
+                        ? localStorage.getItem("i18nextLng") === "en"
+                            ? dateFormat(
+                                documentDetail.comment_closing_date,
+                                "dddd, mmmm dS, yyyy, h:MM:ss TT"
+                              )
+                            : ethiopicDate.convert(
+                                documentDetail.comment_closing_date
+                              )
                         : "Unavailable"
                     }
                     size="small"
@@ -265,24 +282,24 @@ const DraftMetaInfo = ({
                   />
                 </Grid>
 
-                <Grid item xs={6} md={6}>
+                {/* <Grid item xs={6} md={6}>
                   <strong>{t('legal_reference')}</strong>
                 </Grid>
                 <Grid item xs={6} md={6}>
                   {documentDetail.base_legal_reference
                     ? `${documentDetail.base_legal_reference.slice(0, 50)} ...`
                     : null}
-                </Grid>
+                </Grid> */}
 
-                <Grid item xs={6} md={6}>
+                {/*  <Grid item xs={6} md={6}>
                   <strong>{t('definition')}</strong>
                 </Grid>
                 <Grid item xs={6} md={6}>
                   {documentDetail.definition ? `${documentDetail.definition.slice(0, 50)} ...` : null}
-                </Grid>
+                </Grid> */}
 
                 <Grid item xs={6} md={6}>
-                  <strong>{t('document_access')}</strong>
+                  <strong>{t("document_access")}</strong>
                 </Grid>
                 <Grid item xs={6} md={6}>
                   <Chip
@@ -301,7 +318,7 @@ const DraftMetaInfo = ({
 
             <Grid item xs={4}>
               {/**
-               * Render DraftActions component. This component is used to access or display 
+               * Render DraftActions component. This component is used to access or display
                * action buttons to perform on the document such as to "Accept / Reject" opening request,
                * to send invitations to people and institutions and to close or end the consultation.
                * Go to DraftActions sub-component to understand more.
@@ -314,11 +331,9 @@ const DraftMetaInfo = ({
                 serverSuccessMsg={serverSuccessMsg}
                 setServerErrorMsg={setServerErrorMsg}
                 setServerSuccessMsg={setServerSuccessMsg}
-
                 fetchDocumentDetails={fetchDocumentDetails}
                 fetchDocumentSections={fetchDocumentSections}
                 fetchDocumentComments={fetchDocumentComments}
-
                 loading={loading}
                 setLoading={setLoading}
               />

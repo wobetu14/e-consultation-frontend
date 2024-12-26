@@ -12,6 +12,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { tokens } from "../../../theme";
 import "./DocumentDisplay.css";
+import dateFormat from "dateformat";
 
 /**
  * This component renders list of draft documents and some meta info with a clickable feature to view the complete infomration
@@ -24,6 +25,8 @@ const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { t } = useTranslation();
+
+  const ethiopicDate = require("ethiopic-date");
 
   return (
     <div>
@@ -59,8 +62,7 @@ const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
                     variant="body1"
                     color="text.primary"
                   >
-                    {/* Access the draft summary info */}
-                    {`${draft.summary.slice(0, 300)} ...`}
+                    {draft.summary && `${draft.summary.slice(0, 300)} ...`}
                   </Typography>
 
                   <Stack direction="row" spacing={1}>
@@ -83,9 +85,9 @@ const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
                         />
                       ) : draft.draft_status.name === "Open" &&
                         parseInt(draft.comment_closed) === 1 ? (
-                          /**
-                           * If the document status is still 'Open' but the commenting deadline is passed, display as 'Closed for comment"
-                           */
+                        /**
+                         * If the document status is still 'Open' but the commenting deadline is passed, display as 'Closed for comment"
+                         */
                         <Chip
                           label="Closed for Comment"
                           size="small"
@@ -101,7 +103,7 @@ const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
 
                       {draft.draft_status.name === "Closed" ? (
                         /**
-                         * If the document status is closed, commenting is also disabled. At this time display the status as 
+                         * If the document status is closed, commenting is also disabled. At this time display the status as
                          * 'Consultation ended'
                          */
                         <Chip
@@ -126,7 +128,16 @@ const DocumentList = ({ status, deadline, draft, loading, setLoading }) => {
                       parseInt(draft.comment_closed) === 0 ? (
                         <label>
                           <strong> {t("draft_closing_date")}: </strong>{" "}
-                          {draft.comment_closing_date} &nbsp;
+                          {localStorage.getItem("i18nextLng") === "en"
+                            ? dateFormat(
+                                draft.comment_closing_date,
+                                "dddd, mmmm dS, yyyy, h:MM:ss TT"
+                              )
+                              : (
+                                ethiopicDate.convert(draft.comment_closing_date)
+                            )}
+                         
+                          &nbsp;
                         </label>
                       ) : (
                         ""

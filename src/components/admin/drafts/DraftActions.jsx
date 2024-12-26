@@ -9,6 +9,8 @@ import DraftOpeningRejectionDialog from "./DraftOpeningRejectionDialog";
 import InviteMoreDialog from "../../admin/drafts/InviteMoreDialog";
 import AssignMoreRepliersDialog from "./AssignMoreRepliersDialog";
 import { useTranslation } from "react-i18next";
+import ExtendConsultationDeadline from "./ExtendConsultationDeadline";
+import CommentsReport from "../reports/CommentsReport";
 
 /**
  * This component is a child component of <DraftMetaInfo /> component. 
@@ -60,6 +62,7 @@ const DraftActions = ({
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
+
   /**
    * Access translation object from the useTranslation hook of i18next React language translation (localization) library
    */
@@ -96,11 +99,16 @@ const DraftActions = ({
       });
   };
 
+  const showDialog = () => {
+    setOpenDialog(true);
+  }
+
   return (
     <Box>
       {/**
        * UI definition for action buttons
        */}
+      
       <Stack
         direction="row"
         spacing={1}
@@ -110,9 +118,9 @@ const DraftActions = ({
         {/**
          * Render the <AcceptApprovalRequest /> and <RejectApprovalRequest /> component if the role of the logged in user is
          * "Approver"
-         * and the status of the document is "Requested". 
-         * The <AcceptApprovalRequest /> is a simple button definition whose implementation is located 
-         * at the bottom of this file. 
+         * and the status of the document is "Requested".
+         * The <AcceptApprovalRequest /> is a simple button definition whose implementation is located
+         * at the bottom of this file.
          */}
         {userRole === "Approver" ? (
           documentDetail && documentDetail.draft_status.name === "Requested" ? (
@@ -146,7 +154,6 @@ const DraftActions = ({
                 fetchDocumentComments={fetchDocumentComments}
               />
             </>
-
           ) : documentDetail.draft_status.name === "Open" ? (
             /**
              * Show or render <InviteCommenters /> and <AssignReplier /> components if the user role is "Approver" and request status is "Open"
@@ -181,18 +188,17 @@ const DraftActions = ({
                 fetchDocumentComments={fetchDocumentComments}
               />
 
-            {/**
-             * Button definition for close commenting or to end consultation
-             */}
+              {/**
+               * Button definition for close commenting or to end consultation
+               */}
               <Button
                 size="small"
-                variant="contained"
-                color="primary"
+                variant="outlined"
+                color="error"
                 sx={{
                   textTransform: "none",
                   marginRight: "5px",
-                  backgroundColor: colors.dangerColor[200],
-                  color: colors.grey[300],
+                  // color: colors.grey[300],
                 }}
                 onClick={() => closeCommenting(documentDetail.id)}
               >
@@ -220,6 +226,25 @@ const DraftActions = ({
         ) : (
           ""
         )}
+
+        {userRole === "Approver" ? (
+           documentDetail.draft_status.name === "Open" || documentDetail.draft_status.name === "Closed" ? (
+            <ExtendConsultationDeadline
+                draftID={draftID}
+                documentDetail={documentDetail}
+                serverSuccessMsg={serverSuccessMsg}
+                serverErrorMsg={serverErrorMsg}
+                setServerSuccessMsg={setServerSuccessMsg}
+                setServerErrorMsg={setServerErrorMsg}
+                openDialog={openDialog}
+                setOpenDialog={setOpenDialog}
+                t={t}
+                fetchDocumentDetails={fetchDocumentDetails}
+                fetchDocumentSections={fetchDocumentSections}
+                fetchDocumentComments={fetchDocumentComments}
+                title={t("accept_document_and_invite")}
+              />):(null)
+        ):(null)}
       </Stack>
     </Box>
   );
@@ -446,7 +471,7 @@ const InviteCommenters = ({
      */}
       <Button
         size="small"
-        variant="contained"
+        variant="outlined"
         color="success"
         sx={{ textTransform: "none", marginRight: "5px" }}
         onClick={showInviteDialog}
@@ -509,7 +534,7 @@ const AssignRepliers = ({
      */}
       <Button
         size="small"
-        variant="contained"
+        variant="outlined"
         color="primary"
         sx={{ textTransform: "none", marginRight: "5px" }}
         onClick={showAssignRepliersDialog}

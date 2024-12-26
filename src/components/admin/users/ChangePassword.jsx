@@ -14,6 +14,7 @@ import { useState } from "react";
 import axios from "../../../axios/AxiosGlobal";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import MyComponent from "./EtDatePicker";
 
 /**
  * This component is used to change password for a logged in user
@@ -24,7 +25,7 @@ import { useTranslation } from "react-i18next";
  * @returns 
  */
 
-const ChangePassword = () => {
+const ChangePassword = () => {  
   /**
    * Create state to store error information coming from the server as a result of unsuccessfull API call
    */
@@ -93,7 +94,10 @@ const ChangePassword = () => {
       ),
       newPassword: YUP.string().required(
         `${t("field_required")} ${t("please_enter_new_password")}`
-      ),
+      ).matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Character"
+    ),
       confirmPassword: YUP.string()
         .required(`${t("field_required")} ${t("please_confirm_password")}`)
         .oneOf([YUP.ref("newPassword"), null], `${t("password_mismatch")}`),
@@ -157,9 +161,9 @@ const ChangePassword = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-            {/**
-             * Display success message if there is any
-             */}
+          {/**
+           * Display success message if there is any
+           */}
           <Typography variant="h1">
             {serverSuccessMsg ? (
               <Alert severity="success" style={successStyle}>
@@ -180,7 +184,7 @@ const ChangePassword = () => {
           </Typography>
 
           {/**
-           * Render progressbar if the value of loading state is true. This progressbar is used to indicate 
+           * Render progressbar if the value of loading state is true. This progressbar is used to indicate
            * the status of API call to change the password and displayed when you click the submit button
            */}
           {loading ? <CircularProgress color="info" /> : null}
@@ -192,7 +196,6 @@ const ChangePassword = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
       >
-
         {/**
          * Create form UI
          */}

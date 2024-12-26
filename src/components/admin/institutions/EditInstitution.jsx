@@ -225,7 +225,16 @@ const CreateInstitution = () => {
         transition={{ duration: 0.3 }}
       >
         <form onSubmit={formik.handleSubmit}>
-          <Grid container spacing={2}>
+          <Grid
+            container
+            spacing={2}
+            sx={{
+              border: `1px solid #000`,
+              padding: "5px",
+              marginLeft: "20px",
+              borderRadius: "5px 5px",
+            }}
+          >
             <Grid item xs={4}>
               <TextField
                 label={t("institution")}

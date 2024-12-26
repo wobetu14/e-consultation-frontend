@@ -8,6 +8,8 @@ import {
   useTheme,
   FormHelperText,
   MenuItem,
+  Autocomplete,
+  Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { useFormik } from "formik";
@@ -26,7 +28,8 @@ const EditUser = () => {
 
   const [institutions, setInstitutions] = useState(null);
   const [regions, setRegions] = useState(null);
-  const [userRoles, setUserRoles] = useState(null);
+
+  const [selectedRoles, setSelectedRoles] = useState([]);
 
   const { t } = useTranslation();
 
@@ -42,6 +45,9 @@ const EditUser = () => {
     setServerSuccessMsg,
     setLoading,
     setNetworkError,
+    userRoles,
+    setUserRoles,
+    fetchUserRoles,
   } = useContext(UsersDataContext);
 
   const helperTextStyle = {
@@ -94,22 +100,6 @@ const EditUser = () => {
       .catch((error) => {});
   };
 
-  const fetchUserRoles = async () => {
-    return await axios
-      .get("roles", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          Accept: "application/json;",
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => res.data.data)
-      .then((res) => {
-        setUserRoles(res);
-      })
-      .catch((error) => {});
-  };
-
   const formik = useFormik({
     initialValues: {
       firstName: user.first_name,
@@ -117,7 +107,8 @@ const EditUser = () => {
       lastName: user.last_name,
       mobileNumber: user.mobile_number,
       email: user.email,
-      roleID: user.roles[0].id,
+      // roleID: user.roles[0].id,
+      roles: [],
       regionID: user.region_id,
       institutionID: user.institution_id,
       updatedBy: userInfo.user.updated_by,
@@ -130,7 +121,10 @@ const EditUser = () => {
         last_name: values.lastName,
         mobile_number: values.mobileNumber,
         email: values.email,
-        roles: values.roleID,
+        roles:
+          selectedRoles.length > 0
+            ? selectedRoles.map((selectedRole) => selectedRole.role.name)
+            : [],
         updated_by: values.updatedBy,
         region_id: values.regionID,
         institution_id: values.institutionID,
@@ -178,7 +172,16 @@ const EditUser = () => {
         transition={{ duration: 0.3 }}
       >
         <form onSubmit={formik.handleSubmit}>
-          <Grid container spacing={2}>
+          <Grid
+            container
+            spacing={2}
+            sx={{
+              border: `1px solid #000`,
+              padding: "5px",
+              marginLeft: "20px",
+              borderRadius: "5px 5px",
+            }}
+          >
             <Grid item xs={4}>
               <TextField
                 label={`${t("first_name")}`}
@@ -369,7 +372,42 @@ const EditUser = () => {
               />
 
               <FormControl sx={{ minWidth: "100%", paddingBottom: "30px" }}>
-                <InputLabel>{t("select_user_role")}</InputLabel>
+                {/* Render new user roles here */}
+                <Typography variant="h6" sx={{ fontWeight: "600" }}>
+                  Previous User Roles
+                </Typography>
+
+                <ol>
+                  {user.roles.map((role) => (
+                    <li>{role.name}</li>
+                  ))}
+                </ol>
+
+                <Autocomplete
+                  multiple
+                  label="Tags"
+                  id="roles"
+                  autoSelect
+                  color="info"
+                  size="small"
+                  sx={{ paddingBottom: "10px" }}
+                  options={userRoles}
+                  getOptionLabel={(option) => option.role.name}
+                  onClick={fetchUserRoles}
+                  onChange={(e, value) => {
+                    setSelectedRoles(value);
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label={t("select_new_user_role")}
+                      value={(option) => option}
+                      color="info"
+                    />
+                  )}
+                />
+
+                {/* <InputLabel>{t("select_user_role")}</InputLabel>
                 <Select
                   labelId="user_role"
                   size="small"
@@ -393,7 +431,7 @@ const EditUser = () => {
                         </MenuItem>
                       ))
                     : null}
-                </Select>
+                </Select> */}
                 <FormHelperText>
                   {formik.touched.roleID && formik.errors.roleID ? (
                     <span style={helperTextStyle}>{formik.errors.roleID}</span>

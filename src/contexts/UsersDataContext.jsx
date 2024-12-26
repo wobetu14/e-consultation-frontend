@@ -11,6 +11,9 @@ export const UsersDataProvider = (props) => {
   const [user, setUser] = useState(null);
   const [requestCompleted, setRequestCompleted] = useState(0);
 
+  
+ const [userRoles, setUserRoles] = useState([]);
+
   const [showUserAddForm, setShowUserAddForm] = useState(false);
   const [showUserEditForm, setShowUserEditForm] = useState(false);
 
@@ -26,6 +29,10 @@ export const UsersDataProvider = (props) => {
   useEffect(() => {
     fetchUsers();
   }, []);
+
+    useEffect(() => {
+      fetchUserRoles();
+    }, []);
 
   const fetchUsers = async () => {
     setNetworkErrorMessage(null);
@@ -100,6 +107,22 @@ export const UsersDataProvider = (props) => {
     setFilteredUsers(filteredResult);
   }, [searchUser, users]);
 
+    const fetchUserRoles = async () => {
+      return await axios
+        .get("roles", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json;",
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((res) => res.data.data)
+        .then((res) => {
+          setUserRoles(res);
+        })
+        .catch((error) => {});
+    };
+
   return (
     <UsersDataContext.Provider
       value={{
@@ -132,6 +155,9 @@ export const UsersDataProvider = (props) => {
         setNetworkErrorMessage: setNetworkErrorMessage,
         networkError: networkError,
         setNetworkError: setNetworkError,
+        userRoles: userRoles,
+        setUserRoles: setUserRoles,
+        fetchUserRoles:fetchUserRoles
       }}
     >
       {props.children}

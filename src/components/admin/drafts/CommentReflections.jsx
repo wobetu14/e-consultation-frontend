@@ -30,6 +30,7 @@ import { tokens } from "../../../theme";
 import { UserContext } from "../../../contexts/UserContext";
 import ReplyFeedbacks from "./ReplyFeedbacks";
 import ReplyDocumentLevelComments from "./ReplyDocumentLevelComments";
+import dateFormat from "dateformat";
 
 /**
  * This component is used to render the daft document detail info and its content tree
@@ -46,6 +47,8 @@ const CommentReflections = () => {
   const [documentComments, setDocumentComments] = useState(null);
 
   const [contentBgColor, setContentBgColor] = useState(null);
+
+  const ethiopicDate = require("ethiopic-date");
 
   // User context
   const { userInfo, userRole } = useContext(UserContext);
@@ -339,7 +342,14 @@ const CommentReflections = () => {
                   <Chip
                     label={
                       documentDetail.comment_opening_date
-                        ? documentDetail.comment_opening_date
+                        ? localStorage.getItem("i18nextLng") === "en"
+                            ? dateFormat(
+                                documentDetail.comment_opening_date,
+                                "dddd, mmmm dS, yyyy, h:MM:ss TT"
+                              )
+                            : ethiopicDate.convert(
+                                documentDetail.comment_opening_date
+                              )
                         : "Unavailable"
                     }
                     size="small"
@@ -359,7 +369,14 @@ const CommentReflections = () => {
                   <Chip
                     label={
                       documentDetail.comment_closing_date
-                        ? documentDetail.comment_closing_date
+                        ? localStorage.getItem("i18nextLng") === "en"
+                              ? dateFormat(
+                                  documentDetail.comment_closing_date,
+                                  "dddd, mmmm dS, yyyy, h:MM:ss TT"  
+                                )
+                              : ethiopicDate.convert(
+                                  documentDetail.comment_closing_date
+                                )
                         : "Unavailable"
                     }
                     size="small"
@@ -370,7 +387,7 @@ const CommentReflections = () => {
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                {/* <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("base_legal_reference")}</strong>
                   </Typography>
@@ -387,9 +404,9 @@ const CommentReflections = () => {
                   {documentDetail.base_legal_reference
                     ? `${documentDetail.base_legal_reference.slice(0, 50)} ...`
                     : null}
-                </Grid>
+                </Grid> */}
 
-                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                {/* <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
                     <strong>{t("legal_definition")}</strong>
                   </Typography>
@@ -404,7 +421,7 @@ const CommentReflections = () => {
                   sx={{ color: "white" }}
                 >
                   {documentDetail.definition ? `${documentDetail.definition.slice(0, 50)} ...` : null}
-                </Grid>
+                </Grid> */}
 
                 <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                   <Typography variant="h5" sx={{ color: "white" }}>
@@ -713,16 +730,17 @@ const CommentReflections = () => {
                             {/* {section.section_body} */}
                           </Typography>
 
-                          {(userRole === "Commenter" && section.section_body.length>0) && (
-                            <ReplyFeedbacks
-                              documentDetail={documentDetail}
-                              comments={section.comments}
-                              section={section}
-                              fetchDocumentDetails={fetchDocumentDetails}
-                              fetchDocumentSections={fetchDocumentSections}
-                              fetchDocumentComments={fetchDocumentComments}
-                            />
-                          )}
+                          {userRole === "Commenter" &&
+                            section.section_body.length > 0 && (
+                              <ReplyFeedbacks
+                                documentDetail={documentDetail}
+                                comments={section.comments}
+                                section={section}
+                                fetchDocumentDetails={fetchDocumentDetails}
+                                fetchDocumentSections={fetchDocumentSections}
+                                fetchDocumentComments={fetchDocumentComments}
+                              />
+                            )}
                         </Box>
                         {section.children.length > 0
                           ? section.children.map((sectionChild1) => (
@@ -763,9 +781,8 @@ const CommentReflections = () => {
                                     {/* {sectionChild1.section_body} */}
                                   </Typography>
 
-                                  {
-                                    (userRole ===
-                                      "Commenter" && sectionChild1.section_body.length>0 )&& (
+                                  {userRole === "Commenter" &&
+                                    sectionChild1.section_body.length > 0 && (
                                       <ReplyFeedbacks
                                         documentDetail={documentDetail}
                                         comments={sectionChild1.comments}
@@ -780,8 +797,7 @@ const CommentReflections = () => {
                                           fetchDocumentComments
                                         }
                                       />
-                                    )
-                                  }
+                                    )}
                                 </Box>
                                 {sectionChild1.children.length > 0
                                   ? sectionChild1.children.map(
@@ -822,24 +838,28 @@ const CommentReflections = () => {
                                               />
                                               {/* {sectionChild1Sub1.section_body} */}
                                             </Typography>
-                                            {(userRole === "Commenter" && sectionChild1Sub1.section_body.length>0) &&  (
-                                              <ReplyFeedbacks
-                                                documentDetail={documentDetail}
-                                                comments={
-                                                  sectionChild1Sub1.comments
-                                                }
-                                                section={sectionChild1Sub1}
-                                                fetchDocumentDetails={
-                                                  fetchDocumentDetails
-                                                }
-                                                fetchDocumentSections={
-                                                  fetchDocumentSections
-                                                }
-                                                fetchDocumentComments={
-                                                  fetchDocumentComments
-                                                }
-                                              />
-                                            )}
+                                            {userRole === "Commenter" &&
+                                              sectionChild1Sub1.section_body
+                                                .length > 0 && (
+                                                <ReplyFeedbacks
+                                                  documentDetail={
+                                                    documentDetail
+                                                  }
+                                                  comments={
+                                                    sectionChild1Sub1.comments
+                                                  }
+                                                  section={sectionChild1Sub1}
+                                                  fetchDocumentDetails={
+                                                    fetchDocumentDetails
+                                                  }
+                                                  fetchDocumentSections={
+                                                    fetchDocumentSections
+                                                  }
+                                                  fetchDocumentComments={
+                                                    fetchDocumentComments
+                                                  }
+                                                />
+                                              )}
                                           </Box>
                                           {sectionChild1Sub1.children.length > 0
                                             ? sectionChild1Sub1.children.map(
@@ -886,29 +906,32 @@ const CommentReflections = () => {
                                                           // sectionChild1Sub1Sub1.section_body
                                                         }
                                                       </Typography>
-                                                      {(userRole ===
-                                                        "Commenter" && sectionChild1Sub1Sub1.section_body.length>0) && (
-                                                        <ReplyFeedbacks
-                                                          documentDetail={
-                                                            documentDetail
-                                                          }
-                                                          comments={
-                                                            sectionChild1Sub1Sub1.comments
-                                                          }
-                                                          section={
-                                                            sectionChild1Sub1Sub1
-                                                          }
-                                                          fetchDocumentDetails={
-                                                            fetchDocumentDetails
-                                                          }
-                                                          fetchDocumentSections={
-                                                            fetchDocumentSections
-                                                          }
-                                                          fetchDocumentComments={
-                                                            fetchDocumentComments
-                                                          }
-                                                        />
-                                                      )}
+                                                      {userRole ===
+                                                        "Commenter" &&
+                                                        sectionChild1Sub1Sub1
+                                                          .section_body.length >
+                                                          0 && (
+                                                          <ReplyFeedbacks
+                                                            documentDetail={
+                                                              documentDetail
+                                                            }
+                                                            comments={
+                                                              sectionChild1Sub1Sub1.comments
+                                                            }
+                                                            section={
+                                                              sectionChild1Sub1Sub1
+                                                            }
+                                                            fetchDocumentDetails={
+                                                              fetchDocumentDetails
+                                                            }
+                                                            fetchDocumentSections={
+                                                              fetchDocumentSections
+                                                            }
+                                                            fetchDocumentComments={
+                                                              fetchDocumentComments
+                                                            }
+                                                          />
+                                                        )}
                                                     </Box>
                                                     {sectionChild1Sub1Sub1
                                                       .children.length > 0
@@ -966,29 +989,33 @@ const CommentReflections = () => {
                                                                   }
                                                                 </Typography>
 
-                                                                {(userRole ===
-                                                                  "Commenter" && sectionChild1Sub1Sub1Sub1.section_body.length>0) && (
-                                                                  <ReplyFeedbacks
-                                                                    documentDetail={
-                                                                      documentDetail
-                                                                    }
-                                                                    comments={
-                                                                      sectionChild1Sub1Sub1Sub1.comments
-                                                                    }
-                                                                    section={
-                                                                      sectionChild1Sub1Sub1Sub1
-                                                                    }
-                                                                    fetchDocumentDetails={
-                                                                      fetchDocumentDetails
-                                                                    }
-                                                                    fetchDocumentSections={
-                                                                      fetchDocumentSections
-                                                                    }
-                                                                    fetchDocumentComments={
-                                                                      fetchDocumentComments
-                                                                    }
-                                                                  />
-                                                                )}
+                                                                {userRole ===
+                                                                  "Commenter" &&
+                                                                  sectionChild1Sub1Sub1Sub1
+                                                                    .section_body
+                                                                    .length >
+                                                                    0 && (
+                                                                    <ReplyFeedbacks
+                                                                      documentDetail={
+                                                                        documentDetail
+                                                                      }
+                                                                      comments={
+                                                                        sectionChild1Sub1Sub1Sub1.comments
+                                                                      }
+                                                                      section={
+                                                                        sectionChild1Sub1Sub1Sub1
+                                                                      }
+                                                                      fetchDocumentDetails={
+                                                                        fetchDocumentDetails
+                                                                      }
+                                                                      fetchDocumentSections={
+                                                                        fetchDocumentSections
+                                                                      }
+                                                                      fetchDocumentComments={
+                                                                        fetchDocumentComments
+                                                                      }
+                                                                    />
+                                                                  )}
                                                               </Box>
                                                               {sectionChild1Sub1Sub1Sub1
                                                                 .children
@@ -1046,29 +1073,33 @@ const CommentReflections = () => {
                                                                               // sectionChild1Sub1Sub1Sub1Sub1.section_body
                                                                             }
                                                                           </Typography>
-                                                                          {(userRole ===
-                                                                            "Commenter" && sectionChild1Sub1Sub1Sub1Sub1.section_body.length>0) && (
-                                                                            <ReplyFeedbacks
-                                                                              documentDetail={
-                                                                                documentDetail
-                                                                              }
-                                                                              comments={
-                                                                                sectionChild1Sub1Sub1Sub1Sub1.comments
-                                                                              }
-                                                                              section={
-                                                                                sectionChild1Sub1Sub1Sub1Sub1
-                                                                              }
-                                                                              fetchDocumentDetails={
-                                                                                fetchDocumentDetails
-                                                                              }
-                                                                              fetchDocumentSections={
-                                                                                fetchDocumentSections
-                                                                              }
-                                                                              fetchDocumentComments={
-                                                                                fetchDocumentComments
-                                                                              }
-                                                                            />
-                                                                          )}
+                                                                          {userRole ===
+                                                                            "Commenter" &&
+                                                                            sectionChild1Sub1Sub1Sub1Sub1
+                                                                              .section_body
+                                                                              .length >
+                                                                              0 && (
+                                                                              <ReplyFeedbacks
+                                                                                documentDetail={
+                                                                                  documentDetail
+                                                                                }
+                                                                                comments={
+                                                                                  sectionChild1Sub1Sub1Sub1Sub1.comments
+                                                                                }
+                                                                                section={
+                                                                                  sectionChild1Sub1Sub1Sub1Sub1
+                                                                                }
+                                                                                fetchDocumentDetails={
+                                                                                  fetchDocumentDetails
+                                                                                }
+                                                                                fetchDocumentSections={
+                                                                                  fetchDocumentSections
+                                                                                }
+                                                                                fetchDocumentComments={
+                                                                                  fetchDocumentComments
+                                                                                }
+                                                                              />
+                                                                            )}
                                                                         </Box>
                                                                       </>
                                                                     )

@@ -1,4 +1,4 @@
-import { Box, Button, Typography, useTheme } from "@mui/material";
+import { Box, Button, Chip, Typography, useTheme } from "@mui/material";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import { tokens } from "../../../theme";
 import { useTranslation } from "react-i18next";
@@ -15,12 +15,13 @@ import { UserContext } from "../../../contexts/UserContext";
 import PublicCommentReplies from "./PublicCommentReplies";
 import ManageComment from "./ManageComment";
 import DeleteCommentDialog from "./Manage_Comments/DeleteCommentDialog";
+import { DownloadDone, FileDownload } from "@mui/icons-material";
+import AttachmentIcon from "@mui/icons-material/Attachment";
 
 const SectionFeedbacks = ({
   comments,
   section,
   documentDetail,
-
   fetchDocumentDetails,
   fetchDocumentSections,
   fetchDocumentComments,
@@ -126,28 +127,46 @@ const SectionFeedbacks = ({
                                 }}
                               >
                                 <div>
-                                  <Typography variant="h5" fontWeight="600">
-                                    {comment.commenter
-                                      ? `${
-                                          comment.commenter.first_name +
-                                          " " +
-                                          comment.commenter.middle_name
-                                        }`
-                                      : "Anonymous"}
+                                  <Typography variant="h5">
+                                    <strong>
+                                      {comment.commenter
+                                        ? `${
+                                            comment.commenter.first_name +
+                                            " " +
+                                            comment.commenter.middle_name
+                                          }`
+                                        : "Anonymous"}
+                                    </strong>{" "}
+                                    {comment.commenter.institution_name ? (
+                                      <Chip
+                                        label={
+                                          comment.commenter.institution_name
+                                        }
+                                        size="small"
+                                        color="info"
+                                      />
+                                    ) : (
+                                      <Chip
+                                        label={` Public user `}
+                                        size="small"
+                                        color="info"
+                                      />
+                                    )}
                                   </Typography>
                                 </div>
                                 <div>
-                                  <ManageComment
-                                    commentID={comment.id}
-                                    commentText={comment.section_comment}
-                                    fetchDocumentDetails={fetchDocumentDetails}
-                                    fetchDocumentSections={
-                                      fetchDocumentSections
-                                    }
-                                    fetchDocumentComments={
-                                      fetchDocumentComments
-                                    }
-                                  />
+                                    <ManageComment
+                                      commentID={comment.id}
+                                      commentText={comment.section_comment}
+                                      documentDetail={documentDetail}
+                                      fetchDocumentDetails={fetchDocumentDetails}
+                                      fetchDocumentSections={
+                                        fetchDocumentSections
+                                      }
+                                      fetchDocumentComments={
+                                        fetchDocumentComments
+                                      }
+                                    />
                                 </div>
                               </div>
                             }
@@ -166,8 +185,28 @@ const SectionFeedbacks = ({
                                     dangerouslySetInnerHTML={{
                                       __html: comment.section_comment,
                                     }}
-                                  />
-                                  {/* {comment.section_comment} */}
+                                  />{" "}
+                                  <span>
+                                    {comment.attachments &&
+                                    comment.attachments.length > 0 ? (
+                                      <Button
+                                        href={comment.attachments[0].file}
+                                        variant="outlined"
+                                        color="secondary"
+                                        target="_blank"
+                                        size="small"
+                                        sx={{
+                                          textTransform: "none",
+                                          borderRadius: "10px 10px",
+                                          padding: 0,
+                                        }}
+                                      >
+                                        <FileDownload fontSize="small" /> File
+                                      </Button>
+                                    ) : (
+                                      <>{null}</>
+                                    )}
+                                  </span>
                                 </Typography>
                               </>
                             }
@@ -198,6 +237,7 @@ const SectionFeedbacks = ({
               parseInt(documentDetail.comment_closed) === 0 ? (
                 <AddSectionComment
                   section={section}
+                  documentDetail={documentDetail}
                   fetchDocumentDetails={fetchDocumentDetails}
                   fetchDocumentSections={fetchDocumentSections}
                   fetchDocumentComments={fetchDocumentComments}

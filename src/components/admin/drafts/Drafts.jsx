@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 const Drafts = () => {
   const { t } = useTranslation();
   return (
-    <Box>
+    <Box ml="20px">
       <Header
         title={t("draft_documents")}
         subtitle={t("manage_draft_documents")}

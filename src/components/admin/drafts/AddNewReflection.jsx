@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 
 import { tokens } from "../../../theme";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -20,6 +20,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { useFormik } from "formik";
 
 import axios from "../../../axios/AxiosGlobal";
+import { useTranslation } from "react-i18next";
 
 
 const AddNewReflection = ({
@@ -32,9 +33,12 @@ const AddNewReflection = ({
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const { t } = useTranslation();
 
   const [serverErrorMsg, setServerErrorMsg] = useState(null);
   const [serverSuccessMsg, setServerSuccessMsg] = useState(null);
+
+  const inputFile = useRef(null);
 
   const errorStyle = {
     color: "red",
@@ -49,11 +53,19 @@ const AddNewReflection = ({
     fontSize: "18px",
   };
 
+  const helperTextStyle = {
+    color: "red",
+    fontWeight: "400",
+    fontSize: "15px",
+  };
+
+
   const formik = useFormik({
     initialValues: {
       commentID: comment.id,
       commentMessage: "",
       file: null,
+      label: "file name",
     },
 
     onSubmit: (values) => {
@@ -61,6 +73,7 @@ const AddNewReflection = ({
         comment_id: values.commentID,
         message: values.commentMessage,
         file: values.file,
+        label: values.label,
       };
 
       replyComment(replyData);
@@ -136,6 +149,37 @@ const AddNewReflection = ({
                   >
                     <SendIcon />
                   </Button>
+                </>
+              }
+            />
+          </ListItem>
+
+          <ListItem sx={{ marginLeft: "60px" }}>
+            <ListItemText
+              primary={
+                <>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{ paddingBottom: "10px" }}
+                  >
+                    {t("attachement_file")} (optional): &nbsp;
+                    <input
+                      type="file"
+                      name="file"
+                      ref={inputFile}
+                      onBlur={formik.handleBlur}
+                      onChange={(e) => {
+                        formik.setFieldValue("file", e.target.files[0]);
+                      }}
+                      helperText={
+                        formik.touched.file && formik.errors.file ? (
+                          <span style={helperTextStyle}>
+                            {formik.touched.file}
+                          </span>
+                        ) : null
+                      }
+                    />
+                  </Typography>
                 </>
               }
             />
