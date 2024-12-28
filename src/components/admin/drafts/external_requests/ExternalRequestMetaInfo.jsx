@@ -12,6 +12,7 @@ import axios from "../../../../axios/AxiosGlobal";
 
 import ExternalRequestActions from "./ExternalRequestActions";
 import { tokens } from "../../../../theme";
+import dateFormat from "dateformat";
 
 const ExternalRequestMetaInfo = ({
   documentDetail,
@@ -27,6 +28,8 @@ const ExternalRequestMetaInfo = ({
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  const ethiopicDate = require("ethiopic-date");
 
   useEffect(() => {
     fetchDocumentSections();
@@ -85,12 +88,12 @@ const ExternalRequestMetaInfo = ({
               >
                 {documentDetail.short_title}
               </Typography>
-              <Typography
+             {/*  <Typography
                 variant="h5"
                 sx={{ paddingBottom: "30px", textAlign: "justify" }}
               >
                 {documentDetail.summary}
-              </Typography>
+              </Typography> */}
 
               <Typography
                 variant="h4"
@@ -203,17 +206,24 @@ const ExternalRequestMetaInfo = ({
                 </Grid>
                 <Grid item xs={6} md={6}>
                   <Chip
-                    label={
-                      documentDetail.comment_opening_date
-                        ? documentDetail.comment_opening_date
-                        : "Unavailable"
-                    }
-                    size="small"
-                    sx={{
-                      backgroundColor: colors.successColor[200],
-                      color: colors.grey[300],
-                    }}
-                  />
+                      label={
+                        documentDetail.comment_opening_date
+                          ? localStorage.getItem("i18nextLng") === "en"
+                              ? dateFormat(
+                                  documentDetail.comment_opening_date,
+                                  "dddd, mmmm dS, yyyy, h:MM:ss TT"
+                                )
+                              : ethiopicDate.convert(
+                                  documentDetail.comment_opening_date
+                                )
+                          : "Unavailable"
+                      }
+                      size="small"
+                      sx={{
+                        backgroundColor: colors.successColor[200],
+                        color: colors.grey[300],
+                      }}
+                    />
                 </Grid>
 
                 <Grid item xs={6} md={6}>
@@ -223,7 +233,14 @@ const ExternalRequestMetaInfo = ({
                   <Chip
                     label={
                       documentDetail.comment_closing_date
-                        ? documentDetail.comment_closing_date
+                        ? localStorage.getItem("i18nextLng") === "en"
+                            ? dateFormat(
+                                documentDetail.comment_closing_date,
+                                "dddd, mmmm dS, yyyy, h:MM:ss TT"
+                              )
+                            : ethiopicDate.convert(
+                                documentDetail.comment_closing_date
+                              )
                         : "Unavailable"
                     }
                     size="small"
@@ -234,21 +251,21 @@ const ExternalRequestMetaInfo = ({
                   />
                 </Grid>
 
-                <Grid item xs={6} md={6}>
+               {/*  <Grid item xs={6} md={6}>
                   <strong>Base Legal Reference</strong>
                 </Grid>
                 <Grid item xs={6} md={6}>
                   {documentDetail.base_legal_reference
                     ? documentDetail.base_legal_reference
                     : null}
-                </Grid>
+                </Grid> */}
 
-                <Grid item xs={6} md={6}>
+                {/* <Grid item xs={6} md={6}>
                   <strong>Definition</strong>
                 </Grid>
                 <Grid item xs={6} md={6}>
                   {documentDetail.definition ? documentDetail.definition : null}
-                </Grid>
+                </Grid> */}
 
                 <Grid item xs={6} md={6}>
                   <strong>Document Access</strong>

@@ -22,6 +22,7 @@ import PersonalInvitations from "../Personalnvitations";
 import ExternalRequestMetaInfo from "./ExternalRequestMetaInfo";
 import { tokens } from "../../../../theme";
 
+
 const ExternalRequestDetails = () => {
   const params = useParams();
   const [documentDetail, setDocumentDetail] = useState(null);

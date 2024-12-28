@@ -42,33 +42,32 @@ const ManageComment = ({
 
   return (
     <div>
-      {documentDetail.draft_status.name === "Open" && (
+      {documentDetail && documentDetail.draft_status.name === "Open" && (
         <>
-      <MoreHorizIcon
-        fontSize="small"
-        sx={{ cursor: "pointer" }}
-        onClick={handleClick}
-      />
-      <Menu
-        id="demo-positioned-menu"
-        aria-labelledby="demo-positioned-button"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
-      >
+          <MoreHorizIcon
+            fontSize="small"
+            sx={{ cursor: "pointer" }}
+            onClick={handleClick}
+          />
+          <Menu
+            id="demo-positioned-menu"
+            aria-labelledby="demo-positioned-button"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+          >
             <MenuItem onClick={handleCommentEditDialog}>Edit</MenuItem>
             <MenuItem onClick={handleCommentDeleteDialog}>Delete</MenuItem>
           </Menu>
-          
-          </>
+        </>
       )}
 
       {openDeleteDialog && (

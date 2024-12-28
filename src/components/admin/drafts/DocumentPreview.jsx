@@ -33,7 +33,17 @@ import SectionFeedbackPreview from "../previews/SectionFeedbackPreview";
  * the document and make important decesion such as "Accept" or "Reject" the document opening
  * @returns
  */
-const DocumentPreview = () => {
+const DocumentPreview = ({
+  documentDetail,
+  setDocumentDetail,
+  documentSections,
+  setDocumentSections,
+  documentComments,
+  setDocumentComments,
+  fetchDocumentDetails,
+  fetchDocumentSections,
+  fetchDocumentComments,
+}) => {
   // Create variable to retrieve data from the page url using useParams() hook
   const params = useParams();
 
@@ -42,9 +52,10 @@ const DocumentPreview = () => {
    * and its sections requested from the API and use it for rendering and explore the document
    * section by section.
    */
-  const [documentDetail, setDocumentDetail] = useState(null);
+
+/*   const [documentDetail, setDocumentDetail] = useState(null);
   const [documentSections, setDocumentSections] = useState(null);
-  const [documentComments, setDocumentComments] = useState(null);
+  const [documentComments, setDocumentComments] = useState(null); */
 
   /**
    * Create variable contentBgColor and use it to highlight the active document section while user is navigating
@@ -80,7 +91,7 @@ const DocumentPreview = () => {
    * an API call to fetch documentDetails, documentSections and documentComments data
    */
 
-  useEffect(() => {
+/*   useEffect(() => {
     fetchDocumentDetails();
   }, []);
 
@@ -90,9 +101,9 @@ const DocumentPreview = () => {
 
   useEffect(() => {
     fetchDocumentComments();
-  }, []);
+  }, []); */
 
-  const fetchDocumentDetails = async () => {
+ /*  const fetchDocumentDetails = async () => {
     return await axios
       .get(`drafts/${params.id}`, {
         headers: {
@@ -104,9 +115,9 @@ const DocumentPreview = () => {
       .then((response) => {
         setDocumentDetail(response.data.data);
       });
-  };
+  }; */
 
-  const fetchDocumentSections = async () => {
+/*   const fetchDocumentSections = async () => {
     return await axios
       .get(`draft/${params.id}/draft-sections`, {
         headers: {
@@ -121,9 +132,9 @@ const DocumentPreview = () => {
       .catch((error) => {
         <p color="red">{error.response.message}</p>;
       });
-  };
+  }; */
 
-  const fetchDocumentComments = async () => {
+ /*  const fetchDocumentComments = async () => {
     return await axios
       .get(`draft/${params.id}/general-comments`, {
         headers: {
@@ -138,7 +149,7 @@ const DocumentPreview = () => {
       .catch((error) => {
         <p color="red">{error.response.message}</p>;
       });
-  };
+  }; */
 
   return (
     /**
