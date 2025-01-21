@@ -13,6 +13,7 @@ import axios from "../../axios/AxiosGlobal";
 import UserProfile from "./users/UserProfile";
 import "./Dashboard.css";
 import { useTranslation } from "react-i18next";
+import AllDraftsList from "./drafts/AllDraftsList/AllDraftsList";
 
 
 const Dashboard = () => {
@@ -218,10 +219,22 @@ const Dashboard = () => {
         </Box>
       )}
 
+      {userRole === "Federal Admin" && (
+        <Box mt={5}>
+          <AllDraftsList />
+        </Box>
+      )}
+
+      {userRole === "Regional Admin" && (
+        <Box mt={5}>
+          <AllDraftsList />
+        </Box>
+      )}
+
       {userRole === "Uploader" ? (
         <Box sx={{ marginTop: "100px", marginBottom: "50px" }}>
-          {userInfo && parseInt(userInfo.user.institutionModel[0].can_create_draft) ===
-          1 ? (
+          {userInfo &&
+          parseInt(userInfo.user.institutionModel[0].can_create_draft) === 1 ? (
             <Drafts />
           ) : (
             <Alert severity="warning" variant="outlined">
@@ -231,7 +244,6 @@ const Dashboard = () => {
               </Typography>
             </Alert>
           )}
-          
         </Box>
       ) : (
         ""

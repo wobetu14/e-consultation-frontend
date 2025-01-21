@@ -99,7 +99,7 @@ const DraftMetaInfo = ({
                  */}
                 {documentDetail.short_title}
               </Typography>
-             {/*  <Typography
+              {/*  <Typography
                 variant="h5"
                 sx={{ paddingBottom: "30px", textAlign: "justify" }}
               >
@@ -145,6 +145,7 @@ const DraftMetaInfo = ({
                 </Grid>
                 <Grid item xs={6} md={6}>
                   {documentDetail &&
+                  documentDetail.draft_status &&
                   documentDetail.draft_status.name === "New" ? (
                     <Chip
                       label={`${documentDetail.draft_status.name}`}
@@ -159,6 +160,7 @@ const DraftMetaInfo = ({
                   )}
 
                   {documentDetail &&
+                  documentDetail.draft_status &&
                   documentDetail.draft_status.name === "Requested" ? (
                     <Chip
                       label={documentDetail.draft_status.name}
@@ -173,6 +175,7 @@ const DraftMetaInfo = ({
                   )}
 
                   {documentDetail &&
+                  documentDetail.draft_status &&
                   documentDetail.draft_status.name === "Rejected" ? (
                     <Chip
                       label={documentDetail.draft_status.name}
@@ -187,6 +190,7 @@ const DraftMetaInfo = ({
                   )}
 
                   {documentDetail &&
+                  documentDetail.draft_status &&
                   documentDetail.draft_status.name === "Open" &&
                   parseInt(documentDetail.comment_closed) === 0 ? (
                     <Chip
@@ -202,6 +206,7 @@ const DraftMetaInfo = ({
                   )}
 
                   {documentDetail &&
+                  documentDetail.draft_status &&
                   documentDetail.draft_status.name === "Open" &&
                   parseInt(documentDetail.comment_closed) === 1 ? (
                     <Chip
@@ -217,6 +222,7 @@ const DraftMetaInfo = ({
                   )}
 
                   {documentDetail &&
+                  documentDetail.draft_status &&
                   documentDetail.draft_status.name === "Closed" ? (
                     <Chip
                       label="Consultation ended"
@@ -240,13 +246,13 @@ const DraftMetaInfo = ({
                     label={
                       documentDetail.comment_opening_date
                         ? localStorage.getItem("i18nextLng") === "en"
-                            ? dateFormat(
-                                documentDetail.comment_opening_date,
-                                "dddd, mmmm dS, yyyy, h:MM:ss TT"
-                              )
-                            : ethiopicDate.convert(
-                                documentDetail.comment_opening_date
-                              )
+                          ? dateFormat(
+                              documentDetail.comment_opening_date,
+                              "dddd, mmmm dS, yyyy, h:MM:ss TT"
+                            )
+                          : ethiopicDate.convert(
+                              documentDetail.comment_opening_date
+                            )
                         : "Unavailable"
                     }
                     size="small"
@@ -265,13 +271,13 @@ const DraftMetaInfo = ({
                     label={
                       documentDetail.comment_closing_date
                         ? localStorage.getItem("i18nextLng") === "en"
-                            ? dateFormat(
-                                documentDetail.comment_closing_date,
-                                "dddd, mmmm dS, yyyy, h:MM:ss TT"
-                              )
-                            : ethiopicDate.convert(
-                                documentDetail.comment_closing_date
-                              )
+                          ? dateFormat(
+                              documentDetail.comment_closing_date,
+                              "dddd, mmmm dS, yyyy, h:MM:ss TT"
+                            )
+                          : ethiopicDate.convert(
+                              documentDetail.comment_closing_date
+                            )
                         : "Unavailable"
                     }
                     size="small"
