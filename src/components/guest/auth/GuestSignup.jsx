@@ -99,7 +99,7 @@ const GuestSignup = () => {
         setLoading(false);
       })
       .catch((errors) => {
-        setServerErrorMsg(errors.response.data.message);
+        setServerErrorMsg(errors.message);
         setServerSuccessMsg(null);
         setLoading(false);
       });

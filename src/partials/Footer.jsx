@@ -272,7 +272,7 @@ const Footer = () => {
         <Box
           sx={{
             padding: "25px",
-            backgroundColor: colors.primary[200],
+            backgroundColor: colors.brandColor[100],
             width: "100%",
             display: "flex",
             justifyContent: "space-between",

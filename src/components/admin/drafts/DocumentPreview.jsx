@@ -639,7 +639,7 @@ const DocumentPreview = ({
                       borderRadius: "3px",
                       borderLeftStyle: "solid",
                       borderLeftWidth: "3px",
-                      borderLeftColor: "#255B7E",
+                      borderLeftColor: colors.brandColor[100],
                     }}
                   >
                     {documentComments ? (

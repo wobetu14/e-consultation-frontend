@@ -172,7 +172,7 @@ const DocumentDetailView = () => {
        */}
       <Box
         sx={{
-          backgroundColor: "#255B7E",
+          backgroundColor: colors.brandColor[100],
           marginBottom: "30px",
           paddingRight: {
             xs: "10px",
@@ -1216,7 +1216,7 @@ const DocumentDetailView = () => {
                       borderRadius: "3px",
                       borderLeftStyle: "solid",
                       borderLeftWidth: "3px",
-                      borderLeftColor: "#255B7E",
+                      borderLeftColor: colors.brandColor[100],
                     }}
                   >
                     {documentComments ? (

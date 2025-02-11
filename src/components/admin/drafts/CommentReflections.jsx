@@ -141,7 +141,7 @@ const CommentReflections = () => {
     >
       <Box
         sx={{
-          backgroundColor: "#255B7E",
+          backgroundColor: colors.brandColor[100],
           marginBottom: "30px",
           paddingRight: {
             xs: "10px",
@@ -451,7 +451,7 @@ const CommentReflections = () => {
             </Grid>
 
             <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
-              {documentDetail.draft_status.name === "Closed" ? (
+              {/* {documentDetail.draft_status.name === "Closed" && (userRole==='Uploader' || userRole==='Approver')  ? (
                 <Paper
                   elevation={1}
                   sx={{
@@ -497,7 +497,7 @@ const CommentReflections = () => {
                 </Paper>
               ) : (
                 ""
-              )}
+              )} */}
             </Grid>
           </Grid>
         ) : (
@@ -1165,7 +1165,7 @@ const CommentReflections = () => {
                       borderRadius: "3px",
                       borderLeftStyle: "solid",
                       borderLeftWidth: "3px",
-                      borderLeftColor: "#255B7E",
+                      borderLeftColor: colors.brandColor[100],
                     }}
                   >
                     {documentComments ? (
