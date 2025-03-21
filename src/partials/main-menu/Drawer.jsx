@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import Logout from "../../Logout";
 import { useTranslation } from "react-i18next";
+import LanguageButton from "../LanguageButton";
 
 const DrawerComp = () => {
   const theme = useTheme();
@@ -48,9 +49,10 @@ const DrawerComp = () => {
                         color: colors.primary[300],
                       }}
                     >
-                      {t('home')} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+                      {t("home")} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp; &nbsp; &nbsp; &nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </a>
                   </>
                 }
@@ -71,9 +73,10 @@ const DrawerComp = () => {
                         color: colors.primary[300],
                       }}
                     >
-                      {t('about')} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+                      {t("about")} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                      &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp; &nbsp; &nbsp; &nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </a>
                   </>
                 }
@@ -94,10 +97,10 @@ const DrawerComp = () => {
                         color: colors.primary[300],
                       }}
                     >
-                      {t('help_center')} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      {t("help_center")}{" "}
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp;
                       &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                      &nbsp; &nbsp; &nbsp; &nbsp;
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </a>
                   </>
                 }
@@ -121,7 +124,7 @@ const DrawerComp = () => {
                           " " +
                           userInfo.user.middle_name
                         : null}{" "}
-                      <br/>
+                      <br />
                       <Logout />
                     </>
                   }
@@ -155,6 +158,14 @@ const DrawerComp = () => {
                   }
                 />
               )}
+            </ListItemIcon>
+          </ListItemButton>
+        </List>
+
+        <List>
+          <ListItemButton>
+            <ListItemIcon>
+              <ListItemText primary={<LanguageButton />} />
             </ListItemIcon>
           </ListItemButton>
         </List>

@@ -74,22 +74,25 @@ export default function LanguageButton() {
 
   return (
     <React.Fragment>
-     <ButtonGroup 
-      variant="text" 
-      ref={anchorRef} 
-      aria-label="split button"
+      <ButtonGroup
+        variant="outlined"
+        ref={anchorRef}
+        aria-label="split button"
+        sx={{ marginLeft: "0.5em" }}
       >
-        <Button elevation={10}
+        <Button
+          elevation={10}
           size="small"
-          aria-controls={open ? 'split-button-menu' : undefined}
-          aria-expanded={open ? 'true' : undefined}
+          aria-controls={open ? "split-button-menu" : undefined}
+          aria-expanded={open ? "true" : undefined}
           aria-label="select language"
           aria-haspopup="menu"
           onClick={handleToggle}
           // sx={{ color:colors.grey[400]}}
         >
-          <LanguageOutlined />&nbsp;
-          {currentLanguage.name} 
+          <LanguageOutlined />
+          &nbsp;
+          {currentLanguage.name}
         </Button>
       </ButtonGroup>
       <Popper
@@ -107,19 +110,19 @@ export default function LanguageButton() {
             {...TransitionProps}
             style={{
               transformOrigin:
-                placement === 'bottom' ? 'center top' : 'center bottom',
+                placement === "bottom" ? "center top" : "center bottom",
             }}
           >
             <Paper elevation={20}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList id="split-button-menu" autoFocusItem>
-                  {appLanguages.map(({code, name}) => (
+                  {appLanguages.map(({ code, name }) => (
                     <MenuItem
-                    //  sx={{ color:colors.grey[100], backgroundColor:colors.grey[600] }}
+                      //  sx={{ color:colors.grey[100], backgroundColor:colors.grey[600] }}
                       key={code}
                       disabled={code === currentLanguageCode}
                       selected={code === currentLanguageCode}
-                      onClick={()=>handleMenuItemClick(code)}
+                      onClick={() => handleMenuItemClick(code)}
                     >
                       {name}
                     </MenuItem>

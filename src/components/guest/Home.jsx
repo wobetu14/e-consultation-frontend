@@ -144,9 +144,11 @@ const Home = () => {
         <Box
           sx={{
             marginBottom: "30px",
-            marginRight: "30px",
-            marginLeft: "30px",
+            // marginRight: "30px",
+            // marginLeft: "30px",
             paddingBottom: "30px",
+            background:
+              "linear-gradient(135deg, #01579b 0%, rgba(76, 201, 240, 0.7) 100%)",
           }}
         >
           <Grid
@@ -168,10 +170,16 @@ const Home = () => {
               or "የኢትዮጵያ ፊዴራላዊ ዴሞክራሲያዊ ሪፐብሊክ መንግስት" in Amharic. 
              */}
             <Grid>
-              <Typography variant="h4" sx={{ fontWeight: "600" }}>
+              <Typography
+                variant="h3"
+                sx={{ fontWeight: "600", paddingLeft: "50px", color:"#fff" }}
+              >
                 {t("fdre")}
               </Typography>
-              <Typography variant="h4" sx={{ fontWeight: "500" }}>
+              <Typography
+                variant="h3"
+                sx={{ fontWeight: "500", paddingLeft: "50px", color:"#fff" }}
+              >
                 {t("e_consultation_portal")}
               </Typography>
             </Grid>
@@ -179,7 +187,7 @@ const Home = () => {
               container
               sx={{
                 paddingTop: "30px",
-                margin: "20px",
+                margin: "50px",
                 display: "flex",
                 justifyContent: "space-between",
               }}
@@ -265,6 +273,11 @@ const Home = () => {
           />
         </Box>
 
+        <Box>
+          <Typography>
+
+          </Typography>
+        </Box>
         <Box>
           <Footer /> {/* Render the App footer component */}
         </Box>

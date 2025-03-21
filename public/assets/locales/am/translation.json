@@ -293,5 +293,20 @@
     "message":"መልዕክት",
     "please_provide_your_feedback":"እባክዎ በዚህ ሰነድ ዙሪያ አስተያየት ይስጡ",
     "list_of_invited_drafts":"አስተያየት እንዲሰጡባቸው በግል የተጋበዟቸው ሰነዶች ዝርዝር",
-    "ok_got_it":"እሽ ገብቶኛል"
+    "ok_got_it":"እሽ ገብቶኛል",
+
+
+     "e_consultation_moto":"የእርስዎ ድምፅ የጋራ ህጋችን ነው።",
+     "motto_shape_future":"የህዝብ ተሳትፎ ያለው አሰራርን በመከተል የህግ ማውጣት ስርዓታችንን እናዘምናለን",
+     "motto_description":"የእርስዎ ተሳትፎ ዴሞክራሲያችንን ያጠናክራል። ለህግ አውጭው ሂደት ንቁ አስተዋፅዖ እያደረጉ እና ድምፃቸውን የሚያሰሙ በሺዎች የሚቆጠሩ ዜጎችን ይቀላቀሉ።",
+     "review_draft_laws":"ረቂቅ ህጎችን ይገምግሙ",
+     "stat_numbers":"ቁጥሮች",
+     "register_and_login":"ይመስግቡና login ያድርጉ",
+     "browse_draft_list":"ከላይ እዚሁ ገፅ መጀመሪያ ላይ <strong> ረቂቅ ህጎችን ይገምግሙ</strong> የሚለውን ቁልፍ ክሊክ በማድረግ ረቂቅ ህጎችን ዝርዝር ይፈልጉ",
+     "open_interested_draft_law":"የሚፈልጉትን ረቂቅ የህግ ሰነድ ይክፈቱ እና በደንብ ለማንበብ ይሞክሩ",
+     "provide_comment":"በተሰጡት ሣጥኖች ውስጥ የእርስዎን አስተያየት ይስጡ። አስተያየትዎን አንቅፅ በአንቀፅ ወይም እንደ አጠቃላይ አስተያየት መስጠት ይችላሉ",
+     "done":"አበቃ",
+     "check_short_video_tutorial":"አጭር የቪዲዮ ቱቶሪያል ይከታተሉ",
+     "recently_opened_laws":"በቅርብ የተጫኑ ረቂቅ ህጎች",
+     "explore_more":"ተጨማሪ ይመልከቱ"
 }

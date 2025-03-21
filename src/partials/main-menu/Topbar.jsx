@@ -13,6 +13,7 @@ import LanguageButton from "../LanguageButton";
 import { useTranslation } from 'react-i18next';
 import { UserContext } from "../../contexts/UserContext";
 import Logout from "../../Logout";
+import EthiopiaFlag from "../../images/fdre_econsultation.png";
 
 const Topbar = ({menuItems}) => {
   const { t } = useTranslation()
@@ -47,102 +48,113 @@ const Topbar = ({menuItems}) => {
 
   return (
     <>
-      <AppBar 
-      elevation={0} 
-      position='relative'
-      sx={{
-       backgroundColor:colors.warningColor[300], 
-       zIndex:2 }}>
-          <Grid container>
-            <Grid item xs={0} sm={0} md={10} lg={10} xl={10}>
-            
-            </Grid>
-            <Grid item xs={12} sm={12} md={2} lg={2} xl={2}>
-                <Box display="flex">
-                    <IconButton onClick={colorMode.toggleColorMode} /* sx={{ color:colors.grey[400] }} */>
-                        {theme.palette.mode==="dark" ? (
-                            <DarkModeOutlinedIcon />
-                        ):(
-                            <LightModeOutlinedIcon />
-                        )} &nbsp;
-                    </IconButton>
-                    
-                    <IconButton>
-                        <LanguageButton />
-                    </IconButton>
-                </Box>
-            </Grid>
-          </Grid>
-      </AppBar>
-      <AppBar position='relative' elevation={1} sx={{ backgroundColor:colors.grey[100], zIndex:1}}> {/*  sx={{ backgroundImage:"linear-gradient(45deg, rgba(195,34,159,1) 0%, rgba(253,45,53,1) 100%)", color:"white" }} */}
-          <Toolbar>
-              {isMatch ? (
-                  <DrawerComp />
-              ): (
-                  <Grid container>
-                  <Grid item xs={6}>
-                      <Typography variant="h3" color={colors.primary[100]}>
-                        {t('ethiopia')}
-                      </Typography>
-                  </Grid>
-                  
-                  <Grid item xs={4} >
-                      <Tabs 
-                      indicatorColor="secondary"
-                      textColor="secondary" 
-                      value={tabValue}
-                      onChange={(e, val)=>(setTabValue(val))}
-                      >                
-                        {
-                            menuItems.map(({id, linkText, to})=>(
-                              <Tab 
-                              key={id} 
-                              label={t(linkText)} 
-                              to={to}
-                                component={Link}
-                                value={to}
-                              />
-                            ))
-                        }
-                      </Tabs>
-                  </Grid>
-                  <Grid item xs={2}>
-                        <Box display="flex">
-                            {
-                            (userToken!==null && userToken!==undefined && userRole!=null && userRole!==undefined ) ?  (
-                                <>
-                                  <Typography variant='h5' sx={{ fontWeight:"600", color:colors.successColor[100] }}>
-                                    {userInfo ? (userInfo.user.first_name + " " + userInfo.user.middle_name):(null)} &nbsp;
-                                    {
-                                      userRole==='Commenter' ? 
-                                      (
-                                        <Link to='/commenter' >{t('dashboard')}</Link>
-                                      ):
-                                      (
-                                        <Link to='admin'>{t('dashboard')}</Link>
-                                      )
-                                    }
-                                    
-                                     <Logout />
-                                  </Typography>
-                                </>
-                                 
-                                ):
-                                (
-                                  <>
-                                    <Button elevation={0} onClick={openSignInPage} sx={{ marginLeft:"auto" }} variant="contained">{t('sign_in')}</Button>
-                                    <Button elevation={20} onClick={openSignUpPage} sx={{ marginLeft:1, backgroundColor:colors.brandColor[200], color:"white" }} variant="contained">{t('sign_up')}</Button>
-                                  </>
-                                )
-                            }
-                        </Box>
-                  </Grid>
+      <AppBar
+        position="sticky"
+        elevation={1}
+        sx={{
+          backgroundColor: colors.grey[100],
+          zIndex: 1,
+          paddingTop: "10px",
+        }}
+      >
+        {" "}
+        {/*  sx={{ backgroundImage:"linear-gradient(45deg, rgba(195,34,159,1) 0%, rgba(253,45,53,1) 100%)", color:"white" }} */}
+        <Toolbar>
+          {isMatch ? (
+            <DrawerComp />
+          ) : (
+            <Grid container>
+              <Grid item xs={6}>
+                <a href="/" target="_parent">
+                  <Typography variant="h3" color={colors.primary[100]}>
+                    <img
+                      src={EthiopiaFlag}
+                      alt="Ethiopian flag"
+                      width="700px"
+                    />{" "}
+                  </Typography>
+                </a>
               </Grid>
-              )} 
-          </Toolbar>
+
+              <Grid item xs={4}>
+                <Tabs
+                  indicatorColor="secondary"
+                  textColor="secondary"
+                  value={tabValue}
+                  onChange={(e, val) => setTabValue(val)}
+                >
+                  {menuItems.map(({ id, linkText, to }) => (
+                    <Tab
+                      key={id}
+                      label={t(linkText)}
+                      to={to}
+                      component={Link}
+                      value={to}
+                    />
+                  ))}
+                </Tabs>
+              </Grid>
+              <Grid item xs={2}>
+                <Box display="flex">
+                  {userToken !== null &&
+                  userToken !== undefined &&
+                  userRole != null &&
+                  userRole !== undefined ? (
+                    <>
+                      <Typography
+                        variant="h5"
+                        sx={{
+                          fontWeight: "600",
+                          color: colors.successColor[100],
+                        }}
+                      >
+                        {userInfo
+                          ? userInfo.user.first_name +
+                            " " +
+                            userInfo.user.middle_name
+                          : null}{" "}
+                        &nbsp;
+                        {userRole === "Commenter" ? (
+                          <Link to="/commenter">{t("dashboard")}</Link>
+                        ) : (
+                          <Link to="admin">{t("dashboard")}</Link>
+                        )}
+                        <Logout />
+                      </Typography>
+                    </>
+                  ) : (
+                    <>
+                      <LanguageButton />
+                      <Button
+                        elevation={0}
+                        onClick={openSignInPage}
+                        sx={{ marginLeft: "0.5em" }}
+                        variant="contained"
+                      >
+                        {t("sign_in")}
+                      </Button>
+                      <Button
+                        elevation={20}
+                        onClick={openSignUpPage}
+                        sx={{
+                          marginLeft: "0.5em",
+                          backgroundColor: colors.brandColor[200],
+                          color: "white",
+                        }}
+                        variant="contained"
+                      >
+                        {t("sign_up")}
+                      </Button>
+                    </>
+                  )}
+                </Box>
+              </Grid>
+            </Grid>
+          )}
+        </Toolbar>
       </AppBar>
     </>
-  )
+  );
 }
 
 export default Topbar

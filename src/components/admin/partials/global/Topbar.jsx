@@ -31,7 +31,11 @@ const Topbar = () => {
       ></Box>
 
       <Box display="flex">
-        <Button variant="text" onClick={reloadPage}>
+        <Button
+          variant="text"
+          onClick={reloadPage}
+          sx={{ marginLeft: "0.5em" }}
+        >
           <CachedIcon />
         </Button>
         <Button
@@ -39,7 +43,7 @@ const Topbar = () => {
           color="primary"
           size="small"
           href="/"
-          sx={{ textTransform: "none" }}
+          sx={{ textTransform: "none", marginLeft: "0.5em" }}
         >
           <HomeIcon fontSize="small" color="primary" /> &nbsp; {t("home")}
         </Button>
@@ -49,13 +53,13 @@ const Topbar = () => {
         <ChangeAccess />
 
         <Logout />
-        <IconButton onClick={colorMode.toggleColorMode}>
+        {/*  <IconButton onClick={colorMode.toggleColorMode}>
           {theme.palette.mode === "dark" ? (
             <DarkModeOutlinedIcon />
           ) : (
             <LightModeOutlinedIcon />
           )}
-        </IconButton>
+        </IconButton> */}
       </Box>
     </Box>
   );

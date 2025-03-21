@@ -45,24 +45,22 @@ const Logout = () => {
         userToken !== undefined &&
         userRole != null &&
         userRole !== undefined && (
-          <Button onClick={logout}>
+          <Button onClick={logout} sx={{ marginLeft: "0.5em" }}>
             <LogoutIcon /> {t("logout")}
           </Button>
         )}
 
-        {
-          logoutLoading && (
-            <LogoutProgressDialog 
-              title="Logging out"
-              text="Logging out..."
-              logout={logout}
-              logoutLoading={logoutLoading}
-              setLogoutLoading={setLogoutLoading}
-              networkError={networkError}
-              setNetworkError={setNetworkError}
-            />
-          )
-        }
+      {logoutLoading && (
+        <LogoutProgressDialog
+          title="Logging out"
+          text="Logging out..."
+          logout={logout}
+          logoutLoading={logoutLoading}
+          setLogoutLoading={setLogoutLoading}
+          networkError={networkError}
+          setNetworkError={setNetworkError}
+        />
+      )}
     </>
   );
 };

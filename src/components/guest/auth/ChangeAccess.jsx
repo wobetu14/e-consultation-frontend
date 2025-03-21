@@ -40,26 +40,27 @@ export default function ChangeAccess() {
 
   return (
     <React.Fragment>
-     <ButtonGroup 
-      variant="text" 
-      ref={anchorRef} 
-      aria-label="split button"
+      <ButtonGroup
+        variant="text"
+        ref={anchorRef}
+        aria-label="split button"
+        sx={{ marginLeft: "0.5em" }}
       >
-        <Button elevation={10}
+        <Button
+          elevation={10}
           size="small"
-          aria-controls={open ? 'split-button-menu' : undefined}
-          aria-expanded={open ? 'true' : undefined}
+          aria-controls={open ? "split-button-menu" : undefined}
+          aria-expanded={open ? "true" : undefined}
           aria-label="Change System Access"
           aria-haspopup="menu"
           onClick={handleToggle}
           variant="contained"
           color="secondary"
-          sx={{ textTransform:"none"}}
+          sx={{ textTransform: "none" }}
         >
-          <PeopleOutlineIcon />&nbsp;
-          <Typography>
-            {userRole}
-          </Typography> 
+          <PeopleOutlineIcon />
+          &nbsp;
+          <Typography>{userRole}</Typography>
         </Button>
       </ButtonGroup>
       <Popper
@@ -77,24 +78,22 @@ export default function ChangeAccess() {
             {...TransitionProps}
             style={{
               transformOrigin:
-                placement === 'bottom' ? 'center top' : 'center bottom',
+                placement === "bottom" ? "center top" : "center bottom",
             }}
           >
             <Paper elevation={20}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList id="split-button-menu" autoFocusItem>
-                  {
-                   userInfo.user.roles.map(({id, name})=>(
-                      <MenuItem
-                       key={id}
-                       onClick={()=>handleMenuItemClick(name)}
-                       disabled={name===userRole}
-                       selected={name===userRole}
-                      >
-                       {name}
-                      </MenuItem>
-                    ))
-                  }
+                  {userInfo.user.roles.map(({ id, name }) => (
+                    <MenuItem
+                      key={id}
+                      onClick={() => handleMenuItemClick(name)}
+                      disabled={name === userRole}
+                      selected={name === userRole}
+                    >
+                      {name}
+                    </MenuItem>
+                  ))}
                 </MenuList>
               </ClickAwayListener>
             </Paper>

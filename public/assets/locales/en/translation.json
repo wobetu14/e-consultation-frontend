@@ -293,5 +293,20 @@
     "message":"Message",
     "please_provide_your_feedback":"Please provide your feedback on this draft document",
     "list_of_invited_drafts":"List of draft documents you have been invited to provide comments",
-    "ok_got_it":"Ok got it"
+    "ok_got_it":"Ok got it",
+
+    "e_consultation_moto":"Your Voice, Our Laws",
+    "motto_shape_future":"Shape the Future of Legislation Through Public Participation",
+    "motto_description":"Your participation strengthens our democracy. Join thousands of citizens who are actively contributing to the legislative process and making their voices heard.",
+    "review_draft_laws":"Review Draft Laws",
+    "stat_numbers":"In the Numbers",
+    "register_and_login":"Register and Login",
+    "browse_draft_list":"Browse list of draft laws by clicking on <strong>Review Draft Laws</strong> button here on the home page",
+    "open_interested_draft_law":"Open the draft law document you are interested in and try to ready throughly",
+    "provide_comment":"Provide your feedback in the boxes provided. You can provide feedback article by article or as a general comment",
+    "done":"Done",
+    "check_short_video_tutorial":"Check a Short Video Tutorial",
+    "recently_opened_laws":"Recently Opened Draft Laws",
+    "explore_more":"Explore more"
+    
 }

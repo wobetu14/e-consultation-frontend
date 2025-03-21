@@ -50,6 +50,7 @@ import PasswordChangeRequest from "./components/guest/PasswordChangeRequest";
 import PrepareTranslation from "./components/documentation/admin_documentation/PrepareTranslation";
 import { ChangePasswordRequestContext } from "./contexts/ChangePasswordChangeContext";
 import CommentsReport from "./components/admin/reports/CommentsReport";
+import LandingContainer from "./components/guest/landing/LandingContainer";
 
 function App() {
   /**
@@ -168,11 +169,13 @@ function App() {
                 }
               >
                 {/* Routing definitions for elements under <PublicElement /> parent component */}
-                <Route index element={<Home />} />
+                <Route index element={<LandingContainer />} />
+                <Route path="drafts" element={<Home />} />
                 <Route path="about" element={<About />} />
                 {/* <Route path="help" element={<HelpCenter />} /> */}
                 <Route path="help" element={<HelpCenter />} />
                 <Route path="login" element={<Login />} />
+                <Route path="hero" element={<LandingContainer />} />
                 <Route
                   path="reset_password/email_address"
                   element={<ResetPasswordProvideEmail />}
