@@ -60,7 +60,7 @@ const PasswordChangeRequest = () => {
   const newLogin = async (newLoginData) => {
     setLoading(true);
     return await axios
-      .post("http://13.244.85.180:8080/api/v1/login", newLoginData)
+      .post("https://backend.e-consultation.gov.et/api/v1/login", newLoginData)
       .then((res) => {
         if (res.status !== 200) {
           // setServerError(res.data.message);
