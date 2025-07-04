@@ -96,7 +96,17 @@ const DocumentLevelComments = ({
                     variant="body1"
                     color="text.primary"
                   >
-                    {comment.general_comment}{" "}
+  
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: (() => {
+                          const txt = document.createElement("textarea");
+                          txt.innerHTML = comment.general_comment;
+                          return txt.value;
+                        })(),
+                      }}
+                    />{" "}
+
                     <span>
                       {comment.file ? (
                         <Button

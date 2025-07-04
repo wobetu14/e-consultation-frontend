@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -18,13 +18,12 @@ import { useTranslation } from "react-i18next";
 const EditCommentDialog = ({
   title,
   commentText,
-  commentID,
+  commentID, // Using commentID from props
   openEditDialog,
   setOpenEditDialog,
   fetchDocumentDetails,
   fetchDocumentSections,
   fetchDocumentComments,
-
   serverErrorMsg,
   serverSuccessMsg,
   networkError,
@@ -39,8 +38,6 @@ const EditCommentDialog = ({
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  // const [commentText, setCommentText] = useState(commentID);
-
   const { t } = useTranslation();
 
   const helperTextStyle = {
@@ -49,114 +46,144 @@ const EditCommentDialog = ({
     fontSize: "15px",
   };
 
+  const htmlToText = (html) => {
+    if (!html) return "";
+    const textArea = document.createElement("textarea");
+    textArea.innerHTML = html;
+    return textArea.value.replace(/<br\s*\/?>/gi, "\n");
+  };
+
+  const textToHtml = (text) => {
+    if (!text) return "";
+    return text
+      .replace(/\n/g, "<br />")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  };
+
   const formik = useFormik({
     initialValues: {
-      commentID: commentID,
-      section_comment: commentText,
+      // No need to store commentID in form values since we're using it from props
+      section_comment: htmlToText(commentText),
     },
+    enableReinitialize: true,
+    onSubmit: async (values) => {
+      setNetworkError(null);
+      setServerErrorMsg(null);
+      setServerSuccessMsg(null);
+      setLoading(true);
 
-    onSubmit: (values) => {
-      const commentData = {
-        commentID: values.commentID,
-        section_comment: values.section_comment,
-        _method: "put",
-      };
+      try {
+        const commentData = {
+          section_comment: textToHtml(values.section_comment),
+          _method: "put",
+        };
 
-      updateComment(commentData);
-      fetchDocumentDetails();
-      fetchDocumentSections();
-      fetchDocumentComments();
+        // Using commentID from props in the API call
+        const res = await axios.post(`comments/${commentID}`, commentData, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json;",
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        setServerSuccessMsg(res.data.message);
+        setOpenEditDialog(false);
+
+        // Refresh data
+        fetchDocumentDetails();
+        fetchDocumentSections();
+        fetchDocumentComments();
+
+        if (setAnchorEl) setAnchorEl(null);
+      } catch (error) {
+        setServerErrorMsg(error.response?.data?.message || error.message);
+        setNetworkError(error.code);
+      } finally {
+        setLoading(false);
+      }
     },
   });
 
-  const updateComment = async (commentData) => {
-    setNetworkError(null);
-    setServerErrorMsg(null);
-    setServerSuccessMsg(null);
-    setLoading(true);
-    try {
-      const res = await axios.post(`comments/${commentID}`, commentData, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-          Accept: "application/json;",
-          "Content-Type": "multipart/form-data",
+  useEffect(() => {
+    if (openEditDialog) {
+      formik.resetForm({
+        values: {
+          section_comment: htmlToText(commentText),
         },
       });
-      setServerSuccessMsg(res.data.message);
-      setServerErrorMsg(null);
-      setOpenEditDialog(false);
-      setNetworkError(null);
-      setLoading(false);
-      // setAnchorEl(null);
-    } catch (error) {
-      setServerErrorMsg(error);
-      setServerSuccessMsg(null);
-      setNetworkError(error.code);
-      setLoading(false);
-      // setAnchorEl(null);
     }
-  };
+  }, [openEditDialog, commentText]);
 
   return (
-    <>
-      <Dialog
-        open={openEditDialog}
-        onClose={() => setOpenEditDialog(false)}
-        fullWidth
-      >
-        <form onSubmit={formik.handleSubmit}>
-          <DialogTitle>
-            <Typography variant="h5" fontWeight="600">
-              {title}
-            </Typography>
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              <TextField
-                multiline
-                variant="outlined"
-                size="small"
-                fullWidth
-                sx={{ paddingBottom: "30px" }}
-                color="info"
-                name="section_comment"
-                value={formik.values.section_comment}
-                onBlur={formik.handleBlur}
-                onChange={formik.handleChange}
-                helperText={
-                  formik.touched.section_comment &&
-                  formik.errors.section_comment ? (
-                    <span style={helperTextStyle}>
-                      {formik.errors.section_comment}
-                    </span>
-                  ) : null
-                }
-              />
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={() => setOpenEditDialog(false)}
+    <Dialog
+      open={openEditDialog}
+      onClose={() => setOpenEditDialog(false)}
+      fullWidth
+      maxWidth="md"
+    >
+      <form onSubmit={formik.handleSubmit}>
+        <DialogTitle>
+          <Typography variant="h5" fontWeight="600">
+            {title}
+          </Typography>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            <TextField
+              multiline
               variant="outlined"
-              color="secondary"
               size="small"
-              sx={{ textTransform: "none" }}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              size="small"
-              color="secondary"
-              sx={{ color: colors.grey[300], textTransform: "none" }}
-            >
-              Save Changes
-            </Button>
-          </DialogActions>
-        </form>
-      </Dialog>
-    </>
+              fullWidth
+              minRows={6}
+              sx={{ paddingBottom: "30px", mt: 2 }}
+              color="info"
+              name="section_comment"
+              value={formik.values.section_comment}
+              onBlur={formik.handleBlur}
+              onChange={formik.handleChange}
+              helperText={
+                formik.touched.section_comment &&
+                formik.errors.section_comment ? (
+                  <span style={helperTextStyle}>
+                    {formik.errors.section_comment}
+                  </span>
+                ) : null
+              }
+            />
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ p: 3 }}>
+          <Button
+            onClick={() => setOpenEditDialog(false)}
+            variant="outlined"
+            color="secondary"
+            size="small"
+            sx={{ textTransform: "none" }}
+          >
+            {t("cancel")}
+          </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            size="small"
+            color="secondary"
+            disabled={loading}
+            sx={{
+              color: colors.grey[300],
+              textTransform: "none",
+              minWidth: 100,
+            }}
+          >
+            {loading ? "Saving..." : t("save_changes")}
+          </Button>
+        </DialogActions>
+      </form>
+    </Dialog>
   );
 };
 

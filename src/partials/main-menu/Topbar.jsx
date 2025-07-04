@@ -64,7 +64,7 @@ const Topbar = ({menuItems}) => {
             <DrawerComp />
           ) : (
             <Grid container>
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 <a href="/" target="_parent">
                   <Typography variant="h3" color={colors.primary[100]}>
                     <img
@@ -94,7 +94,7 @@ const Topbar = ({menuItems}) => {
                   ))}
                 </Tabs>
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={3}>
                 <Box display="flex">
                   {userToken !== null &&
                   userToken !== undefined &&
@@ -128,7 +128,7 @@ const Topbar = ({menuItems}) => {
                       <Button
                         elevation={0}
                         onClick={openSignInPage}
-                        sx={{ marginLeft: "0.5em" }}
+                        sx={{ marginLeft: 1 }}
                         variant="contained"
                       >
                         {t("sign_in")}
@@ -137,7 +137,7 @@ const Topbar = ({menuItems}) => {
                         elevation={20}
                         onClick={openSignUpPage}
                         sx={{
-                          marginLeft: "0.5em",
+                          marginLeft: 1,
                           backgroundColor: colors.brandColor[200],
                           color: "white",
                         }}

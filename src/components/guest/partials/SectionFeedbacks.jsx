@@ -155,18 +155,18 @@ const SectionFeedbacks = ({
                                   </Typography>
                                 </div>
                                 <div>
-                                    <ManageComment
-                                      commentID={comment.id}
-                                      commentText={comment.section_comment}
-                                      documentDetail={documentDetail}
-                                      fetchDocumentDetails={fetchDocumentDetails}
-                                      fetchDocumentSections={
-                                        fetchDocumentSections
-                                      }
-                                      fetchDocumentComments={
-                                        fetchDocumentComments
-                                      }
-                                    />
+                                  <ManageComment
+                                    commentID={comment.id}
+                                    commentText={comment.section_comment}
+                                    documentDetail={documentDetail}
+                                    fetchDocumentDetails={fetchDocumentDetails}
+                                    fetchDocumentSections={
+                                      fetchDocumentSections
+                                    }
+                                    fetchDocumentComments={
+                                      fetchDocumentComments
+                                    }
+                                  />
                                 </div>
                               </div>
                             }
@@ -183,7 +183,12 @@ const SectionFeedbacks = ({
                                 >
                                   <span
                                     dangerouslySetInnerHTML={{
-                                      __html: comment.section_comment,
+                                      __html: (() => {
+                                        const txt =
+                                          document.createElement("textarea");
+                                        txt.innerHTML = comment.section_comment;
+                                        return txt.value;
+                                      })(),
                                     }}
                                   />{" "}
                                   <span>

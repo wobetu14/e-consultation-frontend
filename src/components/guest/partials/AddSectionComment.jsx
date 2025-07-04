@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { tokens } from "../../../theme";
 import { useTranslation } from "react-i18next";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -59,6 +59,28 @@ const AddSectionComment = ({
     fontSize: "15px",
   };
 
+  const [commentHTML, setCommentHTML] = useState("");
+
+  const convertCommentToHTML = (content) => {
+    // Convert the comment content to HTML format
+    const convertedHtmlValue = content
+      .replace(/\n/g, "<br />") // Replace new lines with <br />
+      .replace(/(\*\*|__)(.*?)\1/g, "<strong>$2</strong>") // Bold text
+      .replace(/(\*|_)(.*?)\1/g, "<em>$2</em>") // Italic text
+      .replace(/~~(.*?)~~/g, "<del>$1</del>") // Strikethrough text
+      .replace(/`(.*?)`/g, "<code>$1</code>") // Inline code
+      .replace(/```(.*?)```/g, "<pre><code>$1</code></pre>") // Code block
+      .replace(/!\[(.*?)\]\((.*?)\)/g, '<img alt="$1" src="$2" />') // Images
+      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>') // Links
+      .replace(/^\s*>\s*(.*)$/gm, "<blockquote>$1</blockquote>") // Blockquotes
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;"); 
+    setCommentHTML(convertedHtmlValue);
+  }
+
   const formik = useFormik({
     initialValues: {
       sectionID: section.id,
@@ -73,9 +95,9 @@ const AddSectionComment = ({
     onSubmit: (values) => {
       const sectionCommentData = {
         section_id: values.sectionID,
-        section_comment: values.sectionComment,
+        section_comment: commentHTML, // Use the HTML content
         file: values.file,
-        label:values.label,
+        label: values.label,
         commented_by: values.commentedBy,
         commenting_team: values.commentingTeam,
         created_by: userInfo ? userInfo.user.id : "",
@@ -136,7 +158,10 @@ const AddSectionComment = ({
                     name="sectionComment"
                     value={formik.values.sectionComment}
                     onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
+                    onChange={(e) => {
+                      formik.setFieldValue("sectionComment", e.target.value);
+                      convertCommentToHTML(e.target.value); // Update comment content state
+                    }}
                   />
                 </>
               }

@@ -107,7 +107,16 @@ const ReplyFeedbacks = ({
                                 variant="body1"
                                 color="text.primary"
                               >
-                                {comment.section_comment}
+                                <span
+                                  dangerouslySetInnerHTML={{
+                                    __html: (() => {
+                                      const txt =
+                                        document.createElement("textarea");
+                                      txt.innerHTML = comment.section_comment;
+                                      return txt.value;
+                                    })(),
+                                  }}
+                                />{" "}
                               </Typography>
                             </>
                           }
@@ -118,7 +127,6 @@ const ReplyFeedbacks = ({
                           documentDetail={documentDetail}
                           comment={comment}
                           reflections={comment.reflection_on_comments}
-
                           fetchDocumentDetails={fetchDocumentDetails}
                           fetchDocumentSections={fetchDocumentSections}
                           fetchDocumentComments={fetchDocumentComments}

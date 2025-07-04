@@ -81,6 +81,28 @@ const AddDocumentLevelComments = ({
   /**
    * Create formik object and setup initial values as key:value pairs.
    */
+
+  const [commentHTML, setCommentHTML] = useState("");
+
+  const convertCommentToHTML = (content) => {
+    // Convert the comment content to HTML format
+    const convertedHtmlValue = content
+      .replace(/\n/g, "<br />") // Replace new lines with <br />
+      .replace(/(\*\*|__)(.*?)\1/g, "<strong>$2</strong>") // Bold text
+      .replace(/(\*|_)(.*?)\1/g, "<em>$2</em>") // Italic text
+      .replace(/~~(.*?)~~/g, "<del>$1</del>") // Strikethrough text
+      .replace(/`(.*?)`/g, "<code>$1</code>") // Inline code
+      .replace(/```(.*?)```/g, "<pre><code>$1</code></pre>") // Code block
+      .replace(/!\[(.*?)\]\((.*?)\)/g, '<img alt="$1" src="$2" />') // Images
+      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>') // Links
+      .replace(/^\s*>\s*(.*)$/gm, "<blockquote>$1</blockquote>") // Blockquotes
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+    setCommentHTML(convertedHtmlValue);
+  };
   const formik = useFormik({
     /**
      * Setup initial values. with key:value pairs where key is related to the name of form elemeents
@@ -103,7 +125,7 @@ const AddDocumentLevelComments = ({
     onSubmit: (values) => {
       const documentCommentData = {
         draft_id: values.draftID,
-        general_comment: values.generalComment,
+        general_comment: commentHTML,
         file: values.file,
         commented_by: values.commentedBy,
         commenting_team: values.commentingTeam,
@@ -166,7 +188,11 @@ const AddDocumentLevelComments = ({
                     name="generalComment"
                     value={formik.values.generalComment}
                     onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
+                    // onChange={formik.handleChange}
+                    onChange={(e) => {
+                      formik.setFieldValue("generalComment", e.target.value);
+                      convertCommentToHTML(e.target.value); // Update comment content state
+                    }}
                   />
                 </>
               }

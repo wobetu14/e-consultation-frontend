@@ -20,6 +20,7 @@ import { motion } from "framer-motion";
 
 import { UserContext } from "../../../contexts/UserContext";
 import { useTranslation } from "react-i18next";
+import { ChangePasswordRequestContext } from "../../../contexts/ChangePasswordChangeContext";
 
 
 const Login = () => {
@@ -33,6 +34,8 @@ const Login = () => {
 
   const [serverError, setServerError] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const {enforcePasswordChange} = useContext(ChangePasswordRequestContext);
 
   const errorStyle = {
     color: "red",
@@ -57,7 +60,7 @@ const Login = () => {
   const userLogin = async (userData) => {
     setLoading(true);
     return await axios
-      .post("https://backend.e-consultation.gov.et/api/v1/login", userData)
+      .post("http://13.244.85.180:8080/api/v1/login", userData)
       .then((res) => {
         if (res.status !== 200) {
           setServerError(res.data.message);
@@ -66,8 +69,9 @@ const Login = () => {
           if (res.status === 200 && res.data.token) {
             setServerError(null);
 
-           
-            const expirationTime = new Date(new Date().getTime() + 60 * 60 * 1000);
+            const expirationTime = new Date(
+              new Date().getTime() + 60 * 60 * 1000
+            );
 
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("userRole", res.data.user.roles[0].name);
@@ -77,10 +81,7 @@ const Login = () => {
             setUserToken(localStorage.getItem("token"));
             setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
 
-            if (
-              res.data.user.password_changed === null ||
-              res.data.user.password_changed === 0
-            ) {
+            if (enforcePasswordChange) {
               navigate("/password_change_request");
             } else {
               if (localStorage.getItem("userRole") === "Commenter") {

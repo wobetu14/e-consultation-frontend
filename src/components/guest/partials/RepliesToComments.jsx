@@ -96,36 +96,34 @@ const RepliesToComments = ({
                               padding: "10px",
                             }}
                             primary={
-                                <div
-                                  style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                  }}
-                                >
-                                  <div>
-                                    <Typography variant="h5" fontWeight="600">
-                                      {reflection.replier.first_name +
-                                        " " +
-                                        reflection.replier.middle_name}
-                                    </Typography>
-                                  </div>
-                                  <div>
-                                    <ManageCommentReflections
-                                      commentID={reflection.id}
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                }}
+                              >
+                                <div>
+                                  <Typography variant="h5" fontWeight="600">
+                                    {reflection.replier.first_name +
+                                      " " +
+                                      reflection.replier.middle_name}
+                                  </Typography>
+                                </div>
+                                <div>
+                                  <ManageCommentReflections
+                                    commentID={reflection.id}
                                     commentText={reflection.message}
                                     documentDetail={documentDetail}
-                                      fetchDocumentDetails={
-                                        fetchDocumentDetails
-                                      }
-                                      fetchDocumentSections={
-                                        fetchDocumentSections
-                                      }
-                                      fetchDocumentComments={
-                                        fetchDocumentComments
-                                      }
-                                    />
-                                  </div>
+                                    fetchDocumentDetails={fetchDocumentDetails}
+                                    fetchDocumentSections={
+                                      fetchDocumentSections
+                                    }
+                                    fetchDocumentComments={
+                                      fetchDocumentComments
+                                    }
+                                  />
                                 </div>
+                              </div>
                             }
                             secondary={
                               <>
@@ -137,28 +135,30 @@ const RepliesToComments = ({
                                 >
                                   <span
                                     dangerouslySetInnerHTML={{
-                                      __html: reflection.message,
+                                      __html: (() => {
+                                        const txt =
+                                          document.createElement("textarea");
+                                        txt.innerHTML = reflection.message;
+                                        return txt.value;
+                                      })(),
                                     }}
-                                  />
-                                  {" "}
-                                    <span>
-                                      <Button
-                                        href={
-                                          reflection.file
-                                        }
-                                        variant="outlined"
-                                        color="secondary"
-                                        target="_blank"
-                                        size="small"
-                                        sx={{
-                                          textTransform: "none",
-                                          borderRadius: "10px 10px",
-                                          padding: 0,
-                                        }}
-                                      >
-                                        <FileDownload fontSize="small" /> File
-                                      </Button>
-                                    </span>
+                                  />{" "}
+                                  <span>
+                                    <Button
+                                      href={reflection.file}
+                                      variant="outlined"
+                                      color="secondary"
+                                      target="_blank"
+                                      size="small"
+                                      sx={{
+                                        textTransform: "none",
+                                        borderRadius: "10px 10px",
+                                        padding: 0,
+                                      }}
+                                    >
+                                      <FileDownload fontSize="small" /> File
+                                    </Button>
+                                  </span>
                                 </Typography>
                               </>
                             }

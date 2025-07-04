@@ -80,7 +80,12 @@ const PublicRepliesToGeneralComments = ({ reflections, comment }) => {
                               >
                                 <span
                                   dangerouslySetInnerHTML={{
-                                    __html: reflection.message,
+                                    __html: (() => {
+                                      const txt =
+                                        document.createElement("textarea");
+                                      txt.innerHTML = reflection.message;
+                                      return txt.value;
+                                    })(),
                                   }}
                                 />{" "}
                                 <span>

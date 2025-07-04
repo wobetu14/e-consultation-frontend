@@ -15,6 +15,8 @@ import LinkIcon from "@mui/icons-material/Link";
 import BusinessIcon from '@mui/icons-material/Business';
 import EULogo from './../images/sponsers_logo/European-Union_flag.png';
 import GIZLogo from './../images/sponsers_logo/giz-logo.gif'
+import XIcon from "@mui/icons-material/X";
+import { Divider } from "@mui/material";
 
 const Footer = () => {
   const theme = useTheme();
@@ -77,19 +79,12 @@ const Footer = () => {
             </Typography>
           </Box>
         </Grid>
-        <Grid
-          item
-          xs={12}
-          sm={12}
-          md={4}
-          lg={4}
-          xl={4}
-        >
+        <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
           <Typography
             variant="h4"
             sx={{
               paddingTop: "30px",
-              fontWeight: 500,
+              fontWeight: 600,
               color: colors.headerText[100],
               width: {
                 xs: "100%", // 100% width on extra-small screens
@@ -120,31 +115,94 @@ const Footer = () => {
               &nbsp; {t("ministry_of_justice")}
             </Typography>
 
-            <br />
             <Typography variant="h5" sx={{ fontWeight: 500 }}>
               <LocationOnIcon sx={{ color: colors.primary[100] }} />
               &nbsp; {t("physical_address")}
             </Typography>
 
-            <br />
             <Typography variant="h5" sx={{ fontWeight: 500 }}>
               <EmailIcon sx={{ color: colors.primary[100] }} />
-              &nbsp; info@eag.gov.et
+              &nbsp; info@moj.gov.et
             </Typography>
-            <br />
 
             <Typography variant="h5" sx={{ fontWeight: 500 }}>
               <PhoneIcon sx={{ color: colors.primary[100] }} />
               &nbsp; +251 11 551 5099
             </Typography>
+
+            <Divider
+              sx={{
+                borderColor: "#d3d3d3",
+                borderBottomWidth: "1.5px",
+                marginTop: "20px",
+              }}
+            />
             <br />
 
-            <br />
+            <a
+              href="https://web.facebook.com/MOJEthiopia"
+              target="_blank"
+              rel="noreferrer"
+              style={{ textDecoration: "none", color: colors.primary[200] }}
+            >
+              <FacebookIcon
+                sx={{
+                  fontSize: "30px",
+                  paddingRight: "5px",
+                  color: colors.brandColor[100],
+                }}
+              />
+            </a>
+
+            <a
+              href="https://x.com/MOJEthiopia"
+              target="_blank"
+              rel="noreferrer"
+              style={{ textDecoration: "none", color: colors.primary[200] }}
+            >
+              <XIcon
+                sx={{
+                  fontSize: "30px",
+                  paddingRight: "5px",
+                  color: colors.brandColor[100],
+                }}
+              />
+            </a>
+
+            <a
+              href="https://www.linkedin.com/company/ministry-of-justice-ethiopia/posts/?feedView=all"
+              target="_blank"
+              rel="noreferrer"
+              style={{ textDecoration: "none", color: colors.primary[200] }}
+            >
+              <LinkedInIcon
+                sx={{
+                  fontSize: "30px",
+                  paddingRight: "5px",
+                  color: colors.brandColor[100],
+                }}
+              />
+            </a>
+
+            <a
+              href="https://www.youtube.com/@fdreministryofjustice...3701"
+              target="_blank"
+              rel="noreferrer"
+              style={{ textDecoration: "none", color: colors.primary[200] }}
+            >
+              <YouTubeIcon
+                sx={{
+                  fontSize: "30px",
+                  paddingRight: "5px",
+                  color: colors.brandColor[100],
+                }}
+              />
+            </a>
           </Box>
         </Grid>
         <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
           <Typography
-            variant="h4"
+            variant="h6"
             sx={{
               paddingTop: "30px",
               fontWeight: 500,
@@ -154,52 +212,7 @@ const Footer = () => {
                 sm: "center",
               },
             }}
-          >
-            {t("social_media")}
-          </Typography>
-          <br />
-          <Box
-            sx={{
-              // height:"50vh",
-              paddingRight: "25px",
-              marginRight: "20px",
-              textAlign: {
-                xs: "center",
-                sm: "center",
-              },
-            }}
-          >
-            {/* <Typography variant='h1' sx={{ fontWeight:600 }}> */}
-            <FacebookIcon
-              sx={{
-                fontSize: "30px",
-                paddingRight: "5px",
-                color: colors.headerText[100],
-              }}
-            />
-            <TwitterIcon
-              sx={{
-                fontSize: "30px",
-                paddingRight: "5px",
-                color: colors.headerText[100],
-              }}
-            />
-            <LinkedInIcon
-              sx={{
-                fontSize: "30px",
-                paddingRight: "5px",
-                color: colors.headerText[100],
-              }}
-            />
-            <YouTubeIcon
-              sx={{
-                fontSize: "30px",
-                paddingRight: "5px",
-                color: colors.headerText[100],
-              }}
-            />
-            {/* </Typography> */}
-          </Box>
+          ></Typography>
 
           <Box
             sx={{

@@ -60,7 +60,7 @@ const PasswordChangeRequest = () => {
   const newLogin = async (newLoginData) => {
     setLoading(true);
     return await axios
-      .post("https://backend.e-consultation.gov.et/api/v1/login", newLoginData)
+      .post("http://13.244.85.180:8080/api/v1/login", newLoginData)
       .then((res) => {
         if (res.status !== 200) {
           // setServerError(res.data.message);
@@ -68,7 +68,9 @@ const PasswordChangeRequest = () => {
         } else {
           if (res.status === 200 && res.data.token) {
             // setServerError(null);
-            const expirationTime = new Date(new Date().getTime() + 60 * 60 * 1000);
+            const expirationTime = new Date(
+              new Date().getTime() + 60 * 60 * 1000
+            );
 
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("userRole", res.data.user.roles[0].name);
@@ -78,11 +80,11 @@ const PasswordChangeRequest = () => {
             setUserToken(localStorage.getItem("token"));
             setUserInfo(JSON.parse(localStorage.getItem("userInfo")));
             setEnforcePasswordChange(false);
-              if (localStorage.getItem("userRole") === "Commenter") {
-                navigate("/");
-              } else {
-                navigate("/admin");
-              }
+            if (localStorage.getItem("userRole") === "Commenter") {
+              navigate("/");
+            } else {
+              navigate("/admin");
+            }
           } else {
             // setServerError("Invalid email or password. Please try again.");
             setLoading(false);

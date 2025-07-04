@@ -51,7 +51,29 @@ const AddNewDocumentReply = ({
        color: "red",
        fontWeight: "400",
        fontSize: "15px",
-     };
+  };
+  
+  const [commentHTML, setCommentHTML] = useState("");
+
+  const convertCommentToHTML = (content) => {
+    // Convert the comment content to HTML format
+    const convertedHtmlValue = content
+      .replace(/\n/g, "<br />") // Replace new lines with <br />
+      .replace(/(\*\*|__)(.*?)\1/g, "<strong>$2</strong>") // Bold text
+      .replace(/(\*|_)(.*?)\1/g, "<em>$2</em>") // Italic text
+      .replace(/~~(.*?)~~/g, "<del>$1</del>") // Strikethrough text
+      .replace(/`(.*?)`/g, "<code>$1</code>") // Inline code
+      .replace(/```(.*?)```/g, "<pre><code>$1</code></pre>") // Code block
+      .replace(/!\[(.*?)\]\((.*?)\)/g, '<img alt="$1" src="$2" />') // Images
+      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2">$1</a>') // Links
+      .replace(/^\s*>\s*(.*)$/gm, "<blockquote>$1</blockquote>") // Blockquotes
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+    setCommentHTML(convertedHtmlValue);
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -63,7 +85,7 @@ const AddNewDocumentReply = ({
     onSubmit: (values) => {
       const replyData = {
         general_comment_id: values.commentID,
-        message: values.commentMessage,
+        message: commentHTML, // Use the HTML content
         file: values.file,
       };
 
@@ -121,7 +143,11 @@ const AddNewDocumentReply = ({
                     name="commentMessage"
                     value={formik.values.commentMessage}
                     onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
+                    // onChange={formik.handleChange}
+                    onChange={(e) => {
+                      formik.setFieldValue("commentMessage", e.target.value);
+                      convertCommentToHTML(e.target.value); // Update comment content state
+                    }}
                   />
                 </>
               }

@@ -206,7 +206,7 @@ const ConsultationHero = () => {
         <ImageContent>
           <img
             src={HeroImage}
-            alt="Diverse citizens collaborating on legislation"
+            alt="Diverse citizens collaborating on consultation"
             loading="lazy"
           />
         </ImageContent>

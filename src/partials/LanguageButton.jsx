@@ -78,7 +78,7 @@ export default function LanguageButton() {
         variant="outlined"
         ref={anchorRef}
         aria-label="split button"
-        sx={{ marginLeft: "0.5em" }}
+        sx={{ marginLeft: "auto" }}
       >
         <Button
           elevation={10}

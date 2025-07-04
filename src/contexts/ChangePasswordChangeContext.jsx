@@ -14,12 +14,16 @@ export const ChangePasswordRequestProvider = (props) => {
   }, [userInfo]);
 
   const checkUserInfo = async () => {
-    if (
-      (userInfo !== null && userInfo.user.password_changed === null) ||
-      (userInfo !== null && userInfo.user.password_changed === 0)
-    ) {
-      setEnforcePasswordChange(true);
-    }
+    if (userInfo !== null) {
+      if (userInfo.user.institution_id !== null) {
+        if (
+          userInfo.user.password_changed === null ||
+          userInfo.user.password_changed === 0
+        ) {
+          setEnforcePasswordChange(true);
+        }
+      }    
+    }  
   };
 
   return (

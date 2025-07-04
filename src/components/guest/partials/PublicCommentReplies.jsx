@@ -91,14 +91,17 @@ const PublicCommentReplies = ({
                               >
                                 <span
                                   dangerouslySetInnerHTML={{
-                                    __html: reflection.message,
+                                    __html: (() => {
+                                      const txt =
+                                        document.createElement("textarea");
+                                      txt.innerHTML = reflection.message;
+                                      return txt.value;
+                                    })(),
                                   }}
                                 />{" "}
                                 <span>
                                   <Button
-                                    href={
-                                      reflection.file
-                                    }
+                                    href={reflection.file}
                                     variant="outlined"
                                     color="secondary"
                                     target="_blank"
