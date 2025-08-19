@@ -54,7 +54,7 @@ const DraftActions = ({
     /**
      * Accessing role name of the logged in user from the UserContext
      */
-  const { userRole } = useContext(UserContext);
+  const { userRole, userInfo } = useContext(UserContext);
 
   /**
    * Access application level variables such as theme and color
@@ -108,7 +108,7 @@ const DraftActions = ({
       {/**
        * UI definition for action buttons
        */}
-      
+
       <Stack
         direction="row"
         spacing={1}
@@ -122,114 +122,120 @@ const DraftActions = ({
          * The <AcceptApprovalRequest /> is a simple button definition whose implementation is located
          * at the bottom of this file.
          */}
-        {userRole === "Approver" ? (
-          documentDetail && documentDetail.draft_status.name === "Requested" ? (
-            <>
-              <AcceptApprovalRequest
-                draftID={draftID}
-                documentDetail={documentDetail}
-                serverSuccessMsg={serverSuccessMsg}
-                serverErrorMsg={serverErrorMsg}
-                setServerSuccessMsg={setServerSuccessMsg}
-                setServerErrorMsg={setServerErrorMsg}
-                openDialog={openDialog}
-                setOpenDialog={setOpenDialog}
-                t={t}
-                fetchDocumentDetails={fetchDocumentDetails}
-                fetchDocumentSections={fetchDocumentSections}
-                fetchDocumentComments={fetchDocumentComments}
-              />
-              <RejectApprovalRequest
-                draftID={draftID}
-                documentDetail={documentDetail}
-                serverSuccessMsg={serverSuccessMsg}
-                serverErrorMsg={serverErrorMsg}
-                setServerSuccessMsg={setServerSuccessMsg}
-                setServerErrorMsg={setServerErrorMsg}
-                openRejectionDialog={openRejectionDialog}
-                setOpenRejectionDialog={setOpenRejectionDialog}
-                t={t}
-                fetchDocumentDetails={fetchDocumentDetails}
-                fetchDocumentSections={fetchDocumentSections}
-                fetchDocumentComments={fetchDocumentComments}
-              />
-            </>
-          ) : documentDetail.draft_status.name === "Open" ? (
+        {documentDetail.institution?.id === userInfo.user?.institution_id &&
+          (userRole === "Approver" || userRole || "HPR" ? (
+            documentDetail &&
+            documentDetail.draft_status.name === "Requested" ? (
+              <>
+                <AcceptApprovalRequest
+                  draftID={draftID}
+                  documentDetail={documentDetail}
+                  serverSuccessMsg={serverSuccessMsg}
+                  serverErrorMsg={serverErrorMsg}
+                  setServerSuccessMsg={setServerSuccessMsg}
+                  setServerErrorMsg={setServerErrorMsg}
+                  openDialog={openDialog}
+                  setOpenDialog={setOpenDialog}
+                  t={t}
+                  fetchDocumentDetails={fetchDocumentDetails}
+                  fetchDocumentSections={fetchDocumentSections}
+                  fetchDocumentComments={fetchDocumentComments}
+                />
+                <RejectApprovalRequest
+                  draftID={draftID}
+                  documentDetail={documentDetail}
+                  serverSuccessMsg={serverSuccessMsg}
+                  serverErrorMsg={serverErrorMsg}
+                  setServerSuccessMsg={setServerSuccessMsg}
+                  setServerErrorMsg={setServerErrorMsg}
+                  openRejectionDialog={openRejectionDialog}
+                  setOpenRejectionDialog={setOpenRejectionDialog}
+                  t={t}
+                  fetchDocumentDetails={fetchDocumentDetails}
+                  fetchDocumentSections={fetchDocumentSections}
+                  fetchDocumentComments={fetchDocumentComments}
+                />
+              </>
+            ) : documentDetail.draft_status.name === "Open" ? (
+              /**
+               * Show or render <InviteCommenters /> and <AssignReplier /> components if the user role is "Approver" and request status is "Open"
+               */
+              <>
+                <InviteCommenters
+                  draftID={draftID}
+                  documentDetail={documentDetail}
+                  serverSuccessMsg={serverSuccessMsg}
+                  serverErrorMsg={serverErrorMsg}
+                  setServerSuccessMsg={setServerSuccessMsg}
+                  setServerErrorMsg={setServerErrorMsg}
+                  openInviteDialog={openInviteDialog}
+                  setOpenInviteDialog={setOpenInviteDialog}
+                  t={t}
+                  fetchDocumentDetails={fetchDocumentDetails}
+                  fetchDocumentSections={fetchDocumentSections}
+                  fetchDocumentComments={fetchDocumentComments}
+                />
+                <AssignRepliers
+                  draftID={draftID}
+                  documentDetail={documentDetail}
+                  serverSuccessMsg={serverSuccessMsg}
+                  serverErrorMsg={serverErrorMsg}
+                  setServerSuccessMsg={setServerSuccessMsg}
+                  setServerErrorMsg={setServerErrorMsg}
+                  openAssignRepliersDialog={openAssignRepliersDialog}
+                  setOpenAssignRepliersDialog={setOpenAssignRepliersDialog}
+                  t={t}
+                  fetchDocumentDetails={fetchDocumentDetails}
+                  fetchDocumentSections={fetchDocumentSections}
+                  fetchDocumentComments={fetchDocumentComments}
+                />
+
+                {/**
+                 * Button definition for close commenting or to end consultation
+                 */}
+                <Button
+                  size="small"
+                  variant="outlined"
+                  color="error"
+                  sx={{
+                    textTransform: "none",
+                    marginRight: "5px",
+                    // color: colors.grey[300],
+                  }}
+                  onClick={() => closeCommenting(documentDetail.id)}
+                >
+                  <Typography variant="body2">
+                    {t("end_consultation")}
+                  </Typography>
+                </Button>
+              </>
+            ) : (
+              ""
+            )
+          ) : userRole === "Uploader" ? (
             /**
-             * Show or render <InviteCommenters /> and <AssignReplier /> components if the user role is "Approver" and request status is "Open"
+             * Render <SendApprovalRequest /> component if user role is "Uploader" and request status is "Pending"
              */
-            <>
-              <InviteCommenters
-                draftID={draftID}
-                documentDetail={documentDetail}
-                serverSuccessMsg={serverSuccessMsg}
-                serverErrorMsg={serverErrorMsg}
-                setServerSuccessMsg={setServerSuccessMsg}
-                setServerErrorMsg={setServerErrorMsg}
-                openInviteDialog={openInviteDialog}
-                setOpenInviteDialog={setOpenInviteDialog}
-                t={t}
-                fetchDocumentDetails={fetchDocumentDetails}
-                fetchDocumentSections={fetchDocumentSections}
-                fetchDocumentComments={fetchDocumentComments}
-              />
-              <AssignRepliers
-                draftID={draftID}
-                documentDetail={documentDetail}
-                serverSuccessMsg={serverSuccessMsg}
-                serverErrorMsg={serverErrorMsg}
-                setServerSuccessMsg={setServerSuccessMsg}
-                setServerErrorMsg={setServerErrorMsg}
-                openAssignRepliersDialog={openAssignRepliersDialog}
-                setOpenAssignRepliersDialog={setOpenAssignRepliersDialog}
-                t={t}
-                fetchDocumentDetails={fetchDocumentDetails}
-                fetchDocumentSections={fetchDocumentSections}
-                fetchDocumentComments={fetchDocumentComments}
-              />
-
-              {/**
-               * Button definition for close commenting or to end consultation
-               */}
-              <Button
-                size="small"
-                variant="outlined"
-                color="error"
-                sx={{
-                  textTransform: "none",
-                  marginRight: "5px",
-                  // color: colors.grey[300],
-                }}
-                onClick={() => closeCommenting(documentDetail.id)}
-              >
-                <Typography variant="body2">{t("end_consultation")}</Typography>
-              </Button>
-            </>
+            documentDetail && documentDetail.draft_status.name === "Pending" ? (
+              <>
+                <SendApprovalRequest
+                  documentDetail={documentDetail}
+                  setServerSuccessMsg={setServerSuccessMsg}
+                  setServerErrorMsg={setServerErrorMsg}
+                />
+              </>
+            ) : (
+              ""
+            )
           ) : (
             ""
-          )
-        ) : userRole === "Uploader" ? (
-          /**
-           * Render <SendApprovalRequest /> component if user role is "Uploader" and request status is "Pending"
-           */
-          documentDetail && documentDetail.draft_status.name === "Pending" ? (
-            <>
-              <SendApprovalRequest
-                documentDetail={documentDetail}
-                setServerSuccessMsg={setServerSuccessMsg}
-                setServerErrorMsg={setServerErrorMsg}
-              />
-            </>
-          ) : (
-            ""
-          )
-        ) : (
-          ""
-        )}
+          ))}
 
-        {userRole === "Approver" ? (
-           documentDetail.draft_status.name === "Open" || documentDetail.draft_status.name === "Closed" ? (
-            <ExtendConsultationDeadline
+        {documentDetail.institution?.id === userInfo.user?.institution_id &&
+          (userRole === "Approver" || userRole || "HPR" ? (
+            documentDetail.draft_status.name === "Open" ||
+            documentDetail.draft_status.name === "Closed" ? (
+              <ExtendConsultationDeadline
                 draftID={draftID}
                 documentDetail={documentDetail}
                 serverSuccessMsg={serverSuccessMsg}
@@ -243,8 +249,9 @@ const DraftActions = ({
                 fetchDocumentSections={fetchDocumentSections}
                 fetchDocumentComments={fetchDocumentComments}
                 title={t("accept_document_and_invite")}
-              />):(null)
-        ):(null)}
+              />
+            ) : null
+          ) : null)}
       </Stack>
     </Box>
   );
@@ -529,9 +536,10 @@ const AssignRepliers = ({
 
   return (
     <>
-    {/**
-     * Button definition to assign repliers 
-     */}
+      {/**
+       * Button definition to assign repliers
+       */}
+
       <Button
         size="small"
         variant="outlined"
@@ -543,9 +551,8 @@ const AssignRepliers = ({
       </Button>
 
       {openAssignRepliersDialog && (
-
         /**
-         * Show <AssignMoreRepliersDialog /> component if the value of openAssignRepliersDialog is true 
+         * Show <AssignMoreRepliersDialog /> component if the value of openAssignRepliersDialog is true
          * so that user can complete assign operation
          */
         <AssignMoreRepliersDialog

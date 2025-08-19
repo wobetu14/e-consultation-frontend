@@ -1,7 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../../../theme";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
@@ -21,6 +21,8 @@ import { useTranslation } from "react-i18next";
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  
   return (
     <MenuItem
       active={selected === title}
@@ -43,6 +45,14 @@ const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
   const { userInfo, userRole } = useContext(UserContext);
+
+    const [pathName, setPathName] = useState(localStorage.getItem("pathname") || "/admin");
+    const location = useLocation();
+    
+  useEffect(() => {
+      setPathName(location.pathname);
+      localStorage.setItem("pathname", location.pathname);
+    }, [location]);
 
   return (
     <Box
@@ -267,6 +277,17 @@ const Sidebar = () => {
                   setSelected={setSelected}
                 />
 
+                {userInfo.user.institution ===
+                  "House of Peoples Representatives" && (
+                  <Item
+                    title={t("All Documents")}
+                    to="all_draft_laws"
+                    icon={<HomeIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                )}
+
                 <Item
                   title={t("resource_center")}
                   to="resource_center"
@@ -325,6 +346,8 @@ const Sidebar = () => {
               ""
             )}
 
+           
+
             {userRole === "Regional Institutions Admin" ? (
               <>
                 <Item
@@ -373,6 +396,17 @@ const Sidebar = () => {
                   setSelected={setSelected}
                 />
 
+                {userInfo.user.institution ===
+                  "House of Peoples Representatives" && (
+                  <Item
+                    title={t("All Documents")}
+                    to="all_draft_laws"
+                    icon={<HomeIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                )}
+
                 <Item
                   title={t("opening_request")}
                   to="draft_approval_request"
@@ -411,10 +445,59 @@ const Sidebar = () => {
                   setSelected={setSelected}
                 />
 
+                {userInfo.user.institution ===
+                  "House of Peoples Representatives" && (
+                  <Item
+                    title={t("All Documents")}
+                    to="all_draft_laws"
+                    icon={<HomeIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                )}
+
                 <Item
                   title={t("opening_request")}
                   to="draft_approval_request"
                   icon={<FactCheckIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+
+                <Item
+                  title={t("resource_center")}
+                  to="resource_center"
+                  icon={<SourceIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+              </>
+            ) : (
+              ""
+            )}
+
+            {userRole === "HPR" ? (
+              <>
+                <Item
+                  title={t("dashboard")}
+                  to="/admin"
+                  icon={<HomeIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+
+                <Item
+                  title={t("New Document")}
+                  to="drafts"
+                  icon={<HomeIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+
+                <Item
+                  title={t("Approval")}
+                  to="draft_approval_request"
+                  icon={<HomeIcon />}
                   selected={selected}
                   setSelected={setSelected}
                 />

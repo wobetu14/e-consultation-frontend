@@ -13,6 +13,11 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import HttpApi from "i18next-http-backend";
 import { UserProvider } from "./contexts/UserContext";
 import { ChangePasswordRequestProvider } from "./contexts/ChangePasswordChangeContext";
+import { DraftsDataProvider } from "./contexts/DraftsDataContext";
+import { UsersDataProvider } from "./contexts/UsersDataContext";
+import { InstitutionsDataProvider } from "./contexts/InstitutionsDataContext";
+import { SectorsDataProvider } from "./contexts/SectorsDataContext";
+import { RegionsDataProvider } from "./contexts/RegionsDataContext";
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
@@ -48,11 +53,21 @@ root.render(
   <Suspense fallback={loadingMarkup}>
     <React.StrictMode>
       <BrowserRouter>
-        <UserProvider>
-          <ChangePasswordRequestProvider>
-            <App />
-          </ChangePasswordRequestProvider>
-        </UserProvider>
+        <UsersDataProvider>
+          <InstitutionsDataProvider>
+            <SectorsDataProvider>
+              <RegionsDataProvider>
+                <DraftsDataProvider>
+                  <UserProvider>
+                    <ChangePasswordRequestProvider>
+                      <App />
+                    </ChangePasswordRequestProvider>
+                  </UserProvider>
+                </DraftsDataProvider>
+              </RegionsDataProvider>
+            </SectorsDataProvider>
+          </InstitutionsDataProvider>
+        </UsersDataProvider>
       </BrowserRouter>
     </React.StrictMode>
   </Suspense>

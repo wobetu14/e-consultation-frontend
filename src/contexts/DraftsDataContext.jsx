@@ -26,6 +26,8 @@ export const DraftsDataProvider = (props) => {
   const [filteredDrafts, setFilteredDrafts] = useState([]);
   const [searchDraft, setSearchDraft] = useState("");
   const [draft, setDraft] = useState(null);
+  const [allDrafts, setAllDrafts] = useState([]);
+  const [allFilteredDrafts, setAllFilteredDrafts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [requestCompleted, setRequestCompleted] = useState(0);
 
@@ -46,6 +48,29 @@ export const DraftsDataProvider = (props) => {
   useEffect(() => {
     fetchDrafts();
   }, []);
+
+   useEffect(() => {
+     fetchAllDrafts();
+   }, []);
+
+  const fetchAllDrafts = async () => {
+    setNetworkErrorMessage(null);
+    try {
+      const res = await axios.get("all-drafts", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Accept: "application/json;",
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      setAllDrafts(res.data.data);
+      setAllFilteredDrafts(res.data.data);
+      setRequestCompleted(1);
+      setNetworkErrorMessage(null);
+    } catch (error) {
+      setNetworkErrorMessage(error.name);
+    }
+  };
 
   const fetchDrafts = async () => {
     setNetworkErrorMessage(null);
@@ -127,12 +152,17 @@ export const DraftsDataProvider = (props) => {
       value={{
         drafts: drafts,
         setDrafts: setDrafts,
+        allDrafts: allDrafts,
+        setAllDrafts: setAllDrafts,
         filteredDrafts: filteredDrafts,
         setFilteredDrafts: setFilteredDrafts,
+        allFilteredDrafts: allFilteredDrafts,
+        setAllFilteredDrafts: setAllFilteredDrafts,
         searchDraft: searchDraft,
         setSearchDraft: setSearchDraft,
         draft: draft,
         setDraft: setDraft,
+        fetchAllDrafts: fetchAllDrafts,
         fetchDrafts: fetchDrafts,
         showDraftAddForm: showDraftAddForm,
         setShowDraftAddForm: setShowDraftAddForm,

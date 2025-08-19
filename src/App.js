@@ -51,6 +51,7 @@ import PrepareTranslation from "./components/documentation/admin_documentation/P
 import { ChangePasswordRequestContext } from "./contexts/ChangePasswordChangeContext";
 import CommentsReport from "./components/admin/reports/CommentsReport";
 import LandingContainer from "./components/guest/landing/LandingContainer";
+import AllDraftsList from "./components/admin/drafts/AllDraftsList/AllDraftsList";
 
 function App() {
   /**
@@ -101,6 +102,7 @@ function App() {
     }
     if (
       userRole === "Super Admin" ||
+      userRole==="HPR" ||
       userRole === "Federal Admin" ||
       userRole === "Federal Institutions Admin" ||
       userRole === "Regional Admin" ||
@@ -254,6 +256,7 @@ function App() {
                 <Route path="create_user" element={<CreateUser />} />
                 <Route path="user_profile" element={<UserProfile />} />
                 <Route path="institutions" element={<Institutions />} />
+                <Route path="all_draft_laws" element={<AllDraftsList />} />
                 <Route
                   path="create_institution"
                   element={<CreateInstitution />}

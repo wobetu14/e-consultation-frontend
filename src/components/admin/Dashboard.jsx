@@ -14,6 +14,7 @@ import UserProfile from "./users/UserProfile";
 import "./Dashboard.css";
 import { useTranslation } from "react-i18next";
 import AllDraftsList from "./drafts/AllDraftsList/AllDraftsList";
+import { DraftsDataContext } from "../../contexts/DraftsDataContext";
 
 
 const Dashboard = () => {
@@ -27,6 +28,10 @@ const Dashboard = () => {
   const [comments, setComments] = useState(0);
   const [users, setUsers] = useState(null);
   const [openDrafts, setOpenDrafts] = useState(0);
+
+  const {
+      allDrafts, 
+    } = useContext(DraftsDataContext);
 
   const { t } = useTranslation();
 
@@ -58,6 +63,7 @@ const Dashboard = () => {
       setDrafts(res.data.data);
     } catch (error) {}
   };
+
 
   const fetchUsers = async () => {
     try {
@@ -140,15 +146,27 @@ const Dashboard = () => {
               width: "300px",
             }}
           >
-            <StatBox
-              title={drafts ? drafts.length : ""}
-              subtitle={t("total_documents")}
-              icon={
-                <LibraryBooksIcon
-                  sx={{ color: colors.primary[400], fontSize: "35px" }}
-                />
-              }
-            />
+            {userRole === "HPR" || userRole === "Federal Admin" ? (
+              <StatBox
+                title={allDrafts ? allDrafts.length : ""}
+                subtitle={t("total_documents")}
+                icon={
+                  <LibraryBooksIcon
+                    sx={{ color: colors.primary[400], fontSize: "35px" }}
+                  />
+                }
+              />
+            ) : (
+              <StatBox
+                title={drafts ? drafts.length : ""}
+                subtitle={t("total_documents")}
+                icon={
+                  <LibraryBooksIcon
+                    sx={{ color: colors.primary[400], fontSize: "35px" }}
+                  />
+                }
+              />
+            )}
           </Box>
           <Box
             gridColumn="span 3"
@@ -219,17 +237,23 @@ const Dashboard = () => {
         </Box>
       )}
 
-      {userRole === "Federal Admin" && (
-        <Box mt={5}>
+      {userRole === "HPR" && (
           <AllDraftsList />
-        </Box>
+      )}
+
+      {userRole === "Federal Admin" && (
+          <AllDraftsList />
       )}
 
       {userRole === "Regional Admin" && (
-        <Box mt={5}>
           <AllDraftsList />
-        </Box>
       )}
+
+      {userInfo.user.institution === "House of Peoples Representatives" &&
+        userRole ===
+          "Federal Institutions Admin" ? (
+              <AllDraftsList />
+          ):null}
 
       {userRole === "Uploader" ? (
         <Box sx={{ marginTop: "100px", marginBottom: "50px" }}>

@@ -392,7 +392,7 @@ const DraftApprovalRequest = () => {
                      * a "Send Request" action. This component is rendered only if the logged in user is 'Uploader'. 
                      * The "SendApprovalRequest" is a functional component defined inside this same file.
                      */}
-                    {userRole === "Uploader" ? (
+                    {userRole === "Uploader" || userRole || "HPR" ? (
                       draft.draft_status !== null &&
                       (draft.draft_status.name === "New" ||
                         draft.draft_status.name === "Rejected") ? (

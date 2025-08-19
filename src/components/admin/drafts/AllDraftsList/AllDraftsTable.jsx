@@ -44,15 +44,21 @@ const AllDraftsTable = () => {
    * the variables we are going to use in this child component
    */
   const {
-    fetchDrafts,
+    fetchAllDrafts,
     filteredDrafts,
     searchDraft,
     setSearchDraft,
     draft,
     setDraft,
+
+    allDrafts,
+    setAllDrafts,
+
+    allFilteredDrafts,
+    setAllFilteredDrafts,
+
     showDraftAddForm,
     setShowDraftAddForm,
-    showDraftEditForm,
     setShowDraftEditForm,
     serverErrorMsg,
     serverSuccessMsg,
@@ -110,7 +116,7 @@ const AllDraftsTable = () => {
   };
 
   const handleNetworkStatus = () => {
-    fetchDrafts();
+    fetchAllDrafts();
   };
 
   /**
@@ -192,7 +198,7 @@ const AllDraftsTable = () => {
       ),
       selector: (row) => (
         <Typography variant="body1">
-          {row.draft_status ? row.draft_status.name : ""}{" "}
+          {row.draft_status ? row.draft_status.name : ""}{" "} 
         </Typography>
       ),
       sortable: true,
@@ -229,7 +235,7 @@ const AllDraftsTable = () => {
              * Create a button, when clicked, will trigger a "Delete Draft" dialog box.
              */}
             <Link
-              to={`document_details/${row.id}`}
+              to={`/admin/document_details/${row.id}`}
               variant="Link"
               size="small"
               component="button"
@@ -328,7 +334,7 @@ const AllDraftsTable = () => {
         <DeleteDraftDialog
           title={`${t("deleting_draft_document")}`}
           text={`${t("you_are_deleting_draft")} "${
-            draft ? draft.short_title : ""
+            allDrafts ? allDrafts.short_title : ""
           }". ${t("are_you_sure")}`}
         />
       )}
@@ -342,14 +348,14 @@ const AllDraftsTable = () => {
         <DataTable
           columns={columns} /* Define columns from columns object definition */
           data={
-            filteredDrafts
+            allFilteredDrafts
           } /* Define the data props value from filteredDrafts*/
           pagination /* Use table pagination */
           selectableRowsHighlight
           subHeader
           /* Create sub header to add other table components such as filter TextField and Add / Edit drafts button */
           progressPending={
-            filteredDrafts.length <= 0
+            allFilteredDrafts.length <= 0
           } /* Display pending progress bar if the length of filteredDrafts array is less or equals to 0 */
           highlightOnHover
           pointerOnHover
@@ -357,7 +363,7 @@ const AllDraftsTable = () => {
             <Box mb="20px">
               {/* Display progress bar if the data prop value is empty */}
               {requestCompleted === 1 &&
-              filteredDrafts.length <= 0 &&
+              allFilteredDrafts.length <= 0 &&
               networkErrorMessage !== "AxiosError" ? (
                 `${t("no_record")}`
               ) : networkErrorMessage === "AxiosError" ? (
