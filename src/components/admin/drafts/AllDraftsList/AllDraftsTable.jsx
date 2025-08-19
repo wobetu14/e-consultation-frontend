@@ -198,7 +198,7 @@ const AllDraftsTable = () => {
       ),
       selector: (row) => (
         <Typography variant="body1">
-          {row.draft_status ? row.draft_status.name : ""}{" "} 
+          {row.draft_status ? row.draft_status.name : ""}{" "} {parseInt(row.comment_closed)===1 ? "| Closed for comment" : ""}
         </Typography>
       ),
       sortable: true,

@@ -13,7 +13,7 @@ import AllDraftsTable from "./AllDraftsTable";
 const AllDraftsList = () => {
   const { t } = useTranslation();
   return (
-    <Box mt={5} ml="20px">
+    <Box mt={5}>
       <Header
         title={"All Draft Documents List and Status"}
         subtitle={"Follow up draft documents published from all institutions"}
