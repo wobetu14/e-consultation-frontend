@@ -122,7 +122,7 @@ const Footer = () => {
 
             <Typography variant="h5" sx={{ fontWeight: 500 }}>
               <EmailIcon sx={{ color: colors.primary[100] }} />
-              &nbsp; info@moj.gov.et
+              &nbsp; info@justice.gov.et
             </Typography>
 
             <Typography variant="h5" sx={{ fontWeight: 500 }}>
