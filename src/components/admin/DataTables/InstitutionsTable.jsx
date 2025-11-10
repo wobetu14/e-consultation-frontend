@@ -29,8 +29,8 @@ import { useTranslation } from "react-i18next";
 const InstitutionsTable = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
   const { t } = useTranslation();
+
   const {
     filteredInstitutions,
     searchInstitution,
@@ -52,19 +52,39 @@ const InstitutionsTable = () => {
     networkError,
   } = useContext(InstitutionsDataContext);
 
-  const errorStyle = {
-    color: "red",
-    fontWeight: "400",
-    fontSize: "18px",
+  // === Styles ===
+  const errorStyle = { color: "red", fontWeight: 400, fontSize: "18px" };
+  const successStyle = { color: "green", fontWeight: 400, fontSize: "18px" };
+
+  // === Custom Styles for DataTable (wrap text + responsive) ===
+  const customStyles = {
+    tableWrapper: {
+      style: {
+        display: "block",
+        width: "100%",
+        overflowX: "auto", // enable horizontal scroll on small screens
+      },
+    },
+    cells: {
+      style: {
+        whiteSpace: "normal", // wrap text
+        wordBreak: "break-word",
+        lineHeight: "1.5em",
+        paddingTop: "8px",
+        paddingBottom: "8px",
+      },
+    },
+    headCells: {
+      style: {
+        whiteSpace: "normal",
+        wordBreak: "break-word",
+        fontWeight: "600",
+        fontSize: "14px",
+      },
+    },
   };
 
-  const successStyle = {
-    color: "green",
-    fontWeight: "400",
-    fontSize: "18px",
-  };
-
-  // Show / Hide Add User Form
+  // === UI Logic ===
   const showAddInstitutionForm = () => {
     setShowInstitutionAddForm(!showInstitutionAddForm);
     setShowInstitutionEditForm(false);
@@ -90,187 +110,168 @@ const InstitutionsTable = () => {
     fetchInstitutions();
   };
 
+  // === Table Columns ===
   const columns = [
     {
       name: (
-        <Typography variant="h5" fontWeight="600">
+        <Typography sx={{ fontWeight: 700, fontSize: "16px" }}>
           {t("institution")}
         </Typography>
       ),
-      selector: (row) => (
-        <Typography variant="body1">{`${row.name ? row.name : ""}`}</Typography>
-      ),
+      selector: (row) => row.name || "",
       sortable: true,
+      wrap: true,
+      grow: 2,
     },
-
     {
       name: (
-        <Typography variant="h5" fontWeight="600">
+        <Typography sx={{ fontWeight: 700, fontSize: "16px" }}>
           {t("institution_type")}
         </Typography>
       ),
-      selector: (row) => (
-        <Typography variant="body1">{`${row.institution_type.name}`}</Typography>
-      ),
+      selector: (row) => row.institution_type?.name || "",
       sortable: true,
+      wrap: true,
     },
-
     {
       name: (
-        <Typography variant="h5" fontWeight="600">
+        <Typography sx={{ fontWeight: 700, fontSize: "16px" }}>
           {t("email_address")}
         </Typography>
       ),
-      selector: (row) => <Typography variant="body1">{row.email}</Typography>,
+      selector: (row) => row.email || "",
       sortable: true,
+      wrap: true,
     },
     {
       name: (
-        <Typography variant="h5" fontWeight="600">
+        <Typography sx={{ fontWeight: 700, fontSize: "16px" }}>
           {t("telephone")}
         </Typography>
       ),
-      selector: (row) => (
-        <Typography variant="body1">{row.telephone}</Typography>
-      ),
+      selector: (row) => row.telephone || "",
       sortable: true,
+      wrap: true,
     },
     {
       name: (
-        <Typography variant="h5" fontWeight="600">
+        <Typography sx={{ fontWeight: 700, fontSize: "16px" }}>
           {t("address")}
         </Typography>
       ),
-      selector: (row) => <Typography variant="body1">{row.address}</Typography>,
+      selector: (row) => row.address || "",
       sortable: true,
+      wrap: true,
+      grow: 2,
     },
-
     {
       name: (
-        <Typography variant="h5" fontWeight="600">
+        <Typography sx={{ fontWeight: 700, fontSize: "16px" }}>
           {t("region")}
         </Typography>
       ),
-      selector: (row) => (
-        <Typography variant="body1">
-          {row.region ? row.region.name : ""}
-        </Typography>
-      ),
+      selector: (row) => row.region?.name || "",
       sortable: true,
+      wrap: true,
     },
-    /* {
-      name: (
-        <Typography variant="h5" fontWeight="600">
-          Created By
-        </Typography>
-      ),
-      selector: (row) => (
-        <Typography variant="body1">{row.creator.name}</Typography>
-      ),
-      sortable: true,
-    }, */
-
     {
       name: (
-        <Typography variant="h5" fontWeight="600">
+        <Typography sx={{ fontWeight: 700, fontSize: "16px" }}>
           {t("actions")}
         </Typography>
       ),
-      selector: (row) => {
-        return (
-          <Stack spacing={0} direction="row">
-            <Button
-              variant="Link"
-              size="small"
-              color="secondary"
-              sx={{ textTransform: "none" }}
-              key={row.id}
-              onClick={() => showEditInstitutionForm(row)}
-            >
-              <ModeEditIcon fontSize="small" color="secondary" />
-            </Button>
-            <Button
-              variant="Link"
-              size="small"
-              sx={{ textTransform: "none" }}
-              onClick={() => deleteInstitutionDialog(row)}
-              disabled={true}
-            >
-              <DeleteIcon
-                fontSize="small"
-                sx={{ color: colors.dangerColor[200] }}
-              />
-            </Button>
-          </Stack>
-        );
-      },
+      cell: (row) => (
+        <Stack spacing={0} direction="row">
+          <Button
+            variant="text"
+            size="small"
+            color="secondary"
+            sx={{ textTransform: "none" }}
+            onClick={() => showEditInstitutionForm(row)}
+          >
+            <ModeEditIcon fontSize="small" color="secondary" />
+          </Button>
+          <Button
+            variant="text"
+            size="small"
+            sx={{ textTransform: "none" }}
+            onClick={() => deleteInstitutionDialog(row)}
+            disabled
+          >
+            <DeleteIcon
+              fontSize="small"
+              sx={{ color: colors.dangerColor[200] }}
+            />
+          </Button>
+        </Stack>
+      ),
     },
   ];
 
   return (
     <Box
       sx={{
-        width: {
-          xs: 300,
-          sm: 500,
-          md: 700,
-          lg: 900,
-          xl: 1200,
-        },
+        width: "100%",
+        maxWidth: "100%",
+        overflowX: "auto",
+        px: { xs: 1, sm: 2, md: 3 },
       }}
     >
+      {/* Header */}
       <Header
         title={t("institutions_info")}
         subtitle={t("manage_institutions")}
       />
-      <Grid align="center" sx={{ paddingBottom: "5px", paddingTop: "5px" }}>
+
+      {/* Alerts + Progress */}
+      <Grid align="center" sx={{ pb: 1, pt: 1 }}>
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <Typography variant="h1">
-            {serverSuccessMsg ? (
-              <Alert severity="success" style={successStyle}>
-                {serverSuccessMsg}
-              </Alert>
-            ) : null}
-          </Typography>
-
-          <Typography variant="h1">
-            {serverErrorMsg ? (
-              <Alert severity="error" style={errorStyle}>
-                {serverErrorMsg}
-              </Alert>
-            ) : null}
-          </Typography>
-
-          <Typography variant="h1">
-            {networkError === "ERR_NETWORK" ? (
-              <Alert severity="error" variant="outlined">
-                {t("network_error_message")}
-              </Alert>
-            ) : null}
-          </Typography>
-
-          {loading ? <LinearProgress size="small" color="info" /> : null}
+          {serverSuccessMsg && (
+            <Alert severity="success" style={successStyle}>
+              {serverSuccessMsg}
+            </Alert>
+          )}
+          {serverErrorMsg && (
+            <Alert severity="error" style={errorStyle}>
+              {serverErrorMsg}
+            </Alert>
+          )}
+          {networkError === "ERR_NETWORK" && (
+            <Alert severity="error" variant="outlined">
+              {t("network_error_message")}
+            </Alert>
+          )}
+          {loading && <LinearProgress size="small" color="info" />}
         </motion.span>
       </Grid>
 
+      {/* Delete Dialog */}
       {openDialog && (
         <DeleteInstitutionDialog
           title="Deleting Institution..."
           text={`You are about to delete institution "${
-            institution ? institution.name : ""
+            institution?.name || ""
           }". Are you sure?`}
         />
       )}
+
+      {/* Create/Edit Forms */}
       {showInstitutionAddForm && <CreateInstitution />}
       {showInstitutionEditForm && <EditInstitution />}
 
+      {/* Data Table */}
       <Paper
         elevation={1}
-        sx={{ marginTop: "10px", marginBottom: "350px", maxWidth: "1200px" }}
+        sx={{
+          mt: 2,
+          mb: 10,
+          width: "100%",
+          overflowX: "auto",
+        }}
       >
         <DataTable
           columns={columns}
@@ -278,34 +279,33 @@ const InstitutionsTable = () => {
           progressPending={filteredInstitutions.length <= 0}
           highlightOnHover
           pointerOnHover
+          pagination
+          customStyles={customStyles}
+          responsive
           progressComponent={
             <Box mb="20px">
-              {/* Display progress bar if the data prop value is empty */}
               {requestCompleted === 1 &&
               filteredInstitutions.length <= 0 &&
               networkErrorMessage !== "AxiosError" ? (
                 `${t("no_record")}`
               ) : networkErrorMessage === "AxiosError" ? (
-                <>
-                  <Typography variant="body1">
-                    {t("network_error_message")} &nbsp;
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      size="small"
-                      sx={{ textTransform: "none" }}
-                      onClick={handleNetworkStatus}
-                    >
-                      {t("try_again")} <RefreshIcon />
-                    </Button>
-                  </Typography>
-                </>
+                <Typography variant="body1">
+                  {t("network_error_message")} &nbsp;
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    size="small"
+                    sx={{ textTransform: "none" }}
+                    onClick={handleNetworkStatus}
+                  >
+                    {t("try_again")} <RefreshIcon />
+                  </Button>
+                </Typography>
               ) : (
                 `${t("please_wait")}`
               )}
             </Box>
           }
-          pagination
           selectableRowsHighlight
           subHeader
           subHeaderComponent={
@@ -313,11 +313,13 @@ const InstitutionsTable = () => {
               width="100%"
               sx={{
                 display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
                 justifyContent: "space-between",
-                direction: "row",
+                alignItems: { xs: "stretch", sm: "center" },
+                gap: 2,
               }}
             >
-              <Box width="30%">
+              <Box width={{ xs: "100%", sm: "40%", md: "30%" }}>
                 <TextField
                   label={`${t("search")}...`}
                   variant="outlined"
@@ -328,18 +330,8 @@ const InstitutionsTable = () => {
                   onChange={(e) => setSearchInstitution(e.target.value)}
                 />
               </Box>
-              <Box>
-                {showInstitutionAddForm ? (
-                  <Button
-                    variant="contained"
-                    size="small"
-                    color="secondary"
-                    sx={{ textTransform: "none" }}
-                    onClick={hideForm}
-                  >
-                    <VisibilityOffIcon /> {t("hide_form")}
-                  </Button>
-                ) : showInstitutionEditForm ? (
+              <Box textAlign={{ xs: "center", sm: "right" }}>
+                {showInstitutionAddForm || showInstitutionEditForm ? (
                   <Button
                     variant="contained"
                     size="small"
@@ -368,4 +360,5 @@ const InstitutionsTable = () => {
     </Box>
   );
 };
+
 export default InstitutionsTable;

@@ -99,9 +99,9 @@ export const UsersDataProvider = (props) => {
   useEffect(() => {
     const filteredResult = users.filter((user) => {
       return (
-        user.first_name.toLowerCase().match(searchUser.toLowerCase()) ||
-        user.middle_name.toLowerCase().match(searchUser.toLowerCase()) ||
-        user.mobile_number.toLowerCase().match(searchUser.toLowerCase())
+        user?.first_name?.toLowerCase().match(searchUser.toLowerCase()) ||
+        user?.middle_name?.toLowerCase().match(searchUser.toLowerCase()) ||
+        user?.mobile_number?.toLowerCase().match(searchUser.toLowerCase())
       );
     });
     setFilteredUsers(filteredResult);

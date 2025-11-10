@@ -29,7 +29,7 @@ export const InstitutionsDataProvider = (props) => {
   const fetchInstitutions = async () => {
     setNetworkErrorMessage(null);
     try {
-      const res = await axios.get("public/institutions", {
+      const res = await axios.get("institutions", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
           Accept: "application/json;",
@@ -37,6 +37,7 @@ export const InstitutionsDataProvider = (props) => {
         },
       });
       setInstitutions(res.data.data.data);
+      console.log(institutions);
       setFilteredInstitutions(res.data.data.data);
       setRequestCompleted(1);
       setNetworkErrorMessage(null);
@@ -69,15 +70,15 @@ export const InstitutionsDataProvider = (props) => {
   useEffect(() => {
     const filteredResult = institutions.filter((institution) => {
       return (
-        institution.name.toLowerCase().match(searchInstitution.toLowerCase()) ||
-        institution.email
-          .toLowerCase()
+        institution?.name?.toLowerCase().match(searchInstitution.toLowerCase()) ||
+        institution?.email
+          ?.toLowerCase()
+          .match(searchInstitution?.toLowerCase()) ||
+        institution?.address
+          ?.toLowerCase()
           .match(searchInstitution.toLowerCase()) ||
-        institution.address
-          .toLowerCase()
-          .match(searchInstitution.toLowerCase()) ||
-        institution.telephone
-          .toLowerCase()
+        institution?.telephone
+          ?.toLowerCase()
           .match(searchInstitution.toLowerCase())
       );
     });

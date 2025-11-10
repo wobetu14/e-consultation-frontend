@@ -69,8 +69,8 @@ export const SectorsDataProvider = (props) => {
   useEffect(() => {
     const filteredResult = sectors.filter((sector) => {
       return (
-        sector.name.toLowerCase().match(searchSector.toLowerCase()) ||
-        sector.description.toLowerCase().match(searchSector.toLowerCase())
+        sector?.name?.toLowerCase().match(searchSector.toLowerCase()) ||
+        sector?.description?.toLowerCase().match(searchSector.toLowerCase())
       );
     });
     setFilteredSectors(filteredResult);

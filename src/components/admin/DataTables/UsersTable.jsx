@@ -24,14 +24,13 @@ import { UsersDataContext } from "../../../contexts/UsersDataContext";
 import { motion } from "framer-motion";
 import DeleteUserDialog from "../../../partials/DeleteUserDialog";
 import RefreshIcon from "@mui/icons-material/Refresh";
-import CheckIcon from "@mui/icons-material/Check";
 import { useTranslation } from "react-i18next";
 
 const UsersTable = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
   const { t } = useTranslation();
+
   const {
     user,
     setUser,
@@ -54,20 +53,40 @@ const UsersTable = () => {
     networkError,
   } = useContext(UsersDataContext);
 
-  const errorStyle = {
-    color: "red",
-    fontWeight: "400",
-    fontSize: "18px",
+  // === Styles ===
+  const errorStyle = { color: "red", fontWeight: 400, fontSize: "18px" };
+  const successStyle = { color: "green", fontWeight: 400, fontSize: "18px" };
+
+  // === Custom Styles for DataTable ===
+  const customStyles = {
+    tableWrapper: {
+      style: {
+        display: "block",
+        width: "100%",
+        overflowX: "auto",
+      },
+    },
+    cells: {
+      style: {
+        whiteSpace: "normal",
+        wordBreak: "break-word",
+        lineHeight: "1.5em",
+        paddingTop: "8px",
+        paddingBottom: "8px",
+      },
+    },
+    headCells: {
+      style: {
+        whiteSpace: "normal",
+        wordBreak: "break-word",
+        fontWeight: "700",
+        fontSize: "16px",
+      },
+    },
   };
 
-  const successStyle = {
-    color: "green",
-    fontWeight: "400",
-    fontSize: "18px",
-  };
-
-  // Show / Hide Add User Form
-  const showAddUserForm = (msg) => {
+  // === UI Logic ===
+  const showAddUserForm = () => {
     setShowUserAddForm(!showUserAddForm);
     setShowUserEditForm(false);
   };
@@ -92,224 +111,202 @@ const UsersTable = () => {
     fetchUsers();
   };
 
+  // === Table Columns ===
   const columns = [
     {
       name: (
-        <Typography variant="h5" fontWeight="600">
+        <Typography sx={{ fontWeight: 700, fontSize: "16px" }}>
           {t("full_name")}
         </Typography>
       ),
-      selector: (row) => (
-        <Typography
-          variant="body1"
-          key={row.id}
-        >{`${row.first_name} ${row.middle_name}`}</Typography>
-      ),
+      selector: (row) => `${row.first_name} ${row.middle_name}` || "",
       sortable: true,
+      wrap: true,
+      grow: 2,
     },
-
     {
       name: (
-        <Typography variant="h5" fontWeight="600">
+        <Typography sx={{ fontWeight: 700, fontSize: "16px" }}>
           {t("mobile")}
         </Typography>
       ),
-      selector: (row) => (
-        <Typography variant="body1" key={row.id}>
-          {row.mobile_number}
-        </Typography>
-      ),
+      selector: (row) => row.mobile_number || "",
       sortable: true,
+      wrap: true,
     },
     {
       name: (
-        <Typography variant="h5" fontWeight="600">
+        <Typography sx={{ fontWeight: 700, fontSize: "16px" }}>
           {t("institution")}
         </Typography>
       ),
-      selector: (row) => (
-        <Typography variant="body1" key={row.id}>
-          {row.institution ? row.institution : ""}
-        </Typography>
-      ),
+      selector: (row) => row.institution || "",
       sortable: true,
+      wrap: true,
     },
     {
       name: (
-        <Typography variant="h5" fontWeight="600">
+        <Typography sx={{ fontWeight: 700, fontSize: "16px" }}>
           {t("region")}
         </Typography>
       ),
-      selector: (row) => (
-        <Typography variant="body1" key={row.id}>
-          {row.region ? row.region : ""}
-        </Typography>
-      ),
+      selector: (row) => row.region || "",
       sortable: true,
+      wrap: true,
     },
     {
       name: (
-        <Typography variant="h5" fontWeight="600">
+        <Typography sx={{ fontWeight: 700, fontSize: "16px" }}>
           {t("created_by")}
         </Typography>
       ),
-      selector: (row) => (
-        <Typography variant="body1" key={row.id}>
-          {row.created_by}
-        </Typography>
-      ),
+      selector: (row) => row.created_by || "",
       sortable: true,
+      wrap: true,
     },
-
     {
       name: (
-        <Typography variant="h5" fontWeight="600">
+        <Typography sx={{ fontWeight: 700, fontSize: "16px" }}>
           {t("role")}
         </Typography>
       ),
-      selector: (row) =>
+      cell: (row) =>
         row.roles.map((role) => (
-          <li style={{ listStyleType: "none" }} key={role.id}>
+          <li key={role.id} style={{ listStyleType: "none" }}>
             <Typography variant="body1">{role.name}</Typography>
           </li>
         )),
+      wrap: true,
     },
     {
       name: (
-        <Typography variant="h5" fontWeight="600">
+        <Typography sx={{ fontWeight: 700, fontSize: "16px" }}>
           {t("actions")}
         </Typography>
       ),
-      selector: (row) => {
-        return (
-          <Stack spacing={0} direction="row">
-            <Button
-              variant="Link"
-              size="small"
-              color="secondary"
-              sx={{ textTransform: "none" }}
-              key={row.id}
-              onClick={() => showEditUserForm(row)}
-            >
-              <ModeEditIcon fontSize="small" color="secondary" />
-            </Button>
-            <Button
-              variant="Link"
-              size="small"
-              sx={{ textTransform: "none" }}
-              onClick={() => deleteUserDialog(row)}
-              disabled={true}
-            >
-              <DeleteIcon
-                fontSize="small"
-                sx={{ color: colors.dangerColor[200] }}
-              />
-            </Button>
-          </Stack>
-        );
-      },
+      cell: (row) => (
+        <Stack spacing={0} direction="row">
+          <Button
+            variant="text"
+            size="small"
+            color="secondary"
+            sx={{ textTransform: "none" }}
+            onClick={() => showEditUserForm(row)}
+          >
+            <ModeEditIcon fontSize="small" color="secondary" />
+          </Button>
+          <Button
+            variant="text"
+            size="small"
+            sx={{ textTransform: "none" }}
+            onClick={() => deleteUserDialog(row)}
+            disabled
+          >
+            <DeleteIcon
+              fontSize="small"
+              sx={{ color: colors.dangerColor[200] }}
+            />
+          </Button>
+        </Stack>
+      ),
     },
   ];
 
   return (
     <Box
-      m="0 20px"
       sx={{
-        width: {
-          xs: 300,
-          sm: 500,
-          md: 700,
-          lg: 900,
-          xl: 1200,
-        },
+        width: "100%",
+        maxWidth: "100%",
+        overflowX: "auto",
+        px: { xs: 1, sm: 2, md: 3 },
       }}
     >
+      {/* Header */}
       <Header title={t("users")} subtitle={t("manage_users")} />
 
-      <Grid align="center" sx={{ paddingBottom: "5px", paddingTop: "5px" }}>
+      {/* Alerts + Progress */}
+      <Grid align="center" sx={{ pb: 1, pt: 1 }}>
         <motion.span
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3 }}
         >
-          <Typography variant="body1">
-            {serverSuccessMsg ? (
-              <Alert
-                icon={<CheckIcon fontSize="inherit" />}
-                severity="success"
-                style={successStyle}
-              >
-                {serverSuccessMsg}
-              </Alert>
-            ) : null}
-          </Typography>
-
-          <Typography variant="h1">
-            {networkError === "ERR_NETWORK" ? (
-              <Alert severity="error" variant="outlined">
-                {t("network_error_message")}
-              </Alert>
-            ) : null}
-          </Typography>
-
-          <Typography variant="h1">
-            {serverErrorMsg ? (
-              <Alert severity="error" style={errorStyle}>
-                {serverErrorMsg}
-              </Alert>
-            ) : null}
-          </Typography>
-
-          {loading ? <LinearProgress size="small" color="info" /> : null}
+          {serverSuccessMsg && (
+            <Alert severity="success" style={successStyle}>
+              {serverSuccessMsg}
+            </Alert>
+          )}
+          {serverErrorMsg && (
+            <Alert severity="error" style={errorStyle}>
+              {serverErrorMsg}
+            </Alert>
+          )}
+          {networkError === "ERR_NETWORK" && (
+            <Alert severity="error" variant="outlined">
+              {t("network_error_message")}
+            </Alert>
+          )}
+          {loading && <LinearProgress size="small" color="info" />}
         </motion.span>
       </Grid>
+
+      {/* Delete Dialog */}
       {openDialog && (
         <DeleteUserDialog
           title={`${t("deleting_user")}...`}
           text={`${t("you_are_deleting_user")} ${
-            user ? user.first_name + " " + user.middle_name : ""
+            user ? `${user.first_name} ${user.middle_name}` : ""
           }. ${t("are_you_sure")}`}
         />
       )}
 
+      {/* Create/Edit Forms */}
       {showUserAddForm && <CreateUser />}
       {showUserEditForm && <EditUser />}
 
-      <Paper elevation={1} sx={{ marginTop: "10px", marginBottom: "350px" }}>
+      {/* Data Table */}
+      <Paper
+        elevation={1}
+        sx={{
+          mt: 2,
+          mb: 10,
+          width: "100%",
+          overflowX: "auto",
+        }}
+      >
         <DataTable
           columns={columns}
           data={filteredUsers}
           progressPending={users.length <= 0}
           highlightOnHover
           pointerOnHover
+          pagination
+          customStyles={customStyles}
+          responsive
           progressComponent={
             <Box mb="20px">
-              {/* Display progress bar if the data prop value is empty */}
               {requestCompleted === 1 &&
               filteredUsers.length <= 0 &&
               networkErrorMessage !== "AxiosError" ? (
                 `${t("no_record")}`
               ) : networkErrorMessage === "AxiosError" ? (
-                <>
-                  <Typography variant="body1">
-                    {t("network_error_message")} &nbsp;
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      size="small"
-                      sx={{ textTransform: "none" }}
-                      onClick={handleNetworkStatus}
-                    >
-                      {t("try_again")} <RefreshIcon />
-                    </Button>
-                  </Typography>
-                </>
+                <Typography variant="body1">
+                  {t("network_error_message")} &nbsp;
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    size="small"
+                    sx={{ textTransform: "none" }}
+                    onClick={handleNetworkStatus}
+                  >
+                    {t("try_again")} <RefreshIcon />
+                  </Button>
+                </Typography>
               ) : (
-                `${t("please_wait")}...`
+                `${t("please_wait")}`
               )}
             </Box>
           }
-          pagination
           selectableRowsHighlight
           subHeader
           subHeaderComponent={
@@ -317,11 +314,13 @@ const UsersTable = () => {
               width="100%"
               sx={{
                 display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
                 justifyContent: "space-between",
-                direction: "row",
+                alignItems: { xs: "stretch", sm: "center" },
+                gap: 2,
               }}
             >
-              <Box width="30%">
+              <Box width={{ xs: "100%", sm: "40%", md: "30%" }}>
                 <TextField
                   label={`${t("search")}...`}
                   variant="outlined"
@@ -332,18 +331,8 @@ const UsersTable = () => {
                   onChange={(e) => setSearchUser(e.target.value)}
                 />
               </Box>
-              <Box>
-                {showUserAddForm ? (
-                  <Button
-                    variant="contained"
-                    size="small"
-                    color="secondary"
-                    sx={{ textTransform: "none" }}
-                    onClick={hideForm}
-                  >
-                    <VisibilityOffIcon fontSize="small" /> {t("hide_form")}
-                  </Button>
-                ) : showUserEditForm ? (
+              <Box textAlign={{ xs: "center", sm: "right" }}>
+                {showUserAddForm || showUserEditForm ? (
                   <Button
                     variant="contained"
                     size="small"

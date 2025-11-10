@@ -12,6 +12,7 @@ import { useTranslation } from "react-i18next";
 import ExtendConsultationDeadline from "./ExtendConsultationDeadline";
 import CommentsReport from "../reports/CommentsReport";
 
+
 /**
  * This component is a child component of <DraftMetaInfo /> component. 
  * It is used to define action buttons to execute actions on the draft document. 
@@ -130,6 +131,7 @@ const DraftActions = ({
                 <AcceptApprovalRequest
                   draftID={draftID}
                   documentDetail={documentDetail}
+                  userRole={userRole}
                   serverSuccessMsg={serverSuccessMsg}
                   serverErrorMsg={serverErrorMsg}
                   setServerSuccessMsg={setServerSuccessMsg}
@@ -144,6 +146,7 @@ const DraftActions = ({
                 <RejectApprovalRequest
                   draftID={draftID}
                   documentDetail={documentDetail}
+                  userRole={userRole}
                   serverSuccessMsg={serverSuccessMsg}
                   serverErrorMsg={serverErrorMsg}
                   setServerSuccessMsg={setServerSuccessMsg}
@@ -164,6 +167,7 @@ const DraftActions = ({
                 <InviteCommenters
                   draftID={draftID}
                   documentDetail={documentDetail}
+                  userRole={userRole}
                   serverSuccessMsg={serverSuccessMsg}
                   serverErrorMsg={serverErrorMsg}
                   setServerSuccessMsg={setServerSuccessMsg}
@@ -178,6 +182,7 @@ const DraftActions = ({
                 <AssignRepliers
                   draftID={draftID}
                   documentDetail={documentDetail}
+                  userRole={userRole}
                   serverSuccessMsg={serverSuccessMsg}
                   serverErrorMsg={serverErrorMsg}
                   setServerSuccessMsg={setServerSuccessMsg}
@@ -193,21 +198,23 @@ const DraftActions = ({
                 {/**
                  * Button definition for close commenting or to end consultation
                  */}
-                <Button
-                  size="small"
-                  variant="outlined"
-                  color="error"
-                  sx={{
-                    textTransform: "none",
-                    marginRight: "5px",
-                    // color: colors.grey[300],
-                  }}
-                  onClick={() => closeCommenting(documentDetail.id)}
-                >
-                  <Typography variant="body2">
-                    {t("end_consultation")}
-                  </Typography>
-                </Button>
+                {userRole === "Approver" && (
+                  <Button
+                    size="small"
+                    variant="outlined"
+                    color="error"
+                    sx={{
+                      textTransform: "none",
+                      marginRight: "5px",
+                      // color: colors.grey[300],
+                    }}
+                    onClick={() => closeCommenting(documentDetail.id)}
+                  >
+                    <Typography variant="body2">
+                      {t("end_consultation")}
+                    </Typography>
+                  </Button>
+                )}
               </>
             ) : (
               ""
@@ -220,6 +227,7 @@ const DraftActions = ({
               <>
                 <SendApprovalRequest
                   documentDetail={documentDetail}
+                  userRole={userRole}
                   setServerSuccessMsg={setServerSuccessMsg}
                   setServerErrorMsg={setServerErrorMsg}
                 />
@@ -238,6 +246,7 @@ const DraftActions = ({
               <ExtendConsultationDeadline
                 draftID={draftID}
                 documentDetail={documentDetail}
+                userRole={userRole}
                 serverSuccessMsg={serverSuccessMsg}
                 serverErrorMsg={serverErrorMsg}
                 setServerSuccessMsg={setServerSuccessMsg}
@@ -270,6 +279,7 @@ const SendApprovalRequest = ({
   documentDetail,
   setServerSuccessMsg,
   setServerErrorMsg,
+  userRole
 }) => {
   /**
    * 
@@ -296,18 +306,20 @@ const SendApprovalRequest = ({
 
   return (
     <>
-    {/**
-     * Button definition for sending opening request
-     */}
-      <Button
-        variant="contained"
-        color="secondary"
-        sx={{ textTransform: "none" }}
-        onClick={sendOpeningRequest}
-      >
-        <Typography variant="body1">Send opening request &nbsp;</Typography>
-        <SendIcon fontSize="small" />
-      </Button>
+      {/**
+       * Button definition for sending opening request
+       */}
+      {userRole === "Uploader" && (
+        <Button
+          variant="contained"
+          color="secondary"
+          sx={{ textTransform: "none" }}
+          onClick={sendOpeningRequest}
+        >
+          <Typography variant="body1">Send opening request &nbsp;</Typography>
+          <SendIcon fontSize="small" />
+        </Button>
+      )}
     </>
   );
 };
@@ -319,6 +331,7 @@ const SendApprovalRequest = ({
 const AcceptApprovalRequest = ({
   draftID,
   documentDetail,
+  userRole,
   serverSuccessMsg,
   serverErrorMsg,
   setServerSuccessMsg,
@@ -341,23 +354,25 @@ const AcceptApprovalRequest = ({
 
   return (
     <>
-    {/**
-     * Button definition to "Accept" the opening request
-     */}
-      <Button
-        size="small"
-        variant="contained"
-        color="success"
-        sx={{ textTransform: "none", marginRight: "5px" }}
-        onClick={showDialog}
-      >
-        {t("accept")}
-      </Button>
+      {/**
+       * Button definition to "Accept" the opening request
+       */}
+      {userRole === "Approver" && (
+        <Button
+          size="small"
+          variant="contained"
+          color="success"
+          sx={{ textTransform: "none", marginRight: "5px" }}
+          onClick={showDialog}
+        >
+          {t("accept")}
+        </Button>
+      )}
 
-     {/**
-      * Display / show document opening dialog box (acceptance dialog box). Note that the naming here is not 
-      * similar to the function of the component but it is meant to be a dialog box to accepting opening request.
-      */}
+      {/**
+       * Display / show document opening dialog box (acceptance dialog box). Note that the naming here is not
+       * similar to the function of the component but it is meant to be a dialog box to accepting opening request.
+       */}
       {openDialog && (
         <OutgoingCommentRequestsDialog
           draftID={draftID}
@@ -388,6 +403,7 @@ const AcceptApprovalRequest = ({
 const RejectApprovalRequest = ({
   draftID,
   documentDetail,
+  userRole,
   serverSuccessMsg,
   serverErrorMsg,
   setServerSuccessMsg,
@@ -395,7 +411,6 @@ const RejectApprovalRequest = ({
   openRejectionDialog,
   setOpenRejectionDialog,
   t,
-
   fetchDocumentDetails,
   fetchDocumentSections,
   fetchDocumentComments,
@@ -409,22 +424,25 @@ const RejectApprovalRequest = ({
 
   return (
     <>
-    {/**
-     * Button definition to "Reject" the opening request
-     */}
-      <Button
-        size="small"
-        variant="contained"
-        color="warning"
-        sx={{ textTransform: "none" }}
-        onClick={showRejectionDialog}
-      >
-        {t("reject")}
-      </Button>
+      {/**
+       * Button definition to "Reject" the opening request
+       */}
 
-     {/**
-      * Display / show document rejection dialog box. 
-      */}
+      {userRole === "Approver" && (
+        <Button
+          size="small"
+          variant="contained"
+          color="warning"
+          sx={{ textTransform: "none" }}
+          onClick={showRejectionDialog}
+        >
+          {t("reject")}
+        </Button>
+      )}
+
+      {/**
+       * Display / show document rejection dialog box.
+       */}
       {openRejectionDialog && (
         <DraftOpeningRejectionDialog
           draftID={draftID}
@@ -456,6 +474,7 @@ const RejectApprovalRequest = ({
 const InviteCommenters = ({
   draftID,
   documentDetail,
+  userRole,
   serverSuccessMsg,
   serverErrorMsg,
   setServerSuccessMsg,
@@ -473,25 +492,27 @@ const InviteCommenters = ({
 
   return (
     <>
-    {/**
-     * Button definition for sending an invite
-     */}
-      <Button
-        size="small"
-        variant="outlined"
-        color="success"
-        sx={{ textTransform: "none", marginRight: "5px" }}
-        onClick={showInviteDialog}
-      >
-        <Typography variant="body2">{t("invite")}</Typography>
-      </Button>
+      {/**
+       * Button definition for sending an invite
+       */}
+      {userRole === "Approver" && (
+        <Button
+          size="small"
+          variant="outlined"
+          color="success"
+          sx={{ textTransform: "none", marginRight: "5px" }}
+          onClick={showInviteDialog}
+        >
+          <Typography variant="body2">{t("invite")}</Typography>
+        </Button>
+      )}
 
       {openInviteDialog && (
         <>
-        {/**
-         * Show <InviteMoreDialog /> component if the value of openInviteDialog is true so that user can send invitation 
-         * via the dialog box
-         */}
+          {/**
+           * Show <InviteMoreDialog /> component if the value of openInviteDialog is true so that user can send invitation
+           * via the dialog box
+           */}
           <InviteMoreDialog
             draftID={draftID}
             key={documentDetail.id}
@@ -519,6 +540,7 @@ const InviteCommenters = ({
 const AssignRepliers = ({
   draftID,
   documentDetail,
+  userRole,
   serverSuccessMsg,
   serverErrorMsg,
   setServerSuccessMsg,
@@ -540,15 +562,17 @@ const AssignRepliers = ({
        * Button definition to assign repliers
        */}
 
-      <Button
-        size="small"
-        variant="outlined"
-        color="primary"
-        sx={{ textTransform: "none", marginRight: "5px" }}
-        onClick={showAssignRepliersDialog}
-      >
-        <Typography variant="body2">{t("assign_repliers")}</Typography>
-      </Button>
+      {userRole === "Approver" && (
+        <Button
+          size="small"
+          variant="outlined"
+          color="primary"
+          sx={{ textTransform: "none", marginRight: "5px" }}
+          onClick={showAssignRepliersDialog}
+        >
+          <Typography variant="body2">{t("assign_repliers")}</Typography>
+        </Button>
+      )}
 
       {openAssignRepliersDialog && (
         /**

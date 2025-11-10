@@ -136,7 +136,7 @@ export const DraftsDataProvider = (props) => {
    */
   useEffect(() => {
     const filteredResult = drafts.filter((draft) => {
-      return draft.short_title.toLowerCase().match(searchDraft.toLowerCase());
+      return draft?.short_title?.toLowerCase().match(searchDraft.toLowerCase());
     });
     setFilteredDrafts(filteredResult);
   }, [searchDraft, drafts]);
